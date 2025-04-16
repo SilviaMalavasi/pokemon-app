@@ -1,7 +1,7 @@
-const axios = require("axios");
-const fs = require("fs");
+import axios from "axios";
+import fs from "fs";
 
-const API_URL = "https://api.pokemontcg.io/v2/cards";
+const API_URL = "https://api.pokemontcg.io/v2/cards"; // Ensure ES module syntax
 const API_KEY = "your_api_key_here"; // Replace with your API key
 
 async function fetchAndSaveCards() {
@@ -38,8 +38,8 @@ async function fetchAndSaveCards() {
     console.log(`Found ${allCards.length} cards with regulation marks G or H.`);
 
     // Write all the filtered cards to a file
-    fs.writeFileSync("filteredCards.json", JSON.stringify(allCards, null, 2));
-    console.log("Filtered cards saved to filteredCards.json");
+    fs.writeFileSync("metaCards.json", JSON.stringify(allCards, null, 2));
+    console.log("Filtered cards saved to metaCards.json");
   } catch (error) {
     console.error("Error fetching or saving cards:", error);
   }

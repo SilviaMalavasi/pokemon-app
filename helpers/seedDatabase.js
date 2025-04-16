@@ -1,252 +1,229 @@
-const Database = require("better-sqlite3");
-const fs = require("fs");
-const path = require("path");
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import fs from "fs";
+import path from "path";
+import Database from "better-sqlite3";
 
-// Initialize the database
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const dbPath = path.resolve(__dirname, "../db/pokemonCardsDB.sqlite");
 const db = new Database(dbPath);
 
-// Drop the cards table if it exists
-db.exec("DROP TABLE IF EXISTS cards;");
+// Create tables
+const createTables = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS CardSet (
+      id TEXT PRIMARY KEY,
+      name TEXT,
+      series TEXT,
+      printedTotal INTEGER,
+      total INTEGER,
+      releaseDate TEXT,
+      updatedAt TEXT,
+      symbol TEXT,
+      logo TEXT,
+      ptcgoCode TEXT
+    );
 
-// Create the cards table
-const createTableQuery = `
-CREATE TABLE IF NOT EXISTS cards (
-  id TEXT PRIMARY KEY,
-  name TEXT,
-  supertype TEXT,
-  subtypes TEXT,
-  hp TEXT,
-  types TEXT,
-  evolvesFrom TEXT,
-  flavorText TEXT,
-  rarity TEXT,
-  image TEXT,
-  attacks TEXT,
-  weaknesses TEXT,
-  retreatCost TEXT,
-  convertedRetreatCost INTEGER,
-  cardSet TEXT,
-  number TEXT,
-  artist TEXT,
-  nationalPokedexNumbers TEXT,
-  legalities TEXT,
-  regulationMark TEXT
-);
-`;
-db.exec(createTableQuery);
+    CREATE TABLE IF NOT EXISTS Abilities (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT UNIQUE,
+      type TEXT,
+      text TEXT
+    );
 
-const createAttacksTableQuery = `
-CREATE TABLE IF NOT EXISTS attacks (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  card_id TEXT,
-  name TEXT,
-  cost TEXT,
-  convertedEnergyCost INTEGER,
-  damage TEXT,
-  text TEXT,
-  FOREIGN KEY (card_id) REFERENCES cards (id)
-);
-`;
+    CREATE TABLE IF NOT EXISTS Attacks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT UNIQUE,
+      damage TEXT,
+      text TEXT
+    );
 
-const createAbilitiesTableQuery = `
-CREATE TABLE IF NOT EXISTS abilities (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  card_id TEXT,
-  name TEXT,
-  text TEXT,
-  type TEXT,
-  FOREIGN KEY (card_id) REFERENCES cards (id)
-);
-`;
+    CREATE TABLE IF NOT EXISTS Card (
+      id TEXT PRIMARY KEY,
+      name TEXT,
+      supertype TEXT,
+      subtypes TEXT,
+      hp INTEGER,
+      types TEXT,
+      evolvesFrom TEXT,
+      weaknesses TEXT,
+      resistances TEXT,
+      evolvesTo TEXT,
+      retreatCost TEXT,
+      convertedRetreatCost INTEGER,
+      flavorText TEXT,
+      artist TEXT,
+      rarity TEXT,
+      nationalPokedexNumbers TEXT,
+      regulationMark TEXT,
+      imagesSmall TEXT,
+      imagesLarge TEXT,
+      rules TEXT,
+      number TEXT,
+      cardSetId TEXT,
+      FOREIGN KEY (cardSetId) REFERENCES CardSet (id)
+    );
 
-const createWeaknessesTableQuery = `
-CREATE TABLE IF NOT EXISTS weaknesses (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  card_id TEXT,
-  type TEXT,
-  value TEXT,
-  FOREIGN KEY (card_id) REFERENCES cards (id)
-);
-`;
+    CREATE TABLE IF NOT EXISTS CardAbilities (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      cardId TEXT,
+      abilityId INTEGER,
+      FOREIGN KEY (cardId) REFERENCES Card (id),
+      FOREIGN KEY (abilityId) REFERENCES Abilities (id)
+    );
 
-const createCardSetTableQuery = `
-CREATE TABLE IF NOT EXISTS cardSet (
-  id TEXT PRIMARY KEY,
-  name TEXT,
-  series TEXT,
-  printedTotal INTEGER,
-  total INTEGER,
-  ptcgoCode TEXT,
-  releaseDate TEXT,
-  updatedAt TEXT,
-  symbol TEXT,
-  logo TEXT
-);
-`;
+    CREATE TABLE IF NOT EXISTS CardAttacks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      cardId TEXT,
+      attackId INTEGER,
+      cost TEXT,
+      convertedEnergyCost INTEGER,
+      FOREIGN KEY (cardId) REFERENCES Card (id),
+      FOREIGN KEY (attackId) REFERENCES Attacks (id)
+    );
+  `);
+};
 
-const createLegalitiesTableQuery = `
-CREATE TABLE IF NOT EXISTS legalities (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  card_id TEXT,
-  unlimited TEXT,
-  standard TEXT,
-  expanded TEXT,
-  FOREIGN KEY (card_id) REFERENCES cards (id)
-);
-`;
+const insertOrGetId = (tableName, uniqueColumn, data) => {
+  const columns = Object.keys(data).join(", ");
+  const placeholders = Object.keys(data)
+    .map(() => "?")
+    .join(", ");
 
-const createImagesTableQuery = `
-CREATE TABLE IF NOT EXISTS images (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  card_id TEXT,
-  small TEXT,
-  large TEXT,
-  FOREIGN KEY (card_id) REFERENCES cards (id)
-);
-`;
+  const stmt = db.prepare(`
+    INSERT OR IGNORE INTO ${tableName} (${columns})
+    VALUES (${placeholders})
+  `);
+  stmt.run(...Object.values(data));
 
-db.exec(createAttacksTableQuery);
-db.exec(createAbilitiesTableQuery);
-db.exec(createWeaknessesTableQuery);
-db.exec(createCardSetTableQuery);
-db.exec(createLegalitiesTableQuery);
-db.exec(createImagesTableQuery);
+  const row = db.prepare(`SELECT id FROM ${tableName} WHERE ${uniqueColumn} = ?`).get(data[uniqueColumn]);
+  return row.id;
+};
 
-// Seed the database with data from filteredCards.json
-const cardsData = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../db/filteredCards.json"), "utf-8"));
-const insertCardQuery = db.prepare(`
-INSERT OR REPLACE INTO cards (
-  id, name, supertype, subtypes, hp, types, evolvesFrom, flavorText, rarity, image, attacks, weaknesses, retreatCost, convertedRetreatCost, cardSet, number, artist, nationalPokedexNumbers, legalities, regulationMark
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-`);
+const insertCardSet = (set) => {
+  return insertOrGetId("CardSet", "id", {
+    id: set.id,
+    name: set.name,
+    series: set.series,
+    printedTotal: set.printedTotal,
+    total: set.total,
+    releaseDate: set.releaseDate,
+    updatedAt: set.updatedAt,
+    symbol: set.images?.symbol,
+    logo: set.images?.logo,
+    ptcgoCode: set.ptcgoCode,
+  });
+};
 
-const insertAttackQuery = db.prepare(`
-INSERT INTO attacks (card_id, name, cost, convertedEnergyCost, damage, text)
-VALUES (?, ?, ?, ?, ?, ?);
-`);
+const insertAbility = (ability) => {
+  return insertOrGetId("Abilities", "name", {
+    name: ability.name,
+    type: ability.type,
+    text: ability.text,
+  });
+};
 
-const insertAbilityQuery = db.prepare(`
-INSERT INTO abilities (card_id, name, text, type)
-VALUES (?, ?, ?, ?);
-`);
+const insertAttack = (attack) => {
+  return insertOrGetId("Attacks", "name", {
+    name: attack.name,
+    damage: attack.damage,
+    text: attack.text,
+  });
+};
 
-const insertWeaknessQuery = db.prepare(`
-INSERT INTO weaknesses (card_id, type, value)
-VALUES (?, ?, ?);
-`);
+// Insert Card
+const insertCard = (card) => {
+  const weaknesses = card.weaknesses ? JSON.stringify(card.weaknesses) : null;
+  const resistances = card.resistances ? JSON.stringify(card.resistances) : null;
+  const evolvesTo = card.evolvesTo ? JSON.stringify(card.evolvesTo) : null;
+  const rules = card.rules ? JSON.stringify(card.rules) : null;
 
-const insertCardSetQuery = db.prepare(`
-INSERT OR REPLACE INTO cardSet (
-  id, name, series, printedTotal, total, ptcgoCode, releaseDate, updatedAt, symbol, logo
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-`);
+  // Ensure CardSet is inserted and retrieve its ID
+  let cardSetId = null;
+  if (card.set && card.set.id) {
+    const existingSet = db.prepare("SELECT id FROM CardSet WHERE id = ?").get(card.set.id);
+    if (existingSet) {
+      cardSetId = existingSet.id;
+    } else {
+      cardSetId = insertCardSet(card.set);
+    }
+  }
 
-const insertLegalitiesQuery = db.prepare(`
-INSERT INTO legalities (card_id, unlimited, standard, expanded)
-VALUES (?, ?, ?, ?);
-`);
+  if (!cardSetId) {
+    console.error(`CardSet ID missing for card ${card.id}. Skipping card.`);
+    return;
+  }
 
-const insertImagesQuery = db.prepare(`
-INSERT INTO images (card_id, small, large)
-VALUES (?, ?, ?);
-`);
+  try {
+    const stmt = db.prepare(`
+      INSERT OR IGNORE INTO Card (
+        id, name, supertype, subtypes, hp, types, evolvesFrom, weaknesses, resistances, evolvesTo, retreatCost,
+        convertedRetreatCost, flavorText, artist, rarity, nationalPokedexNumbers,
+        regulationMark, imagesSmall, imagesLarge, rules, number, cardSetId
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
 
-const insertMany = db.transaction((cards) => {
-  for (const card of cards) {
-    insertCardQuery.run(
+    stmt.run(
       card.id,
       card.name,
       card.supertype,
       JSON.stringify(card.subtypes),
       card.hp,
       JSON.stringify(card.types),
-      card.evolvesFrom || null,
-      card.flavorText || null,
-      card.rarity || null,
-      card.images?.large || null,
-      JSON.stringify(card.attacks) || null,
-      JSON.stringify(card.weaknesses) || null,
-      JSON.stringify(card.retreatCost) || null,
-      card.convertedRetreatCost || null,
-      JSON.stringify(card.cardSet) || null,
-      card.number || null,
-      card.artist || null,
-      JSON.stringify(card.nationalPokedexNumbers) || null,
-      JSON.stringify(card.legalities) || null,
-      card.regulationMark || null
+      card.evolvesFrom,
+      weaknesses,
+      resistances,
+      evolvesTo,
+      JSON.stringify(card.retreatCost),
+      card.convertedRetreatCost,
+      card.flavorText,
+      card.artist,
+      card.rarity,
+      JSON.stringify(card.nationalPokedexNumbers),
+      card.regulationMark,
+      card.images?.small,
+      card.images?.large,
+      rules,
+      card.number,
+      cardSetId
     );
-  }
-});
 
-const insertManyNested = db.transaction((cards) => {
-  for (const card of cards) {
-    if (card.attacks) {
-      for (const attack of card.attacks) {
-        insertAttackQuery.run(
-          card.id,
-          attack.name,
-          JSON.stringify(attack.cost),
-          attack.convertedEnergyCost,
-          attack.damage,
-          attack.text
-        );
-      }
-    }
-
+    // Insert abilities into CardAbilities table
     if (card.abilities) {
-      for (const ability of card.abilities) {
-        insertAbilityQuery.run(card.id, ability.name, ability.text, ability.type);
-      }
+      card.abilities.forEach((ability) => {
+        const abilityId = insertAbility(ability);
+        db.prepare(`INSERT OR IGNORE INTO CardAbilities (cardId, abilityId) VALUES (?, ?)`).run(card.id, abilityId);
+      });
     }
 
-    if (card.weaknesses) {
-      for (const weakness of card.weaknesses) {
-        insertWeaknessQuery.run(card.id, weakness.type, weakness.value);
-      }
+    // Insert attacks into CardAttacks table
+    if (card.attacks) {
+      card.attacks.forEach((attack) => {
+        const attackId = insertAttack(attack);
+        db.prepare(
+          `INSERT OR IGNORE INTO CardAttacks (cardId, attackId, cost, convertedEnergyCost) VALUES (?, ?, ?, ?)`
+        ).run(card.id, attackId, JSON.stringify(attack.cost), attack.convertedEnergyCost);
+      });
     }
+  } catch (error) {
+    console.error(`Failed to insert card ${card.id}:`, error.message);
   }
-});
+};
 
-const insertManyAdditional = db.transaction((cards) => {
-  for (const card of cards) {
-    if (card.legalities) {
-      insertLegalitiesQuery.run(
-        card.id,
-        card.legalities.unlimited || null,
-        card.legalities.standard || null,
-        card.legalities.expanded || null
-      );
-    }
+// Main function
+const main = () => {
+  createTables();
 
-    if (card.images) {
-      insertImagesQuery.run(card.id, card.images.small || null, card.images.large || null);
-    }
-  }
-});
+  const dataPath = path.resolve(__dirname, "../db/metaCards.json");
+  const cards = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
 
-const insertManyCardSet = db.transaction((cards) => {
-  for (const card of cards) {
-    if (card.cardSet) {
-      insertCardSetQuery.run(
-        card.cardSet.id || null,
-        card.cardSet.name || null,
-        card.cardSet.series || null,
-        card.cardSet.printedTotal || null,
-        card.cardSet.total || null,
-        card.cardSet.ptcgoCode || null,
-        card.cardSet.releaseDate || null,
-        card.cardSet.updatedAt || null,
-        card.cardSet.images?.symbol || null,
-        card.cardSet.images?.logo || null
-      );
-    }
-  }
-});
+  cards.forEach((card) => {
+    insertCard(card);
+  });
 
-insertMany(cardsData);
-insertManyNested(cardsData);
-insertManyAdditional(cardsData);
-insertManyCardSet(cardsData);
+  console.log("Database seeding complete.");
+};
 
-console.log("Database seeded successfully.");
+main();

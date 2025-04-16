@@ -18,7 +18,6 @@ export interface PokemonCard {
   number: string;
   artist?: string;
   nationalPokedexNumbers?: number[];
-  legalities?: Legalities;
   regulationMark?: string;
   images?: CardImages;
 }
@@ -42,10 +41,9 @@ export interface Weakness {
   value: string;
 }
 
-export interface Legalities {
-  unlimited?: string;
-  standard?: string;
-  expanded?: string;
+export interface CardImages {
+  small: string;
+  large: string;
 }
 
 export interface CardSet {
@@ -63,9 +61,4 @@ export interface CardSet {
 export interface SetImages {
   symbol: string;
   logo: string;
-}
-
-export interface CardImages {
-  small: string;
-  large: string;
 }
