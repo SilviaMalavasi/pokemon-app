@@ -213,7 +213,7 @@ const insertCard = (card) => {
 };
 
 // Main function
-const main = () => {
+const fillDatabase = () => {
   createTables();
 
   const dataPath = path.resolve(__dirname, "../db/metaCards.json");
@@ -226,4 +226,4 @@ const main = () => {
   console.log("Database seeding complete.");
 };
 
-main();
+fillDatabase();

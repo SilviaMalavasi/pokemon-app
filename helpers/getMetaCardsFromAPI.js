@@ -4,7 +4,7 @@ import fs from "fs";
 const API_URL = "https://api.pokemontcg.io/v2/cards"; // Ensure ES module syntax
 const API_KEY = "your_api_key_here"; // Replace with your API key
 
-async function fetchAndSaveCards() {
+async function getMetaCardsFromAPI() {
   try {
     console.log("Fetching Pokémon cards...");
 
@@ -45,4 +45,4 @@ async function fetchAndSaveCards() {
   }
 }
 
-fetchAndSaveCards();
+getMetaCardsFromAPI();
