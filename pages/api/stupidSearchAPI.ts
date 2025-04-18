@@ -46,49 +46,103 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       LEFT JOIN Attacks ON CardAttacks.attackId = Attacks.id
       LEFT JOIN CardSet ON Card.cardSetId = CardSet.id
       WHERE
-        Card.name LIKE ? OR
-        Card.supertype LIKE ? OR
-        Card.subtypes LIKE ? OR
-        Card.types LIKE ? OR
-        Card.evolvesFrom LIKE ? OR
-        Card.weaknesses LIKE ? OR
-        Card.resistances LIKE ? OR
-        Card.evolvesTo LIKE ? OR
-        Card.retreatCost LIKE ? OR
-        Card.rarity LIKE ? OR
-        Card.regulationMark LIKE ? OR
-        Card.rules LIKE ? OR
-        CardSet.name LIKE ? OR
-        CardSet.series LIKE ? OR
-        Abilities.name LIKE ? OR
-        Abilities.text LIKE ? OR
-        Attacks.name LIKE ? OR
-        Attacks.damage LIKE ? OR
-        Attacks.text LIKE ? OR
-        CardAttacks.cost LIKE ?
+        LOWER(Card.id) LIKE ? OR
+        LOWER(Card.name) LIKE ? OR
+        LOWER(Card.supertype) LIKE ? OR
+        LOWER(Card.subtypes) LIKE ? OR
+        LOWER(Card.hp) LIKE ? OR
+        LOWER(Card.types) LIKE ? OR
+        LOWER(Card.evolvesFrom) LIKE ? OR
+        LOWER(Card.weaknesses) LIKE ? OR
+        LOWER(Card.resistances) LIKE ? OR
+        LOWER(Card.evolvesTo) LIKE ? OR
+        LOWER(Card.retreatCost) LIKE ? OR
+        LOWER(Card.convertedRetreatCost) LIKE ? OR
+        LOWER(Card.flavorText) LIKE ? OR
+        LOWER(Card.artist) LIKE ? OR
+        LOWER(Card.rarity) LIKE ? OR
+        LOWER(Card.nationalPokedexNumbers) LIKE ? OR
+        LOWER(Card.regulationMark) LIKE ? OR
+        LOWER(Card.imagesSmall) LIKE ? OR
+        LOWER(Card.imagesLarge) LIKE ? OR
+        LOWER(Card.rules) LIKE ? OR
+        LOWER(Card.number) LIKE ? OR
+        LOWER(Card.cardSetId) LIKE ? OR
+        LOWER(CardSet.id) LIKE ? OR
+        LOWER(CardSet.name) LIKE ? OR
+        LOWER(CardSet.series) LIKE ? OR
+        LOWER(CardSet.printedTotal) LIKE ? OR
+        LOWER(CardSet.total) LIKE ? OR
+        LOWER(CardSet.releaseDate) LIKE ? OR
+        LOWER(CardSet.updatedAt) LIKE ? OR
+        LOWER(CardSet.symbol) LIKE ? OR
+        LOWER(CardSet.logo) LIKE ? OR
+        LOWER(CardSet.ptcgoCode) LIKE ? OR
+        LOWER(Abilities.id) LIKE ? OR
+        LOWER(Abilities.name) LIKE ? OR
+        LOWER(Abilities.text) LIKE ? OR
+        LOWER(Attacks.id) LIKE ? OR
+        LOWER(Attacks.name) LIKE ? OR
+        LOWER(Attacks.damage) LIKE ? OR
+        LOWER(Attacks.text) LIKE ? OR
+        LOWER(CardAbilities.id) LIKE ? OR
+        LOWER(CardAbilities.cardId) LIKE ? OR
+        LOWER(CardAbilities.abilityId) LIKE ? OR
+        LOWER(CardAttacks.id) LIKE ? OR
+        LOWER(CardAttacks.cardId) LIKE ? OR
+        LOWER(CardAttacks.attackId) LIKE ? OR
+        LOWER(CardAttacks.cost) LIKE ? OR
+        LOWER(CardAttacks.convertedEnergyCost) LIKE ?
     `
       )
       .all(
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery,
-        searchQuery
+        searchQuery, // Card.id
+        searchQuery, // Card.name
+        searchQuery, // Card.supertype
+        searchQuery, // Card.subtypes
+        searchQuery, // Card.hp
+        searchQuery, // Card.types
+        searchQuery, // Card.evolvesFrom
+        searchQuery, // Card.weaknesses
+        searchQuery, // Card.resistances
+        searchQuery, // Card.evolvesTo
+        searchQuery, // Card.retreatCost
+        searchQuery, // Card.convertedRetreatCost
+        searchQuery, // Card.flavorText
+        searchQuery, // Card.artist
+        searchQuery, // Card.rarity
+        searchQuery, // Card.nationalPokedexNumbers
+        searchQuery, // Card.regulationMark
+        searchQuery, // Card.imagesSmall
+        searchQuery, // Card.imagesLarge
+        searchQuery, // Card.rules
+        searchQuery, // Card.number
+        searchQuery, // Card.cardSetId
+        searchQuery, // CardSet.id
+        searchQuery, // CardSet.name
+        searchQuery, // CardSet.series
+        searchQuery, // CardSet.printedTotal
+        searchQuery, // CardSet.total
+        searchQuery, // CardSet.releaseDate
+        searchQuery, // CardSet.updatedAt
+        searchQuery, // CardSet.symbol
+        searchQuery, // CardSet.logo
+        searchQuery, // CardSet.ptcgoCode
+        searchQuery, // Abilities.id
+        searchQuery, // Abilities.name
+        searchQuery, // Abilities.text
+        searchQuery, // Attacks.id
+        searchQuery, // Attacks.name
+        searchQuery, // Attacks.damage
+        searchQuery, // Attacks.text
+        searchQuery, // CardAbilities.id
+        searchQuery, // CardAbilities.cardId
+        searchQuery, // CardAbilities.abilityId
+        searchQuery, // CardAttacks.id
+        searchQuery, // CardAttacks.cardId
+        searchQuery, // CardAttacks.attackId
+        searchQuery, // CardAttacks.cost
+        searchQuery // CardAttacks.convertedEnergyCost
       );
 
     // For each card, fetch attacks, abilities, and cardSet

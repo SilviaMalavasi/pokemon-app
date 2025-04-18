@@ -22,9 +22,12 @@ const StupidSearch: React.FC = () => {
   const [results, setResults] = useState<PokemonCard[]>([]);
 
   const handleSearch = async () => {
+    // Sanitize and lowercase the query before sending
+    const sanitized = query.trim().toLowerCase();
+    if (!sanitized) return;
     try {
       const response = await axios.get<PokemonCard[]>("/api/stupidSearchAPI", {
-        params: { query },
+        params: { query: sanitized },
       });
       const parsedResults = response.data.map((card) => ({
         ...card,
