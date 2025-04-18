@@ -19,6 +19,18 @@
     "Ancient",
     "ACE SPEC"
   ],
+  "cardTypes": [
+    "Grass",
+    "Water",
+    "Fire",
+    "Lightning",
+    "Psychic",
+    "Fighting",
+    "Darkness",
+    "Metal",
+    "Colorless",
+    "Dragon"
+  ],
   "cardRegulationMark": [
     "G",
     "H"

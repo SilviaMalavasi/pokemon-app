@@ -22,6 +22,16 @@ function getUniqueValues(table, column) {
     });
     return Array.from(new Set(all.flat().filter(Boolean)));
   }
+  if (column === "types") {
+    const all = stmt.all().map((row) => {
+      try {
+        return Array.isArray(row[column]) ? row[column] : JSON.parse(row[column]);
+      } catch {
+        return [];
+      }
+    });
+    return Array.from(new Set(all.flat().filter(Boolean)));
+  }
   return Array.from(
     new Set(
       stmt
@@ -35,6 +45,7 @@ function getUniqueValues(table, column) {
 const uniqueIdentifiers = {
   cardSupertype: getUniqueValues("Card", "supertype"),
   cardSubtypes: getUniqueValues("Card", "subtypes"),
+  cardTypes: getUniqueValues("Card", "types"),
   cardRegulationMark: getUniqueValues("Card", "regulationMark"),
   cardSetNames: getUniqueValues("CardSet", "name"),
   cardSetSeries: getUniqueValues("CardSet", "series"),
