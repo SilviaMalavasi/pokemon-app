@@ -1,4 +1,5 @@
 import React from "react";
+import Select from "react-select";
 
 interface DynamicMultiSelectProps {
   label?: string;
@@ -8,27 +9,21 @@ interface DynamicMultiSelectProps {
 }
 
 const DynamicMultiSelect: React.FC<DynamicMultiSelectProps> = ({ label, value, options, onChange }) => {
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selected = Array.from(e.target.selectedOptions, (option) => option.value);
-    onChange(selected);
+  const handleChange = (selected: readonly { value: string; label: string }[] | null) => {
+    onChange(selected ? Array.from(selected).map((opt) => opt.value) : []);
   };
   return (
     <label>
       {label && <span>{label}</span>}
-      <select
-        multiple
-        value={value}
+      <Select
+        instanceId={label || "dynamic-multiselect"}
+        isMulti
+        value={options.filter((opt) => value.includes(opt.value))}
+        options={options}
         onChange={handleChange}
-      >
-        {options.map((opt) => (
-          <option
-            key={opt.value}
-            value={opt.value}
-          >
-            {opt.label}
-          </option>
-        ))}
-      </select>
+        closeMenuOnSelect={true}
+        classNamePrefix="react-select"
+      />
     </label>
   );
 };
