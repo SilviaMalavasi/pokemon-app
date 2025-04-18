@@ -4,6 +4,7 @@ import axios from "axios";
 import fs from "fs";
 import path from "path";
 import https from "https";
+import sharp from "sharp";
 
 const API_URL = process.env.POKEMON_API_URL;
 const API_KEY = process.env.POKEMON_API_KEY;
@@ -41,11 +42,18 @@ async function getMetaCardsFromAPI() {
 
     console.log(`Found ${allCards.length} cards with regulation marks G or H.`);
 
-    // Download images and update card image paths
-    const imageDir = path.resolve(process.cwd(), "public/card-images");
-    if (!fs.existsSync(imageDir)) {
-      fs.mkdirSync(imageDir, { recursive: true });
-    }
+    // Directories for PNG downloads and WebP outputs
+    const downloadCardImageDir = path.resolve(process.cwd(), "public/downloads/card-images");
+    const downloadSetImageDir = path.resolve(process.cwd(), "public/downloads/set-images");
+    const webpCardImageDir = path.resolve(process.cwd(), "public/card-images");
+    const webpSetImageDir = path.resolve(process.cwd(), "public/set-images");
+
+    // Ensure all directories exist
+    [downloadCardImageDir, downloadSetImageDir, webpCardImageDir, webpSetImageDir].forEach((dir) => {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+    });
 
     async function downloadImage(url, dest) {
       return new Promise((resolve, reject) => {
@@ -68,10 +76,6 @@ async function getMetaCardsFromAPI() {
       });
     }
 
-    const setImageDir = path.resolve(imageDir, "sets");
-    if (!fs.existsSync(setImageDir)) {
-      fs.mkdirSync(setImageDir, { recursive: true });
-    }
     const downloadedSetImages = new Set();
 
     function getFilenameFromUrl(url) {
@@ -81,34 +85,46 @@ async function getMetaCardsFromAPI() {
     for (const card of allCards) {
       if (card.images && card.images.small) {
         const ext = path.extname(card.images.small) || ".png";
-        const localSmall = `card-images/${card.id}_small${ext}`;
-        const localSmallAbs = path.resolve(imageDir, `${card.id}_small${ext}`);
-        if (!fs.existsSync(localSmallAbs)) {
+        const pngSmall = `${card.id}_small${ext}`;
+        const pngSmallAbs = path.resolve(downloadCardImageDir, pngSmall);
+        const webpSmall = `${card.id}_small.webp`;
+        const webpSmallAbs = path.resolve(webpCardImageDir, webpSmall);
+        if (!fs.existsSync(pngSmallAbs)) {
           try {
-            await downloadImage(card.images.small, localSmallAbs);
-            card.images.small = `/${localSmall}`;
+            await downloadImage(card.images.small, pngSmallAbs);
+            await sharp(pngSmallAbs).webp({ quality: 60 }).toFile(webpSmallAbs);
+            card.images.small = `/card-images/${webpSmall}`;
           } catch (e) {
-            console.warn(`Failed to download small image for ${card.id}`);
+            console.warn(`Failed to download/convert small image for ${card.id}`);
             console.warn(e);
           }
+        } else if (!fs.existsSync(webpSmallAbs)) {
+          await sharp(pngSmallAbs).webp({ quality: 60 }).toFile(webpSmallAbs);
+          card.images.small = `/card-images/${webpSmall}`;
         } else {
-          card.images.small = `/${localSmall}`;
+          card.images.small = `/card-images/${webpSmall}`;
         }
       }
       if (card.images && card.images.large) {
         const ext = path.extname(card.images.large) || ".png";
-        const localLarge = `card-images/${card.id}_large${ext}`;
-        const localLargeAbs = path.resolve(imageDir, `${card.id}_large${ext}`);
-        if (!fs.existsSync(localLargeAbs)) {
+        const pngLarge = `${card.id}_large${ext}`;
+        const pngLargeAbs = path.resolve(downloadCardImageDir, pngLarge);
+        const webpLarge = `${card.id}_large.webp`;
+        const webpLargeAbs = path.resolve(webpCardImageDir, webpLarge);
+        if (!fs.existsSync(pngLargeAbs)) {
           try {
-            await downloadImage(card.images.large, localLargeAbs);
-            card.images.large = `/${localLarge}`;
+            await downloadImage(card.images.large, pngLargeAbs);
+            await sharp(pngLargeAbs).webp({ quality: 60 }).toFile(webpLargeAbs);
+            card.images.large = `/card-images/${webpLarge}`;
           } catch (e) {
-            console.warn(`Failed to download large image for ${card.id}`);
+            console.warn(`Failed to download/convert large image for ${card.id}`);
             console.warn(e);
           }
+        } else if (!fs.existsSync(webpLargeAbs)) {
+          await sharp(pngLargeAbs).webp({ quality: 60 }).toFile(webpLargeAbs);
+          card.images.large = `/card-images/${webpLarge}`;
         } else {
-          card.images.large = `/${localLarge}`;
+          card.images.large = `/card-images/${webpLarge}`;
         }
       }
       // Download set symbol and logo if present
@@ -117,26 +133,33 @@ async function getMetaCardsFromAPI() {
           const url = card.set.images[key];
           if (url) {
             const filename = getFilenameFromUrl(url);
-            const localPath = `sets-images/${filename}`;
-            const localAbs = path.resolve(setImageDir, filename);
-            if (!downloadedSetImages.has(filename) && !fs.existsSync(localAbs)) {
+            const pngSet = filename;
+            const pngSetAbs = path.resolve(downloadSetImageDir, pngSet);
+            const webpSet = `${path.parse(filename).name}.webp`;
+            const webpSetAbs = path.resolve(webpSetImageDir, webpSet);
+            if (!downloadedSetImages.has(filename) && !fs.existsSync(pngSetAbs)) {
               try {
-                await downloadImage(url, localAbs);
+                await downloadImage(url, pngSetAbs);
                 downloadedSetImages.add(filename);
+                await sharp(pngSetAbs).webp({ quality: 60 }).toFile(webpSetAbs);
+                card.set.images[key] = `/set-images/${webpSet}`;
               } catch (e) {
-                console.warn(`Failed to download set ${key} for ${card.set.id}`);
+                console.warn(`Failed to download/convert set ${key} for ${card.set.id}`);
                 console.warn(e);
               }
+            } else if (!fs.existsSync(webpSetAbs)) {
+              await sharp(pngSetAbs).webp({ quality: 60 }).toFile(webpSetAbs);
+              card.set.images[key] = `/set-images/${webpSet}`;
+            } else {
+              card.set.images[key] = `/set-images/${webpSet}`;
             }
-            // Update the card's set.images[key] to local path
-            card.set.images[key] = `/${localPath}`;
           }
         }
       }
     }
 
     // Write all the filtered cards to a file (with local image paths)
-    fs.writeFileSync("metaCards.json", JSON.stringify(allCards, null, 2));
+    fs.writeFileSync("db/metaCards.json", JSON.stringify(allCards, null, 2));
     console.log("Filtered cards and images saved to metaCards.json and public/card-images/");
   } catch (error) {
     console.error("Error fetching or saving cards:", error);
