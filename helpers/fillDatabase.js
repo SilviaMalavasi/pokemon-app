@@ -29,7 +29,6 @@ const createTables = () => {
     CREATE TABLE IF NOT EXISTS Abilities (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT UNIQUE,
-      type TEXT,
       text TEXT
     );
 
@@ -120,7 +119,6 @@ const insertCardSet = (set) => {
 const insertAbility = (ability) => {
   return insertOrGetId("Abilities", "name", {
     name: ability.name,
-    type: ability.type,
     text: ability.text,
   });
 };

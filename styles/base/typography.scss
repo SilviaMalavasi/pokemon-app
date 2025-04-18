@@ -58,20 +58,23 @@ html:not(.wp-toolbar) {
     font-family: "RedHatDisplay", sans-serif;
     font-weight: 700;
     border: none;
-    background: var(--base);
+    background: var(--white);
     resize: none;
     outline: none;
     appearance: none;
-    padding: 1.6rem 1.3rem;
+    padding: 1rem 0.5rem;
     width: 100%;
     @include font-22pt;
-    color: var(--wp--preset--color--constrast);
+    color: var(--black);
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0 0.1rem var(--black);
+    border: 2px solid var(--black);
   }
 
   input::placeholder,
   textarea::placeholder {
     font-family: "RedHatDisplay", sans-serif;
-    color: var(--wp--preset--color--constrast);
+    color: var(--black);
     @include font-22pt;
   }
 
@@ -82,12 +85,12 @@ html:not(.wp-toolbar) {
 
     &[type="submit"] {
       width: auto;
-      color: var(--wp--preset--color--constrast);
-      background: var(--base);
+      color: var(--black);
+      background: var(--white);
       transition: all 0.3s var(--easing);
 
       &:disabled {
-        background: var(--base);
+        background: var(--white);
       }
 
       &:not(:disabled) {
@@ -95,7 +98,7 @@ html:not(.wp-toolbar) {
 
         @include hover {
           color: var(--contrast);
-          background: var(--base);
+          background: var(--white);
         }
       }
     }
@@ -103,7 +106,7 @@ html:not(.wp-toolbar) {
     &[type="checkbox"] {
       padding: 0;
       border: none;
-      background: var(--base);
+      background: var(--white);
       margin: 0;
       width: 0.8rem;
       height: 0.8rem;
@@ -138,7 +141,7 @@ html:not(.wp-toolbar) {
     &:-webkit-autofill:focus,
     &:-webkit-autofill:active {
       color: var(--contrast);
-      background-color: var(--base) !important;
+      background-color: var(--white) !important;
       transition: background-color 5000s ease-in-out 0s;
       -webkit-box-shadow: 0 0 0 1000px white inset !important;
       -webkit-background-clip: text !important;
@@ -164,7 +167,7 @@ html:not(.wp-toolbar) {
       transition: all 0.3s var(--easing);
 
       &:hover {
-        color: var(--base);
+        color: var(--white);
       }
     }
   }

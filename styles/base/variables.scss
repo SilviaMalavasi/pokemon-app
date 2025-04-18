@@ -16,8 +16,15 @@
 
   --easing: cubic-bezier(0, 0, 0.22, 1);
 
-  --base: var(--wp--preset--color--base);
-  --contrast: var(--wp--preset--color--contrast);
+  --white: #ffffff;
+  --black: #000000;
+  --dark-grey:#1f1f1f;
+  --medim-grey: #535353;
+  --light-grey: #CACACA;
+  --green: #7afc6b;
+  --purple: #6a1dff;
+  --yellow: #f9f639;
+  --orange: #f1c430;
 }
 
 @include smalldesktopOnly {

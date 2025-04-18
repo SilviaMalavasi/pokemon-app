@@ -1,7 +1,6 @@
 export interface Ability {
   id: number;
   name: string;
-  type: string;
   text: string;
 }
 

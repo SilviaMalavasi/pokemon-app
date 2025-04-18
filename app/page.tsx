@@ -1,9 +1,9 @@
-import SearchPokemon from "../components/search-pokemon";
+import StupidSearch from "../components/stupidSearch";
 
 export default async function Home() {
   return (
     <div>
-      <SearchPokemon />
+      <StupidSearch />
     </div>
   );
 }

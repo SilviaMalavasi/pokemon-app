@@ -12,7 +12,7 @@
   max-width: 400px;
   padding: var(--padding-small);
   font-size: var(--font-medium);
-  border: 1px solid var(--base);
+  border: 1px solid var(--white);
   border-radius: 4px;
   margin-bottom: var(--padding-medium);
 }
@@ -33,7 +33,7 @@
   padding: var(--padding-small);
   border: 1px solid var(--contrast);
   border-radius: 8px;
-  background-color: var(--base);
+  background-color: var(--white);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
