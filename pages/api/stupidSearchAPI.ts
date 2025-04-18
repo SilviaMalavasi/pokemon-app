@@ -14,7 +14,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import Database from "better-sqlite3";
 import path from "path";
 import { PokemonCard, Attack, Ability, CardSet } from "../../types/PokemonCardType";
-import { CardRow, AttackRow, AbilityRow } from "../../types/DbRows";
+import { CardRow, AttackRow, AbilityRow } from "../../types/DBRowsType";
 
 const dbPath = path.resolve(process.cwd(), "db/pokemonCardsDB.sqlite");
 const db = new Database(dbPath);

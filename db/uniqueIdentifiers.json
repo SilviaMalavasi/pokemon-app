@@ -1,0 +1,45 @@
+{
+  "cardSupertype": [
+    "Pokémon",
+    "Trainer",
+    "Energy"
+  ],
+  "cardSubtypes": [
+    "Basic",
+    "Stage 1",
+    "Stage 2",
+    "ex",
+    "Tera",
+    "Supporter",
+    "Stadium",
+    "Item",
+    "Pokémon Tool",
+    "Special",
+    "Future",
+    "Ancient",
+    "ACE SPEC"
+  ],
+  "cardRegulationMark": [
+    "G",
+    "H"
+  ],
+  "cardSetNames": [
+    "Scarlet & Violet",
+    "Scarlet & Violet Black Star Promos",
+    "Paldea Evolved",
+    "Obsidian Flames",
+    "151",
+    "Paradox Rift",
+    "Paldean Fates",
+    "Temporal Forces",
+    "Twilight Masquerade",
+    "Shrouded Fable",
+    "Stellar Crown",
+    "Surging Sparks",
+    "Prismatic Evolutions",
+    "Journey Together"
+  ],
+  "cardSetSeries": [
+    "Scarlet & Violet"
+  ]
+}
