@@ -1,0 +1,17 @@
+export const Colors = {
+  text: "#11181C",
+  background: "#fff",
+  tint: "#0a7ea4",
+  icon: "#687076",
+  tabIconDefault: "#687076",
+  tabIconSelected: "#0a7ea4",
+  white: "#ffffff",
+  black: "#000000",
+  darkGrey: "#1f1f1f",
+  mediumGrey: "#535353",
+  lightGrey: "#CACACA",
+  green: "#7afc6b",
+  purple: "#6a1dff",
+  yellow: "#f9f639",
+  orange: "#f1c430",
+};

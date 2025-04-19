@@ -1,9 +1,8 @@
-"use client";
 import React, { useState } from "react";
 import DynamicMultiSelect from "../formInputs/DynamicMultiSelect";
 import TextInput from "../formInputs/TextInput";
 import NumberInput from "../formInputs/NumberInput";
-import uniqueIdentifiers from "../../db/uniqueIdentifiers.json";
+import uniqueIdentifiers from "../../assets/db/uniqueIdentifiers.json";
 
 const cardSupertypeOptions = uniqueIdentifiers.cardSupertype.map((v: string) => ({ value: v, label: v }));
 const cardSubtypesOptions = uniqueIdentifiers.cardSubtypes.map((v: string) => ({ value: v, label: v }));
