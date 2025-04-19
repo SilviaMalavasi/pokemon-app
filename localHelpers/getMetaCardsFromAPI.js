@@ -5,9 +5,7 @@ import fs from "fs";
 import path from "path";
 import https from "https";
 import sharp from "sharp";
-
-const API_URL = process.env.POKEMON_API_URL;
-const API_KEY = process.env.POKEMON_API_KEY;
+import { pokemonApiKey, pokemonApiUrl } from "./env";
 
 async function getMetaCardsFromAPI() {
   try {
@@ -21,9 +19,9 @@ async function getMetaCardsFromAPI() {
       console.log(`Fetching page ${page}...`);
 
       // Fetch cards with regulationMark G or H for the current page
-      const response = await axios.get(`${API_URL}cards`, {
+      const response = await axios.get(`${pokemonApiUrl}cards`, {
         headers: {
-          "X-Api-Key": API_KEY,
+          "X-Api-Key": pokemonApiKey,
         },
         params: {
           q: 'regulationMark:"G" OR regulationMark:"H"', // Query for regulationMark G or H
