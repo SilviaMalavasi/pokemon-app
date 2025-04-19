@@ -1,4 +1,4 @@
-import { Button, ButtonProps, TouchableOpacity } from "react-native";
+import { ButtonProps, TouchableOpacity } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { Colors } from "@/style/Colors";
@@ -9,7 +9,7 @@ export type ThemedButtonProps = ButtonProps & {
   style?: any;
 };
 
-export function ThemedButton({
+export default function ThemedButton({
   style,
   type = "default",
   color,
@@ -31,7 +31,7 @@ export function ThemedButton({
       >
         <ThemedText
           style={{ color: themedColor, textAlign: "center" }}
-          type="default"
+          type="defaultSemiBold"
         >
           {title}
         </ThemedText>

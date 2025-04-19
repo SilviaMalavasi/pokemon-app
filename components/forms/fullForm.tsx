@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import ThemedView from "@/components/base/ThemedView";
-import { ThemedButton } from "@/components/base/ThemedButton";
+import ThemedButton from "@/components/base/ThemedButton";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import TextInput from "@/components/base/TextInput";
 import NumberInput from "@/components/base/NumberInput";
+import Collapsible from "@/components/base/Collapsible";
+
 import uniqueIdentifiers from "@/assets/db/uniqueIdentifiers.json";
 
 const cardSupertypeOptions = uniqueIdentifiers.cardSupertype.map((v: string) => ({ value: v, label: v }));
@@ -95,196 +97,198 @@ export default function FullForm(): JSX.Element {
 
   return (
     <ThemedView>
-      <DynamicMultiSelect
-        label="Supertype"
-        value={cardSupertype}
-        options={cardSupertypeOptions}
-        onChange={setCardSupertype}
-      />
-      <DynamicMultiSelect
-        label="Subtypes"
-        value={cardSubtypes}
-        options={cardSubtypesOptions}
-        onChange={setCardSubtypes}
-      />
-      {selectedSupertype === "Pokémon" && (
-        <DynamicMultiSelect
-          label="Stage"
-          value={cardStage}
-          options={cardStageOptions}
-          onChange={setCardStage}
-        />
-      )}
       <TextInput
         label="Name"
         value={cardName}
         onChange={setCardName}
         placeholder="Card name"
       />
-      {selectedSupertype === "Pokémon" && (
-        <NumberInput
-          label="HP"
-          value={cardHp}
-          onChange={setCardHp}
-          placeholder="Card HP"
-        />
-      )}
-      {(selectedSupertype === "Pokémon" || selectedSupertype === "Energy") && (
+      <Collapsible title="Card Type">
         <DynamicMultiSelect
-          label="Types"
-          value={cardTypes}
-          options={cardTypesOptions}
-          onChange={setCardTypes}
+          label="Supertype"
+          value={cardSupertype}
+          options={cardSupertypeOptions}
+          onChange={setCardSupertype}
         />
-      )}
-      {selectedSupertype === "Pokémon" && (
-        <TextInput
-          label="Evolves From"
-          value={cardEvolvesFrom}
-          onChange={setCardEvolvesFrom}
-          placeholder="Evolves from"
-        />
-      )}
-      {selectedSupertype === "Pokémon" && (
-        <TextInput
-          label="Evolves To"
-          value={cardEvolvesTo}
-          onChange={setCardEvolvesTo}
-          placeholder="Evolves to"
-        />
-      )}
-      <TextInput
-        label="Rules"
-        value={cardRules}
-        onChange={setCardRules}
-        placeholder="Rules"
-      />
-      {selectedSupertype === "Pokémon" && (
-        <TextInput
-          label="Abilities Name"
-          value={abilitiesName}
-          onChange={setAbilitiesName}
-          placeholder="Ability name"
-        />
-      )}
-      {selectedSupertype === "Pokémon" && (
-        <TextInput
-          label="Abilities Text"
-          value={abilitiesText}
-          onChange={setAbilitiesText}
-          placeholder="Ability text"
-        />
-      )}
-      {selectedSupertype === "Pokémon" && (
-        <TextInput
-          label="Attacks Name"
-          value={attacksName}
-          onChange={setAttacksName}
-          placeholder="Attack name"
-        />
-      )}
-      {selectedSupertype === "Pokémon" && (
-        <TextInput
-          label="Attacks Damage"
-          value={attacksDamage}
-          onChange={setAttacksDamage}
-          placeholder="Attack damage"
-        />
-      )}
-      {selectedSupertype === "Pokémon" && (
-        <TextInput
-          label="Attacks Text"
-          value={attacksText}
-          onChange={setAttacksText}
-          placeholder="Attack text"
-        />
-      )}
-      {selectedSupertype === "Pokémon" && (
         <DynamicMultiSelect
-          label="Attacks Cost"
-          value={attacksCost}
-          options={cardTypesOptions}
-          onChange={setAttacksCost}
+          label="Subtypes"
+          value={cardSubtypes}
+          options={cardSubtypesOptions}
+          onChange={setCardSubtypes}
         />
-      )}
-      {selectedSupertype === "Pokémon" && (
-        <NumberInput
-          label="Attacks Converted Energy Cost"
-          value={attacksConvertedEnergyCost}
-          onChange={setAttacksConvertedEnergyCost}
-          placeholder="Converted energy cost"
+        {selectedSupertype !== "Trainer" && (
+          <DynamicMultiSelect
+            label="Color"
+            value={cardTypes}
+            options={cardTypesOptions}
+            onChange={setCardTypes}
+          />
+        )}
+      </Collapsible>
+      <Collapsible title="Rules">
+        <TextInput
+          label="Rules"
+          value={cardRules}
+          onChange={setCardRules}
+          placeholder="Rules"
         />
+      </Collapsible>
+      {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+        <Collapsible title="Attacks">
+          <TextInput
+            label="Attacks Name"
+            value={attacksName}
+            onChange={setAttacksName}
+            placeholder="Attack name"
+          />
+
+          <TextInput
+            label="Attacks Damage"
+            value={attacksDamage}
+            onChange={setAttacksDamage}
+            placeholder="Attack damage"
+          />
+
+          <TextInput
+            label="Attacks Text"
+            value={attacksText}
+            onChange={setAttacksText}
+            placeholder="Attack text"
+          />
+
+          <DynamicMultiSelect
+            label="Attacks Cost"
+            value={attacksCost}
+            options={cardTypesOptions}
+            onChange={setAttacksCost}
+          />
+
+          <NumberInput
+            label="Attacks Converted Energy Cost"
+            value={attacksConvertedEnergyCost}
+            onChange={setAttacksConvertedEnergyCost}
+            placeholder="Converted energy cost"
+          />
+        </Collapsible>
       )}
-      {selectedSupertype === "Pokémon" && (
+      {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+        <Collapsible title="Abilities">
+          <TextInput
+            label="Abilities Name"
+            value={abilitiesName}
+            onChange={setAbilitiesName}
+            placeholder="Ability name"
+          />
+          <TextInput
+            label="Abilities Text"
+            value={abilitiesText}
+            onChange={setAbilitiesText}
+            placeholder="Ability text"
+          />
+        </Collapsible>
+      )}
+      {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+        <Collapsible title="Evolution">
+          {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+            <DynamicMultiSelect
+              label="Stage"
+              value={cardStage}
+              options={cardStageOptions}
+              onChange={setCardStage}
+            />
+          )}
+          <TextInput
+            label="Evolves From"
+            value={cardEvolvesFrom}
+            onChange={setCardEvolvesFrom}
+            placeholder="Evolves from"
+          />
+          <TextInput
+            label="Evolves To"
+            value={cardEvolvesTo}
+            onChange={setCardEvolvesTo}
+            placeholder="Evolves to"
+          />
+        </Collapsible>
+      )}
+      {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+        <Collapsible title="Stats">
+          <NumberInput
+            label="HP"
+            value={cardHp}
+            onChange={setCardHp}
+            placeholder="Card HP"
+          />
+          <NumberInput
+            label="Converted Retreat Cost"
+            value={cardConvertedRetreatCost}
+            onChange={setCardConvertedRetreatCost}
+            placeholder="Converted retreat cost"
+          />
+        </Collapsible>
+      )}
+      {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+        <Collapsible title="Weaknesses/Resistances">
+          <DynamicMultiSelect
+            label="Weaknesses Type"
+            value={cardWeaknessesType}
+            options={cardTypesOptions}
+            onChange={setCardWeaknessesType}
+          />
+          <NumberInput
+            label="Weaknesses Value"
+            value={cardWeaknessesValue}
+            onChange={setCardWeaknessesValue}
+            placeholder="Weakness value"
+          />
+          <DynamicMultiSelect
+            label="Resistances Type"
+            value={cardResistancesType}
+            options={cardTypesOptions}
+            onChange={setCardResistancesType}
+          />
+          <NumberInput
+            label="Resistances Value"
+            value={cardResistancesValue}
+            onChange={setCardResistancesValue}
+            placeholder="Resistance value"
+          />
+        </Collapsible>
+      )}
+      <Collapsible title="Artist/Flavor">
+        <TextInput
+          label="Artist"
+          value={cardArtist}
+          onChange={setCardArtist}
+          placeholder="Artist"
+        />
+        <TextInput
+          label="Flavor"
+          value={cardFlavor}
+          onChange={setCardFlavor}
+          placeholder="Flavor text"
+        />
+      </Collapsible>
+      <Collapsible title="Edition">
         <DynamicMultiSelect
-          label="Weaknesses Type"
-          value={cardWeaknessesType}
-          options={cardTypesOptions}
-          onChange={setCardWeaknessesType}
+          label="Regulation Mark"
+          value={cardRegulationMark}
+          options={cardRegulationMarkOptions}
+          onChange={setCardRegulationMark}
         />
-      )}
-      {selectedSupertype === "Pokémon" && (
-        <NumberInput
-          label="Weaknesses Value"
-          value={cardWeaknessesValue}
-          onChange={setCardWeaknessesValue}
-          placeholder="Weakness value"
-        />
-      )}
-      {selectedSupertype === "Pokémon" && (
         <DynamicMultiSelect
-          label="Resistances Type"
-          value={cardResistancesType}
-          options={cardTypesOptions}
-          onChange={setCardResistancesType}
+          label="Set Name"
+          value={cardSetName}
+          options={cardSetNamesOptions}
+          onChange={setCardSetName}
         />
-      )}
-      {selectedSupertype === "Pokémon" && (
         <NumberInput
-          label="Resistances Value"
-          value={cardResistancesValue}
-          onChange={setCardResistancesValue}
-          placeholder="Resistance value"
+          label="Card Number"
+          value={cardNumber}
+          onChange={setCardNumber}
+          placeholder="Card number"
         />
-      )}
-      {selectedSupertype === "Pokémon" && (
-        <NumberInput
-          label="Converted Retreat Cost"
-          value={cardConvertedRetreatCost}
-          onChange={setCardConvertedRetreatCost}
-          placeholder="Converted retreat cost"
-        />
-      )}
-      <TextInput
-        label="Artist"
-        value={cardArtist}
-        onChange={setCardArtist}
-        placeholder="Artist"
-      />
-      <TextInput
-        label="Flavor"
-        value={cardFlavor}
-        onChange={setCardFlavor}
-        placeholder="Flavor text"
-      />
-      <DynamicMultiSelect
-        label="Regulation Mark"
-        value={cardRegulationMark}
-        options={cardRegulationMarkOptions}
-        onChange={setCardRegulationMark}
-      />
-      <DynamicMultiSelect
-        label="Set Name"
-        value={cardSetName}
-        options={cardSetNamesOptions}
-        onChange={setCardSetName}
-      />
-      <NumberInput
-        label="Card Number"
-        value={cardNumber}
-        onChange={setCardNumber}
-        placeholder="Card number"
-      />
+      </Collapsible>
       <ThemedButton
         title="Search"
         onPress={handleSubmit}

@@ -11,13 +11,14 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        tabBarInactiveTintColor: Colors.text,
         tabBarActiveTintColor: Colors.highlight,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           default: {
-            backgroundColor: Colors.lightBackground,
+            backgroundColor: Colors.purple,
             borderTopWidth: 0,
             elevation: 10,
             shadowColor: Colors.highlight,
