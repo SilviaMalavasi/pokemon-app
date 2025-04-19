@@ -1,16 +1,34 @@
 import React, { useState } from "react";
-import DynamicMultiSelect from "../formInputs/DynamicMultiSelect";
-import TextInput from "../formInputs/TextInput";
-import NumberInput from "../formInputs/NumberInput";
-import uniqueIdentifiers from "../../assets/db/uniqueIdentifiers.json";
+import ThemedView from "@/components/base/ThemedView";
+import { ThemedButton } from "@/components/base/ThemedButton";
+import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
+import TextInput from "@/components/base/TextInput";
+import NumberInput from "@/components/base/NumberInput";
+import uniqueIdentifiers from "@/assets/db/uniqueIdentifiers.json";
 
 const cardSupertypeOptions = uniqueIdentifiers.cardSupertype.map((v: string) => ({ value: v, label: v }));
-const cardSubtypesOptions = uniqueIdentifiers.cardSubtypes.map((v: string) => ({ value: v, label: v }));
+const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => ({ value: v, label: v }));
 const cardTypesOptions = uniqueIdentifiers.cardTypes.map((v: string) => ({ value: v, label: v }));
 const cardRegulationMarkOptions = uniqueIdentifiers.cardRegulationMark.map((v: string) => ({ value: v, label: v }));
 const cardSetNamesOptions = uniqueIdentifiers.cardSetNames.map((v: string) => ({ value: v, label: v }));
 
-const FullForm: React.FC = () => {
+const getCardSubtypesOptions = (supertype: string) => {
+  if (!supertype) {
+    return uniqueIdentifiers.cardSubtypes.map((v: string) => ({ value: v, label: v }));
+  }
+  if (supertype === "Pokémon" && uniqueIdentifiers.cardSubtypePokémon) {
+    return uniqueIdentifiers.cardSubtypePokémon.map((v: string) => ({ value: v, label: v }));
+  }
+  if (supertype === "Trainer" && uniqueIdentifiers.cardSubtypeTrainer) {
+    return uniqueIdentifiers.cardSubtypeTrainer.map((v: string) => ({ value: v, label: v }));
+  }
+  if (supertype === "Energy" && uniqueIdentifiers.cardSubtypeEnergy) {
+    return uniqueIdentifiers.cardSubtypeEnergy.map((v: string) => ({ value: v, label: v }));
+  }
+  return uniqueIdentifiers.cardSubtypes.map((v: string) => ({ value: v, label: v }));
+};
+
+export default function FullForm(): JSX.Element {
   // State for all fields
   const [cardSupertype, setCardSupertype] = useState<string[]>([]);
   const [cardSubtypes, setCardSubtypes] = useState<string[]>([]);
@@ -37,9 +55,9 @@ const FullForm: React.FC = () => {
   const [cardRegulationMark, setCardRegulationMark] = useState<string[]>([]);
   const [cardSetName, setCardSetName] = useState<string[]>([]);
   const [cardNumber, setCardNumber] = useState<number | "">("");
+  const [cardStage, setCardStage] = useState<string[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     // Collect all filter values
     const filters = {
       cardSupertype,
@@ -67,12 +85,16 @@ const FullForm: React.FC = () => {
       cardRegulationMark,
       cardSetName,
       cardNumber,
+      cardStage,
     };
     console.log(filters);
   };
 
+  const selectedSupertype = cardSupertype[0];
+  const cardSubtypesOptions = getCardSubtypesOptions(selectedSupertype);
+
   return (
-    <form onSubmit={handleSubmit}>
+    <ThemedView>
       <DynamicMultiSelect
         label="Supertype"
         value={cardSupertype}
@@ -85,114 +107,154 @@ const FullForm: React.FC = () => {
         options={cardSubtypesOptions}
         onChange={setCardSubtypes}
       />
+      {selectedSupertype === "Pokémon" && (
+        <DynamicMultiSelect
+          label="Stage"
+          value={cardStage}
+          options={cardStageOptions}
+          onChange={setCardStage}
+        />
+      )}
       <TextInput
         label="Name"
         value={cardName}
         onChange={setCardName}
         placeholder="Card name"
       />
-      <NumberInput
-        label="HP"
-        value={cardHp}
-        onChange={setCardHp}
-        placeholder="Card HP"
-      />
-      <DynamicMultiSelect
-        label="Types"
-        value={cardTypes}
-        options={cardTypesOptions}
-        onChange={setCardTypes}
-      />
-      <TextInput
-        label="Evolves From"
-        value={cardEvolvesFrom}
-        onChange={setCardEvolvesFrom}
-        placeholder="Evolves from"
-      />
-      <TextInput
-        label="Evolves To"
-        value={cardEvolvesTo}
-        onChange={setCardEvolvesTo}
-        placeholder="Evolves to"
-      />
+      {selectedSupertype === "Pokémon" && (
+        <NumberInput
+          label="HP"
+          value={cardHp}
+          onChange={setCardHp}
+          placeholder="Card HP"
+        />
+      )}
+      {(selectedSupertype === "Pokémon" || selectedSupertype === "Energy") && (
+        <DynamicMultiSelect
+          label="Types"
+          value={cardTypes}
+          options={cardTypesOptions}
+          onChange={setCardTypes}
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <TextInput
+          label="Evolves From"
+          value={cardEvolvesFrom}
+          onChange={setCardEvolvesFrom}
+          placeholder="Evolves from"
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <TextInput
+          label="Evolves To"
+          value={cardEvolvesTo}
+          onChange={setCardEvolvesTo}
+          placeholder="Evolves to"
+        />
+      )}
       <TextInput
         label="Rules"
         value={cardRules}
         onChange={setCardRules}
         placeholder="Rules"
       />
-      <TextInput
-        label="Abilities Name"
-        value={abilitiesName}
-        onChange={setAbilitiesName}
-        placeholder="Ability name"
-      />
-      <TextInput
-        label="Abilities Text"
-        value={abilitiesText}
-        onChange={setAbilitiesText}
-        placeholder="Ability text"
-      />
-      <TextInput
-        label="Attacks Name"
-        value={attacksName}
-        onChange={setAttacksName}
-        placeholder="Attack name"
-      />
-      <TextInput
-        label="Attacks Damage"
-        value={attacksDamage}
-        onChange={setAttacksDamage}
-        placeholder="Attack damage"
-      />
-      <TextInput
-        label="Attacks Text"
-        value={attacksText}
-        onChange={setAttacksText}
-        placeholder="Attack text"
-      />
-      <DynamicMultiSelect
-        label="Attacks Cost"
-        value={attacksCost}
-        options={cardTypesOptions}
-        onChange={setAttacksCost}
-      />
-      <NumberInput
-        label="Attacks Converted Energy Cost"
-        value={attacksConvertedEnergyCost}
-        onChange={setAttacksConvertedEnergyCost}
-        placeholder="Converted energy cost"
-      />
-      <DynamicMultiSelect
-        label="Weaknesses Type"
-        value={cardWeaknessesType}
-        options={cardTypesOptions}
-        onChange={setCardWeaknessesType}
-      />
-      <NumberInput
-        label="Weaknesses Value"
-        value={cardWeaknessesValue}
-        onChange={setCardWeaknessesValue}
-        placeholder="Weakness value"
-      />
-      <DynamicMultiSelect
-        label="Resistances Type"
-        value={cardResistancesType}
-        options={cardTypesOptions}
-        onChange={setCardResistancesType}
-      />
-      <NumberInput
-        label="Resistances Value"
-        value={cardResistancesValue}
-        onChange={setCardResistancesValue}
-        placeholder="Resistance value"
-      />
-      <NumberInput
-        label="Converted Retreat Cost"
-        value={cardConvertedRetreatCost}
-        onChange={setCardConvertedRetreatCost}
-        placeholder="Converted retreat cost"
-      />
+      {selectedSupertype === "Pokémon" && (
+        <TextInput
+          label="Abilities Name"
+          value={abilitiesName}
+          onChange={setAbilitiesName}
+          placeholder="Ability name"
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <TextInput
+          label="Abilities Text"
+          value={abilitiesText}
+          onChange={setAbilitiesText}
+          placeholder="Ability text"
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <TextInput
+          label="Attacks Name"
+          value={attacksName}
+          onChange={setAttacksName}
+          placeholder="Attack name"
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <TextInput
+          label="Attacks Damage"
+          value={attacksDamage}
+          onChange={setAttacksDamage}
+          placeholder="Attack damage"
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <TextInput
+          label="Attacks Text"
+          value={attacksText}
+          onChange={setAttacksText}
+          placeholder="Attack text"
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <DynamicMultiSelect
+          label="Attacks Cost"
+          value={attacksCost}
+          options={cardTypesOptions}
+          onChange={setAttacksCost}
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <NumberInput
+          label="Attacks Converted Energy Cost"
+          value={attacksConvertedEnergyCost}
+          onChange={setAttacksConvertedEnergyCost}
+          placeholder="Converted energy cost"
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <DynamicMultiSelect
+          label="Weaknesses Type"
+          value={cardWeaknessesType}
+          options={cardTypesOptions}
+          onChange={setCardWeaknessesType}
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <NumberInput
+          label="Weaknesses Value"
+          value={cardWeaknessesValue}
+          onChange={setCardWeaknessesValue}
+          placeholder="Weakness value"
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <DynamicMultiSelect
+          label="Resistances Type"
+          value={cardResistancesType}
+          options={cardTypesOptions}
+          onChange={setCardResistancesType}
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <NumberInput
+          label="Resistances Value"
+          value={cardResistancesValue}
+          onChange={setCardResistancesValue}
+          placeholder="Resistance value"
+        />
+      )}
+      {selectedSupertype === "Pokémon" && (
+        <NumberInput
+          label="Converted Retreat Cost"
+          value={cardConvertedRetreatCost}
+          onChange={setCardConvertedRetreatCost}
+          placeholder="Converted retreat cost"
+        />
+      )}
       <TextInput
         label="Artist"
         value={cardArtist}
@@ -223,9 +285,10 @@ const FullForm: React.FC = () => {
         onChange={setCardNumber}
         placeholder="Card number"
       />
-      <button type="submit">Search</button>
-    </form>
+      <ThemedButton
+        title="Search"
+        onPress={handleSubmit}
+      />
+    </ThemedView>
   );
-};
-
-export default FullForm;
+}

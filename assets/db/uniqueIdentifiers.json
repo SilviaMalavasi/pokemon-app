@@ -5,9 +5,6 @@
     "Energy"
   ],
   "cardSubtypes": [
-    "Basic",
-    "Stage 1",
-    "Stage 2",
     "ex",
     "Tera",
     "Supporter",
@@ -53,5 +50,29 @@
   ],
   "cardSetSeries": [
     "Scarlet & Violet"
+  ],
+  "cardStagePokémon": [
+    "Basic",
+    "Stage 1",
+    "Stage 2"
+  ],
+  "cardSubtypePokémon": [
+    "ex",
+    "Tera",
+    "Future",
+    "Ancient"
+  ],
+  "cardSubtypeTrainer": [
+    "Supporter",
+    "Stadium",
+    "Item",
+    "Pokémon Tool",
+    "Ancient",
+    "Future",
+    "ACE SPEC"
+  ],
+  "cardSubtypeEnergy": [
+    "Special",
+    "ACE SPEC"
   ]
 }

@@ -2,7 +2,7 @@ import { Tabs } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
 
-import { HapticTab } from "@/components/HapticTab";
+import { HapticTab } from "@/components/ui/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/style/Colors";
@@ -11,16 +11,17 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.tint,
+        tabBarActiveTintColor: Colors.highlight,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: "absolute",
+          default: {
+            backgroundColor: Colors.lightBackground,
+            borderTopWidth: 0,
+            elevation: 10,
+            shadowColor: Colors.highlight,
           },
-          default: {},
         }),
       }}
     >
@@ -38,13 +39,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="fullform"
         options={{
-          title: "Explore",
+          title: "FullForm",
           tabBarIcon: ({ color }) => (
             <IconSymbol
               size={28}
-              name="paperplane.fill"
+              name="chevron.left.forwardslash.chevron.right"
               color={color}
             />
           ),

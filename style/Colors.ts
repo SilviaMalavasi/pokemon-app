@@ -1,17 +1,42 @@
+export const white = "#ffffff";
+export const black = "#000000";
+export const darkGrey = "#111218";
+export const mediumGrey = "#242426";
+export const lightGrey = "#818181";
+export const green = "#3dff27";
+export const purple = "#6a1dff";
+export const yellow = "#f9f639";
+export const orange = "#f1c430";
+
 export const Colors = {
-  text: "#11181C",
-  background: "#fff",
-  tint: "#0a7ea4",
-  icon: "#687076",
-  tabIconDefault: "#687076",
-  tabIconSelected: "#0a7ea4",
-  white: "#ffffff",
-  black: "#000000",
-  darkGrey: "#1f1f1f",
-  mediumGrey: "#535353",
-  lightGrey: "#CACACA",
-  green: "#7afc6b",
-  purple: "#6a1dff",
-  yellow: "#f9f639",
-  orange: "#f1c430",
+  // Container
+  background: darkGrey,
+  darkBackground: black,
+  lightBackground: mediumGrey,
+
+  // TabBar
+  icon: purple,
+  tabIconDefault: purple,
+  tabIconSelected: green,
+
+  // Text
+  text: white,
+  highlight: green,
+  alternativeText: purple,
+  borderColor: mediumGrey,
+
+  // Input
+  placeholder: lightGrey,
+  inputBackground: mediumGrey,
+
+  //Colors
+  white: white,
+  black: black,
+  darkGrey: darkGrey,
+  mediumGrey: mediumGrey,
+  lightGrey: lightGrey,
+  green: green,
+  purple: purple,
+  yellow: yellow,
+  orange: orange,
 };

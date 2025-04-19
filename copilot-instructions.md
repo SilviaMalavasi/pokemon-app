@@ -25,3 +25,8 @@
 - Write clear, concise comments for complex logic.
 - Keep code readable and maintainable.
 - Follow this file for Copilot and human contributions.
+
+## Formatting
+
+- Use the `export function` syntax for all React component definitions.
+- Always use the `@` symbol for path aliases when importing local files (e.g., `import ... from "@/components/...").
