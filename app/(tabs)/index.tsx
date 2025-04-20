@@ -1,4 +1,5 @@
 import { Image, StyleSheet, Platform } from "react-native";
+import { Colors } from "@/style/Colors";
 
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
@@ -8,13 +9,14 @@ import ThemedView from "@/components/base/ThemedView";
 export default function HomeScreen() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={"#1D3D47"}
+      headerBackgroundColor={Colors.mediumGrey}
       headerImage={
         <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
+          source={require("@/assets/images/fondo.png")}
+          resizeMode="contain"
         />
       }
+      headerTitle="Pokémon Deck Builder"
     >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Welcome!</ThemedText>

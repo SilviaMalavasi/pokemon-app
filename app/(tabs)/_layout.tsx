@@ -18,10 +18,13 @@ export default function TabLayout() {
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           default: {
-            backgroundColor: Colors.purple,
+            backgroundColor: Colors.lightBackground,
             borderTopWidth: 0,
-            elevation: 10,
+            elevation: 20,
             shadowColor: Colors.highlight,
+            height: 62,
+            paddingHorizontal: 8,
+            paddingTop: 4,
           },
         }),
       }}
@@ -42,7 +45,20 @@ export default function TabLayout() {
       <Tabs.Screen
         name="fullform"
         options={{
-          title: "FullForm",
+          title: "Advanced Search",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol
+              size={28}
+              name="chevron.left.forwardslash.chevron.right"
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="freesearch"
+        options={{
+          title: "Free Search",
           tabBarIcon: ({ color }) => (
             <IconSymbol
               size={28}

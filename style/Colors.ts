@@ -1,6 +1,7 @@
 export const white = "#ffffff";
 export const black = "#000000";
 export const darkGrey = "#111218";
+export const mediumDarkGrey = "#3c3c47";
 export const mediumGrey = "#242426";
 export const lightGrey = "#818181";
 export const green = "#3dff27";
@@ -23,11 +24,15 @@ export const Colors = {
   text: white,
   highlight: green,
   alternativeText: purple,
+  darkText: lightGrey,
   borderColor: mediumGrey,
 
   // Input
   placeholder: lightGrey,
   inputBackground: mediumGrey,
+  buttonColor: purple,
+  buttonAlternativeColor: green,
+  buttonDisabledColor: lightGrey,
 
   //Colors
   white: white,

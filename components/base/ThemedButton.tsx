@@ -12,12 +12,10 @@ export type ThemedButtonProps = ButtonProps & {
 export default function ThemedButton({
   style,
   type = "default",
-  color,
   disabled = false,
   title,
   ...rest
 }: ThemedButtonProps & { title: string }) {
-  const themedColor = color || Colors.text;
   const buttonType = disabled ? "disabled" : type;
   const buttonStyle = [styles.container, styles[buttonType], style];
 
@@ -30,8 +28,8 @@ export default function ThemedButton({
         {...rest}
       >
         <ThemedText
-          style={{ color: themedColor, textAlign: "center" }}
-          type="defaultSemiBold"
+          style={{ textAlign: "center" }}
+          type={type === "disabled" ? "buttonDisabled" : type === "alternative" ? "buttonAlternative" : "button"}
         >
           {title}
         </ThemedText>

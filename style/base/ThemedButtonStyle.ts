@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
   default: {
     backgroundColor: Colors.highlight,
-    color: Colors.text,
+    color: Colors.darkText,
   },
   alternative: {
     backgroundColor: Colors.alternativeText,
@@ -23,22 +23,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightBackground,
     color: Colors.text,
   },
-  gradient: {
-    borderRadius: 8,
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-    alignItems: "center",
-    justifyContent: "center",
-    ...StyleSheet.absoluteFillObject,
-  },
   touchable: {
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  alternativeGradient: {
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 24,

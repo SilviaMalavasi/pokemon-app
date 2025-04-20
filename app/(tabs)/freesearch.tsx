@@ -4,10 +4,10 @@ import { Image } from "react-native";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
-import FullForm from "@/components/forms/FullForm";
+import FreeForm from "@/components/forms/FreeForm";
 import { Colors } from "@/style/Colors";
 
-export default function FullFormScreen() {
+export default function freeSearchScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={Colors.mediumGrey}
@@ -17,7 +17,7 @@ export default function FullFormScreen() {
           resizeMode="contain"
         />
       }
-      headerTitle="Advanced Search"
+      headerTitle="Free Search"
     >
       <ThemedView>
         <ThemedText
@@ -28,7 +28,7 @@ export default function FullFormScreen() {
         </ThemedText>
       </ThemedView>
       <ThemedView>
-        <FullForm />
+        <FreeForm />
       </ThemedView>
     </ParallaxScrollView>
   );

@@ -1,8 +1,8 @@
 import type { PropsWithChildren, ReactElement } from "react";
-import { StyleSheet } from "react-native";
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from "react-native-reanimated";
 
 import ThemedView from "@/components/base/ThemedView";
+import ThemedText from "@/components/base/ThemedText";
 import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
 import styles from "@/style/base/ParallaxScrollViewStyle";
 
@@ -11,9 +11,10 @@ const HEADER_HEIGHT = 150;
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
   headerBackgroundColor: string;
+  headerTitle: string;
 }>;
 
-export default function ParallaxScrollView({ children, headerImage, headerBackgroundColor }: Props) {
+export default function ParallaxScrollView({ children, headerImage, headerBackgroundColor, headerTitle }: Props) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
   const bottom = useBottomTabOverflow();
@@ -42,8 +43,24 @@ export default function ParallaxScrollView({ children, headerImage, headerBackgr
         scrollIndicatorInsets={{ bottom }}
         contentContainerStyle={{ paddingBottom: bottom }}
       >
-        <Animated.View style={[styles.header, { backgroundColor: headerBackgroundColor }, headerAnimatedStyle]}>
-          {headerImage}
+        <Animated.View style={[styles.header, headerAnimatedStyle]}>
+          <ThemedView
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              backgroundColor: headerBackgroundColor,
+            }}
+          >
+            <ThemedView style={[styles.headerImageCont, { backgroundColor: headerBackgroundColor }]}>
+              {headerImage}
+            </ThemedView>
+            <ThemedText
+              type="title"
+              style={styles.headerTitle}
+            >
+              {headerTitle}
+            </ThemedText>
+          </ThemedView>
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>
       </Animated.ScrollView>
