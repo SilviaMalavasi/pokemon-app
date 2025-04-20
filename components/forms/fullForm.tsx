@@ -6,7 +6,7 @@ import TextInput from "@/components/base/TextInput";
 import NumberInput from "@/components/base/NumberInput";
 import Collapsible from "@/components/base/Collapsible";
 
-import uniqueIdentifiers from "@/assets/db/uniqueIdentifiers.json";
+import uniqueIdentifiers from "@/assets/uniqueIdentifiers.json";
 
 const cardSupertypeOptions = uniqueIdentifiers.cardSupertype.map((v: string) => ({ value: v, label: v }));
 const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => ({ value: v, label: v }));
