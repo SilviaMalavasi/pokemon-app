@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { Colors } from "@/style/Colors";
 
 const styles = StyleSheet.create({
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
     elevation: 10,
     shadowColor: Colors.highlight,
-    minHeight: 600,
+    minHeight: Dimensions.get("window").height - 150,
     marginTop: -12,
   },
 });
