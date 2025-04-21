@@ -8,21 +8,45 @@ import Collapsible from "@/components/base/Collapsible";
 import { Switch } from "react-native";
 import { Colors } from "@/style/Colors";
 
-export default function FreeSearch(): JSX.Element {
+export default function FreeSearch({
+  onSearchResults,
+}: {
+  onSearchResults?: (ids: string[], query: string) => void;
+}): JSX.Element {
   const [cardSearch, setCardSearch] = useState("");
 
-  // Only 'artist', 'flavorText', and 'rarity' can be excluded by the user
-  const excludableCardColumns = [
-    { key: "artist", label: "Artist" },
+  // All card columns that can be excluded from search
+  const allCardColumns = [
+    { key: "cardId", label: "Card ID" },
+    { key: "name", label: "Name" },
+    { key: "supertype", label: "Supertype" },
+    { key: "subtypes", label: "Subtypes" },
+    { key: "hp", label: "HP" },
+    { key: "types", label: "Types" },
+    { key: "evolvesFrom", label: "Evolves From" },
+    { key: "weaknesses", label: "Weaknesses" },
+    { key: "resistances", label: "Resistances" },
+    { key: "evolvesTo", label: "Evolves To" },
+    { key: "convertedRetreatCost", label: "Converted Retreat Cost" },
+    { key: "regulationMark", label: "Regulation Mark" },
+    { key: "rules", label: "Rules" },
+    { key: "number", label: "Number" },
     { key: "flavorText", label: "Flavor Text" },
+    { key: "artist", label: "Artist" },
     { key: "rarity", label: "Rarity" },
   ];
-  // By default, all are excluded (checked)
-  const [excludedColumns, setExcludedColumns] = useState<Record<string, boolean>>(() => ({
-    flavorText: true,
-    artist: true,
-    rarity: true,
-  }));
+  // By default, only 'artist', 'flavorText', and 'rarity' are excluded (checked)
+  const [excludedColumns, setExcludedColumns] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    allCardColumns.forEach((col) => {
+      if (["artist", "flavorText", "rarity"].includes(col.key)) {
+        initial[col.key] = true; // excluded by default
+      } else {
+        initial[col.key] = false; // included by default
+      }
+    });
+    return initial;
+  });
   const handleToggleColumn = (key: string) => {
     setExcludedColumns((prev) => ({ ...prev, [key]: !prev[key] }));
   };
@@ -45,33 +69,29 @@ export default function FreeSearch(): JSX.Element {
     let cardResults: any[] = [];
 
     // 1. Search Card table directly
-    // Card columns to search (excluding checked ones)
-    const cardColumns = [
-      "cardId",
-      "name",
-      "supertype",
-      "subtypes",
-      "hp",
-      "types",
-      "evolvesFrom",
-      "weaknesses",
-      "resistances",
-      "evolvesTo",
-      "convertedRetreatCost",
-      "regulationMark",
-      "rules",
-      "number",
-    ];
-    if (!excludedColumns.flavorText) cardColumns.push("flavorText");
-    if (!excludedColumns.artist) cardColumns.push("artist");
-    if (!excludedColumns.rarity) cardColumns.push("rarity");
+    // Card columns: separate text and int columns
+    const intColumns = ["hp", "convertedRetreatCost", "setId"];
+    const textColumns = allCardColumns
+      .filter((col) => !excludedColumns[col.key] && !intColumns.includes(col.key))
+      .map((col) => col.key);
+    const intColumnsToSearch = allCardColumns
+      .filter((col) => !excludedColumns[col.key] && intColumns.includes(col.key))
+      .map((col) => col.key);
+
     let cardOrFilters: string[] = [];
-    searchVariants.forEach((variant) => {
-      cardOrFilters.push(...cardColumns.map((field) => `${field}.ilike.%${variant}%`));
-    });
     if (isNumeric) {
-      cardOrFilters.push("hp.eq." + Number(cardSearch));
-      cardOrFilters.push("convertedRetreatCost.eq." + Number(cardSearch));
+      // Search eq for int columns, ilike for text columns
+      searchVariants.forEach((variant) => {
+        cardOrFilters.push(...textColumns.map((field) => `${field}.ilike.%${variant}%`));
+      });
+      intColumnsToSearch.forEach((field) => {
+        cardOrFilters.push(`${field}.eq.${Number(cardSearch)}`);
+      });
+    } else {
+      // Only search ilike for text columns
+      searchVariants.forEach((variant) => {
+        cardOrFilters.push(...textColumns.map((field) => `${field}.ilike.%${variant}%`));
+      });
     }
     const { data: cardData, error: cardError } = await supabase.from("Card").select("*").or(cardOrFilters.join(","));
     if (cardError) {
@@ -196,12 +216,15 @@ export default function FreeSearch(): JSX.Element {
 
     // Deduplicate results by Card id
     const uniqueCards = Array.from(new Map(cardResults.map((c: any) => [c.id, c])).values());
+    const foundCardIds = uniqueCards.map((c: any) => c.cardId);
     console.log("Queried string:", cardSearch);
-    if (uniqueCards.length === 0) {
+    if (foundCardIds.length === 0) {
       console.log("No results found for:", cardSearch);
     } else {
-      console.log("Free search results:", uniqueCards);
+      console.log("Cards found:", foundCardIds);
     }
+    if (onSearchResults) onSearchResults(foundCardIds, cardSearch);
+    return foundCardIds;
   };
 
   return (
@@ -213,7 +236,7 @@ export default function FreeSearch(): JSX.Element {
         placeholder="Free text"
       />
       <Collapsible title="Exclude from search">
-        {excludableCardColumns.map((col) => (
+        {allCardColumns.map((col) => (
           <ThemedView
             key={col.key}
             style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
@@ -221,7 +244,7 @@ export default function FreeSearch(): JSX.Element {
             <Switch
               value={excludedColumns[col.key]}
               onValueChange={() => handleToggleColumn(col.key)}
-              trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
+              trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
               thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
             />
             <ThemedText

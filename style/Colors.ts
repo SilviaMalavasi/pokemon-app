@@ -5,7 +5,9 @@ export const mediumDarkGrey = "#3c3c47";
 export const mediumGrey = "#242426";
 export const lightGrey = "#818181";
 export const green = "#3dff27";
+export const lightGreen = "#11FFBD";
 export const purple = "#6a1dff";
+export const lightPurple = "#4776E6";
 export const yellow = "#f9f639";
 export const orange = "#f1c430";
 
@@ -30,9 +32,6 @@ export const Colors = {
   // Input
   placeholder: lightGrey,
   inputBackground: mediumGrey,
-  buttonColor: purple,
-  buttonAlternativeColor: green,
-  buttonDisabledColor: lightGrey,
 
   //Colors
   white: white,
@@ -41,7 +40,9 @@ export const Colors = {
   mediumGrey: mediumGrey,
   lightGrey: lightGrey,
   green: green,
+  lightGreen: lightGreen,
   purple: purple,
+  lightPurple: lightPurple,
   yellow: yellow,
   orange: orange,
 };

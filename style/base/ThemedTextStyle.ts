@@ -33,19 +33,22 @@ const styles = StyleSheet.create({
   button: {
     fontSize: 18,
     lineHeight: 24,
-    fontWeight: "600",
+    fontWeight: "900",
+    textTransform: "uppercase",
     color: Colors.text,
   },
   buttonAlternative: {
     fontSize: 18,
     lineHeight: 24,
-    fontWeight: "600",
+    fontWeight: "900",
+    textTransform: "uppercase",
     color: Colors.text,
   },
   buttonDisabled: {
     fontSize: 18,
     lineHeight: 24,
-    fontWeight: "600",
+    fontWeight: "900",
+    textTransform: "uppercase",
     color: Colors.text,
   },
 });
