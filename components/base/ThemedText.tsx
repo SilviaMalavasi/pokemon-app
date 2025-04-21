@@ -12,7 +12,9 @@ export type ThemedTextProps = TextProps & {
     | "link"
     | "button"
     | "buttonAlternative"
-    | "buttonDisabled";
+    | "buttonDisabled"
+    | "hintIcon"
+    | "hintText";
   color?: string;
   gradient?: string[];
 };
@@ -29,6 +31,8 @@ export default function ThemedText({ style, type = "default", color, gradient, .
     type === "button" ? styles.button : undefined,
     type === "buttonAlternative" ? styles.buttonAlternative : undefined,
     type === "buttonDisabled" ? styles.buttonDisabled : undefined,
+    type === "hintIcon" ? styles.hintIcon : undefined,
+    type === "hintText" ? styles.hintText : undefined,
     style,
     color ? { color } : undefined,
     isButtonType && !color ? { color: Colors.darkBackground } : undefined,

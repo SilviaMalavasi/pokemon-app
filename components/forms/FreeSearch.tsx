@@ -241,7 +241,10 @@ export default function FreeSearch({
         onChange={setCardSearch}
         placeholder="Free text"
       />
-      <Collapsible title="Exclude from search">
+      <Collapsible
+        title="Exclude from search"
+        resetKey={resetKey}
+      >
         {allCardColumns.map((col) => (
           <ThemedView
             key={col.key}

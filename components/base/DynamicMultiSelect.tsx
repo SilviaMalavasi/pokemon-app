@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import { TouchableOpacity } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import { MultiSelect } from "react-native-element-dropdown";
@@ -9,10 +10,18 @@ interface DynamicMultiSelectProps {
   value: string[];
   options: { value: string; label: string }[];
   onChange: (value: string[]) => void;
+  labelHint?: string;
 }
 
-export default function DynamicMultiSelect({ label, value, options, onChange }: DynamicMultiSelectProps): JSX.Element {
+export default function DynamicMultiSelect({
+  label,
+  value,
+  options,
+  onChange,
+  labelHint,
+}: DynamicMultiSelectProps): JSX.Element {
   const dropdownRef = useRef<any>(null);
+  const [showHint, setShowHint] = useState(false);
 
   const handleChange = (selected: string[]) => {
     console.log("DynamicMultiSelect handleChange", { label, selected });
@@ -22,7 +31,20 @@ export default function DynamicMultiSelect({ label, value, options, onChange }: 
 
   return (
     <ThemedView style={styles.container}>
-      {label && <ThemedText style={styles.label}>{label}</ThemedText>}
+      {label && (
+        <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
+          <ThemedText style={styles.label}>{label}</ThemedText>
+          {labelHint && (
+            <TouchableOpacity
+              onPress={() => setShowHint((v) => !v)}
+              accessibilityLabel={`Hint for ${label}`}
+            >
+              <ThemedText type="hintIcon">?</ThemedText>
+            </TouchableOpacity>
+          )}
+        </ThemedView>
+      )}
+      {showHint && labelHint && <ThemedText type="hintText">{labelHint}</ThemedText>}
       <MultiSelect
         ref={dropdownRef}
         style={styles.picker}

@@ -46,14 +46,6 @@ export default function FreeSearchScreen() {
       headerTitle="Free Search"
     >
       <ThemedView>
-        <ThemedText
-          type="subtitle"
-          style={{ marginBottom: 16 }}
-        >
-          Search a card by any text. You can exclude fields from the search.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView>
         <FreeSearch
           onSearchResults={handleSearchResults}
           setLoading={setLoading}

@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 24,
-    marginBottom: 8,
+    marginBottom: 4,
   },
   default: {
     backgroundColor: Colors.highlight,

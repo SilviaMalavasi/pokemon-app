@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { TouchableOpacity } from "react-native";
 import { TextInput as RNTextInput } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
@@ -9,12 +10,28 @@ interface NumberInputProps {
   value: number | "";
   onChange: (value: number | "") => void;
   placeholder?: string;
+  labelHint?: string;
 }
 
-export default function NumberInput({ label, value, onChange, placeholder }: NumberInputProps): JSX.Element {
+export default function NumberInput({ label, value, onChange, placeholder, labelHint }: NumberInputProps): JSX.Element {
+  const [showHint, setShowHint] = useState(false);
+
   return (
     <ThemedView style={styles.container}>
-      {label && <ThemedText style={styles.label}>{label}</ThemedText>}
+      {label && (
+        <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
+          <ThemedText style={styles.label}>{label}</ThemedText>
+          {labelHint && (
+            <TouchableOpacity
+              onPress={() => setShowHint((v) => !v)}
+              accessibilityLabel={`Hint for ${label}`}
+            >
+              <ThemedText type="hintIcon">?</ThemedText>
+            </TouchableOpacity>
+          )}
+        </ThemedView>
+      )}
+      {showHint && labelHint && <ThemedText type="hintText">{labelHint}</ThemedText>}{" "}
       <RNTextInput
         style={styles.input}
         value={value === "" ? "" : String(value)}
@@ -34,7 +51,7 @@ export default function NumberInput({ label, value, onChange, placeholder }: Num
           }
         }}
         placeholder={placeholder}
-        placeholderTextColor="#888"
+        placeholderTextColor={styles.placeholder.color}
         keyboardType="numeric"
         inputMode="numeric"
         returnKeyType="done"

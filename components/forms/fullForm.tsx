@@ -395,18 +395,23 @@ export default function FullForm({
         onChange={setCardName}
         placeholder="Card name"
       />
-      <Collapsible title="Card Type">
+      <Collapsible
+        title="Card Type"
+        resetKey={resetKey}
+      >
         <DynamicMultiSelect
           label="Supertype"
           value={cardSupertype}
           options={cardSupertypeOptions}
           onChange={setCardSupertype}
+          labelHint="Include cards that match ANY of the selected choices."
         />
         <DynamicMultiSelect
           label="Subtypes"
           value={cardSubtypes}
           options={cardSubtypesOptions}
           onChange={setCardSubtypes}
+          labelHint="Include cards that match ANY of the selected choices."
         />
         {cardSupertype[0] !== "Trainer" && (
           <DynamicMultiSelect
@@ -414,10 +419,14 @@ export default function FullForm({
             value={cardTypes}
             options={cardTypesOptions}
             onChange={setCardTypes}
+            labelHint="Include cards that match ANY of the selected choices."
           />
         )}
       </Collapsible>
-      <Collapsible title="Rules">
+      <Collapsible
+        title="Rules"
+        resetKey={resetKey}
+      >
         <TextInput
           label="Rules"
           value={cardRules}
@@ -426,7 +435,10 @@ export default function FullForm({
         />
       </Collapsible>
       {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
-        <Collapsible title="Attacks">
+        <Collapsible
+          title="Attacks"
+          resetKey={resetKey}
+        >
           <TextInput
             label="Attacks Name"
             value={attacksName}
@@ -453,6 +465,7 @@ export default function FullForm({
             value={attacksCost}
             options={cardTypesOptions}
             onChange={setAttacksCost}
+            labelHint="Include cards that match ANY of the selected choices."
           />
 
           <NumberInput
@@ -464,7 +477,10 @@ export default function FullForm({
         </Collapsible>
       )}
       {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
-        <Collapsible title="Abilities">
+        <Collapsible
+          title="Abilities"
+          resetKey={resetKey}
+        >
           <TextInput
             label="Abilities Name"
             value={abilitiesName}
@@ -480,13 +496,17 @@ export default function FullForm({
         </Collapsible>
       )}
       {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
-        <Collapsible title="Evolution">
+        <Collapsible
+          title="Evolution"
+          resetKey={resetKey}
+        >
           {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
             <DynamicMultiSelect
               label="Stage"
               value={cardStage}
               options={cardStageOptions}
               onChange={setCardStage}
+              labelHint="Include cards that match ANY of the selected choices."
             />
           )}
           <TextInput
@@ -504,7 +524,10 @@ export default function FullForm({
         </Collapsible>
       )}
       {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
-        <Collapsible title="Stats">
+        <Collapsible
+          title="Stats"
+          resetKey={resetKey}
+        >
           <NumberInput
             label="HP"
             value={cardHp}
@@ -520,22 +543,30 @@ export default function FullForm({
         </Collapsible>
       )}
       {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
-        <Collapsible title="Weaknesses/Resistances">
+        <Collapsible
+          title="Weaknesses/Resistances"
+          resetKey={resetKey}
+        >
           <DynamicMultiSelect
             label="Weaknesses Type"
             value={cardWeaknessesType}
             options={cardTypesOptions}
             onChange={setCardWeaknessesType}
+            labelHint="Include cards that match ANY of the selected choices."
           />
           <DynamicMultiSelect
             label="Resistances Type"
             value={cardResistancesType}
             options={cardTypesOptions}
             onChange={setCardResistancesType}
+            labelHint="Include cards that match ANY of the selected choices."
           />
         </Collapsible>
       )}
-      <Collapsible title="Artist/Flavor">
+      <Collapsible
+        title="Artist/Flavor"
+        resetKey={resetKey}
+      >
         <TextInput
           label="Artist"
           value={cardArtist}
@@ -549,18 +580,23 @@ export default function FullForm({
           placeholder="Flavor text"
         />
       </Collapsible>
-      <Collapsible title="Edition">
+      <Collapsible
+        title="Edition"
+        resetKey={resetKey}
+      >
         <DynamicMultiSelect
           label="Regulation Mark"
           value={cardRegulationMark}
           options={cardRegulationMarkOptions}
           onChange={setCardRegulationMark}
+          labelHint="Include cards that match ANY of the selected choices."
         />
         <DynamicMultiSelect
           label="Set Name"
           value={cardSetName}
           options={cardSetNamesOptions}
           onChange={setCardSetName}
+          labelHint="Include cards that match ANY of the selected choices."
         />
         <NumberInput
           label="Card Number"

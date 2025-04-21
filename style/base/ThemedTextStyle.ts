@@ -51,6 +51,27 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     color: Colors.text,
   },
+  hintIcon: {
+    fontSize: 12,
+    fontWeight: "500",
+    lineHeight: 12,
+    color: Colors.alternativeText,
+    borderWidth: 1,
+    borderColor: Colors.alternativeText,
+    borderRadius: 10,
+    paddingHorizontal: 4,
+    paddingTop: 2,
+    paddingBottom: 0,
+    marginLeft: 6,
+    marginTop: -2,
+  },
+  hintText: {
+    fontSize: 14,
+    lineHeight: 14,
+    color: Colors.alternativeText,
+    marginTop: 6,
+    marginBottom: 8,
+  },
 });
 
 export default styles;

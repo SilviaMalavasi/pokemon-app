@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   label: {
-    marginBottom: 4,
+    marginBottom: 6,
     fontSize: 16,
     color: Colors.text,
   },

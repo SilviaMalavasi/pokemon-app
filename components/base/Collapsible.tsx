@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useState, useEffect } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 import ThemedText from "@/components/base/ThemedText";
@@ -7,8 +7,16 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/style/Colors";
 import styles from "@/style/base/CollapsibleStyle";
 
-export default function Collapsible({ children, title }: PropsWithChildren & { title: string }) {
+export default function Collapsible({
+  children,
+  title,
+  resetKey,
+}: PropsWithChildren & { title: string; resetKey?: number }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [resetKey]);
 
   return (
     <ThemedView>

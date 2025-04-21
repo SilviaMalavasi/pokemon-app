@@ -55,7 +55,7 @@ export default function ParallaxScrollView({ children, headerImage, headerBackgr
             }}
           >
             <LinearGradient
-              colors={[Colors.darkGrey, Colors.mediumGrey]}
+              colors={[Colors.darkGrey, Colors.darkGrey, Colors.mediumGrey]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, zIndex: 1 }}

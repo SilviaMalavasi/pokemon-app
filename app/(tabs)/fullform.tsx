@@ -44,14 +44,6 @@ export default function FullFormScreen() {
       headerTitle="Advanced Search"
     >
       <ThemedView>
-        <ThemedText
-          type="subtitle"
-          style={{ marginBottom: 16 }}
-        >
-          This is a full form example. You can use this to create a full form with multiple fields and validation.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView>
         <FullForm
           onSearchResults={handleSearchResults}
           setLoading={setLoading}
