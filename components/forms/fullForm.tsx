@@ -58,9 +58,7 @@ export default function FullForm({
   const [attacksCost, setAttacksCost] = useState<string[]>([]);
   const [attacksConvertedEnergyCost, setAttacksConvertedEnergyCost] = useState<number | "">("");
   const [cardWeaknessesType, setCardWeaknessesType] = useState<string[]>([]);
-  const [cardWeaknessesValue, setCardWeaknessesValue] = useState<number | "">("");
   const [cardResistancesType, setCardResistancesType] = useState<string[]>([]);
-  const [cardResistancesValue, setCardResistancesValue] = useState<number | "">("");
   const [cardConvertedRetreatCost, setCardConvertedRetreatCost] = useState<number | "">("");
   const [cardArtist, setCardArtist] = useState("");
   const [cardFlavor, setCardFlavor] = useState("");
@@ -90,9 +88,7 @@ export default function FullForm({
     setAttacksCost([]);
     setAttacksConvertedEnergyCost("");
     setCardWeaknessesType([]);
-    setCardWeaknessesValue("");
     setCardResistancesType([]);
-    setCardResistancesValue("");
     setCardConvertedRetreatCost("");
     setCardArtist("");
     setCardFlavor("");
@@ -121,6 +117,37 @@ export default function FullForm({
     const trimmedAttacksName = attacksName.trim();
     const trimmedAttacksDamage = attacksDamage.trim();
     const trimmedAttacksText = attacksText.trim();
+
+    // Log what is being searched
+    console.log("FullForm search filters:", {
+      cardFilters: {
+        name: trimmedCardName,
+        supertype: cardSupertype[0],
+        subtypes: cardSubtypes,
+        hp: cardHp,
+        types: cardTypes,
+        evolvesFrom: trimmedCardEvolvesFrom,
+        evolvesTo: trimmedCardEvolvesTo,
+        rules: trimmedCardRules,
+        weaknesses: cardWeaknessesType,
+        resistances: cardResistancesType,
+        convertedRetreatCost: cardConvertedRetreatCost,
+        artist: trimmedCardArtist,
+        flavorText: trimmedCardFlavor,
+        regulationMark: cardRegulationMark,
+        number: cardNumber,
+        setName: cardSetName,
+      },
+      abilities: { name: trimmedAbilitiesName, text: trimmedAbilitiesText },
+      attacks: {
+        name: trimmedAttacksName,
+        damage: trimmedAttacksDamage,
+        text: trimmedAttacksText,
+        cost: attacksCost,
+        convertedEnergyCost: attacksConvertedEnergyCost,
+      },
+    });
+
     // Build filters for Card table
     let cardFilters: any = {};
     if (trimmedCardName) cardFilters.name = trimmedCardName;
@@ -132,9 +159,7 @@ export default function FullForm({
     if (trimmedCardEvolvesTo) cardFilters.evolvesTo = trimmedCardEvolvesTo;
     if (trimmedCardRules) cardFilters.rules = trimmedCardRules;
     if (cardWeaknessesType.length > 0) cardFilters.weaknesses = cardWeaknessesType.join(",");
-    if (cardWeaknessesValue !== "") cardFilters.weaknessesValue = cardWeaknessesValue;
     if (cardResistancesType.length > 0) cardFilters.resistances = cardResistancesType.join(",");
-    if (cardResistancesValue !== "") cardFilters.resistancesValue = cardResistancesValue;
     if (cardConvertedRetreatCost !== "") cardFilters.convertedRetreatCost = cardConvertedRetreatCost;
     if (trimmedCardArtist) cardFilters.artist = trimmedCardArtist;
     if (trimmedCardFlavor) cardFilters.flavorText = trimmedCardFlavor;
@@ -143,12 +168,14 @@ export default function FullForm({
     // CardSet (edition)
     let setIds: string[] = [];
     if (cardSetName.length > 0) {
+      console.log("Searching CardSet for set names:", cardSetName);
       const { data: setData, error: setFetchError } = await supabase
         .from("CardSet")
         .select("id")
         .in("name", cardSetName);
       if (setFetchError) setError(setFetchError.message);
       if (setData && setData.length > 0) setIds = setData.map((s: any) => s.id);
+      console.log("CardSet IDs found:", setIds);
     }
     // Abilities
     let abilityCardIds: string[] = [];
@@ -156,15 +183,18 @@ export default function FullForm({
       let abilityFilters: any = {};
       if (trimmedAbilitiesName) abilityFilters.name = trimmedAbilitiesName;
       if (trimmedAbilitiesText) abilityFilters.text = trimmedAbilitiesText;
+      console.log("Searching Abilities with:", abilityFilters);
       const { data: abilitiesData } = await supabase.from("Abilities").select("id").match(abilityFilters);
       if (abilitiesData && abilitiesData.length > 0) {
         const abilityIds = abilitiesData.map((a: any) => a.id);
+        console.log("Ability IDs found:", abilityIds);
         const { data: cardAbilities } = await supabase
           .from("CardAbilities")
           .select("cardId")
           .in("abilityId", abilityIds);
         if (cardAbilities && cardAbilities.length > 0) {
           abilityCardIds = cardAbilities.map((ca: any) => ca.cardId);
+          console.log("Card IDs with those abilities:", abilityCardIds);
         }
       }
     }
@@ -175,12 +205,15 @@ export default function FullForm({
       if (trimmedAttacksName) attackFilters.name = trimmedAttacksName;
       if (trimmedAttacksDamage) attackFilters.damage = trimmedAttacksDamage;
       if (trimmedAttacksText) attackFilters.text = trimmedAttacksText;
+      console.log("Searching Attacks with:", attackFilters);
       const { data: attacksData } = await supabase.from("Attacks").select("id").match(attackFilters);
       if (attacksData && attacksData.length > 0) {
         const attackIds = attacksData.map((a: any) => a.id);
+        console.log("Attack IDs found:", attackIds);
         const { data: cardAttacks } = await supabase.from("CardAttacks").select("cardId").in("attackId", attackIds);
         if (cardAttacks && cardAttacks.length > 0) {
           attackCardIds = cardAttacks.map((ca: any) => ca.cardId);
+          console.log("Card IDs with those attacks:", attackCardIds);
         }
       }
     }
@@ -190,9 +223,11 @@ export default function FullForm({
       let cardAttackFilters: any = {};
       if (attacksCost.length > 0) cardAttackFilters.cost = attacksCost.join(",");
       if (attacksConvertedEnergyCost !== "") cardAttackFilters.convertedEnergyCost = attacksConvertedEnergyCost;
+      console.log("Searching CardAttacks with:", cardAttackFilters);
       const { data: cardAttacksData } = await supabase.from("CardAttacks").select("cardId").match(cardAttackFilters);
       if (cardAttacksData && cardAttacksData.length > 0) {
         cardAttackCardIds = cardAttacksData.map((ca: any) => ca.cardId);
+        console.log("Card IDs with those CardAttacks:", cardAttackCardIds);
       }
     }
     // Compose Card query
@@ -205,6 +240,7 @@ export default function FullForm({
     if (setIds.length > 0) {
       query = query.in("setId", setIds);
     }
+    console.log("Final Card query filters:", cardFilters, "setIds:", setIds);
     // Intersect with related IDs if present
     let relatedIds: string[][] = [];
     if (abilityCardIds.length > 0) relatedIds.push(abilityCardIds);
@@ -224,6 +260,7 @@ export default function FullForm({
         finalIds = finalIds.filter((id) => relatedIds.every((arr) => arr.includes(id)));
       }
     }
+    console.log("Final card IDs returned:", finalIds);
     setCardIds(finalIds);
     setSearchQuery("Advanced search");
     if (onSearchResults) onSearchResults(finalIds, "Advanced search");
@@ -373,23 +410,11 @@ export default function FullForm({
             options={cardTypesOptions}
             onChange={setCardWeaknessesType}
           />
-          <NumberInput
-            label="Weaknesses Value"
-            value={cardWeaknessesValue}
-            onChange={setCardWeaknessesValue}
-            placeholder="Weakness value"
-          />
           <DynamicMultiSelect
             label="Resistances Type"
             value={cardResistancesType}
             options={cardTypesOptions}
             onChange={setCardResistancesType}
-          />
-          <NumberInput
-            label="Resistances Value"
-            value={cardResistancesValue}
-            onChange={setCardResistancesValue}
-            placeholder="Resistance value"
           />
         </Collapsible>
       )}
