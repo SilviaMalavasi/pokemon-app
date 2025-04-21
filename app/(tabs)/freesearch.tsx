@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Image } from "react-native";
 import React, { useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedText from "@/components/base/ThemedText";
@@ -13,6 +14,7 @@ export default function FreeSearchScreen() {
   const [cardIds, setCardIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
 
   // Handler to receive card IDs from FreeSearch
   const handleSearchResults = (ids: string[], query: string) => {
@@ -20,6 +22,17 @@ export default function FreeSearchScreen() {
     setSearchQuery(query);
     setLoading(false);
   };
+
+  // Reset the search results when the screen is focused
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setCardIds([]);
+      setSearchQuery("");
+      setLoading(false);
+      setResetKey((k) => k + 1);
+    }, [])
+  );
 
   return (
     <ParallaxScrollView
@@ -44,6 +57,7 @@ export default function FreeSearchScreen() {
         <FreeSearch
           onSearchResults={handleSearchResults}
           setLoading={setLoading}
+          resetKey={resetKey}
         />
       </ThemedView>
       <ThemedView>

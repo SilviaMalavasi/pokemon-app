@@ -36,8 +36,8 @@ export default function ThemedText({ style, type = "default", color, gradient, .
 
   if (type === "button" || type === "buttonAlternative") {
     // Define default gradients for each button type
-    const buttonGradient = [Colors.lightGreen, Colors.green, Colors.lightGreen];
-    const buttonAlternativeGradient = [Colors.lightPurple, Colors.purple, Colors.lightPurple];
+    const buttonGradient = [Colors.green, Colors.lightGreen, Colors.green];
+    const buttonAlternativeGradient = [Colors.purple, Colors.lightPurple, Colors.purple];
 
     const selectedGradient: [string, string, ...string[]] =
       (gradient ?? []).length >= 2

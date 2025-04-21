@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
@@ -11,9 +11,11 @@ import { Colors } from "@/style/Colors";
 export default function FreeSearch({
   onSearchResults,
   setLoading,
+  resetKey,
 }: {
   onSearchResults?: (ids: string[], query: string) => void;
   setLoading?: (loading: boolean) => void;
+  resetKey?: number;
 }): JSX.Element {
   const [cardSearch, setCardSearch] = useState("");
 
@@ -58,6 +60,11 @@ export default function FreeSearch({
   const abilitiesColumns = ["name", "text"];
   const attacksColumns = ["name", "text", "damage"];
   const cardAttacksColumns = ["cost", "convertedEnergyCost"];
+
+  useEffect(() => {
+    setCardSearch("");
+    // Optionally reset other internal state if needed
+  }, [resetKey]);
 
   const handleSubmit = async () => {
     if (setLoading) setLoading(true);

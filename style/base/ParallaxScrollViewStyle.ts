@@ -30,8 +30,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 32,
-    elevation: 10,
-    shadowColor: Colors.highlight,
     minHeight: Dimensions.get("window").height - 150,
     marginTop: -12,
   },

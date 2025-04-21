@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
@@ -35,9 +35,11 @@ const getCardSubtypesOptions = (supertype: string) => {
 export default function FullForm({
   onSearchResults,
   setLoading: setLoadingProp,
+  resetKey,
 }: {
   onSearchResults?: (ids: string[], query: string) => void;
   setLoading?: (loading: boolean) => void;
+  resetKey?: number;
 } = {}): JSX.Element {
   // State for all fields
   const [cardSupertype, setCardSupertype] = useState<string[]>([]);
@@ -70,6 +72,38 @@ export default function FullForm({
   const [cardIds, setCardIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setCardSupertype([]);
+    setCardSubtypes([]);
+    setCardName("");
+    setCardHp("");
+    setCardTypes([]);
+    setCardEvolvesFrom("");
+    setCardEvolvesTo("");
+    setCardRules("");
+    setAbilitiesName("");
+    setAbilitiesText("");
+    setAttacksName("");
+    setAttacksDamage("");
+    setAttacksText("");
+    setAttacksCost([]);
+    setAttacksConvertedEnergyCost("");
+    setCardWeaknessesType([]);
+    setCardWeaknessesValue("");
+    setCardResistancesType([]);
+    setCardResistancesValue("");
+    setCardConvertedRetreatCost("");
+    setCardArtist("");
+    setCardFlavor("");
+    setCardRegulationMark([]);
+    setCardSetName([]);
+    setCardNumber("");
+    setCardStage([]);
+    setCardIds([]);
+    setSearchQuery("");
+    setError(null);
+  }, [resetKey]);
 
   const handleSubmit = async () => {
     if (setLoadingProp) setLoadingProp(true);

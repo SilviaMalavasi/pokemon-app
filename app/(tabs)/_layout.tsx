@@ -20,8 +20,6 @@ export default function TabLayout() {
           default: {
             backgroundColor: Colors.lightBackground,
             borderTopWidth: 0,
-            elevation: 20,
-            shadowColor: Colors.highlight,
             height: 62,
             paddingHorizontal: 8,
             paddingTop: 4,
