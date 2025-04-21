@@ -1,9 +1,11 @@
 import type { PropsWithChildren, ReactElement } from "react";
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from "react-native-reanimated";
+import { LinearGradient } from "expo-linear-gradient";
 
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
+import { Colors } from "@/style/Colors";
 import styles from "@/style/base/ParallaxScrollViewStyle";
 
 const HEADER_HEIGHT = 150;
@@ -49,14 +51,19 @@ export default function ParallaxScrollView({ children, headerImage, headerBackgr
               flexDirection: "row",
               alignItems: "center",
               backgroundColor: headerBackgroundColor,
+              marginTop: 32,
             }}
           >
-            <ThemedView style={[styles.headerImageCont, { backgroundColor: headerBackgroundColor }]}>
-              {headerImage}
-            </ThemedView>
+            <LinearGradient
+              colors={[Colors.darkGrey, Colors.mediumGrey]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, zIndex: 1 }}
+            ></LinearGradient>
+            <ThemedView style={[styles.headerImageCont, { zIndex: 2 }]}>{headerImage}</ThemedView>
             <ThemedText
               type="title"
-              style={styles.headerTitle}
+              style={[styles.headerTitle, { zIndex: 3 }]}
             >
               {headerTitle}
             </ThemedText>

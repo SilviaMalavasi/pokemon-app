@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   header: {
-    height: 150,
+    height: 175,
     alignItems: "flex-start",
     justifyContent: "center",
     overflow: "hidden",
