@@ -70,7 +70,6 @@ export default function FreeSearch({
     if (setLoading) setLoading(true);
     // Trim only leading/trailing spaces for search
     const trimmedSearch = cardSearch.trim();
-    console.log("handleSubmit called with:", trimmedSearch);
     const isNumeric = trimmedSearch !== "" && !isNaN(Number(trimmedSearch));
     const searchVariants = [
       trimmedSearch,
@@ -229,12 +228,6 @@ export default function FreeSearch({
     // Deduplicate results by Card id
     const uniqueCards = Array.from(new Map(cardResults.map((c: any) => [c.id, c])).values());
     const foundCardIds = uniqueCards.map((c: any) => c.cardId);
-    console.log("Queried string:", trimmedSearch);
-    if (foundCardIds.length === 0) {
-      console.log("No results found for:", trimmedSearch);
-    } else {
-      console.log("Cards found:", foundCardIds);
-    }
     if (onSearchResults) onSearchResults(foundCardIds, trimmedSearch);
     if (setLoading) setLoading(false);
     return foundCardIds;
