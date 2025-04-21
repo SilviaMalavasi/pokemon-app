@@ -61,12 +61,14 @@ export default function FreeSearch({
 
   const handleSubmit = async () => {
     if (setLoading) setLoading(true);
-    console.log("handleSubmit called with:", cardSearch);
-    const isNumeric = cardSearch.trim() !== "" && !isNaN(Number(cardSearch));
+    // Trim only leading/trailing spaces for search
+    const trimmedSearch = cardSearch.trim();
+    console.log("handleSubmit called with:", trimmedSearch);
+    const isNumeric = trimmedSearch !== "" && !isNaN(Number(trimmedSearch));
     const searchVariants = [
-      cardSearch,
-      cardSearch.charAt(0).toUpperCase() + cardSearch.slice(1),
-      cardSearch.toLowerCase(),
+      trimmedSearch,
+      trimmedSearch.charAt(0).toUpperCase() + trimmedSearch.slice(1),
+      trimmedSearch.toLowerCase(),
     ];
     let cardIds = new Set();
     let cardResults: any[] = [];
@@ -88,7 +90,7 @@ export default function FreeSearch({
         cardOrFilters.push(...textColumns.map((field) => `${field}.ilike.%${variant}%`));
       });
       intColumnsToSearch.forEach((field) => {
-        cardOrFilters.push(`${field}.eq.${Number(cardSearch)}`);
+        cardOrFilters.push(`${field}.eq.${Number(trimmedSearch)}`);
       });
     } else {
       // Only search ilike for text columns
@@ -197,7 +199,7 @@ export default function FreeSearch({
       cardAttacksOrFilters.push(...cardAttacksColumns.map((field) => `${field}.ilike.%${variant}%`));
     });
     if (isNumeric) {
-      cardAttacksOrFilters.push("convertedEnergyCost.eq." + Number(cardSearch));
+      cardAttacksOrFilters.push("convertedEnergyCost.eq." + Number(trimmedSearch));
     }
     const { data: cardAttacksData, error: cardAttacksError } = await supabase
       .from("CardAttacks")
@@ -220,13 +222,13 @@ export default function FreeSearch({
     // Deduplicate results by Card id
     const uniqueCards = Array.from(new Map(cardResults.map((c: any) => [c.id, c])).values());
     const foundCardIds = uniqueCards.map((c: any) => c.cardId);
-    console.log("Queried string:", cardSearch);
+    console.log("Queried string:", trimmedSearch);
     if (foundCardIds.length === 0) {
-      console.log("No results found for:", cardSearch);
+      console.log("No results found for:", trimmedSearch);
     } else {
       console.log("Cards found:", foundCardIds);
     }
-    if (onSearchResults) onSearchResults(foundCardIds, cardSearch);
+    if (onSearchResults) onSearchResults(foundCardIds, trimmedSearch);
     if (setLoading) setLoading(false);
     return foundCardIds;
   };
