@@ -16,20 +16,25 @@ const cardTypesOptions = uniqueIdentifiers.cardTypes.map((v: string) => ({ value
 const cardRegulationMarkOptions = uniqueIdentifiers.cardRegulationMark.map((v: string) => ({ value: v, label: v }));
 const cardSetNamesOptions = uniqueIdentifiers.cardSetNames.map((v: string) => ({ value: v, label: v }));
 
-const getCardSubtypesOptions = (supertype: string) => {
-  if (!supertype) {
+const getCardSubtypesOptions = (supertypes: string[]) => {
+  if (!supertypes || supertypes.length === 0) {
     return uniqueIdentifiers.cardSubtypes.map((v: string) => ({ value: v, label: v }));
   }
-  if (supertype === "Pokémon" && uniqueIdentifiers.cardSubtypePokémon) {
-    return uniqueIdentifiers.cardSubtypePokémon.map((v: string) => ({ value: v, label: v }));
+  let subtypeSet = new Set<string>();
+  supertypes.forEach((supertype) => {
+    if (supertype === "Pokémon" && uniqueIdentifiers.cardSubtypePokémon) {
+      uniqueIdentifiers.cardSubtypePokémon.forEach((v: string) => subtypeSet.add(v));
+    } else if (supertype === "Trainer" && uniqueIdentifiers.cardSubtypeTrainer) {
+      uniqueIdentifiers.cardSubtypeTrainer.forEach((v: string) => subtypeSet.add(v));
+    } else if (supertype === "Energy" && uniqueIdentifiers.cardSubtypeEnergy) {
+      uniqueIdentifiers.cardSubtypeEnergy.forEach((v: string) => subtypeSet.add(v));
+    }
+  });
+  // If no known supertype, fallback to all subtypes
+  if (subtypeSet.size === 0) {
+    uniqueIdentifiers.cardSubtypes.forEach((v: string) => subtypeSet.add(v));
   }
-  if (supertype === "Trainer" && uniqueIdentifiers.cardSubtypeTrainer) {
-    return uniqueIdentifiers.cardSubtypeTrainer.map((v: string) => ({ value: v, label: v }));
-  }
-  if (supertype === "Energy" && uniqueIdentifiers.cardSubtypeEnergy) {
-    return uniqueIdentifiers.cardSubtypeEnergy.map((v: string) => ({ value: v, label: v }));
-  }
-  return uniqueIdentifiers.cardSubtypes.map((v: string) => ({ value: v, label: v }));
+  return Array.from(subtypeSet).map((v) => ({ value: v, label: v }));
 };
 
 export default function FullForm({
@@ -148,23 +153,48 @@ export default function FullForm({
       },
     });
 
-    // Build filters for Card table
+    // --- Build filters for Card table ---
     let cardFilters: any = {};
-    if (trimmedCardName) cardFilters.name = trimmedCardName;
-    if (cardSupertype.length > 0) cardFilters.supertype = cardSupertype[0];
-    if (cardSubtypes.length > 0) cardFilters.subtypes = cardSubtypes.join(",");
-    if (cardHp !== "") cardFilters.hp = cardHp;
-    if (cardTypes.length > 0) cardFilters.types = cardTypes.join(",");
-    if (trimmedCardEvolvesFrom) cardFilters.evolvesFrom = trimmedCardEvolvesFrom;
-    if (trimmedCardEvolvesTo) cardFilters.evolvesTo = trimmedCardEvolvesTo;
-    if (trimmedCardRules) cardFilters.rules = trimmedCardRules;
-    if (cardWeaknessesType.length > 0) cardFilters.weaknesses = cardWeaknessesType.join(",");
-    if (cardResistancesType.length > 0) cardFilters.resistances = cardResistancesType.join(",");
-    if (cardConvertedRetreatCost !== "") cardFilters.convertedRetreatCost = cardConvertedRetreatCost;
-    if (trimmedCardArtist) cardFilters.artist = trimmedCardArtist;
-    if (trimmedCardFlavor) cardFilters.flavorText = trimmedCardFlavor;
-    if (cardRegulationMark.length > 0) cardFilters.regulationMark = cardRegulationMark.join(",");
-    if (cardNumber !== "") cardFilters.number = String(cardNumber);
+    // TextInput fields: flexible ilike search (OR for variants)
+    const textInputs = [
+      { key: "name", value: trimmedCardName },
+      { key: "evolvesFrom", value: trimmedCardEvolvesFrom },
+      { key: "evolvesTo", value: trimmedCardEvolvesTo },
+      { key: "rules", value: trimmedCardRules },
+      { key: "artist", value: trimmedCardArtist },
+      { key: "flavorText", value: trimmedCardFlavor },
+    ];
+    textInputs.forEach(({ key, value }) => {
+      if (value && value !== "") {
+        const variants = [value, value.charAt(0).toUpperCase() + value.slice(1), value.toLowerCase()];
+        cardFilters[`__or_${key}`] = variants.map((variant) => `${key}.ilike.%${variant}%`).join(",");
+      }
+    });
+    // MultiSelect fields: OR ilike for each selected value
+    if (cardSubtypes && cardSubtypes.length > 0) {
+      cardFilters.__or_subtypes = cardSubtypes.map((subtype) => `subtypes.ilike.%${subtype}%`).join(",");
+    }
+    if (cardTypes && cardTypes.length > 0) {
+      cardFilters.__or_types = cardTypes.map((type) => `types.ilike.%${type}%`).join(",");
+    }
+    if (cardWeaknessesType && cardWeaknessesType.length > 0) {
+      cardFilters.__or_weaknesses = cardWeaknessesType.map((type) => `weaknesses.ilike.%${type}%`).join(",");
+    }
+    if (cardResistancesType && cardResistancesType.length > 0) {
+      cardFilters.__or_resistances = cardResistancesType.map((type) => `resistances.ilike.%${type}%`).join(",");
+    }
+    if (cardRegulationMark && cardRegulationMark.length > 0) {
+      cardFilters.__or_regulationMark = cardRegulationMark.map((mark) => `regulationMark.ilike.%${mark}%`).join(",");
+    }
+    // NumberInput fields: exact match
+    if (cardHp !== undefined && cardHp !== null && cardHp !== "") cardFilters.hp = cardHp;
+    if (cardConvertedRetreatCost !== undefined && cardConvertedRetreatCost !== null && cardConvertedRetreatCost !== "")
+      cardFilters.convertedRetreatCost = cardConvertedRetreatCost;
+    if (cardNumber !== undefined && cardNumber !== null && cardNumber !== "") cardFilters.number = String(cardNumber);
+    // Single select fields
+    if (cardSupertype && cardSupertype.length > 0 && cardSupertype[0] !== undefined && cardSupertype[0] !== "")
+      cardFilters.supertype = cardSupertype[0];
+
     // CardSet (edition)
     let setIds: string[] = [];
     if (cardSetName.length > 0) {
@@ -186,7 +216,7 @@ export default function FullForm({
       console.log("Searching Abilities with:", abilityFilters);
       const { data: abilitiesData } = await supabase.from("Abilities").select("id").match(abilityFilters);
       if (abilitiesData && abilitiesData.length > 0) {
-        const abilityIds = abilitiesData.map((a: any) => a.id);
+        const abilityIds = abilitiesData.map((a: any) => a.cardId);
         console.log("Ability IDs found:", abilityIds);
         const { data: cardAbilities } = await supabase
           .from("CardAbilities")
@@ -200,20 +230,28 @@ export default function FullForm({
     }
     // Attacks
     let attackCardIds: string[] = [];
-    if (trimmedAttacksName || trimmedAttacksDamage || trimmedAttacksText) {
-      let attackFilters: any = {};
-      if (trimmedAttacksName) attackFilters.name = trimmedAttacksName;
-      if (trimmedAttacksDamage) attackFilters.damage = trimmedAttacksDamage;
-      if (trimmedAttacksText) attackFilters.text = trimmedAttacksText;
-      console.log("Searching Attacks with:", attackFilters);
-      const { data: attacksData } = await supabase.from("Attacks").select("id").match(attackFilters);
+    // Separate logic for attack name/text (ilike) and damage (eq)
+    if (trimmedAttacksName || trimmedAttacksText) {
+      let attackQuery = supabase.from("Attacks").select("id");
+      if (trimmedAttacksName) attackQuery = attackQuery.ilike("name", `%${trimmedAttacksName}%`);
+      if (trimmedAttacksText) attackQuery = attackQuery.ilike("text", `%${trimmedAttacksText}%`);
+      const { data: attacksData } = await attackQuery;
       if (attacksData && attacksData.length > 0) {
-        const attackIds = attacksData.map((a: any) => a.id);
-        console.log("Attack IDs found:", attackIds);
+        const attackIds = attacksData.map((a: any) => a.id); // fix: use id, not cardId
         const { data: cardAttacks } = await supabase.from("CardAttacks").select("cardId").in("attackId", attackIds);
         if (cardAttacks && cardAttacks.length > 0) {
           attackCardIds = cardAttacks.map((ca: any) => ca.cardId);
-          console.log("Card IDs with those attacks:", attackCardIds);
+        }
+      }
+    }
+    if (trimmedAttacksDamage !== "") {
+      let attackQuery = supabase.from("Attacks").select("id").eq("damage", trimmedAttacksDamage);
+      const { data: attacksData } = await attackQuery;
+      if (attacksData && attacksData.length > 0) {
+        const attackIds = attacksData.map((a: any) => a.id); // fix: use id, not cardId
+        const { data: cardAttacks } = await supabase.from("CardAttacks").select("cardId").in("attackId", attackIds);
+        if (cardAttacks && cardAttacks.length > 0) {
+          attackCardIds = cardAttacks.map((ca: any) => ca.cardId);
         }
       }
     }
@@ -230,45 +268,75 @@ export default function FullForm({
         console.log("Card IDs with those CardAttacks:", cardAttackCardIds);
       }
     }
-    // Compose Card query
-    let query = supabase.from("Card").select("cardId");
-    Object.entries(cardFilters).forEach(([key, value]) => {
-      if (value !== undefined && value !== "" && value !== null) {
-        query = query.eq(key, value);
-      }
+    // --- Compose Card query ---
+    let query: any = supabase.from("Card").select("cardId");
+    let hasCardFilters = Object.entries(cardFilters).some(([key, value]) => {
+      return !(key.startsWith("__or_") && !value) && value !== undefined && value !== "" && value !== null;
     });
-    if (setIds.length > 0) {
-      query = query.in("setId", setIds);
-    }
-    console.log("Final Card query filters:", cardFilters, "setIds:", setIds);
-    // Intersect with related IDs if present
+    // If there are related IDs (from Attacks, Abilities, etc.) and no Card filters, use those IDs directly
     let relatedIds: string[][] = [];
     if (abilityCardIds.length > 0) relatedIds.push(abilityCardIds);
     if (attackCardIds.length > 0) relatedIds.push(attackCardIds);
     if (cardAttackCardIds.length > 0) relatedIds.push(cardAttackCardIds);
     let finalIds: string[] = [];
-    const { data: cardData, error: cardError } = await query;
-    if (cardError) {
-      setError(cardError.message);
-      if (setLoadingProp) setLoadingProp(false);
-      return;
-    }
-    if (cardData && cardData.length > 0) {
-      finalIds = cardData.map((c: any) => c.cardId);
-      // If there are related filters, intersect the results
+    if (!hasCardFilters && relatedIds.length > 0) {
+      // Intersect all related IDs (AND logic)
+      const intersected = relatedIds.reduce((a, b) => a.filter((id) => b.includes(id)));
+      if (intersected.length > 0) {
+        // Fetch cardId for each Card row (in case intersected are Card.id)
+        const { data: cardsData } = await supabase.from("Card").select("cardId").in("id", intersected);
+        if (cardsData && cardsData.length > 0) {
+          finalIds = cardsData.map((c: any) => c.cardId);
+        } else {
+          finalIds = [];
+        }
+      } else {
+        finalIds = [];
+      }
+    } else {
+      // Apply Card filters as before
+      Object.entries(cardFilters).forEach(([key, value]) => {
+        if (key.startsWith("__or_") && value) {
+          query = query.or(value);
+        } else if (value !== undefined && value !== "" && value !== null) {
+          query = query.eq(key, value);
+        }
+      });
+      if (setIds.length > 0) {
+        query = query.in("setId", setIds);
+      }
+      // If there are related IDs, filter Card query by those IDs (AND logic)
       if (relatedIds.length > 0) {
-        finalIds = finalIds.filter((id) => relatedIds.every((arr) => arr.includes(id)));
+        const intersectIds = relatedIds.reduce((a, b) => a.filter((id) => b.includes(id)));
+        if (intersectIds.length > 0) {
+          query = query.in("cardId", intersectIds);
+        } else {
+          // No intersection, so no results
+          setCardIds([]);
+          setSearchQuery("Advanced search");
+          if (onSearchResults) onSearchResults([], "Advanced search");
+          if (setLoadingProp) setLoadingProp(false);
+          return;
+        }
+      }
+      const { data: cardData, error: cardError } = await query;
+      if (cardError) {
+        setError(cardError.message);
+        if (setLoadingProp) setLoadingProp(false);
+        return;
+      }
+      if (cardData && cardData.length > 0) {
+        finalIds = cardData.map((c: any) => c.cardId);
       }
     }
-    console.log("Final card IDs returned:", finalIds);
     setCardIds(finalIds);
     setSearchQuery("Advanced search");
+    console.log(`FullForm: found ${finalIds.length} cards.`);
     if (onSearchResults) onSearchResults(finalIds, "Advanced search");
     if (setLoadingProp) setLoadingProp(false);
   };
 
-  const selectedSupertype = cardSupertype[0];
-  const cardSubtypesOptions = getCardSubtypesOptions(selectedSupertype);
+  const cardSubtypesOptions = getCardSubtypesOptions(cardSupertype);
 
   return (
     <ThemedView>
@@ -291,9 +359,9 @@ export default function FullForm({
           options={cardSubtypesOptions}
           onChange={setCardSubtypes}
         />
-        {selectedSupertype !== "Trainer" && (
+        {cardSupertype[0] !== "Trainer" && (
           <DynamicMultiSelect
-            label="Color"
+            label="Types"
             value={cardTypes}
             options={cardTypesOptions}
             onChange={setCardTypes}
@@ -308,7 +376,7 @@ export default function FullForm({
           placeholder="Rules"
         />
       </Collapsible>
-      {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+      {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
         <Collapsible title="Attacks">
           <TextInput
             label="Attacks Name"
@@ -346,7 +414,7 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+      {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
         <Collapsible title="Abilities">
           <TextInput
             label="Abilities Name"
@@ -362,9 +430,9 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+      {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
         <Collapsible title="Evolution">
-          {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+          {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
             <DynamicMultiSelect
               label="Stage"
               value={cardStage}
@@ -386,7 +454,7 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+      {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
         <Collapsible title="Stats">
           <NumberInput
             label="HP"
@@ -402,7 +470,7 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {selectedSupertype !== "Energy" && selectedSupertype !== "Trainer" && (
+      {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
         <Collapsible title="Weaknesses/Resistances">
           <DynamicMultiSelect
             label="Weaknesses Type"

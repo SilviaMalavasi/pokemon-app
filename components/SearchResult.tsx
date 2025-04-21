@@ -10,6 +10,7 @@ interface SearchResultProps {
 
 const highlightText = (text: string, query: string) => {
   if (!query) return <ThemedText>{text}</ThemedText>;
+  if (typeof text !== "string") return <ThemedText>{text ?? ""}</ThemedText>;
   const regex = new RegExp(`(${query})`, "gi");
   const parts = text.split(regex);
   return parts.map((part, idx) =>

@@ -108,7 +108,7 @@ export default function FreeSearch({
     if (cardError) {
       console.log("Supabase Card error:", cardError);
     } else if (cardData && cardData.length > 0) {
-      cardData.forEach((c: any) => cardIds.add(c.id));
+      cardData.forEach((c: any) => cardIds.add(c.cardId));
       cardResults.push(...cardData);
     }
 
@@ -129,7 +129,7 @@ export default function FreeSearch({
           .select("*")
           .in("setId", setIds);
         if (!cardsBySetError && cardsBySet) {
-          cardsBySet.forEach((c: any) => cardIds.add(c.id));
+          cardsBySet.forEach((c: any) => cardIds.add(c.cardId)); // Use cardId
           cardResults.push(...cardsBySet);
         }
       }
@@ -159,7 +159,7 @@ export default function FreeSearch({
               .select("*")
               .in("id", cardAbilityIds);
             if (!cardsByAbilityError && cardsByAbility) {
-              cardsByAbility.forEach((c: any) => cardIds.add(c.id));
+              cardsByAbility.forEach((c: any) => cardIds.add(c.cardId)); // Use cardId
               cardResults.push(...cardsByAbility);
             }
           }
@@ -191,7 +191,7 @@ export default function FreeSearch({
               .select("*")
               .in("id", cardAttackIds);
             if (!cardsByAttackError && cardsByAttack) {
-              cardsByAttack.forEach((c: any) => cardIds.add(c.id));
+              cardsByAttack.forEach((c: any) => cardIds.add(c.cardId)); // Use cardId
               cardResults.push(...cardsByAttack);
             }
           }
@@ -219,14 +219,14 @@ export default function FreeSearch({
           .select("*")
           .in("id", cardAttackIds);
         if (!cardsByCardAttackError && cardsByCardAttack) {
-          cardsByCardAttack.forEach((c: any) => cardIds.add(c.id));
+          cardsByCardAttack.forEach((c: any) => cardIds.add(c.cardId)); // Use cardId
           cardResults.push(...cardsByCardAttack);
         }
       }
     }
 
-    // Deduplicate results by Card id
-    const uniqueCards = Array.from(new Map(cardResults.map((c: any) => [c.id, c])).values());
+    // Deduplicate results by Card cardId
+    const uniqueCards = Array.from(new Map(cardResults.map((c: any) => [c.cardId, c])).values());
     const foundCardIds = uniqueCards.map((c: any) => c.cardId);
     if (onSearchResults) onSearchResults(foundCardIds, trimmedSearch);
     if (setLoading) setLoading(false);
