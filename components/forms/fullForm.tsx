@@ -245,14 +245,21 @@ export default function FullForm({
       }
     }
     if (trimmedAttacksDamage !== "") {
-      let attackQuery = supabase.from("Attacks").select("id").eq("damage", trimmedAttacksDamage);
+      // Use ilike for flexible string matching (e.g., '270+', '50×')
+      console.log(`[FullForm] Searching Attacks for damage: '${trimmedAttacksDamage}'`);
+      let attackQuery = supabase.from("Attacks").select("id").ilike("damage", `%${trimmedAttacksDamage}%`);
       const { data: attacksData } = await attackQuery;
       if (attacksData && attacksData.length > 0) {
-        const attackIds = attacksData.map((a: any) => a.id); // fix: use id, not cardId
+        const attackIds = attacksData.map((a: any) => a.id);
         const { data: cardAttacks } = await supabase.from("CardAttacks").select("cardId").in("attackId", attackIds);
         if (cardAttacks && cardAttacks.length > 0) {
           attackCardIds = cardAttacks.map((ca: any) => ca.cardId);
         }
+        console.log(
+          `[FullForm] Found ${attackIds.length} attack(s) and ${attackCardIds.length} card(s) with damage '${trimmedAttacksDamage}'.`
+        );
+      } else {
+        console.log(`[FullForm] No attacks found for damage '${trimmedAttacksDamage}'.`);
       }
     }
     // CardAttacks (cost, convertedEnergyCost)
@@ -278,62 +285,104 @@ export default function FullForm({
     if (abilityCardIds.length > 0) relatedIds.push(abilityCardIds);
     if (attackCardIds.length > 0) relatedIds.push(attackCardIds);
     if (cardAttackCardIds.length > 0) relatedIds.push(cardAttackCardIds);
-    let finalIds: string[] = [];
+    // If any relatedIds array is empty (and a filter was applied), return zero results
+    if ((trimmedAbilitiesName || trimmedAbilitiesText) && abilityCardIds.length === 0) {
+      setCardIds([]);
+      setSearchQuery("Advanced search");
+      if (onSearchResults) onSearchResults([], "Advanced search");
+      if (setLoadingProp) setLoadingProp(false);
+      return;
+    }
+    if ((trimmedAttacksName || trimmedAttacksText) && attackCardIds.length === 0) {
+      setCardIds([]);
+      setSearchQuery("Advanced search");
+      if (onSearchResults) onSearchResults([], "Advanced search");
+      if (setLoadingProp) setLoadingProp(false);
+      return;
+    }
+    if (
+      (attacksCost.length > 0 || attacksConvertedEnergyCost !== "" || trimmedAttacksDamage !== "") &&
+      cardAttackCardIds.length === 0
+    ) {
+      setCardIds([]);
+      setSearchQuery("Advanced search");
+      if (onSearchResults) onSearchResults([], "Advanced search");
+      if (setLoadingProp) setLoadingProp(false);
+      return;
+    }
+    // Always map all relatedIds to cardId from Card table before returning
+    // CardAttacks.cardId is INTEGER (Card.id), Card.cardId is TEXT (unique string)
     if (!hasCardFilters && relatedIds.length > 0) {
-      // Intersect all related IDs (AND logic)
-      const intersected = relatedIds.reduce((a, b) => a.filter((id) => b.includes(id)));
-      if (intersected.length > 0) {
-        // Fetch cardId for each Card row (in case intersected are Card.id)
-        const { data: cardsData } = await supabase.from("Card").select("cardId").in("id", intersected);
-        if (cardsData && cardsData.length > 0) {
-          finalIds = cardsData.map((c: any) => c.cardId);
-        } else {
-          finalIds = [];
-        }
+      let cardIdCandidates: any[] = [];
+      if (relatedIds.length === 1) {
+        // Only one filter: use unique values directly
+        cardIdCandidates = Array.from(new Set(relatedIds[0]));
       } else {
-        finalIds = [];
+        // Multiple filters: use intersection
+        cardIdCandidates = relatedIds.reduce((a, b) => a.filter((id) => b.includes(id)));
       }
-    } else {
-      // Apply Card filters as before
-      Object.entries(cardFilters).forEach(([key, value]) => {
-        if (key.startsWith("__or_") && value) {
-          query = query.or(value);
-        } else if (value !== undefined && value !== "" && value !== null) {
-          query = query.eq(key, value);
+      console.log(`[FullForm] Card.id candidates for Card table query:`, cardIdCandidates.slice(0, 10));
+      if (cardIdCandidates.length > 0) {
+        const cardIdInts = cardIdCandidates.map((id) => (typeof id === "string" ? parseInt(id, 10) : id));
+        const { data: cardsData } = await supabase.from("Card").select("cardId").in("id", cardIdInts);
+        console.log(`[FullForm] Card rows for Card.id candidates:`, cardsData);
+        if (!cardsData || cardsData.length === 0) {
+          console.warn(`[FullForm] Card table query returned no results for these Card.id values!`);
         }
-      });
-      if (setIds.length > 0) {
-        query = query.in("setId", setIds);
-      }
-      // If there are related IDs, filter Card query by those IDs (AND logic)
-      if (relatedIds.length > 0) {
-        const intersectIds = relatedIds.reduce((a, b) => a.filter((id) => b.includes(id)));
-        if (intersectIds.length > 0) {
-          query = query.in("cardId", intersectIds);
-        } else {
-          // No intersection, so no results
-          setCardIds([]);
-          setSearchQuery("Advanced search");
-          if (onSearchResults) onSearchResults([], "Advanced search");
-          if (setLoadingProp) setLoadingProp(false);
-          return;
-        }
-      }
-      const { data: cardData, error: cardError } = await query;
-      if (cardError) {
-        setError(cardError.message);
+        const finalIds = cardsData && cardsData.length > 0 ? cardsData.map((c: any) => c.cardId) : [];
+        console.log(`[FullForm] Returning ${finalIds.length} cardId(s) for attack-based search.`, finalIds);
+        setCardIds(finalIds);
+        setSearchQuery("Advanced search");
+        if (onSearchResults) onSearchResults(finalIds, "Advanced search");
+        if (setLoadingProp) setLoadingProp(false);
+        return;
+      } else {
+        setCardIds([]);
+        setSearchQuery("Advanced search");
+        if (onSearchResults) onSearchResults([], "Advanced search");
         if (setLoadingProp) setLoadingProp(false);
         return;
       }
-      if (cardData && cardData.length > 0) {
-        finalIds = cardData.map((c: any) => c.cardId);
+    }
+    // Apply Card filters as before
+    Object.entries(cardFilters).forEach(([key, value]) => {
+      if (key.startsWith("__or_") && value) {
+        query = query.or(value);
+      } else if (value !== undefined && value !== "" && value !== null) {
+        query = query.eq(key, value);
+      }
+    });
+    if (setIds.length > 0) {
+      query = query.in("setId", setIds);
+    }
+    // If there are related IDs, filter Card query by those IDs (AND logic)
+    if (relatedIds.length > 0) {
+      const intersectIds = relatedIds.reduce((a, b) => a.filter((id) => b.includes(id)));
+      if (intersectIds.length > 0) {
+        query = query.in("cardId", intersectIds);
+      } else {
+        // No intersection, so no results
+        setCardIds([]);
+        setSearchQuery("Advanced search");
+        if (onSearchResults) onSearchResults([], "Advanced search");
+        if (setLoadingProp) setLoadingProp(false);
+        return;
       }
     }
-    setCardIds(finalIds);
-    setSearchQuery("Advanced search");
-    console.log(`FullForm: found ${finalIds.length} cards.`);
-    if (onSearchResults) onSearchResults(finalIds, "Advanced search");
-    if (setLoadingProp) setLoadingProp(false);
+    const { data: cardData, error: cardError } = await query;
+    if (cardError) {
+      setError(cardError.message);
+      if (setLoadingProp) setLoadingProp(false);
+      return;
+    }
+    if (cardData && cardData.length > 0) {
+      const finalIds = cardData.map((c: any) => c.cardId);
+      setCardIds(finalIds);
+      setSearchQuery("Advanced search");
+      console.log(`FullForm: found ${finalIds.length} cards.`);
+      if (onSearchResults) onSearchResults(finalIds, "Advanced search");
+      if (setLoadingProp) setLoadingProp(false);
+    }
   };
 
   const cardSubtypesOptions = getCardSubtypesOptions(cardSupertype);
