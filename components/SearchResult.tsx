@@ -5,6 +5,7 @@ import ThemedText from "@/components/base/ThemedText";
 interface SearchResultProps {
   cardIds: string[];
   query?: string;
+  loading?: boolean;
 }
 
 const highlightText = (text: string, query: string) => {
@@ -25,13 +26,24 @@ const highlightText = (text: string, query: string) => {
   );
 };
 
-export default function SearchResult({ cardIds, query }: SearchResultProps): JSX.Element {
-  if (!cardIds || cardIds.length === 0) {
+export default function SearchResult({ cardIds, query, loading }: SearchResultProps): JSX.Element {
+  if (loading) {
+    return (
+      <ThemedView style={{ padding: 16 }}>
+        <ThemedText type="default">Loading...</ThemedText>
+      </ThemedView>
+    );
+  }
+  if (query && (!cardIds || cardIds.length === 0)) {
     return (
       <ThemedView style={{ padding: 16 }}>
         <ThemedText type="default">No Cards found.</ThemedText>
       </ThemedView>
     );
+  }
+  if (!cardIds || cardIds.length === 0) {
+    // Don't show anything if no search has been done
+    return <></>;
   }
   return (
     <ThemedView style={{ padding: 16 }}>

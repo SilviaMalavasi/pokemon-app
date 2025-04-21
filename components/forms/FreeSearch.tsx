@@ -10,8 +10,10 @@ import { Colors } from "@/style/Colors";
 
 export default function FreeSearch({
   onSearchResults,
+  setLoading,
 }: {
   onSearchResults?: (ids: string[], query: string) => void;
+  setLoading?: (loading: boolean) => void;
 }): JSX.Element {
   const [cardSearch, setCardSearch] = useState("");
 
@@ -58,6 +60,7 @@ export default function FreeSearch({
   const cardAttacksColumns = ["cost", "convertedEnergyCost"];
 
   const handleSubmit = async () => {
+    if (setLoading) setLoading(true);
     console.log("handleSubmit called with:", cardSearch);
     const isNumeric = cardSearch.trim() !== "" && !isNaN(Number(cardSearch));
     const searchVariants = [
@@ -224,6 +227,7 @@ export default function FreeSearch({
       console.log("Cards found:", foundCardIds);
     }
     if (onSearchResults) onSearchResults(foundCardIds, cardSearch);
+    if (setLoading) setLoading(false);
     return foundCardIds;
   };
 

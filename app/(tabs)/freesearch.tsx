@@ -12,11 +12,13 @@ import { Colors } from "@/style/Colors";
 export default function FreeSearchScreen() {
   const [cardIds, setCardIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   // Handler to receive card IDs from FreeSearch
   const handleSearchResults = (ids: string[], query: string) => {
     setCardIds(ids);
     setSearchQuery(query);
+    setLoading(false);
   };
 
   return (
@@ -39,12 +41,16 @@ export default function FreeSearchScreen() {
         </ThemedText>
       </ThemedView>
       <ThemedView>
-        <FreeSearch onSearchResults={handleSearchResults} />
+        <FreeSearch
+          onSearchResults={handleSearchResults}
+          setLoading={setLoading}
+        />
       </ThemedView>
       <ThemedView>
         <SearchResult
           cardIds={cardIds}
           query={searchQuery}
+          loading={loading}
         />
       </ThemedView>
     </ParallaxScrollView>
