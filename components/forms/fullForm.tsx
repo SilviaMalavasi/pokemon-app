@@ -137,11 +137,23 @@ export default function FullForm({
         value: cardSupertype,
       },
       cardSubtypes.length > 0 && {
-        config: { key: "cardSubtypes", type: "multiselect", table: "Card", column: "subtypes", valueType: "array" },
+        config: {
+          key: "cardSubtypes",
+          type: "multiselect",
+          table: "Card",
+          column: "subtypes",
+          valueType: "json-string-array",
+        },
         value: cardSubtypes,
       },
       cardTypes.length > 0 && {
-        config: { key: "cardTypes", type: "multiselect", table: "Card", column: "types", valueType: "array" },
+        config: {
+          key: "cardTypes",
+          type: "multiselect",
+          table: "Card",
+          column: "types",
+          valueType: "json-string-array",
+        },
         value: cardTypes,
       },
       cardRules && {
@@ -193,7 +205,7 @@ export default function FullForm({
         value: cardEvolvesFrom,
       },
       cardEvolvesTo && {
-        config: { key: "evolvesTo", type: "text", table: "Card", column: "evolvesTo", valueType: "array" },
+        config: { key: "evolvesTo", type: "text", table: "Card", column: "evolvesTo", valueType: "json-string-array" },
         value: cardEvolvesTo,
       },
       cardHp !== "" && {
@@ -213,11 +225,23 @@ export default function FullForm({
         operator: cardConvertedRetreatCostOperator,
       },
       cardWeaknessesType.length > 0 && {
-        config: { key: "weaknesses", type: "multiselect", table: "Card", column: "weaknesses", valueType: "json" },
+        config: {
+          key: "weaknesses",
+          type: "multiselect",
+          table: "Card",
+          column: "weaknesses",
+          valueType: "json-object-array",
+        },
         value: cardWeaknessesType,
       },
       cardResistancesType.length > 0 && {
-        config: { key: "resistances", type: "multiselect", table: "Card", column: "resistances", valueType: "json" },
+        config: {
+          key: "resistances",
+          type: "multiselect",
+          table: "Card",
+          column: "resistances",
+          valueType: "json-object-array",
+        },
         value: cardResistancesType,
       },
       cardArtist && {
@@ -243,7 +267,10 @@ export default function FullForm({
       },
     ].filter(Boolean) as QueryBuilderFilter[];
     try {
+      console.clear();
+      console.log("QueryBuilder input filters:", filters);
       const { cardIds, query } = await queryBuilder(filters);
+      console.log("QueryBuilder built query:", query);
       setCardIds(cardIds);
       setSearchQuery(query);
       if (onSearchResults) onSearchResults(cardIds, query);
@@ -254,17 +281,9 @@ export default function FullForm({
         if (error) {
           console.error("Error fetching card names:", error.message);
         } else {
-          console.clear();
-          console.log("QueryBuilder input filters:", filters);
-          console.log("QueryBuilder built query:", query);
-          console.log("Results:");
-          data?.forEach((row: { cardId: string; name: string }) => {
-            console.log(`cardId: ${row.cardId}, name: ${row.name}`);
-          });
           console.log("Number of cards found:", cardIds.length);
         }
       } else {
-        console.clear();
         console.log("No cardIds found.");
       }
     } catch (err: any) {

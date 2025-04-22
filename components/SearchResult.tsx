@@ -8,25 +8,6 @@ interface SearchResultProps {
   loading?: boolean;
 }
 
-const highlightText = (text: string, query: string) => {
-  if (!query) return <ThemedText>{text}</ThemedText>;
-  if (typeof text !== "string") return <ThemedText>{text ?? ""}</ThemedText>;
-  const regex = new RegExp(`(${query})`, "gi");
-  const parts = text.split(regex);
-  return parts.map((part, idx) =>
-    regex.test(part) ? (
-      <ThemedText
-        key={idx}
-        type="subtitle"
-      >
-        {part}
-      </ThemedText>
-    ) : (
-      <ThemedText key={idx}>{part}</ThemedText>
-    )
-  );
-};
-
 export default function SearchResult({ cardIds, query, loading }: SearchResultProps): JSX.Element {
   if (loading) {
     return (
@@ -53,7 +34,7 @@ export default function SearchResult({ cardIds, query, loading }: SearchResultPr
           key={item + idx}
           style={{ marginBottom: 8 }}
         >
-          <ThemedText type="default">{query ? highlightText(item, query) : item}</ThemedText>
+          <ThemedText type="default">{item}</ThemedText>
         </ThemedView>
       ))}
     </ThemedView>

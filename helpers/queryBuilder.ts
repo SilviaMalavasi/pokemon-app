@@ -5,7 +5,7 @@ export type InputConfig = {
   type: "text" | "number" | "multiselect";
   table: string;
   column: string;
-  valueType?: "int" | "text" | "json" | "array";
+  valueType?: "int" | "text" | "json-string-array" | "json-object-array";
 };
 
 export type QueryBuilderFilter = {
@@ -44,16 +44,21 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         }
       }
     } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
-      if (config.valueType === "array") {
-        // Array columns: use .overlaps for OR search
-        query = query.overlaps(col, value);
-      } else if (config.valueType === "json") {
-        // JSON columns: use .or with .contains for each type value (OR search)
+      if (config.valueType === "json-object-array") {
+        // JSON array of objects: use .or with .contains for each object value (OR search)
         if (Array.isArray(value)) {
-          const orString = value.map((typeValue: string) => `${col}.contains.[{"type":"${typeValue}"}]`).join(",");
+          const orString = value.map((typeValue: any) => `${col}.contains.[${JSON.stringify(typeValue)}]`).join(",");
           query = query.or(orString);
         } else {
-          query = query.contains(col, [{ type: value }]);
+          query = query.contains(col, [value]);
+        }
+      } else if (config.valueType === "json-string-array") {
+        // JSON array of strings: use .or with .contains for each string value (OR search)
+        if (Array.isArray(value)) {
+          const orString = value.map((typeValue: string) => `${col}.contains.[\"${typeValue}\"]`).join(",");
+          query = query.or(orString);
+        } else {
+          query = query.contains(col, [value]);
         }
       } else {
         // Text columns: build .or with ilike for each value
