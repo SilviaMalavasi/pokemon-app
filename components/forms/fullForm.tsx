@@ -116,6 +116,11 @@ export default function FullForm({
     setError(null);
   }, [resetKey]);
 
+  // Reset subtypes when supertype changes
+  useEffect(() => {
+    setCardSubtypes([]);
+  }, [cardSupertype]);
+
   const handleSubmit = async (): Promise<void> => {
     if (setLoadingProp) setLoadingProp(true);
     setLoading(true);

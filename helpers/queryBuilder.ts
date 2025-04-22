@@ -14,87 +14,49 @@ export type QueryBuilderFilter = {
   operator?: string;
 };
 
+// Helper: columns that are arrays in the DB (adjust as needed)
+const ARRAY_COLUMNS = ["types", "weaknesses", "resistances", "cost", "regulationMark"];
+
 export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ cardIds: string[]; query: string }> {
-  // Build the query for Card table fields
-  // Related table logic: config.table !== 'Card'
-  let whereClauses: string[] = [];
-  let params: any[] = [];
+  // Only Card table fields for now
+  let query = supabase.from("Card").select("cardId");
 
   filters.forEach(({ config, value, operator }) => {
-    if (!value || config.table !== "Card") return; // skip empty or related fields for now
+    if (!value || config.table !== "Card") return;
     const col = config.column;
     if (config.type === "text") {
       const trimmed = String(value).trim();
-      whereClauses.push(`LOWER(${col}) LIKE ?`);
-      params.push(`%${trimmed.toLowerCase()}%`);
+      query = query.ilike(col, `%${trimmed}%`);
     } else if (config.type === "number") {
       if (config.valueType === "int") {
         const op = operator || "=";
-        whereClauses.push(`${col} ${op} ?`);
-        params.push(Number(value));
+        if (op === ">=") query = query.gte(col, value);
+        else if (op === "<=") query = query.lte(col, value);
+        else query = query.eq(col, value);
       } else if (config.valueType === "text") {
         const op = operator || "=";
         if (op === ">=" || op === "<=") {
-          // For >= or <= on text columns, extract leading number and compare numerically (Postgres)
           const sqlOp = op === ">=" ? ">=" : "<=";
-          whereClauses.push(`CAST(regexp_replace(${col}, '[^0-9].*', '', 'g') AS INTEGER) ${sqlOp} ?`);
-          params.push(Number(value));
+          query = query.filter(`CAST(regexp_replace(${col}, '[^0-9].*', '', 'g') AS INTEGER)`, sqlOp, value);
         } else {
-          // For =, +, x: match as string
           let matchString = String(value);
           if (op === "+" || op === "x") {
             matchString = matchString + op;
           }
-          whereClauses.push(`${col} = ?`);
-          params.push(matchString);
+          query = query.eq(col, matchString);
         }
       }
     } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
-      whereClauses.push(`${col} IN (${value.map(() => "?").join(",")})`);
-      params.push(...value);
+      if (ARRAY_COLUMNS.includes(col)) {
+        // Array columns: use .in
+        query = query.in(col, value);
+      } else {
+        // Text columns: build .or with ilike for each value
+        const orString = value.map((v: string) => `${col}.ilike.%${v}%`).join(",");
+        query = query.or(orString);
+      }
     }
   });
-
-  // Use Supabase query builder
-  let query = supabase.from("Card").select("cardId");
-  if (whereClauses.length > 0) {
-    filters.forEach(({ config, value, operator }) => {
-      if (!value || config.table !== "Card") return;
-      const col = config.column;
-
-      // If we are serching from a text input to a text column
-      if (config.type === "text") {
-        const trimmed = String(value).trim();
-        query = query.ilike(col, `%${trimmed}%`);
-      } else if (config.type === "number") {
-        // If we are serching from a num input to a int column
-        if (config.valueType === "int") {
-          const op = operator || "=";
-          if (op === ">=") query = query.gte(col, value);
-          else if (op === "<=") query = query.lte(col, value);
-          else query = query.eq(col, value);
-        }
-        // If we are serching from a num input to a text column
-        else if (config.valueType === "text") {
-          const op = operator || "=";
-          if (op === ">=" || op === "<=") {
-            // Supabase/Postgres: use filter with SQL expression for numeric comparison on text
-            const sqlOp = op === ">=" ? ">=" : "<=";
-            query = query.filter(`CAST(regexp_replace(${col}, '[^0-9].*', '', 'g') AS INTEGER)`, sqlOp, value);
-          } else {
-            let matchString = String(value);
-            if (op === "+" || op === "x") {
-              matchString = matchString + op;
-            }
-            query = query.eq(col, matchString);
-          }
-        }
-        // If we are serching from a multiselect input to a text column
-      } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
-        query = query.in(col, value);
-      }
-    });
-  }
 
   const { data, error } = await query;
   if (error) {
