@@ -441,28 +441,29 @@ export default function FullForm({
           resetKey={resetKey}
         >
           <TextInput
-            label="Attacks Name"
+            label="Attack Name"
             value={attacksName}
             onChange={setAttacksName}
             placeholder="Attack name"
           />
 
-          <TextInput
-            label="Attacks Damage"
+          <NumberInput
+            label="Attack Damage"
             value={attacksDamage}
             onChange={setAttacksDamage}
             placeholder="Attack damage"
+            showOperatorSelect={"advanced"}
           />
 
           <TextInput
-            label="Attacks Text"
+            label="Attack Text"
             value={attacksText}
             onChange={setAttacksText}
             placeholder="Attack text"
           />
 
           <DynamicMultiSelect
-            label="Attacks Cost"
+            label="Attack Cost"
             value={attacksCost}
             options={cardTypesOptions}
             onChange={setAttacksCost}
@@ -474,6 +475,7 @@ export default function FullForm({
             value={attacksConvertedEnergyCost}
             onChange={setAttacksConvertedEnergyCost}
             placeholder="Converted energy cost"
+            showOperatorSelect={"basic"}
           />
         </Collapsible>
       )}
@@ -537,10 +539,11 @@ export default function FullForm({
             showOperatorSelect={"basic"}
           />
           <NumberInput
-            label="Converted Retreat Cost"
+            label="Card Converted Retreat Cost"
             value={cardConvertedRetreatCost}
             onChange={setCardConvertedRetreatCost}
-            placeholder="Converted retreat cost"
+            placeholder="Retreat cost"
+            showOperatorSelect={"basic"}
           />
         </Collapsible>
       )}

@@ -72,11 +72,12 @@ export default function NumberInput({
             onChange={handleOperatorChange}
             labelField="label"
             valueField="value"
-            style={{ width: 32, marginRight: 8, paddingHorizontal: 0, paddingVertical: 0 }}
-            containerStyle={{ width: 60 }}
-            itemTextStyle={{ fontSize: 16 }}
-            selectedTextStyle={{ fontSize: 16 }}
+            style={styles.picker}
+            containerStyle={styles.listContainer}
+            itemContainerStyle={styles.listContainer}
+            itemTextStyle={styles.listItem}
             placeholder={""}
+            selectedTextStyle={styles.selected}
             renderRightIcon={() => null}
           />
         )}
