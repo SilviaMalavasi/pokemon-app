@@ -53,12 +53,12 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
           query = query.contains(col, [value]);
         }
       } else if (config.valueType === "json-string-array") {
-        // JSON array of strings: use .or with .contains for each string value (OR search)
+        // Use ilike for each string value (OR search)
         if (Array.isArray(value)) {
-          const orString = value.map((typeValue: string) => `${col}.contains.[\"${typeValue}\"]`).join(",");
+          const orString = value.map((typeValue: string) => `${col}.ilike.%${typeValue}%`).join(",");
           query = query.or(orString);
         } else {
-          query = query.contains(col, [value]);
+          query = query.ilike(col, `%${value}%`);
         }
       } else {
         // Text columns: build .or with ilike for each value
