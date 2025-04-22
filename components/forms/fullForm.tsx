@@ -5,8 +5,10 @@ import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import TextInput from "@/components/base/TextInput";
 import NumberInput from "@/components/base/NumberInput";
 import Collapsible from "@/components/base/Collapsible";
-import { supabase } from "@/lib/supabase";
+import { queryBuilder } from "@/helpers/queryBuilder";
+import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 import ThemedText from "@/components/base/ThemedText";
+import { supabase } from "@/lib/supabase";
 
 import uniqueIdentifiers from "@/assets/uniqueIdentifiers.json";
 
@@ -51,6 +53,7 @@ export default function FullForm({
   const [cardSubtypes, setCardSubtypes] = useState<string[]>([]);
   const [cardName, setCardName] = useState("");
   const [cardHp, setCardHp] = useState<number | "">("");
+  const [cardHpOperator, setCardHpOperator] = useState("=");
   const [cardTypes, setCardTypes] = useState<string[]>([]);
   const [cardEvolvesFrom, setCardEvolvesFrom] = useState("");
   const [cardEvolvesTo, setCardEvolvesTo] = useState("");
@@ -59,12 +62,15 @@ export default function FullForm({
   const [abilitiesText, setAbilitiesText] = useState("");
   const [attacksName, setAttacksName] = useState("");
   const [attacksDamage, setAttacksDamage] = useState<number | "">("");
+  const [attacksDamageOperator, setAttacksDamageOperator] = useState("=");
   const [attacksText, setAttacksText] = useState("");
   const [attacksCost, setAttacksCost] = useState<string[]>([]);
   const [attacksConvertedEnergyCost, setAttacksConvertedEnergyCost] = useState<number | "">("");
+  const [attacksConvertedEnergyCostOperator, setAttacksConvertedEnergyCostOperator] = useState("=");
   const [cardWeaknessesType, setCardWeaknessesType] = useState<string[]>([]);
   const [cardResistancesType, setCardResistancesType] = useState<string[]>([]);
   const [cardConvertedRetreatCost, setCardConvertedRetreatCost] = useState<number | "">("");
+  const [cardConvertedRetreatCostOperator, setCardConvertedRetreatCostOperator] = useState("=");
   const [cardArtist, setCardArtist] = useState("");
   const [cardFlavor, setCardFlavor] = useState("");
   const [cardRegulationMark, setCardRegulationMark] = useState<string[]>([]);
@@ -81,6 +87,7 @@ export default function FullForm({
     setCardSubtypes([]);
     setCardName("");
     setCardHp("");
+    setCardHpOperator("=");
     setCardTypes([]);
     setCardEvolvesFrom("");
     setCardEvolvesTo("");
@@ -89,12 +96,15 @@ export default function FullForm({
     setAbilitiesText("");
     setAttacksName("");
     setAttacksDamage("");
+    setAttacksDamageOperator("=");
     setAttacksText("");
     setAttacksCost([]);
     setAttacksConvertedEnergyCost("");
+    setAttacksConvertedEnergyCostOperator("=");
     setCardWeaknessesType([]);
     setCardResistancesType([]);
     setCardConvertedRetreatCost("");
+    setCardConvertedRetreatCostOperator("=");
     setCardArtist("");
     setCardFlavor("");
     setCardRegulationMark([]);
@@ -106,8 +116,157 @@ export default function FullForm({
     setError(null);
   }, [resetKey]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<void> => {
     if (setLoadingProp) setLoadingProp(true);
+    setLoading(true);
+    setError(null);
+
+    // Build filters array
+    const filters: QueryBuilderFilter[] = [
+      cardName && {
+        config: { key: "cardName", type: "text", table: "Card", column: "name" },
+        value: cardName,
+      },
+      cardSupertype.length > 0 && {
+        config: { key: "cardSupertype", type: "multiselect", table: "Card", column: "supertype" },
+        value: cardSupertype,
+      },
+      cardSubtypes.length > 0 && {
+        config: { key: "cardSubtypes", type: "multiselect", table: "Card", column: "subtypes" },
+        value: cardSubtypes,
+      },
+      cardTypes.length > 0 && {
+        config: { key: "cardTypes", type: "multiselect", table: "Card", column: "types" },
+        value: cardTypes,
+      },
+      cardRules && {
+        config: { key: "rules", type: "text", table: "Card", column: "rules" },
+        value: cardRules,
+      },
+      attacksName && {
+        config: { key: "attackName", type: "text", table: "Attacks", column: "name" },
+        value: attacksName,
+      },
+      attacksDamage !== "" && {
+        config: { key: "attackDamage", type: "number", table: "Attacks", column: "damage", valueType: "text" },
+        value: attacksDamage,
+        operator: attacksDamageOperator,
+      },
+      attacksText && {
+        config: { key: "attackText", type: "text", table: "Attacks", column: "text" },
+        value: attacksText,
+      },
+      attacksCost.length > 0 && {
+        config: { key: "attackCost", type: "multiselect", table: "CardAttacks", column: "cost" },
+        value: attacksCost,
+      },
+      attacksConvertedEnergyCost !== "" && {
+        config: {
+          key: "attacksConvertedEnergyCost",
+          type: "number",
+          table: "CardAttacks",
+          column: "convertedEnergyCost",
+          valueType: "int",
+        },
+        value: attacksConvertedEnergyCost,
+        operator: attacksConvertedEnergyCostOperator,
+      },
+      abilitiesName && {
+        config: { key: "abilityName", type: "text", table: "Abilities", column: "name" },
+        value: abilitiesName,
+      },
+      abilitiesText && {
+        config: { key: "abilityText", type: "text", table: "Abilities", column: "text" },
+        value: abilitiesText,
+      },
+      cardStage.length > 0 && {
+        config: { key: "stage", type: "multiselect", table: "Card", column: "subtypes" },
+        value: cardStage,
+      },
+      cardEvolvesFrom && {
+        config: { key: "evolvesFrom", type: "text", table: "Card", column: "evolvesFrom" },
+        value: cardEvolvesFrom,
+      },
+      cardEvolvesTo && {
+        config: { key: "evolvesTo", type: "text", table: "Card", column: "evolvesTo" },
+        value: cardEvolvesTo,
+      },
+      cardHp !== "" && {
+        config: { key: "hp", type: "number", table: "Card", column: "hp", valueType: "int" },
+        value: cardHp,
+        operator: cardHpOperator,
+      },
+      cardConvertedRetreatCost !== "" && {
+        config: {
+          key: "convertedRetreatCost",
+          type: "number",
+          table: "Card",
+          column: "convertedRetreatCost",
+          valueType: "int",
+        },
+        value: cardConvertedRetreatCost,
+        operator: cardConvertedRetreatCostOperator,
+      },
+      cardWeaknessesType.length > 0 && {
+        config: { key: "weaknesses", type: "multiselect", table: "Card", column: "weaknesses" },
+        value: cardWeaknessesType,
+      },
+      cardResistancesType.length > 0 && {
+        config: { key: "resistances", type: "multiselect", table: "Card", column: "resistances" },
+        value: cardResistancesType,
+      },
+      cardArtist && {
+        config: { key: "artist", type: "text", table: "Card", column: "artist" },
+        value: cardArtist,
+      },
+      cardFlavor && {
+        config: { key: "flavorText", type: "text", table: "Card", column: "flavorText" },
+        value: cardFlavor,
+      },
+      cardRegulationMark.length > 0 && {
+        config: { key: "regulationMark", type: "multiselect", table: "Card", column: "regulationMark" },
+        value: cardRegulationMark,
+      },
+      cardSetName.length > 0 && {
+        config: { key: "setName", type: "multiselect", table: "CardSet", column: "name" },
+        value: cardSetName,
+      },
+      cardNumber !== "" && {
+        config: { key: "number", type: "number", table: "Card", column: "number", valueType: "text" },
+        value: cardNumber,
+        operator: "=",
+      },
+    ].filter(Boolean) as QueryBuilderFilter[];
+    try {
+      const { cardIds, query } = await queryBuilder(filters);
+      setCardIds(cardIds);
+      setSearchQuery(query);
+      if (onSearchResults) onSearchResults(cardIds, query);
+
+      // Fetch and log card names for the returned cardIds
+      if (cardIds.length > 0) {
+        const { data, error } = await supabase.from("Card").select("cardId, name").in("cardId", cardIds);
+        if (error) {
+          console.error("Error fetching card names:", error.message);
+        } else {
+          console.clear();
+          console.log("QueryBuilder input filters:", filters);
+          console.log("QueryBuilder built query:", query);
+          console.log("Results:");
+          data?.forEach((row: { cardId: string; name: string }) => {
+            console.log(`cardId: ${row.cardId}, name: ${row.name}`);
+          });
+        }
+      } else {
+        console.clear();
+        console.log("No cardIds found.");
+      }
+    } catch (err: any) {
+      setError(err.message || "Search failed");
+    } finally {
+      setLoading(false);
+      if (setLoadingProp) setLoadingProp(false);
+    }
   };
 
   const cardSubtypesOptions = getCardSubtypesOptions(cardSupertype);
@@ -175,7 +334,10 @@ export default function FullForm({
           <NumberInput
             label="Attack Damage"
             value={attacksDamage}
-            onChange={setAttacksDamage}
+            onChange={(val, op) => {
+              setAttacksDamage(val);
+              setAttacksDamageOperator(op);
+            }}
             placeholder="Attack damage"
             showOperatorSelect={"advanced"}
           />
@@ -198,7 +360,10 @@ export default function FullForm({
           <NumberInput
             label="Attacks Converted Energy Cost"
             value={attacksConvertedEnergyCost}
-            onChange={setAttacksConvertedEnergyCost}
+            onChange={(val, op) => {
+              setAttacksConvertedEnergyCost(val);
+              setAttacksConvertedEnergyCostOperator(op);
+            }}
             placeholder="Converted energy cost"
             showOperatorSelect={"basic"}
           />
@@ -259,14 +424,20 @@ export default function FullForm({
           <NumberInput
             label="HP"
             value={cardHp}
-            onChange={setCardHp}
+            onChange={(val, op) => {
+              setCardHp(val);
+              setCardHpOperator(op);
+            }}
             placeholder="Card HP"
             showOperatorSelect={"basic"}
           />
           <NumberInput
             label="Card Converted Retreat Cost"
             value={cardConvertedRetreatCost}
-            onChange={setCardConvertedRetreatCost}
+            onChange={(val, op) => {
+              setCardConvertedRetreatCost(val);
+              setCardConvertedRetreatCostOperator(op);
+            }}
             placeholder="Retreat cost"
             showOperatorSelect={"basic"}
           />

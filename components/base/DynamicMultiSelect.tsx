@@ -24,7 +24,6 @@ export default function DynamicMultiSelect({
   const [showHint, setShowHint] = useState(false);
 
   const handleChange = (selected: string[]) => {
-    console.log("DynamicMultiSelect handleChange", { label, selected });
     onChange(selected);
     dropdownRef.current?.close();
   };

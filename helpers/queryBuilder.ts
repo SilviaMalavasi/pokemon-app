@@ -1,85 +1,20 @@
 import { supabase } from "@/lib/supabase";
 
-// --- InputConfig type with required valueType for number fields ---
-export type InputConfig =
-  | {
-      key: string;
-      type: "number";
-      table: string;
-      column: string;
-      valueType: "int" | "text"; // required for number fields
-    }
-  | {
-      key: string;
-      type: "text" | "multiselect";
-      table: string;
-      column: string;
-    };
+export type InputConfig = {
+  key: string;
+  type: "text" | "number" | "multiselect";
+  table: string;
+  column: string;
+  valueType?: "int" | "text";
+};
 
-// --- Example input configs ---
-// Add more fields as needed for your form
-export const inputConfigs: InputConfig[] = [
-  // Card table fields
-  {
-    key: "cardName",
-    type: "text",
-    table: "Card",
-    column: "name",
-  },
-  {
-    key: "hp",
-    type: "number",
-    table: "Card",
-    column: "hp",
-    valueType: "int",
-  },
-  {
-    key: "types",
-    type: "multiselect",
-    table: "Card",
-    column: "types",
-  },
-  // Related table: Abilities
-  {
-    key: "abilityName",
-    type: "text",
-    table: "Abilities",
-    column: "name",
-  },
-  // Related table: Attacks
-  {
-    key: "attackName",
-    type: "text",
-    table: "Attacks",
-    column: "name",
-  },
-  {
-    key: "attackDamage",
-    type: "number",
-    table: "Attacks",
-    column: "damage",
-    valueType: "text",
-  },
-  // Related table: CardSet
-  {
-    key: "setName",
-    type: "text",
-    table: "CardSet",
-    column: "name",
-  },
-];
+export type QueryBuilderFilter = {
+  config: InputConfig;
+  value: any;
+  operator?: string;
+};
 
-// --- QueryBuilder implementation: Card table fields ---
-// This version only handles fields directly on the Card table
-// Related table logic will be added in the next step
-
-export async function queryBuilder(
-  filters: Array<{
-    config: InputConfig;
-    value: any;
-    operator?: string; // for number fields
-  }>
-): Promise<{ cardIds: string[]; query: string }> {
+export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ cardIds: string[]; query: string }> {
   // Build the query for Card table fields
   // Related table logic: config.table !== 'Card'
   let whereClauses: string[] = [];
