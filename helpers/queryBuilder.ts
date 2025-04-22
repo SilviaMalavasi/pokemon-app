@@ -126,16 +126,21 @@ export async function queryBuilder(
     filters.forEach(({ config, value, operator }) => {
       if (!value || config.table !== "Card") return;
       const col = config.column;
+
+      // If we are serching from a text input to a text column
       if (config.type === "text") {
         const trimmed = String(value).trim();
         query = query.ilike(col, `%${trimmed}%`);
       } else if (config.type === "number") {
+        // If we are serching from a num input to a int column
         if (config.valueType === "int") {
           const op = operator || "=";
           if (op === ">=") query = query.gte(col, value);
           else if (op === "<=") query = query.lte(col, value);
           else query = query.eq(col, value);
-        } else if (config.valueType === "text") {
+        }
+        // If we are serching from a num input to a text column
+        else if (config.valueType === "text") {
           const op = operator || "=";
           if (op === ">=" || op === "<=") {
             // Supabase/Postgres: use filter with SQL expression for numeric comparison on text
@@ -149,6 +154,7 @@ export async function queryBuilder(
             query = query.eq(col, matchString);
           }
         }
+        // If we are serching from a multiselect input to a text column
       } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
         query = query.in(col, value);
       }
