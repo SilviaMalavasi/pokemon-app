@@ -32,13 +32,24 @@ export default function TextInput({ label, value, onChange, placeholder, labelHi
         </ThemedView>
       )}
       {showHint && labelHint && <ThemedText type="hintText">{labelHint}</ThemedText>}
-      <RNTextInput
-        style={styles.input}
-        value={value}
-        onChangeText={onChange}
-        placeholder={placeholder}
-        placeholderTextColor={styles.placeholder.color}
-      />
+      <ThemedView style={styles.inputWrapper}>
+        <RNTextInput
+          style={[styles.input, { flex: 1 }]}
+          value={value}
+          onChangeText={onChange}
+          placeholder={placeholder}
+          placeholderTextColor={styles.placeholder.color}
+        />
+        {value.length > 0 && (
+          <TouchableOpacity
+            onPress={() => onChange("")}
+            accessibilityLabel={`Clear ${label || "input"}`}
+            style={styles.clearIcon}
+          >
+            <ThemedText type="hintIcon">×</ThemedText>
+          </TouchableOpacity>
+        )}
+      </ThemedView>
     </ThemedView>
   );
 }

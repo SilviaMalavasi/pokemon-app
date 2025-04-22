@@ -41,6 +41,15 @@ const styles = StyleSheet.create({
   listItem: {
     color: Colors.placeholder,
   },
+  clearIcon: {
+    position: "absolute",
+    right: 8,
+    top: 0,
+    bottom: 0,
+    justifyContent: "center",
+    height: "100%",
+    zIndex: 1,
+  },
 });
 
 export default styles;

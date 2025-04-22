@@ -103,6 +103,15 @@ export default function NumberInput({
           inputMode="numeric"
           returnKeyType="done"
         />
+        {value !== "" && value !== undefined && (
+          <TouchableOpacity
+            onPress={() => onChange("", currentOperator)}
+            accessibilityLabel={`Clear ${label || "input"}`}
+            style={styles.clearIcon}
+          >
+            <ThemedText type="hintIcon">×</ThemedText>
+          </TouchableOpacity>
+        )}
       </ThemedView>
     </ThemedView>
   );

@@ -137,11 +137,11 @@ export default function FullForm({
         value: cardSupertype,
       },
       cardSubtypes.length > 0 && {
-        config: { key: "cardSubtypes", type: "multiselect", table: "Card", column: "subtypes" },
+        config: { key: "cardSubtypes", type: "multiselect", table: "Card", column: "subtypes", valueType: "array" },
         value: cardSubtypes,
       },
       cardTypes.length > 0 && {
-        config: { key: "cardTypes", type: "multiselect", table: "Card", column: "types" },
+        config: { key: "cardTypes", type: "multiselect", table: "Card", column: "types", valueType: "array" },
         value: cardTypes,
       },
       cardRules && {
@@ -193,7 +193,7 @@ export default function FullForm({
         value: cardEvolvesFrom,
       },
       cardEvolvesTo && {
-        config: { key: "evolvesTo", type: "text", table: "Card", column: "evolvesTo" },
+        config: { key: "evolvesTo", type: "text", table: "Card", column: "evolvesTo", valueType: "array" },
         value: cardEvolvesTo,
       },
       cardHp !== "" && {
@@ -213,11 +213,11 @@ export default function FullForm({
         operator: cardConvertedRetreatCostOperator,
       },
       cardWeaknessesType.length > 0 && {
-        config: { key: "weaknesses", type: "multiselect", table: "Card", column: "weaknesses" },
+        config: { key: "weaknesses", type: "multiselect", table: "Card", column: "weaknesses", valueType: "json" },
         value: cardWeaknessesType,
       },
       cardResistancesType.length > 0 && {
-        config: { key: "resistances", type: "multiselect", table: "Card", column: "resistances" },
+        config: { key: "resistances", type: "multiselect", table: "Card", column: "resistances", valueType: "json" },
         value: cardResistancesType,
       },
       cardArtist && {
@@ -261,6 +261,7 @@ export default function FullForm({
           data?.forEach((row: { cardId: string; name: string }) => {
             console.log(`cardId: ${row.cardId}, name: ${row.name}`);
           });
+          console.log("Number of cards found:", cardIds.length);
         }
       } else {
         console.clear();

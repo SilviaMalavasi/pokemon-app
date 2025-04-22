@@ -5,7 +5,7 @@ export type InputConfig = {
   type: "text" | "number" | "multiselect";
   table: string;
   column: string;
-  valueType?: "int" | "text";
+  valueType?: "int" | "text" | "json" | "array";
 };
 
 export type QueryBuilderFilter = {
@@ -13,9 +13,6 @@ export type QueryBuilderFilter = {
   value: any;
   operator?: string;
 };
-
-// Helper: columns that are arrays in the DB (adjust as needed)
-const ARRAY_COLUMNS = ["types", "weaknesses", "resistances", "cost", "regulationMark"];
 
 export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ cardIds: string[]; query: string }> {
   // Only Card table fields for now
@@ -47,9 +44,17 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         }
       }
     } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
-      if (ARRAY_COLUMNS.includes(col)) {
-        // Array columns: use .in
-        query = query.in(col, value);
+      if (config.valueType === "array") {
+        // Array columns: use .overlaps for OR search
+        query = query.overlaps(col, value);
+      } else if (config.valueType === "json") {
+        // JSON columns: use .or with .contains for each type value (OR search)
+        if (Array.isArray(value)) {
+          const orString = value.map((typeValue: string) => `${col}.contains.[{"type":"${typeValue}"}]`).join(",");
+          query = query.or(orString);
+        } else {
+          query = query.contains(col, [{ type: value }]);
+        }
       } else {
         // Text columns: build .or with ilike for each value
         const orString = value.map((v: string) => `${col}.ilike.%${v}%`).join(",");
