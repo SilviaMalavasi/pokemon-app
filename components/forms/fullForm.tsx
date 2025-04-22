@@ -424,14 +424,15 @@ export default function FullForm({
         )}
       </Collapsible>
       <Collapsible
-        title="Rules"
+        title="Card Rules"
         resetKey={resetKey}
       >
         <TextInput
           label="Rules"
           value={cardRules}
           onChange={setCardRules}
-          placeholder="Rules"
+          placeholder="Card rules"
+          labelHint="Rules refers to Pokémon special rules (es Pokémon-EX rules) or Trainer card rules."
         />
       </Collapsible>
       {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
@@ -533,6 +534,7 @@ export default function FullForm({
             value={cardHp}
             onChange={setCardHp}
             placeholder="Card HP"
+            showOperatorSelect={"basic"}
           />
           <NumberInput
             label="Converted Retreat Cost"
