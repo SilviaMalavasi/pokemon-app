@@ -5,7 +5,7 @@ export type InputConfig = {
   type: "text" | "number" | "multiselect";
   table: string;
   column: string;
-  valueType?: "int" | "text" | "json-string-array" | "json-object-array";
+  valueType?: "int" | "text" | "json-string-array";
 };
 
 export type QueryBuilderFilter = {
@@ -28,7 +28,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     } else if (config.type === "number") {
       if (config.valueType === "int") {
         const op = operator || "=";
-        // Exclude NULLs from results
         query = query.not(col, "is", null);
         if (op === ">=") query = query.gte(col, value);
         else if (op === "<=") query = query.lte(col, value);
@@ -47,19 +46,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         }
       }
     } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
-      if (config.valueType === "json-object-array") {
-        // Map string values to objects: [{ type: value }]
-        if (Array.isArray(value)) {
-          // OR search: any of the types
-          const orString = value
-            .map((typeValue: string) => `${col}.contains.${JSON.stringify([{ type: typeValue }])}`)
-            .join(",");
-          query = query.or(orString);
-        } else {
-          query = query.contains(col, [{ type: value }]);
-        }
-      } else if (config.valueType === "json-string-array") {
-        // Use ilike for each string value (OR search)
+      if (config.valueType === "json-string-array") {
         if (Array.isArray(value)) {
           const orString = value.map((typeValue: string) => `${col}.ilike.%${typeValue}%`).join(",");
           query = query.or(orString);
@@ -67,7 +54,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
           query = query.ilike(col, `%${value}%`);
         }
       } else {
-        // Text columns: build .or with ilike for each value
         const orString = value.map((v: string) => `${col}.ilike.%${v}%`).join(",");
         query = query.or(orString);
       }
