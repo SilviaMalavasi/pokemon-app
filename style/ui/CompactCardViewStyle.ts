@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
 import { vw } from "@/helpers/viewport";
 
-const containersPadding = 24;
-const gap = 16; // px, gap between cards (increased from 12)
+const containersPadding = 20;
+const gap = 16; // gap between cards
 const columns = 2;
 const cardWidth = (vw(100) - containersPadding * 2 - gap * (columns - 1)) / columns;
 

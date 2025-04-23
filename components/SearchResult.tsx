@@ -49,12 +49,14 @@ export default function SearchResult({
     return <></>;
   }
   return (
-    <ThemedView style={{ padding: 8 }}>
-      <ThemedView style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", padding: 0 }}>
+    <ThemedView style={{ padding: 6 }}>
+      <ThemedView
+        style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", padding: 0, marginTop: 16 }}
+      >
         {paginatedIds.map((item, idx) => (
           <ThemedView
             key={item + idx}
-            style={{ width: "48%", marginTop: 12 }}
+            style={{ width: "48%", marginTop: 8 }}
           >
             {cards ? (
               <CompactCardView
