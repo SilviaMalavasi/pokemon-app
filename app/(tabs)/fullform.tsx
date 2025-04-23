@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { Image } from "react-native";
+import { Image, findNodeHandle, UIManager } from "react-native";
+import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedText from "@/components/base/ThemedText";
@@ -15,11 +16,33 @@ export default function FullFormScreen() {
   const [loading, setLoading] = useState(false);
   const [resetKey, setResetKey] = useState(0);
 
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const searchResultRef = useRef<any>(null);
+
   // Handler to receive card IDs from FullForm
   const handleSearchResults = (ids: string[], query: string) => {
     setCardIds(ids);
     setSearchQuery(query);
     setLoading(false);
+    // Scroll to SearchResult after results are set
+    setTimeout(() => {
+      const scrollNode = scrollRef.current;
+      const searchNode = searchResultRef.current;
+      if (searchNode && scrollNode) {
+        const searchNativeNode = findNodeHandle(searchNode);
+        const scrollNativeNode = findNodeHandle(scrollNode);
+        if (searchNativeNode && scrollNativeNode) {
+          UIManager.measureLayout(
+            searchNativeNode,
+            scrollNativeNode,
+            () => {},
+            (x: number, y: number) => {
+              scrollNode.scrollTo({ y, animated: true });
+            }
+          );
+        }
+      }
+    }, 100);
   };
 
   //Reset the search results when the screen is focused
@@ -42,6 +65,7 @@ export default function FullFormScreen() {
         />
       }
       headerTitle="Advanced Search"
+      scrollRef={scrollRef}
     >
       <ThemedView>
         <FullForm
@@ -50,7 +74,7 @@ export default function FullFormScreen() {
           resetKey={resetKey}
         />
       </ThemedView>
-      <ThemedView>
+      <ThemedView ref={searchResultRef}>
         <SearchResult
           cardIds={cardIds}
           query={searchQuery}

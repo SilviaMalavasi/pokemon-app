@@ -1,5 +1,11 @@
 import type { PropsWithChildren, ReactElement } from "react";
-import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from "react-native-reanimated";
+import Animated, {
+  interpolate,
+  useAnimatedRef,
+  useAnimatedStyle,
+  useScrollViewOffset,
+  AnimatedRef,
+} from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
 
 import ThemedView from "@/components/base/ThemedView";
@@ -14,11 +20,19 @@ type Props = PropsWithChildren<{
   headerImage: ReactElement;
   headerBackgroundColor: string;
   headerTitle: string;
+  scrollRef?: AnimatedRef<Animated.ScrollView>; // <-- use correct type
 }>;
 
-export default function ParallaxScrollView({ children, headerImage, headerBackgroundColor, headerTitle }: Props) {
-  const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const scrollOffset = useScrollViewOffset(scrollRef);
+export default function ParallaxScrollView({
+  children,
+  headerImage,
+  headerBackgroundColor,
+  headerTitle,
+  scrollRef,
+}: Props) {
+  const internalScrollRef = useAnimatedRef<Animated.ScrollView>();
+  const usedScrollRef = scrollRef || internalScrollRef;
+  const scrollOffset = useScrollViewOffset(usedScrollRef);
   const bottom = useBottomTabOverflow();
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -40,7 +54,7 @@ export default function ParallaxScrollView({ children, headerImage, headerBackgr
   return (
     <ThemedView style={styles.container}>
       <Animated.ScrollView
-        ref={scrollRef}
+        ref={usedScrollRef}
         scrollEventThrottle={16}
         scrollIndicatorInsets={{ bottom }}
         contentContainerStyle={{ paddingBottom: bottom }}
