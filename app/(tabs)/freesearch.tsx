@@ -2,6 +2,8 @@ import { StyleSheet } from "react-native";
 import { Image } from "react-native";
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import { supabase } from "@/lib/supabase";
+import type { CardType } from "@/types/PokemonCardType";
 
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedText from "@/components/base/ThemedText";
@@ -15,16 +17,49 @@ export default function FreeSearchScreen() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  const [cards, setCards] = useState<Pick<CardType, "cardId" | "name" | "imagesSmall">[]>([]);
+  const ITEMS_PER_PAGE = 20;
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Handler to receive card IDs from FreeSearch
   const handleSearchResults = (ids: string[], query: string) => {
     setCardIds(ids);
     setSearchQuery(query);
     setLoading(false);
+    setCurrentPage(1);
   };
 
-  // Reset the search results when the screen is focused
+  // Fetch paginated card data when cardIds or currentPage changes
+  React.useEffect(() => {
+    const fetchCards = async () => {
+      if (!cardIds || cardIds.length === 0) {
+        setCards([]);
+        return;
+      }
+      setLoading(true);
+      const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+      const endIdx = startIdx + ITEMS_PER_PAGE;
+      const paginatedIds = cardIds.slice(startIdx, endIdx);
+      const { data, error } = await supabase
+        .from("Card")
+        .select("cardId, name, imagesSmall")
+        .in("cardId", paginatedIds);
+      if (error) {
+        setCards([]);
+      } else {
+        // Ensure order matches paginatedIds
+        const cardsOrdered = paginatedIds.map(
+          (id) => data.find((c) => c.cardId === id) || { cardId: id, name: id, imagesSmall: "" }
+        );
+        setCards(cardsOrdered);
+      }
+      setLoading(false);
+    };
+    fetchCards();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardIds, currentPage]);
 
+  // Reset the search results when the screen is focused
   useFocusEffect(
     React.useCallback(() => {
       setCardIds([]);
@@ -55,8 +90,12 @@ export default function FreeSearchScreen() {
       <ThemedView>
         <SearchResult
           cardIds={cardIds}
+          cards={cards}
           query={searchQuery}
           loading={loading}
+          currentPage={currentPage}
+          itemsPerPage={ITEMS_PER_PAGE}
+          onPageChange={setCurrentPage}
         />
       </ThemedView>
     </ParallaxScrollView>
