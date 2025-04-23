@@ -1,0 +1,1560 @@
+id,name,text
+1,Tackle,
+2,Guard Press,"During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+3,Spike Shot,
+4,Rising Lunge,"Flip a coin. If heads, this attack does 30 more damage."
+5,Solar Beam,
+6,Scratch,
+7,Leafage,
+8,Trick Cape,You may put an Energy attached to your opponent's Active Pokémon into their hand.
+9,Flower Blast,
+10,String Haul,"Flip a coin. If heads, switch in 1 of your opponent's Benched Pokémon to the Active Spot."
+11,Bug Bite,
+12,Surprise Attack,"Flip a coin. If tails, this attack does nothing."
+14,Nutrients,Heal 30 damage from 1 of your Pokémon.
+15,Spray Fluid,
+16,Wire Hang,This attack does 30 more damage for each Colorless in your opponent's Active Pokémon's Retreat Cost.
+18,Furious Kicks,Flip 3 coins. This attack does 10 damage for each heads.
+19,Superpowered Throw,This attack does 30 more damage for each Colorless in your opponent's Active Pokémon's Retreat Cost.
+20,Horn Attack,
+21,Mach Cross,
+22,Fresh-Picked Fruit,Heal 60 damage from 1 of your Benched Pokémon.
+23,Razor Leaf,
+24,Miracle Powder,"Flip a coin. If heads, choose a Special Condition. Your opponent's Active Pokémon is now affected by that Special Condition."
+25,Bug Buzz,
+26,Vine Whip,
+27,Smash Kick,
+28,Slash,
+29,Leaf Step,
+30,Eerie Tentacles,You may move an Energy from your opponent's Active Pokémon to 1 of their Benched Pokémon.
+31,Triple Smash,Flip 3 coins. This attack does 80 damage for each heads.
+32,Absorb,Heal 10 damage from this Pokémon.
+33,Light Punch,
+35,String Shot,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+36,Slap,
+37,Apply Oil,"During your opponent's next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn't happen."
+38,Spore,Your opponent's Active Pokémon is now Asleep.
+39,Ram,
+40,Waterfall,
+41,Tyrannical Tail,"If your opponent's Active Pokémon already has any damage counters on it, this attack does 180 more damage."
+42,Hot Bite,Your opponent's Active Pokémon is now Burned.
+43,Super Spicy Breath,"If this Pokémon has any Fire Energy attached, this attack does 90 more damage."
+44,Vivid Charge,"Search your deck for up to 3 Basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+45,Wave Splash,
+46,Dig a Little,"Flip a coin. If heads, discard the top card of your opponent's deck."
+48,Bite,
+49,Rolling Tackle,
+50,Headbutt,
+51,Undersea Tunnel,"Flip 3 coins. For each heads, discard the top 3 cards of your opponent's deck."
+52,Passionate Singing,Attach up to 2 Basic Energy cards from your discard pile to your Pokémon in any way you like.
+53,Blazing Shout,This Pokémon also does 30 damage to itself.
+54,Icicle,
+55,Sharp Fin,
+56,Heat Blast,
+57,Rain Splash,
+58,Razor Fin,
+59,Hammer In,
+60,Sweeping Tackle,This attack does 20 less damage for each damage counter on this Pokémon.
+61,Vise Grip,
+62,Water Gun,
+63,Aqua Cannon,"During your next turn, this Pokémon can't attack."
+65,Spiral Kick,
+66,Hydro Kick,
+67,Twisting Strike,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+68,Slightly Spicy,"Flip a coin. If heads, your opponent's Active Pokémon is now Burned."
+69,Relentless Flames,Flip a coin until you get tails. This attack does 30 damage for each heads.
+70,Increasing Spice,"Search your deck for a Basic Fire Energy card and attach it to this Pokémon. Then, shuffle your deck."
+71,Playful Kick,
+72,Raging Claws,This attack does 10 more damage for each damage counter on this Pokémon.
+73,Bright Flame,Discard 2 Fire Energy from this Pokémon.
+74,Stampede,
+75,Concentrated Fire,Flip a coin for each Fire Energy attached to this Pokémon. This attack does 80 damage for each heads.
+76,Gnaw,
+77,Combustion,
+78,Ember,Discard an Energy from this Pokémon.
+79,Bubble Drain,Heal 30 damage from this Pokémon.
+80,Hydro Pump,This attack does 20 more damage for each Water Energy attached to this Pokémon.
+81,Surf,
+82,Aqua Slash,"During your next turn, this Pokémon can't attack."
+83,Stoke,"Search your deck for up to 2 Basic Fire Energy cards and attach them to this Pokémon. Then, shuffle your deck."
+84,Fire Claws,
+86,Flare,
+87,Sharp Fang,
+88,Fire Blast,Discard an Energy from this Pokémon.
+89,Flame Cannon,Your opponent's Active Pokémon is now Burned.
+90,Rest,This Pokémon is now Asleep. Heal 30 damage from it.
+92,Jump,"Flip a coin. If heads, this attack does 10 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+93,Pound,
+94,Kick,
+96,Release Rage,This attack does 50 damage for each Tatsugiri in your discard pile.
+97,Heavy Splash,
+98,Magnetic Switch,Switch this Pokémon with 1 of your Benched Pokémon.
+99,Electro Ball,
+100,Lightning Ball,
+101,Explosion,This Pokémon also does 90 damage to itself.
+102,Mise en Place,"Search your deck for up to 2 Basic Water Energy cards and attach them to 1 of your Basic Pokémon. Then, shuffle your deck."
+103,Curl Up,Put this Pokémon and all attached cards into your hand.
+104,Linear Attack,This attack does 20 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+105,Static Shock,
+107,Electro Paws,Discard all Energy from this Pokémon.
+108,Thunder Shock,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+109,Head Bolt,
+111,Lightning Laser,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+112,Collect,Draw a card.
+113,Glide,
+114,Photon Blaster,"During your next turn, this Pokémon can't attack."
+116,Pendulum Influence,"Flip a coin. If heads, choose an attack from 1 of your opponent's Pokémon in play and use it as this attack."
+117,Psychic Sphere,
+118,Skill Dive,This attack does 50 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+119,Thunder Blast,Discard a Lightning Energy from this Pokémon.
+120,Miracle Force,This Pokémon recovers from all Special Conditions.
+121,Energy Munch,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+122,Forced Sleep,Your opponent chooses 1 of their Benched Pokémon and switches it with their Active Pokémon. The new Active Pokémon is now Asleep.
+123,Gentle Slap,
+124,Joust,"Before doing damage, discard all Pokémon Tools from your opponent's Active Pokémon."
+125,Psyshot,
+126,Rear Kick,
+127,Magical Shot,
+128,Psychic,This attack does 20 more damage for each Energy attached to your opponent's Active Pokémon.
+129,Springy,"During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+130,Flop,
+131,Enveloping Shadow,"Flip a coin. If heads, during your opponent's next turn, they can't play any Item cards from their hand."
+132,Spinning Attack,
+133,Gust,
+134,Balloon Blast,This attack does 30 damage for each damage counter on this Pokémon.
+136,Curse Spreading,Put 8 damage counters on your opponent's Pokémon in any way you like.
+137,Pollen Shot,
+138,Energy Crush,This attack does 50 damage for each Energy attached to all of your opponent's Pokémon.
+139,Pulse Launcher,This Pokémon also does 30 damage to itself.
+143,Yank Away,Choose 2 random cards from your opponent's hand. Your opponent reveals those cards and shuffles them into their deck.
+144,Thunder,This Pokémon also does 20 damage to itself.
+146,Zap Kick,
+147,Moonblast,"During your opponent's next turn, the Defending Pokémon's attacks do 30 less damage (before applying Weakness and Resistance)."
+149,Everyone Discharge,This attack does 20 more damage for each of your Benched Lightning Pokémon. This attack's damage isn't affected by Weakness.
+150,Junk Hunt,Put an Item card from your discard pile into your hand.
+152,Jolt,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+153,Everlasting Darkness,"During your opponent's next turn, they can't play any Item cards from their hand."
+154,Poltergeist,Your opponent reveals their hand. This attack does 60 damage for each Trainer card you find there.
+155,Magical Leaf,"Flip a coin. If heads, this attack does 30 more damage, and heal 30 damage from this Pokémon."
+156,Second Bite,This attack does 10 more damage for each damage counter on your opponent's Active Pokémon.
+157,Headbutt Bounce,
+158,Dash Off,Switch this Pokémon with 1 of your Benched Pokémon.
+159,Underworld Stroll,Your opponent reveals their hand. Choose a Supporter card you find there and put it on the bottom of their deck.
+161,Graveyard Gamboling,This attack does 10 damage for each Psychic Pokémon in your discard pile.
+162,Eye Strength,"During your opponent's next turn, the Defending Pokémon can't retreat."
+164,Last Respects,This attack does 10 more damage for each Psychic Pokémon in your discard pile.
+165,Monkey Beatdown,This Pokémon also does 10 damage to itself.
+166,Raging Punch,This Pokémon also does 20 damage to itself.
+167,Rage Fist,This attack does 70 damage for each Prize card your opponent has taken.
+168,Dynamite Punch,This Pokémon also does 50 damage to itself.
+169,Acu-Punch-Ture,"Choose 1 of your opponent's Active Pokémon's attacks. During your opponent's next turn, that Pokémon can't use that attack."
+170,Kick Shot,"Flip a coin. If tails, this attack does nothing."
+171,Feint,This attack's damage isn't affected by Resistance.
+172,Punch,
+173,Reckless Charge,This Pokémon also does 20 damage to itself.
+174,Jab,
+175,Low Kick,
+176,Avenging Knuckle,"If any of your Fighting Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 120 more damage."
+177,Accelerating Stab,"During your next turn, this Pokémon can't use Accelerating Stab."
+180,Chomp Chomp Bite,"Flip a coin until you get tails. For each heads, discard an Energy from your opponent's Active Pokémon."
+181,Earthquake,This attack also does 30 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+182,Wing Attack,
+183,Payback,"If your opponent has exactly 1 Prize card remaining, this attack does 90 more damage."
+184,Corkscrew Punch,
+185,Mud-Slap,
+186,Skull Bash,
+187,Sandstorm Spray,"Discard 2 Energy from this Pokémon. If you discarded any Energy in this way, your opponent shuffles their Active Pokémon and all attached cards into their deck."
+188,Mega Kick,
+189,Bedrock Breaker,Discard a Stadium in play.
+190,Gigantic Tusks,This Pokémon also does 50 damage to itself.
+192,Adrenaline Hammer,This Pokémon is now Confused.
+193,Claw Slash,
+194,Rampaging Fang,Discard 3 Energy from this Pokémon.
+195,Wild Impact,"During your next turn, this Pokémon can't attack."
+196,Super Poison Breath,Your opponent's Active Pokémon is now Poisoned.
+197,Toxic Strike,Your opponent's Active Pokémon is now Poisoned.
+198,Spit Poison,Your opponent's Active Pokémon is now Poisoned.
+199,Venoshock,"If your opponent's Active Pokémon is Poisoned, this attack does 120 more damage."
+201,Pierce,
+202,Taunt,Switch in 1 of your opponent's Benched Pokémon to the Active Spot.
+203,Doom Decree,"Flip 2 coins. If both of them are heads, your opponent's Active Pokémon is Knocked Out."
+204,Beat,
+205,Whap Down,
+206,Nasty Plot,"Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
+207,Toxic Ripper,"Your opponent's Active Pokémon is now Poisoned. During Pokémon Checkup, put 6 damage counters on that Pokémon instead of 1."
+208,Dark Cutter,
+209,Double-Edged Slash,This Pokémon also does 30 damage to itself.
+210,Hack At,
+212,Darkness Fang,
+213,Crunch,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+214,Continuous Spin,Flip a coin until you get tails. This attack does 50 damage for each heads.
+215,Rolling Shell,"During your opponent's next turn, this Pokémon takes 50 less damage from attacks (after applying Weakness and Resistance)."
+216,Wild Tackle,This Pokémon also does 30 damage to itself.
+217,Knickknack Carrying,"Search your deck for up to 3 Pokémon Tool cards, reveal them, and put them into your hand. Then, shuffle your deck."
+218,Clutch,"During your opponent's next turn, the Defending Pokémon can't retreat."
+219,Poison Gas,Your opponent's Active Pokémon is now Poisoned.
+220,Knock Away,"Flip a coin. If heads, this attack does 90 more damage."
+222,Triple Laser,This attack does 30 damage to 3 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+223,Cybernetic Wheels,Switch this Pokémon with 1 of your Benched Pokémon.
+225,Egg Rolling,Flip a coin until you get tails. This attack does 60 damage for each heads.
+226,Happy Cyclone,Move all Energy from this Pokémon to 1 of your Benched Pokémon.
+228,Flap,
+229,Drag Off,Switch in 1 of your opponent's Benched Pokémon to the Active Spot. This attack does 30 damage to the new Active Pokémon.
+230,Slashing Claw,
+233,Speed Dive,
+234,Tailspin Away,"During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Basic Pokémon."
+235,Power Blast,Discard an Energy from this Pokémon.
+236,Expert Nurturer,"Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
+237,Hypnoblast,Your opponent's Active Pokémon is now Asleep.
+239,Enhanced Fang,"If this Pokémon has a Pokémon Tool attached, this attack does 80 more damage."
+240,Repelling Odor,Switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)
+242,Maddening Scent,This attack does 30 more damage for each of your opponent's Benched Pokémon.
+243,Heavy Stomp,"Flip a coin. If tails, during your next turn, this Pokémon can't attack."
+245,Leg Stomp,"Flip a coin. If tails, during your next turn, this Pokémon can't attack."
+248,Whimsy Tackle,"Flip a coin. If tails, this attack does nothing."
+250,Double Hit,Flip 2 coins. This attack does 30 damage for each heads.
+251,Call for Family,"Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
+252,Fly,"Flip a coin. If tails, this attack does nothing. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+254,Family Attack,This attack does 70 damage for each of your Maushold in play.
+255,Touring,Draw 2 cards.
+256,Speed Attack,
+259,Nosedive,This Pokémon also does 20 damage to itself.
+325,Mini Drain,Heal 10 damage from this Pokémon.
+326,Super Singe,Your opponent's Active Pokémon is now Burned.
+328,Aurora Gain,Heal 30 damage from this Pokémon.
+329,Super Psy Bolt,
+334,String Truss,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+335,Jet Headbutt,
+337,Fire Mane,
+338,Water Splash,"Flip a coin. If heads, this attack does 20 more damage."
+340,Void Return,You may switch this Pokémon with 1 of your Benched Pokémon.
+341,Energy Burst,This attack does 30 damage for each Energy attached to both Active Pokémon.
+345,Dangerous Wave,"Flip 2 coins. If both of them are heads, this attack does 100 more damage."
+346,Splashing Dodge,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+347,Flowery Zephyr,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+348,Rollout,
+349,Fluffy Breeze,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+350,Leaf Drain,Heal 20 damage from this Pokémon.
+351,Tropic Breeze,Move all Energy from this Pokémon to 1 of your Benched Pokémon.
+354,Smashing Horn,This attack's damage isn't affected by Resistance.
+355,Gather Sunlight,"Search your deck for up to 2 Basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+356,Seed Bomb,
+357,Dig Claws,
+359,Magic Whip,Switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)
+360,Entangling Trap,Shuffle each player's Active Pokémon and all attached cards into their deck. (You choose a new Active Pokémon first.)
+362,Scratching Nails,"If your opponent's Active Pokémon already has any damage counters on it, this attack does 120 more damage."
+363,Bind Down,"During your opponent's next turn, the Defending Pokémon can't retreat."
+364,Hook,
+365,Double Spin,Flip 2 coins. This attack does 10 damage for each heads.
+366,Double Stab,Flip 2 coins. This attack does 30 damage for each heads.
+367,Order a Raid,"Choose 1 of your Benched Combee and shuffle that Pokémon and all attached cards into your deck. If you can't shuffle a Combee into your deck, this attack does nothing."
+369,Magnum Punch,
+370,Wild Kick,"Flip a coin. If tails, this attack does nothing."
+371,Assaulting Kick,"If this Pokémon evolved from Nymble during this turn, this attack does 100 more damage."
+373,Blot,Heal 10 damage from this Pokémon.
+374,Slight Splash,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+376,Absorb Life,Heal 30 damage from this Pokémon.
+377,Dead Wood Detention,"During your opponent's next turn, attacks that the Defending Pokémon uses cost ColorlessColorless more."
+379,Ball Roll,Flip a coin until you get tails. This attack does 30 damage for each heads.
+380,Ride the Wind,"Flip a coin. If heads, switch this Pokémon with 1 of your Benched Pokémon."
+381,Covetous Ivy,This attack does 60 damage to 1 of your opponent's Benched Pokémon for each Prize card your opponent has taken. (Don't apply Weakness and Resistance for Benched Pokémon.)
+382,Forest Blast,
+383,Spacing Out,"Flip a coin. If heads, heal 30 damage from this Pokémon."
+385,Steady Firebreathing,
+386,Hyper Voice,
+387,Live Coal,
+389,Revengeful Storm,"If you have more Prize cards remaining than your opponent, this attack does 100 more damage."
+390,Berserker Tackle,This Pokémon also does 50 damage to itself.
+391,Matching,"Search your deck for up to 2 Supporter cards, reveal them, and put them into your hand. Then, shuffle your deck."
+392,Water Pulse,Your opponent's Active Pokémon is now Asleep.
+396,Heat Dive,This Pokémon also does 10 damage to itself.
+397,Blazing Destruction,Discard a Stadium in play.
+399,Singe,Your opponent's Active Pokémon is now Burned.
+400,Overrun,This attack also does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+401,Raging Horns,This attack does 10 more damage for each damage counter on this Pokémon.
+402,Blaze Dash,Discard an Energy from this Pokémon.
+403,Vitality Song,Heal 30 damage from each of your Pokémon.
+404,Burning Voice,This attack does 10 less damage for each damage counter on this Pokémon.
+405,Jealously Singe,Discard the top 2 cards of your opponent's deck.
+406,Flame Surge,"Choose up to 3 of your Benched Pokémon. For each of those Pokémon, search your deck for a Basic Fire Energy card and attach it to that Pokémon. Then, shuffle your deck."
+407,Expert Splasher,"Flip 2 coins. If both of them are heads, this attack does 20 more damage."
+410,Slam,Flip 2 coins. This attack does 100 damage for each heads.
+411,Double Draw,Draw 2 cards.
+412,Ice Wing,
+413,Exciting Dance,"Switch this Pokémon with 1 of your Benched Pokémon. If you do, switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)"
+414,Spiral Shot,Put 2 Energy attached to this Pokémon into your hand.
+416,Fiery Breeze,"If this Pokémon has any damage counters on it, this attack does 90 more damage."
+421,Aqua Dive,This attack does 60 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+423,Frigid Block,"Discard all Energy from this Pokémon. During your opponent's next turn, this Pokémon takes 100 less damage from attacks (after applying Weakness and Resistance)."
+424,Apply Gel,"During your opponent's next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn't happen."
+426,Double-Edge,This Pokémon also does 10 damage to itself.
+428,Slim Screw,"If you have no cards in your hand, this attack can be used for Water."
+429,Chilly,
+431,Magnetic Charge,Attach up to 2 Basic Lightning Energy cards from your discard pile to 1 of your Benched Pokémon.
+432,Speed Ball,
+434,Frost Smash,
+435,Pika Punch,
+436,Dynamic Bolt,"Flip a coin. If tails, discard all Energy from this Pokémon."
+437,Avalanche,This attack also does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+438,Icicle Missile,
+439,Special Horn,"If this Pokémon has any Special Energy attached, this attack does 140 more damage."
+441,Buster Tail,
+442,Hail Blade,You may discard any amount of Water Energy from your Pokémon. This attack does 60 damage for each card you discarded in this way.
+443,Growl,"During your opponent's next turn, the Defending Pokémon's attacks do 20 less damage (before applying Weakness and Resistance)."
+444,Pika Bolt,
+445,Electrocharge,"Search your deck for up to 2 Basic Lightning Energy cards and attach them to this Pokémon. Then, shuffle your deck."
+446,Thunderbolt,Discard all Energy from this Pokémon.
+448,Thunder Wave,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+449,Devastating Wind,Your opponent shuffles their hand into their deck and draws 4 cards.
+451,Fade Out,Put this Pokémon and all attached cards into your hand.
+452,Psych Out,Discard a random card from your opponent's hand.
+454,Boundless Power,"During your next turn, this Pokémon can't attack."
+455,Play Rough,"Flip a coin. If heads, this attack does 30 more damage."
+456,Pulverizing Press,This attack's damage isn't affected by any effects on your opponent's Active Pokémon.
+458,Hang Down,
+459,Stun Needle,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+460,Follow-Up Kerzap,You can use this attack only if this Pokémon used Stun Needle during your last turn.
+463,Electrobullet,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+464,Mach Bolt,
+465,Electric Fist,This attack also does 60 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+468,Sing,Your opponent's Active Pokémon is now Asleep.
+472,Mind Bend,Your opponent's Active Pokémon is now Confused.
+474,Tail Swap,Move all damage counters from 1 of your Benched Pokémon to your opponent's Active Pokémon.
+475,Wondrous Shot,Discard an Energy from this Pokémon.
+476,Ghost Eye,Put 7 damage counters on your opponent's Active Pokémon.
+478,Pummel,"Flip a coin. If heads, this attack does 60 more damage."
+479,Hit and Hide,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+480,Elbow Strike,
+482,Slap Push,
+487,Jumping Press,This attack does 50 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+488,Paralyzing Ball,You may discard 2 Lightning Energy from this Pokémon to make your opponent's Active Pokémon Paralyzed.
+489,Peck,
+490,Jet Wing,"During your next turn, this Pokémon can't attack."
+491,Profound Knowledge,Your opponent's Active Pokémon is now Confused.
+492,Wise Headbutt,"You may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
+494,Eerie Wave,Your opponent's Active Pokémon is now Confused.
+495,Plotter's Command,"Choose 1 of your opponent's Active Pokémon's attacks. During your opponent's next turn, that Pokémon can't use that attack."
+497,Mumble,
+498,Mud Shot,
+499,Scrap Pickup,Put an Item card from your discard pile into your hand.
+500,Fairy Wind,
+501,Brutal Swing,"Flip a coin. If heads, this attack does 20 more damage."
+502,Special Hammer,"If this Pokémon has any Special Energy attached, this attack does 90 more damage."
+504,Combat Tackle,This Pokémon also does 30 damage to itself.
+509,Wild Charge,This Pokémon also does 20 damage to itself.
+510,Needle Crush,Discard an Energy from your opponent's Active Pokémon.
+512,United Wings,This attack does 20 damage for each Pokémon in your discard pile that has the United Wings attack.
+513,Tail-Fishing,"Flip a coin. If heads, search your deck for a card and put it into your hand. Then, shuffle your deck. If tails, discard a card from your hand."
+514,Zen Headbutt,
+516,Spooky Shot,
+517,Earthen Power,"If you have a Stadium in play, this attack does 80 more damage."
+518,Life Sucker,Heal 30 damage from this Pokémon.
+519,Fighting Sword,"If your opponent's Active Pokémon is a Pokémon ex or Pokémon V, this attack does 100 more damage."
+520,Revival Blessing,Put a Pokémon from your discard pile onto your Bench.
+521,Psybeam,Your opponent's Active Pokémon is now Confused.
+524,Rock Throw,
+525,Scary Fangs,"During your opponent's next turn, if this Pokémon is damaged by an attack (even if it is Knocked Out), put 10 damage counters on the Attacking Pokémon."
+528,Rocket Slap,
+529,Poison Sting,Your opponent's Active Pokémon is now Poisoned.
+531,Knuckle Claws,Your opponent's Active Pokémon is now Poisoned.
+532,Make the Assist,Move an Energy from this Pokémon to 1 of your Benched Pokémon.
+534,Reckless Charge Together,"If Falinks is on your Bench, this attack does 90 more damage."
+536,Salt Coating,Heal 20 damage from 1 of your Pokémon.
+538,Knocking Hammer,Discard the top card of your opponent's deck.
+541,Spin Turn,Switch this Pokémon with 1 of your Benched Pokémon.
+544,Dirty Throw,"Discard a card from your hand. If you can't, this attack does nothing."
+546,Night Eyes,Your opponent's Active Pokémon is now Asleep.
+547,Unseen Claw,"If your opponent's Active Pokémon is affected by a Special Condition, this attack does 70 more damage."
+548,Find a Friend,"Search your deck for up to 2 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
+552,Nosequake,This attack also does 30 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+553,Ascension,"Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
+554,Poison Petals,"Your opponent's Active Pokémon is now Poisoned. During Pokémon Checkup, put 6 damage counters on that Pokémon instead of 1."
+556,Cross-Cut,"If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 50 more damage."
+557,Ambush,"Flip a coin. If heads, this attack does 20 more damage."
+559,Colorful Graffiti,You may discard as many Basic Energy cards as you like from your hand. This attack does 40 damage for each type of Basic Energy you discarded in this way.
+560,Delivery Pocket,"Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
+561,Dark Edge,Discard an Energy from this Pokémon.
+562,Accelerate,"If your opponent's Pokémon is Knocked Out by damage from this attack, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+563,Spinning Bird,Discard 2 Energy from this Pokémon.
+565,Psy Bolt,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+566,Headbang,
+567,Salt Cannon,Flip 3 coins. This attack does 60 damage for each heads.
+568,Land Scoop,Put 2 damage counters on 1 of your opponent's Benched Pokémon.
+569,Find a Home,"Search your deck for a Stadium card, reveal it, and put it into your hand. Then, shuffle your deck."
+574,Needle Bone,"Flip a coin. If tails, during your next turn, this Pokémon can't attack."
+575,Rout,This attack does 30 more damage for each of your opponent's Benched Pokémon.
+576,Dread Mountain,Discard the top 4 cards of your deck.
+580,Comeuppance,"During your opponent's next turn, if this Pokémon is damaged by an attack (even if it is Knocked Out), put damage counters on the Attacking Pokémon equal to the damage done to this Pokémon."
+582,Berry Search,Put a Basic Energy card from your discard pile into your hand.
+584,Shoot Through,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+585,Covert Flight,"During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Basic Pokémon."
+586,Dominating Echo,"During your opponent's next turn, they can't play any Special Energy or Stadium cards from their hand."
+588,Dig Away Flash,Your opponent's Active Pokémon is now Paralyzed. Shuffle this Pokémon and all attached cards into your deck.
+590,Yawn,Your opponent's Active Pokémon is now Asleep.
+591,Confront,
+592,Sharp Claws,"Flip a coin. If heads, this attack does 60 more damage."
+593,Slacker's Headstrike,This Pokémon is now Asleep.
+600,Either Face,Choose a player. That player shuffles their hand into their deck and draws 4 cards.
+601,Power Beam,
+602,Send Back,Switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)
+605,Attach,
+608,Gnaw Relentlessly,Put 1 damage counter on each of your opponent's Pokémon for each of your Maushold in play.
+610,Motivate,Attach up to 2 Basic Energy cards from your discard pile to 1 of your Benched Pokémon.
+694,Angry Grudge,Put up to 12 damage counters on this Pokémon. This attack does 20 damage for each damage counter you placed in this way.
+695,Seismic Toss,
+705,Big Hammer,This attack does 30 damage for each card in your hand.
+723,Extreme Current,Discard an Energy from this Pokémon.
+724,Low Sweep,
+725,Aura Sphere,This attack also does 50 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+727,Thunderstrike Tail,You may discard 2 Energy from this Pokémon to have this attack do 100 more damage.
+728,Power Run,"Search your deck for a Basic Energy card and attach it to this Pokémon. Then, shuffle your deck."
+729,Full Throttle,"During your next turn, this Pokémon can't attack."
+737,Smithereen Smash,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+738,Adventuring Together,This attack does 10 more damage for each of your Benched Pokémon.
+744,Lunge,"Flip a coin. If tails, this attack does nothing."
+745,Inviting Scent,Switch in 1 of your opponent's Benched Pokémon to the Active Spot.
+747,Feelin' Fine,Draw a card.
+749,Branch Poke,
+750,Aromatherapy,Heal 30 damage from each of your Pokémon.
+752,Heat Tackle,This Pokémon also does 20 damage to itself.
+753,Eruption,Discard the top card of each player's deck. This attack does 100 more damage for each Energy card discarded in this way.
+754,Steaming Stomp,
+755,Strafe,You may switch this Pokémon with 1 of your Benched Pokémon.
+756,Victory Flame,"During your next turn, this Pokémon can't attack."
+757,Damage Counterpunch,"If this Pokémon has any damage counters on it, this attack does 60 more damage."
+759,Agility,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+760,Cut,
+761,Enticing Pattern,"Search your deck for a Basic Grass Pokémon and put it onto your Bench. Then, shuffle your deck."
+763,Double Headbutt,Flip 2 coins. This attack does 50 damage for each heads.
+764,Spicy Headbutt,This attack's damage isn't affected by Resistance.
+765,Hot Magma,Your opponent's Active Pokémon is now Burned.
+768,Share,Heal 20 damage from 1 of your Benched Pokémon.
+770,Sleep Powder,Your opponent's Active Pokémon is now Asleep.
+771,Powerful Dance,Flip a coin for each Energy attached to this Pokémon. This attack does 90 damage for each heads.
+772,Berry Scent,"Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
+774,Panic-Prompting Pattern,"Flip a coin until you get tails. For each heads, discard a random card from your opponent's hand."
+776,Dangerous Spores,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed and Poisoned."
+777,Lock Up,"During your opponent's next turn, the Defending Pokémon can't retreat."
+778,Hunting Arrow,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+781,Queenly Heel,"During your opponent's next turn, Pokémon can't be played from your opponent's hand to evolve the Defending Pokémon."
+782,Spinning Kick,This Pokémon also does 20 damage to itself.
+784,Sunny Wind,Heal 30 damage from this Pokémon.
+785,Colony Rush,This attack does 40 more damage for each of your Benched Pokémon that has any Grass Energy attached.
+787,Confuse Ray,Your opponent's Active Pokémon is now Confused.
+788,Razor Wing,
+790,Healing Fruit,Heal all damage from 1 of your Benched Pokémon.
+791,Oil Shot,
+794,Will-O-Wisp,
+795,Nine-Tailed Dance,"Put 9 damage counters on 1 of your opponent's Pokémon. During your next turn, this Pokémon can't attack."
+796,Blaze Ball,This attack does 20 more damage for each Fire Energy attached to this Pokémon.
+797,Firebreathing,"Flip a coin. If heads, this attack does 10 more damage."
+798,Scalding Block,"Discard an Energy from this Pokémon. During your opponent's next turn, the Defending Pokémon can't attack."
+799,Hail,This attack does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+800,Freezing Wind,
+801,Quick Attack,"Flip a coin. If heads, this attack does 10 more damage."
+802,Icicle Punch,
+803,Frost Purge,"Flip a coin. If tails, discard all Energy from this Pokémon."
+805,Valiant Evolution,"Switch this Pokémon with 1 of your Benched Pokémon. If you do, search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
+807,Jet Punch,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+808,Justice Kick,"If this Pokémon didn't move from the Bench to the Active Spot this turn, this attack does nothing."
+811,Magnetic Repulsion,You may switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)
+813,Gigantic Bolt,This Pokémon also does 90 damage to itself.
+814,Slight Intrusion,This Pokémon also does 10 damage to itself.
+815,Energize,Attach a Basic Lightning Energy card from your discard pile to this Pokémon.
+817,Wondrous Moon,You may move any amount of Psychic Energy from your Pokémon to your other Pokémon in any way you like.
+818,Psychic Assault,This attack does 10 more damage for each damage counter on your opponent's Active Pokémon.
+822,Rapid Spin,"Switch this Pokémon with 1 of your Benched Pokémon. If you do, switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)"
+823,Kaboom Doll,"Put damage counters on your opponent's Active Pokémon until its remaining HP is 10. If you placed any damage counters in this way, this attack also does 120 damage to this Pokémon."
+825,Healing Pheromone,Heal 60 damage from 1 of your Pokémon.
+826,Phantom Queen,Put 3 damage counters on each of your opponent's Benched Pokémon that has any damage counters on it.
+827,Cold Tea,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+828,Hole-Diggin' Noggin,Discard the top card of your deck.
+829,Hide,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+831,Raging and Rocking,"For each Fighting Energy attached to this Pokémon, discard the top card of your opponent's deck."
+832,Land Crush,
+833,Knuckle Punch,
+836,Knuckle Impact,"During your next turn, this Pokémon can't attack."
+838,Finishing Fang,"If your opponent's Active Pokémon has no damage counters on it before this attack does damage, this attack does nothing."
+840,Iron Defense,"Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
+843,Splattering Poison,Both Active Pokémon are now Poisoned.
+845,Energy Burner,This attack does 30 more damage for each Energy attached to your opponent's Active Pokémon.
+846,Swirling Tail,"Flip a coin. If heads, put your opponent's Active Pokémon and all attached cards into your opponent's hand."
+848,Screw Tail,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+850,Trip Over,"Flip a coin. If heads, this attack does 20 more damage."
+851,First Freeze,"If you go second and it's your first turn, your opponent's Active Pokémon is now Paralyzed."
+854,Mountain Hurl,Discard the top 2 cards of your deck.
+855,Lightning Rampage,"If your Benched Pokémon have any damage counters on them, this attack does 100 more damage."
+857,Tiny Bolt,
+858,Volt Wave,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+859,Electric Ball,
+860,Suction Shock,"Switch in 1 of your opponent's Benched Pokémon to the Active Spot. If you do, this attack does 60 damage to the new Active Pokémon, and then flip a coin. If heads, that Pokémon is now Paralyzed."
+862,Shake and Discharge,This attack also does 10 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+863,Grasping Draw,Draw cards until you have 7 cards in your hand.
+864,Slap Slap,Flip 2 coins. This attack does 30 damage for each heads.
+865,Whiny Voice,Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck.
+867,Power Cyclone,Move an Energy from this Pokémon to 1 of your Benched Pokémon.
+870,Moon Press,
+875,Blasting Tackle,This attack also does 20 damage to 1 of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+877,Double Whip,Flip 2 coins. This attack does 100 damage for each heads.
+878,Splitting Beam,This attack also does 20 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+879,Gaia Press,This Pokémon also does 30 damage to itself.
+881,Alluring Fireball,Switch in 1 of your opponent's Benched Pokémon to the Active Spot. This attack does 30 damage to the new Active Pokémon.
+882,Flame Cloak,Attach a Basic Fire Energy card from your discard pile to this Pokémon.
+884,Steam Artillery,
+885,Aqua Impact,This attack does 30 more damage for each Colorless in your opponent's Active Pokémon's Retreat Cost.
+887,Echoed Voice,"During your next turn, this Pokémon's Echoed Voice attack does 100 more damage (before applying Weakness and Resistance)."
+888,Leer,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+889,Loud Mix,This attack does 30 more damage for each different type of Pokémon on your Bench.
+891,Mischievous Crunch,This attack does 30 damage for each Psychic Energy attached to this Pokémon.
+892,Splash,
+896,Iron Collecting,Put up to 2 Basic Metal Energy cards from your discard pile into your hand.
+898,Blubbering,Your opponent's Active Pokémon is now Confused.
+900,Rumble,"During your opponent's next turn, the Defending Pokémon can't retreat."
+901,Falling Press,"Flip a coin. If heads, this attack does 80 more damage."
+902,Poison Ring,"Your opponent's Active Pokémon is now Poisoned. During your opponent's next turn, that Pokémon can't retreat."
+903,Muddy Hammer,Discard the top card of your opponent's deck.
+904,Combustion Chain,This attack does 50 more damage for each Energy attached to your opponent's Active Pokémon.
+907,Take Down,This Pokémon also does 10 damage to itself.
+912,Try Bouncing,"Flip a coin. If tails, this attack does nothing."
+914,Entwining Entrapment,"During your opponent's next turn, the Defending Pokémon can't retreat."
+915,Tail Smack,
+917,Levin Strike,Discard 2 Lightning Energy from this Pokémon. This attack does 220 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+918,Thunder Jolt,This Pokémon also does 10 damage to itself.
+919,Thunderous Edge,This attack's damage isn't affected by any effects on your opponent's Active Pokémon.
+920,Rapid Draw,Draw 2 cards.
+921,Techno Turbo,Attach a Basic Lightning Energy card from your discard pile to 1 of your Benched Pokémon.
+922,Shared Peace,Each player draws 3 cards.
+924,Powerful Steps,"Search your deck for up to 2 Basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
+928,Antique Collecting,Put up to 2 in any combination of Item cards and Pokémon Tool cards from your discard pile into your hand.
+929,Pour Tea,Put 5 damage counters on your opponent's Active Pokémon.
+931,Two Four-ocious,"If your opponent has exactly 2 or 4 Prize cards remaining, this attack does 120 more damage."
+932,Big Bite,"During your opponent's next turn, the Defending Pokémon can't retreat."
+934,Dig,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+939,Poison Shard,Your opponent's Active Pokémon is now Poisoned.
+940,Poisonous Gem,Your opponent's Active Pokémon is now Poisoned.
+941,Burning Darkness,This attack does 30 more damage for each Prize card your opponent has taken.
+945,Coordinated Pack,"For each of your Benched Houndour, search your deck for a Basic Darkness Energy card and attach it to that Houndour. Then, shuffle your deck."
+946,Focus Fangs,"Flip a coin. If tails, this attack does nothing."
+947,Daring Strike,"If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 70 more damage."
+948,Shadow Slash,Discard an Energy from this Pokémon.
+949,Punishing Scissors,This attack does 50 more damage for each of your opponent's Pokémon in play that has an Ability.
+951,Dark Slumber,Your opponent's Active Pokémon is now Asleep.
+952,Night Cyclone,Move all Energy from this Pokémon to your Benched Pokémon in any way you like.
+954,Slashing Steel,"During your next turn, this Pokémon can't use Slashing Steel."
+955,Suffocating Gas,
+957,Defense Curl,"Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
+959,Mirror Draw,Draw cards until you have the same number of cards in your hand as your opponent.
+961,Melt,
+962,Oracle Press,"During your opponent's next turn, prevent all effects of attacks used by your opponent's Pokémon done to this Pokémon. (Damage is not an effect.)"
+963,Extrasensory,"If you have the same number of cards in your hand as your opponent, this attack does 90 more damage."
+964,Metal-bolize,"Search your deck for up to 2 Basic Metal Energy cards and attach them to this Pokémon. Then, shuffle your deck."
+965,Full Metal Knuckle,This attack does 30 more damage for each Metal Energy attached to this Pokémon.
+966,Metal Claw,
+967,Fury Cutter,"Flip 3 coins. If 1 of them is heads, this attack does 20 more damage. If 2 of them are heads, this attack does 60 more damage. If all of them are heads, this attack does 120 more damage."
+969,Dragon Tail,Flip 2 coins. This attack does 70 damage for each heads.
+970,Strike Down,"If your opponent's Active Pokémon has 4 or more damage counters on it, that Pokémon is Knocked Out."
+971,Massive Rend,
+973,Hug,"During your opponent's next turn, the Defending Pokémon can't retreat."
+974,Feint Attack,"This attack does 50 damage to 1 of your opponent's Pokémon. This attack's damage isn't affected by Weakness or Resistance, or by any effects on that Pokémon."
+975,Pitch-Black Blade,"During your next turn, this Pokémon can't attack."
+976,Hypnotic Ray,Your opponent's Active Pokémon is now Asleep.
+981,Tail Snap,
+983,Mighty Meteor,"Flip a coin. If heads, this attack does 140 more damage. If tails, during your next turn, this Pokémon can't attack."
+984,Outrage,This attack does 10 more damage for each damage counter on this Pokémon.
+985,Evil Claw,"If the Defending Pokémon is a Basic Pokémon, it can't attack during your opponent's next turn."
+986,Hound's Fang,This Pokémon also does 30 damage to itself.
+987,Future Sight,Look at the top 3 cards of either player's deck and put them back in any order.
+988,Cursed Slug,"If your opponent has 3 or fewer cards in their hand, this attack does 120 more damage."
+989,Triple Nose,Flip 3 coins. This attack does 40 damage for each heads.
+990,Iron Buster,"During your next turn, this Pokémon can't attack."
+991,Triple Cutter,Flip 3 coins. This attack does 10 damage for each heads.
+992,Spinning Draw,Draw a card.
+994,Wild Drift,"During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+996,Soothing Lullaby,"Your opponent's Active Pokémon is now Asleep. During Pokémon Checkup, your opponent flips 2 coins instead of 1. If either of them is tails, that Pokémon is still Asleep."
+997,Blustery Wind,You may discard a Stadium in play.
+999,Spike Draw,Draw 2 cards.
+1001,Cheer Up,Attach an Energy card from your hand to 1 of your Pokémon.
+1007,Fluffy Guard,"During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+1010,Damage Rush,Flip a coin until you get tails. This attack does 30 more damage for each heads.
+1012,Never Ever Enough,"Look at the top 3 cards of your deck. You may put those cards into your hand. If you don't, discard those cards and draw 3 cards."
+1013,Slip 'n' Roll,"During your next turn, this Pokémon can't use Slip 'n' Roll."
+1014,Disarming Voice,Your opponent's Active Pokémon is now Confused.
+1015,Stompy Stomp,Flip 2 coins. This attack does 10 damage for each heads.
+1019,Chomp Chomp Panic,This attack does 50 damage for each Colorless in your opponent's Active Pokémon's Retreat Cost.
+1023,Finest Selection,Flip 3 coins. Put a number of cards up to the number of heads from your discard pile into your hand.
+1024,Perfume Press,Your opponent's Active Pokémon is now Confused.
+1026,Synchronized Feathers,"If Flamigo is on your Bench, this attack also does 60 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+1029,Nicked Nibble,Discard the top card of your opponent's deck.
+1033,Confounding Cologne,Your opponent's Active Pokémon is now Confused.
+1034,High-Impact Kick,"Flip a coin. If tails, this Pokémon also does 60 damage to itself."
+1079,Static Slap,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+1081,Tail Whap,
+1082,Delve,Put up to 2 Item cards from your discard pile into your hand.
+1087,Leech Seed,Heal 20 damage from this Pokémon.
+1090,Dangerous Toxwhip,Your opponent's Active Pokémon is now Confused and Poisoned.
+1091,Withdraw,"Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
+1093,Gnaw the Wound,This attack does 10 more damage for each damage counter on your opponent's Active Pokémon.
+1094,Free Diving,Put up to 3 Basic Water Energy cards from your discard pile into your hand.
+1096,Acid Spray,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+1097,Twin Cannons,Discard up to 2 Basic Water Energy cards from your hand. This attack does 140 damage for each card you discarded in this way.
+1099,Menacing Fangs,Your opponent discards 2 cards from their hand.
+1100,Whirlwind,Switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)
+1101,Bye-Bye Flight,"Choose 1 of your opponent's Benched Pokémon. Shuffle that Pokémon and all attached cards into their deck, and then shuffle this Pokémon and all attached cards into your deck. If your opponent has no Benched Pokémon, this attack does nothing."
+1102,Charge,"Search your deck for a Basic Lightning Energy card and attach it to this Pokémon. Then, shuffle your deck."
+1106,Poison Horn,Your opponent's Active Pokémon is now Poisoned.
+1109,Superpowered Horns,
+1110,Fetch Family,"Search your deck for up to 3 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
+1112,Venomous Impact,Your opponent's Active Pokémon is now Poisoned.
+1114,Moon-Viewing Invitation,"Search your deck for up to 3 Clefairy and put them onto your Bench. Then, shuffle your deck."
+1115,Smack,
+1116,Follow Me,Switch in 1 of your opponent's Benched Pokémon to the Active Spot.
+1117,More Moon,"If your opponent's Pokémon is Knocked Out by damage from this attack, take 1 more Prize card."
+1118,Drool,
+1121,Spore Ball,Your opponent's Active Pokémon is now Asleep.
+1123,Mud Bomb,
+1124,Spread Filaments,"Flip 2 coins. Search your deck for a number of Grass Pokémon up to the number of heads and put them onto your Bench. Then, shuffle your deck."
+1130,Zzzt,
+1133,Brave Wing,"If this Pokémon has any damage counters on it, this attack does 100 more damage."
+1134,Explosive Vortex,Discard 3 Energy from this Pokémon.
+1135,Leaf Munch,"If your opponent's Active Pokémon is a Grass Pokémon, this attack does 30 more damage."
+1137,Defensive Posture,"Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
+1146,Spike Rend,"If your opponent's Active Pokémon already has any damage counters on it, this attack does 100 more damage."
+1147,Queen Press,"During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Basic Pokémon."
+1148,Lunge Out,
+1149,Lead,"Search your deck for a Supporter card, reveal it, and put it into your hand. Then, shuffle your deck."
+1151,Friend Tackle,"If you played a Supporter card from your hand during this turn, this attack does 90 more damage."
+1154,Perplexing Powder,"Your opponent's Active Pokémon is now Confused. During your opponent's next turn, they can't play any Item cards from their hand."
+1155,Speed Wing,
+1156,Nadir Needle,"If you have no cards in your hand, this attack does 120 more damage, and your opponent's Active Pokémon is now Paralyzed and Poisoned."
+1159,Beak Catch,"Search your deck for up to 3 cards and put them into your hand. Then, shuffle your deck."
+1162,Heat Wave,Your opponent's Active Pokémon is now Burned.
+1163,Mirrored Flames,"If you have the same number of cards in your hand as your opponent, this attack does 140 more damage."
+1166,Beam,
+1167,Come Here Right Meow,"Flip a coin. If heads, switch in 1 of your opponent's Benched Pokémon to the Active Spot."
+1170,Torrid Torrent,Attach up to 2 Basic Fire Energy cards from your discard pile to this Pokémon.
+1171,Dynamite Fang,Discard 2 Fire Energy from this Pokémon.
+1172,Overthink,"During your opponent's next turn, whenever they flip a coin, treat it as tails."
+1174,Bubble,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+1176,Frog Hop,"Flip a coin. If heads, this attack does 60 more damage."
+1177,Spit Up,
+1178,Slow-Acting Acid,"At the end of your opponent's next turn, put 12 damage counters on the Defending Pokémon."
+1180,Mach Turn,Switch this Pokémon with 1 of your Benched Pokémon.
+1181,Junk Magnet,Put up to 2 Item cards from your discard pile into your hand.
+1183,Ballistic Beak,This attack does 30 more damage for each damage counter on this Pokémon.
+1186,Hollow Dive,Put 3 damage counters on your opponent's Benched Pokémon in any way you like.
+1187,Thumpalanche,Discard the top 5 cards of your deck. This attack does 80 damage for each Pokémon with a Retreat Cost of exactly 4 that you discarded in this way.
+1188,Heavy Impact,
+1189,Vaporize,Discard a Water Energy from your opponent's Active Pokémon.
+1190,Teleportation Attack,Switch this Pokémon with 1 of your Benched Pokémon.
+1191,Mountain Mashing,Discard the top card of your opponent's deck.
+1195,Tingle,
+1196,Watering,
+1197,Poisonous Whip,Your opponent's Active Pokémon is now Poisoned.
+1198,Tentacular Panic,"Flip a coin until you get tails. This attack does 90 damage for each heads. If the first flip is tails, your opponent's Active Pokémon is now Confused."
+1199,Dynamic Roll,"During your next turn, attacks used by this Pokémon do 120 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+1200,Rock Blaster,This attack's damage isn't affected by Resistance.
+1203,Sea Bathing,"Heal 30 damage from this Pokémon, and it recovers from all Special Conditions."
+1205,Package Deal,Draw 2 cards.
+1206,Leek Clobber,
+1208,Thrash,"Flip a coin. If tails, this Pokémon also does 20 damage to itself. If heads, this attack does 20 more damage."
+1210,Mountain Ramming,Discard the top card of your opponent's deck.
+1211,Mountain Chopping,Discard the top 2 cards of your opponent's deck.
+1214,Rock Cannon,Flip a coin until you get tails. This attack does 40 damage for each heads.
+1216,Tiny Charge,
+1217,Big Explosion,This Pokémon also does 60 damage to itself.
+1219,Gummy Press,"During your opponent's next turn, the Defending Pokémon's Retreat Cost is Colorless more."
+1221,Aquatic Rescue,Put up to 4 Pokémon from your discard pile into your hand.
+1222,Super Splash,
+1223,Rant and Rave,This Pokémon is now Confused.
+1224,Raging Smash,"If this Pokémon isn't Confused, this attack does nothing."
+1225,Bubble Beam,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+1226,Heroic Punch,"Flip a coin. If heads, this attack does 150 more damage."
+1227,Mind Jack,This attack does 30 more damage for each of your opponent's Benched Pokémon.
+1228,Dimensional Hand,This attack can be used even if this Pokémon is on the Bench.
+1229,Stiffen,"During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+1231,Big Yawn,Both Active Pokémon are now Asleep.
+1232,Laid-Back Tackle,"If this Pokémon evolved during this turn, this attack does nothing."
+1233,Dual Splash,This attack does 50 damage to 2 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1234,Aurora Beam,
+1235,Sticky Jail,"During your opponent's next turn, attacks used by the Defending Pokémon cost Colorless more, and its Retreat Cost is Colorless more."
+1236,Sludge Bomb,
+1237,Shell Press,"During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+1238,Protect Charge,"During your opponent's next turn, this Pokémon takes 80 less damage from attacks (after applying Weakness and Resistance)."
+1240,Hit Twice,Flip 2 coins. This attack does 10 damage for each heads.
+1241,Bone Throw,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1243,Twister Kick,This attack does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) Switch this Pokémon with 1 of your Benched Pokémon.
+1245,Excited Punch,"During your next turn, this Pokémon's Excited Punch attack does 60 more damage (before applying Weakness and Resistance)."
+1246,Wrack Down,
+1247,Charismatic Drill,"If you played Giovanni's Charisma from your hand during this turn, this attack does 140 more damage."
+1248,Triple Draw,Draw 3 cards.
+1249,Incessant Punching,Flip 4 coins. This attack does 100 damage for each heads.
+1250,Blinding Ink,"During your opponent's next turn, if the Defending Pokémon tries to use an attack, your opponent flips 2 coins. If either of them is tails, that attack doesn't happen."
+1251,Swim Freely,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+1252,Aqua Horn,This attack does 30 more damage for each Water Energy attached to this Pokémon.
+1253,Swift,"This attack's damage isn't affected by Weakness or Resistance, or by any effects on your opponent's Active Pokémon."
+1255,Flare Combo,"If Electabuzz is on your Bench, this attack does 80 more damage."
+1256,Gather the Crew,"Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
+1257,Rage,This attack does 10 more damage for each damage counter on this Pokémon.
+1258,Destructive Flame,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+1259,Fighting Blaze,"If your opponent's Active Pokémon is a Pokémon ex or Pokémon V, this attack does 90 more damage."
+1260,Tentacular Return,Put an Energy attached to your opponent's Active Pokémon into their hand.
+1261,Aqua Split,This attack also does 30 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1263,Devolution Ray,"If your opponent's Active Pokémon is an evolved Pokémon, devolve it by putting the highest Stage Evolution card on it into your opponent's hand."
+1264,Thudding Press,This Pokémon also does 30 damage to itself.
+1265,Tumbling Attack,"Flip a coin. If heads, this attack does 20 more damage."
+1266,Suspicious Gas,Your opponent's Active Pokémon is now Confused.
+1267,Push Down,Switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)
+1268,Boulder Crush,
+1272,Reckless Throw,"If you have more Prize cards remaining than your opponent, this attack does 90 more damage."
+1273,Splashy Splash,"Flip a coin until you get tails. For each heads, draw a card."
+1274,Hyper Beam,Discard an Energy from your opponent's Active Pokémon.
+1275,Double Scratch,Flip 2 coins. This attack does 70 damage for each heads.
+1276,Draining Blade,Heal 30 damage from this Pokémon.
+1277,Blizzard,This attack also does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1279,Hammer Arm,Discard the top card of your opponent's deck.
+1280,Guillotine,
+1281,Bang Boom Chain,"Before doing damage, you may discard any number of Pokémon Tools from your Pokémon. This attack does 40 more damage for each card you discarded in this way."
+1286,Tactful Tangling,"If you played Erika's Invitation from your hand during this turn, this attack does 60 more damage."
+1287,Triple Strike,Flip 3 coins. This attack does 10 damage for each heads.
+1288,Sprinkle Water,
+1289,Psypower,Put 3 damage counters on your opponent's Pokémon in any way you like.
+1290,Heart-Stopping Kiss,"If your opponent's Active Pokémon is Asleep, it is Knocked Out."
+1291,Icy Wind,Your opponent's Active Pokémon is now Asleep.
+1292,Electro Combo,"If Magmar is on your Bench, this attack does 40 more damage."
+1295,Fighting Lightning,"If your opponent's Active Pokémon is a Pokémon ex or Pokémon V, this attack does 90 more damage."
+1296,Conversion 4,"Choose Grass, Fire, Water, Lightning, Psychic, Fighting, Darkness, Metal, or Dragon type. Until the Defending Pokémon leaves the Active Spot, its Weakness is now that type. (The amount of Weakness doesn't change.)"
+1297,Salt Water,"Flip a coin. If heads, search your deck for up to 2 Basic Water Energy cards and attach them to this Pokémon. Then, shuffle your deck."
+1298,Crabhammer,
+1300,Tongue-Tied,"During your opponent's next turn, the Defending Pokémon can't attack."
+1301,Spinning Fumes,This attack also does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1303,Helpful Slash,Attach a Basic Grass Energy card from your discard pile to 1 of your Benched Pokémon.
+1304,Slicing Blade,
+1305,Hop on My Back,"Search your deck for up to 2 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
+1306,Aqua Edge,
+1307,Splup,
+1308,Colorful Friends,"Search your deck for up to 3 Pokémon of different types, reveal them, and put them into your hand. Then, shuffle your deck."
+1309,Skip,
+1310,Spiral Drain,Heal 30 damage from this Pokémon.
+1311,Fighting Whirlpool,"If your opponent's Active Pokémon is a Pokémon ex or Pokémon V, this attack does 90 more damage."
+1314,Dragon Pulse,Discard the top 2 cards of your deck.
+1318,Reflective Barrier,"During your opponent's next turn, if this Pokémon is damaged by an attack (even if it is Knocked Out), put damage counters on the Attacking Pokémon equal to the damage done to this Pokémon."
+1319,Psyslash,Discard 2 Energy from this Pokémon.
+1327,Multishot Lightning,This attack also does 90 damage to 1 of your opponent's Benched Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1328,Blazing Flight,Discard 2 Fire Energy from this Pokémon. This attack does 120 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1330,Draconic Whip,
+1331,Genome Hacking,Choose 1 of your opponent's Active Pokémon's attacks and use it as this attack.
+1383,Stealthy Shuriken,This attack does 40 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1384,Torrential Slash,"If your opponent's Active Pokémon already has any damage counters on it, this attack does 120 more damage."
+1385,Scrappy Spark,Flip a coin until you get tails. This attack does 30 more damage for each heads.
+1394,Triple Spin,Flip 3 coins. This attack does 10 damage for each heads.
+1395,Daunting Eyes,"Flip a coin until you get tails. For each heads, shuffle an Energy attached to your opponent's Active Pokémon into their deck."
+1396,Cutting Wind,
+1397,Frost Bullet,This attack also does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1400,Arm Thrust Needle,"During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Pokémon that have an Ability, except any Simisage."
+1403,Crag Bash,"During your opponent's next turn, this Pokémon takes 100 less damage from attacks from Evolution Pokémon (after applying Weakness and Resistance)."
+1404,Quick Blow,"Flip a coin. If heads, this attack does 20 more damage."
+1408,Protect,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+1410,Satellite Beam,This attack does 30 damage for each Energy card in your opponent's discard pile.
+1411,Brain Shake,Your opponent's Active Pokémon is now Confused.
+1414,Clinging Spore,Attach a Basic Grass Energy card from your hand to 1 of your Benched Pokémon.
+1415,Vine Slap,
+1418,Mushroom Drain,Heal 30 damage from this Pokémon.
+1419,Leaf Bringer,Attach up to 2 Basic Grass Energy cards from your discard pile to 1 of your Pokémon.
+1420,Binding Greed,"During your opponent's next turn, attacks used by the Defending Pokémon cost ColorlessColorless more."
+1421,Scorching Heater,"During your opponent's next turn, if this Pokémon is damaged by an attack (even if it is Knocked Out), put 6 damage counters on the Attacking Pokémon."
+1423,Searing Flame,Your opponent's Active Pokémon is now Burned.
+1425,Dual Turbo,Choose up to 2 of your Benched Pokémon and attach a Basic Fire Energy card from your discard pile to each of them.
+1429,Rolling Fireball,Put an Energy attached to this Pokémon into your hand.
+1431,Magma Punch,
+1432,Fiery Fighting Spirit,"Search your deck for a Basic Fire Energy card and attach it to this Pokémon. Then, shuffle your deck."
+1434,Scorching Bazooka,This attack does 40 more damage for each Fire Energy attached to this Pokémon.
+1435,Heat Ray,"During your next turn, this Pokémon can't use Heat Ray."
+1436,Flare Bringer,Attach up to 2 Basic Fire Energy cards from your discard pile to 1 of your Pokémon.
+1437,Megafire of Envy,"If any of your Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 90 more damage."
+1440,Whirltide,"Reveal the top 6 cards of your deck. This attack does 60 damage to 1 of your opponent's Pokémon for each Energy card you find there. Then, discard those Energy cards and shuffle the other cards back into your deck. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+1441,Hydro Splash,
+1443,Smokescreen Shot,"During your opponent's next turn, if the Defending Pokémon tries to use an attack, your opponent flips a coin. If tails, that attack doesn't happen."
+1444,Drawup Power,"Search your deck for an Energy card, reveal it, and put it into your hand. Then, shuffle your deck."
+1445,Hypno Splash,Your opponent's Active Pokémon is now Asleep.
+1446,Ice Shard,"If your opponent's Active Pokémon is a Fighting Pokémon, this attack does 30 more damage."
+1447,Hydro Lander,Attach up to 3 Basic Fighting Energy cards from your discard pile to your Benched Pokémon in any way you like.
+1448,Sonic Dive,Discard 2 Energy from this Pokémon. This attack does 120 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1449,Buoyant Healing,Heal 120 damage from 1 of your Benched Pokémon.
+1450,Teleportation Burst,You may switch this Pokémon with 1 of your Benched Pokémon.
+1451,Prize Count,"If you have more Prize cards remaining than your opponent, this attack does 80 more damage."
+1454,Liquid Lashing,This attack also does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1458,Icicle Sole,Put damage counters on 1 of your opponent's Pokémon until its remaining HP is 30.
+1459,Trop Kick,"Heal 30 damage from this Pokémon, and it recovers from all Special Conditions."
+1462,Sneaky Snacking,"Flip a coin. If heads, discard a random card from your opponent's hand."
+1464,Powerful Cross,This attack does 20 damage for each card in your opponent's hand.
+1466,Aqua Blade,
+1467,Swing and Skedaddle,"Discard an Energy from this Pokémon. If you do, switch it with 1 of your Benched Pokémon."
+1468,Fury Headbutt,Flip 3 coins. This attack does 10 damage for each heads.
+1469,Vibration,
+1470,Triple Whip,Flip 3 coins. This attack does 70 damage for each heads.
+1472,Supplemental Swallow-Up,Look at the top 5 cards of your deck. You may attach any number of Basic Energy cards you find there to this Pokémon. Shuffle the other cards back into your deck.
+1474,Refrigerated Stream,"If the Defending Pokémon is an Evolution Pokémon, it can't attack during your opponent's next turn."
+1475,Snow Bringer,Attach up to 2 Basic Water Energy cards from your discard pile to 1 of your Pokémon.
+1476,Wrathful Blade,Discard 2 Energy from this Pokémon.
+1477,Transfer Charge,Attach up to 2 Basic Psychic Energy cards from your discard pile to your Pokémon in any way you like.
+1478,Photon Kinesis,This attack does 30 more damage for each Psychic Energy attached to all of your Pokémon.
+1479,Crackling Shot,This attack does 30 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1480,Plus Damage,This attack does 10 more damage for each damage counter on your opponent's Active Pokémon.
+1484,Burst of Braying,Choose Basic Lightning Energy cards from your discard pile up to the number of Prize cards your opponent has taken and attach them to your Pokémon in any way you like.
+1486,Flail Around,Flip 3 coins. This attack does 10 damage for each heads.
+1488,Crushing Short,"Before doing damage, discard all Pokémon Tools from your opponent's Active Pokémon."
+1489,Raging Thunder,This attack also does 40 damage to 1 of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1490,Pep Up,"Shuffle your hand into your deck. Then, draw a card for each Benched Pokémon (both yours and your opponent's)."
+1492,Vengeful Shock,"If any of your Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 90 more damage, and your opponent's Active Pokémon is now Paralyzed."
+1495,Arm Press,
+1496,Amp You Very Much,"If your opponent's Pokémon is Knocked Out by damage from this attack, take 1 more Prize card."
+1500,Luster Purge,Discard 3 Energy from this Pokémon.
+1501,Psypunch,
+1502,Genome Spiral,Move all Energy from this Pokémon to your Benched Pokémon in any way you like.
+1503,Ominous Eyes,Put 3 damage counters on 1 of your opponent's Pokémon.
+1504,Hollow Hands,Put 5 damage counters on your opponent's Benched Pokémon in any way you like.
+1507,Shadow Bind,"During your opponent's next turn, the Defending Pokémon can't retreat."
+1510,Glittering Eyes,"If Tulip is in your discard pile, this attack does 70 more damage."
+1511,Mountain Scrounging,"Look at the top card of your deck. You may put that card into your hand. If you don't, discard that card and draw a card."
+1514,Alloy Aswing,"If this Pokémon has any Metal Energy attached, this attack does 40 more damage."
+1515,Crushing Blow,Discard an Energy from your opponent's Active Pokémon.
+1516,Alloyed Hammer,"If this Pokémon has any Metal Energy attached, this attack does 120 more damage."
+1518,Roaring Scream,This attack does 20 damage to 1 of your opponent's Pokémon for each damage counter on this Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1521,Continuous Coin Toss,Flip a coin until you get tails. This attack does 20 damage for each heads.
+1522,Laser Blade,"During your next turn, this Pokémon can't attack."
+1523,Hard Headbutt,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+1525,Toxic,"Flip a coin. If heads, your opponent's Active Pokémon is now Poisoned. During Pokémon Checkup, put 2 damage counters on that Pokémon instead of 1."
+1527,Toxic Sting,"Flip a coin. If heads, your opponent's Active Pokémon is now Poisoned. During Pokémon Checkup, put 2 damage counters on that Pokémon instead of 1."
+1528,Swelling Power,Attach a Basic Fighting Energy card from your hand to 1 of your Pokémon.
+1529,Magma Purge,Discard up to 4 Energy from your Pokémon. This attack does 60 damage for each card you discarded in this way.
+1533,Beatdown,
+1534,Three-Step Strike,Flip 3 coins. This attack does 20 damage for each heads.
+1535,Whip Expert,"If you attached a Pokémon Tool card from your hand to this Pokémon during this turn, this attack does 70 more damage."
+1537,Bandit's Fist,"During your next turn, this Pokémon can't use Bandit's Fist."
+1538,Gravitational Tackle,This attack does 20 damage for each Colorless in your opponent's Active Pokémon's Retreat Cost.
+1540,Gaia Punk,Discard 3 Lightning Energy from your Pokémon.
+1542,Stone Edge,"Flip a coin. If heads, this attack does 20 more damage."
+1543,Corner,"During your opponent's next turn, the Defending Pokémon can't retreat."
+1544,Rocky Tackle,This Pokémon also does 30 damage to itself.
+1546,Unhinged Scissors,"If this Pokémon is affected by a Special Condition, this attack does 160 more damage."
+1547,Boiled Press,This Pokémon is now Burned.
+1549,Combat Beak,This attack does 20 more damage for each of your opponent's Benched Pokémon.
+1550,Stomp Off,Discard the top card of your opponent's deck.
+1551,Burning Turbulence,This Pokémon also does 90 damage to itself. Your opponent's Active Pokémon is now Burned.
+1552,Earthen Spike,"During your next turn, this Pokémon can't attack."
+1553,Sand Bringer,Attach up to 2 Basic Fighting Energy cards from your discard pile to 1 of your Pokémon.
+1554,Arrogant Impact,"If this Pokémon has 4 or more damage counters on it, this attack does nothing."
+1555,Supersonic,"Flip a coin. If heads, your opponent's Active Pokémon is now Confused."
+1557,Leech Life,Heal from this Pokémon the same amount of damage you did to your opponent's Active Pokémon.
+1558,Echoing Madness,"Choose Item cards or Supporter cards. During your opponent's next turn, they can't play any of the chosen cards from their hand."
+1560,Drawareness,You may discard any number of cards from your hand until you have 4 or fewer. Draw cards until you have 5 cards in your hand.
+1561,Enhanced Blade,"If this Pokémon has a Pokémon Tool attached, this attack does 60 more damage."
+1563,Cat Kick,
+1564,Dishonest Swap,Move all damage counters from 1 of your Benched Pokémon to your opponent's Active Pokémon.
+1567,Venomous Hit,Your opponent's Active Pokémon is now Poisoned.
+1568,Chuck,Discard any number of Pokémon Tool cards from your hand. This attack does 50 damage for each card you discarded in this way.
+1574,Energizer Wheel,Move 2 Darkness Energy from this Pokémon to 1 of your Benched Pokémon.
+1575,Bounce,Switch this Pokémon with 1 of your Benched Pokémon.
+1576,Punishing Kick,This attack does 40 more damage for each damage counter on your opponent's Active Pokémon.
+1577,Rampaging Hammer,"During your next turn, this Pokémon can't attack."
+1578,Frenzied Gouging,"Knock Out your opponent's Active Pokémon. If your opponent's Active Pokémon is Knocked Out in this way, this Pokémon does 200 damage to itself."
+1579,Calamity Storm,"You may discard a Stadium in play. If you do, this attack does 120 more damage."
+1582,Charge Energy,"Search your deck for up to 2 Basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+1583,Spike Sting,
+1584,Spinning Needles,"During your next turn, this Pokémon's Spinning Needles attack does 100 more damage (before applying Weakness and Resistance)."
+1585,Swarming Rage,This attack does 20 damage for each damage counter on all of your Durant.
+1586,Hard Scissors,"During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+1587,Cut Up,
+1590,Slashing Strike,"During your next turn, this Pokémon can't use Slashing Strike."
+1591,Swords Dance,"During your next turn, this Pokémon's Slicing Blade attack does 80 more damage (before applying Weakness and Resistance)."
+1593,Hard Bashing,This attack's damage isn't affected by any effects on your opponent's Active Pokémon.
+1594,Peerless Edge,This attack does 70 damage for each Prize card you have taken.
+1596,Iron Roar,Attach a Basic Metal Energy card from your discard pile to 1 of your Benched Pokémon.
+1597,Brave Blade,"During your next turn, this Pokémon can't attack."
+1598,Luster Burn,This attack's damage isn't affected by any effects on your opponent's Active Pokémon.
+1599,Punch and Draw,Draw 2 cards.
+1600,Crunch-Time Rush,"If there are 3 or fewer cards in your deck, this attack does 150 more damage."
+1601,Make It Rain,Discard any number of Basic Energy cards from your hand. This attack does 50 damage for each card you discarded in this way.
+1602,Light Pulse,"During your opponent's next turn, prevent all effects of attacks used by your opponent's Pokémon done to this Pokémon. (Damage is not an effect.)"
+1604,Survival Strategy,"Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck. You may switch this Pokémon with 1 of your Benched Pokémon."
+1605,Data Displacement,"Flip a coin. If heads, move an Energy from your opponent's Active Pokémon to 1 of their Benched Pokémon."
+1606,Powered Ball,Discard an Energy from this Pokémon.
+1607,Energized Attack,This attack does 40 damage for each Energy attached to this Pokémon.
+1608,Filch,Draw a card.
+1611,Hand Fling,This attack does 20 damage for each card in your hand.
+1612,Lively Tackle,"If this Pokémon was healed during this turn, this attack does 90 more damage."
+1614,Body Slam,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+1615,Mega Impact,
+1616,Sudden Shout,"Discard your opponent's Active Pokémon and all attached cards. If this Pokémon didn't evolve from Loudred during this turn, this attack does nothing."
+1618,Teetering Steps,This Pokémon is now Confused.
+1620,Bind Wound,Heal 30 damage from 1 of your Pokémon.
+1622,Tumble Over,"During your next turn, this Pokémon can't attack."
+1623,Nom-Nom-Nom Incisors,Draw 2 cards.
+1624,Fast Carrier,"If you go first, you can use this attack during your first turn. Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
+1625,Shadowy Wind,You may put this Pokémon and all attached cards into your hand.
+1627,Driving Buddy,"If you played a Supporter card from your hand during this turn, this attack does 70 more damage."
+1628,Homing Headbutt,This attack does 50 damage to 3 of your opponent's Pokémon that have any damage counters on them. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1629,Baryon Beam,"If this Pokémon has a Future Booster Energy Capsule attached, this attack can be used for ColorlessColorlessColorless."
+1630,Blindside,This attack does 100 damage to 1 of your opponent's Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1631,Devolution,Devolve each of your opponent's evolved Pokémon by putting the highest Stage Evolution card on it into your opponent's hand.
+1632,Evolution,"Choose up to 2 of your Benched Pokémon. For each of those Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
+1633,Turbo Energize,"Search your deck for up to 2 Basic Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
+1735,Pin Missile,Flip 4 coins. This attack does 30 damage for each heads.
+1737,Volcanic Heat,"During your next turn, this Pokémon can't attack."
+1739,Into the Deep,Put up to 3 Basic Energy cards from your discard pile into your hand.
+1740,Freeze-Dry,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+1744,Cinder Cannon,"You may discard a Fighting Energy from this Pokémon. If you do, this attack does 120 more damage."
+1746,United Thunder,This attack does 10 damage for each Pokémon in your discard pile that has the United Wings attack to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+1748,Hypnosis,Your opponent's Active Pokémon is now Asleep.
+1753,Psy Ball,This attack does 30 more damage for each Energy attached to both Active Pokémon.
+1759,Shine On,Look at the top card of your deck. You may put that card on the bottom of your deck.
+1766,Aqua Spark,"If this Pokémon has any Water Energy attached, this attack does 120 more damage."
+1768,Psychic Loop,Put 2 Energy attached to this Pokémon into your hand.
+1771,Sleep Inducer,Switch in 1 of your opponent's Benched Pokémon to the Active Spot. The new Active Pokémon is now Asleep.
+1777,Headstrike,
+1780,Attraction Wave,Your opponent's Active Pokémon is now Confused. Put 6 damage counters instead of 3 on that Pokémon for this Special Condition.
+1781,Minor Errand-Running,"Search your deck for up to 2 Basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+1785,Crisis Punch,You can use this attack only when your opponent has exactly 1 Prize card remaining.
+1787,Chest-ouflage,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+1796,Slow-Acting Syncope,"At the end of your opponent's next turn, the Defending Pokémon will be Knocked Out."
+1801,Rev,Put up to 2 Basic Energy cards from your discard pile into your hand.
+1803,Acceleration Drive,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+1812,Mimed Games,Your opponent chooses an attack from 1 of their Pokémon in play. Use the chosen attack as this attack.
+1813,Fickle Attack,"Flip a coin. If tails, this attack does nothing."
+1817,Cragalanche,Discard the top 2 cards of your opponent's deck.
+1818,Powerful Spin,"During your next turn, this Pokémon can't attack."
+1819,Great Bash,This attack's damage isn't affected by any effects on your opponent's Active Pokémon.
+1820,Lambaste,"If the Defending Pokémon is a Basic Pokémon, it can't attack during your opponent's next turn."
+1839,Strength,
+1842,Allure,Draw a card.
+1845,Nightmare,Your opponent's Active Pokémon is now Asleep.
+1849,Iron-Clad Roll,"After doing damage, you may discard all Future Booster Energy Capsules from this Pokémon. If you do, during your opponent's next turn, this Pokémon takes 150 less damage from attacks (after applying Weakness and Resistance)."
+1850,Lavish Hospitality,You may attach any number of Basic Metal Energy cards from your hand to your Pokémon in any way you like.
+1851,Scintillating Surfing,Flip a coin for each Metal Energy attached to this Pokémon. This attack does 80 damage for each heads.
+2051,Rolling Slider,Flip 3 coins. This attack does 100 damage for each heads.
+2064,Pika-Portrait,"Search your deck for a Pikachu and put it onto your Bench. Then, shuffle your deck."
+2066,Grass Knot,This attack does 20 damage for each Colorless in your opponent's Active Pokémon's Retreat Cost.
+2070,Rigidify,"During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+2073,Comet Slap,Flip 3 coins. This attack does 30 damage for each heads.
+2074,Expelling Tornado,"Choose 3 of your opponent's Benched Pokémon. If you do, shuffle all of your opponent's Benched Pokémon that you didn't choose, and all cards attached to those Pokémon, into their deck."
+2075,Energy Loop,Put an Energy attached to this Pokémon into your hand.
+2084,Ramming Shell,"During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+2085,Forest March,This attack does 30 damage for each of your Grass Pokémon in play.
+2086,Jungle Hammer,Heal 50 damage from this Pokémon.
+2087,Pinpoint Dive,This attack does 60 damage to 1 of your opponent's Benched Pokémon ex or Benched Pokémon V. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2092,Leaf Litter Tackle,Discard a Grass Energy from this Pokémon.
+2094,Flock,"Search your deck for up to 2 Grubbin and put them onto your Bench. Then, shuffle your deck."
+2097,Powerful Needles,Flip a coin for each Energy attached to this Pokémon. This attack does 80 damage for each heads.
+2100,Steel Anchor,"If you have any Metal Pokémon on your Bench, this attack does 80 more damage."
+2102,Chili Snapper Bind,"Your opponent's Active Pokémon is now Burned. During your opponent's next turn, that Pokémon can't retreat."
+2103,Two-Headed Crushing,Discard a random card from your opponent's hand. Discard the top card of your opponent's deck.
+2104,Prism Edge,"During your next turn, this Pokémon can't attack."
+2106,Flame Tail,
+2108,Inferno Onrush,This Pokémon also does 30 damage to itself.
+2109,Roasting Heat,"If your opponent's Active Pokémon is Burned, this attack does 40 more damage."
+2111,Flippity Flap,"Shuffle your hand into your deck. Then, draw 6 cards."
+2112,Singe Off,Discard a Special Energy from your opponent's Active Pokémon.
+2114,Licking Flames,"Flip 3 coins. For each tails, discard an Energy from this Pokémon."
+2115,Fake Out,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+2117,Flare Strike,"During your next turn, this Pokémon can't use Flare Strike."
+2118,Blaze Blast,Your opponent's Active Pokémon is now Burned.
+2119,Spit-Out Shot,This attack does 40 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2123,Charring Breath,"If your opponent's Active Pokémon isn't Burned, this attack does nothing."
+2125,Blaze Blitz,This Pokémon can't use Blaze Blitz again until it leaves the Active Spot.
+2127,Reverse Thrust,Switch this Pokémon with 1 of your Benched Pokémon.
+2128,Giant Wave,"During your next turn, this Pokémon can't use Giant Wave."
+2130,Chew Off,"Flip 3 coins. For each heads, discard a random card from your opponent's hand."
+2134,Powder Snow,Your opponent's Active Pokémon is now Asleep.
+2135,Freezing Chill,"During your opponent's next turn, the Defending Pokémon can't attack."
+2136,Lucky Find,"Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
+2137,Aqua Bomb,This Pokémon also does 20 damage to itself.
+2140,Vanguard Punch,This Pokémon also does 10 damage to itself for each damage counter on it.
+2142,Catharsis Roar,"If your opponent's Active Pokémon is affected by a Special Condition, this attack does 120 more damage."
+2143,Random Spark,This attack does 10 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2144,Collateral Bolts,"This attack does 50 damage to each Pokémon that has any damage counters on it (both yours and your opponent's), except for this Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+2146,Chop,
+2147,Electric Punch,
+2148,Short-Circuit Knuckle,"If your opponent has any Water Pokémon in play, this attack does 120 more damage."
+2149,Electroslug,
+2152,Circuit Cannon,This attack does 80 more damage for each of your Benched Charjabug.
+2153,Shocking Knuckle,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+2154,Strong Volt,Discard an Energy from this Pokémon.
+2156,Electrifying Dash,"Search your deck for up to 2 Basic Lightning Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
+2157,Tricolor Pump,Discard up to 3 Energy cards from your hand. This attack does 60 damage to 1 of your opponent's Pokémon for each Energy card you discarded in this way. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2158,Numbing Hold,"During your opponent's next turn, the Defending Pokémon can't retreat."
+2160,Superalloy Hands,"If your opponent's Active Pokémon is a Pokémon ex or Pokémon V, this attack does 80 more damage."
+2161,Destructo-Press,"Reveal the top 5 cards of your deck. This attack does 70 damage for each Future card you find there. Then, discard those Future cards and shuffle the other cards back into your deck."
+2162,Megaton Lariat,
+2163,Look-Alike Show,Your opponent reveals their hand. You may use the effect of a Supporter card you find there as the effect of this attack.
+2168,Power Tackle,"During your next turn, this Pokémon can't attack."
+2171,Lagoon Flight,
+2172,Mirror Attack,"If your opponent's Active Pokémon is a Psychic Pokémon, this attack does 30 more damage."
+2173,Evolution Jammer,"During your opponent's next turn, they can't play any Pokémon from their hand to evolve their Pokémon."
+2176,Double Trick,Flip 2 coins. This attack does 30 damage for each heads.
+2177,Summoning Gate,Look at the top 8 cards of your deck. You may put any number of Pokémon you find there onto your Bench. Shuffle the other cards back into your deck.
+2180,Cosmic Beatdown,This attack does 20 damage for each of your Pokémon in play.
+2182,Plentiful Pollen,"During your next turn, if the Defending Pokémon is Knocked Out, take 2 more Prize cards."
+2183,Supportive Singing,Heal 100 damage from 1 of your Benched Ancient Pokémon.
+2185,Hex Hurl,Put 2 damage counters on your opponent's Benched Pokémon in any way you like.
+2186,Calculation,Look at the top 4 cards of your deck and put them back in any order.
+2187,Majestic Sword,"If you played a Future Supporter card from your hand during this turn, this attack does 100 more damage."
+2188,Gemini Laser,This attack also does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2189,Zen Blade,"During your next turn, this Pokémon can't use Zen Blade."
+2190,Twin Shotels,"This attack does 50 damage to 2 of your opponent's Pokémon. This attack's damage isn't affected by Weakness or Resistance, or by any effects on those Pokémon."
+2194,High Jump Kick,
+2196,Sand Spray,
+2202,Fighting Fist,"If your opponent's Active Pokémon is a Pokémon ex or Pokémon V, this attack does 120 more damage."
+2203,Paw Shake Punch,
+2204,Turbo Edge,Attach up to 2 Basic Fighting Energy cards from your discard pile to your Benched Pokémon in any way you like.
+2207,Mud Stock,Attach a Basic Fighting Energy card from your discard pile to each of your Benched Pokémon.
+2208,High Horsepower,This Pokémon also does 40 damage to itself.
+2210,Power Gem,
+2213,Gatling Tar,This attack does 80 more damage for each Fire Energy attached to this Pokémon.
+2216,Wrathful Charge,"If your Benched Pokémon have any damage counters on them, this attack does 80 more damage."
+2217,Land Collapse,"Discard the top card of your opponent's deck. If you played an Ancient Supporter card from your hand during this turn, discard 3 more cards in this way."
+2218,Giant Tusk,
+2219,Magnetic Burst,"If you have 3 or more Energy in play, this attack does 70 more damage. This attack's damage isn't affected by Weakness."
+2221,Repulsor Axe,"During your opponent's next turn, if this Pokémon is damaged by an attack (even if it is Knocked Out), put 8 damage counters on the Attacking Pokémon."
+2222,Power Stomp,Discard 2 Energy from this Pokémon.
+2223,Poison Blend,"Flip a coin. If heads, your opponent's Active Pokémon is now Confused and Poisoned."
+2225,Panic Poison,"Your opponent's Active Pokémon is now Burned, Confused, and Poisoned."
+2227,Mysterious Beam,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+2230,Tricky Steps,You may move an Energy from your opponent's Active Pokémon to 1 of their Benched Pokémon.
+2231,Kick Away,Switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)
+2233,Gnaw Off,"Flip a coin. If heads, this attack does 20 more damage."
+2235,Damage Collection,You may move any number of damage counters from your opponent's Benched Pokémon to their Active Pokémon.
+2236,Dirty Beam,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2237,Vengeance Fletching,This attack does 10 more damage for each Ancient card in your discard pile.
+2239,Spike Cannon,Flip 3 coins. This attack does 30 damage for each heads.
+2240,Steel Tackle,This Pokémon also does 40 damage to itself.
+2241,Steel Wing,"During your opponent's next turn, this Pokémon takes 50 less damage from attacks (after applying Weakness and Resistance)."
+2242,Cross Breaker,Discard up to 2 Metal Energy from this Pokémon. This attack does 120 damage for each card you discarded in this way.
+2243,Invite and Strike,Switch in 1 of your opponent's Benched Pokémon to the Active Spot. This attack does 30 damage to the new Active Pokémon.
+2248,Iron Tackle,This Pokémon also does 10 damage to itself.
+2249,Meteor Mash,"During your next turn, this Pokémon's Meteor Mash attack does 60 more damage (before applying Weakness and Resistance)."
+2250,Luster Blast,Discard 2 Energy from this Pokémon.
+2252,Iron Bash,
+2253,Wheel Pass,Move an Energy from this Pokémon to 1 of your Benched Pokémon.
+2254,Burst Roar,Discard your hand and draw 6 cards.
+2255,Bellowing Thunder,You may discard any amount of Basic Energy from your Pokémon. This attack does 70 damage for each card you discarded in this way.
+2256,Primordial Beatdown,This attack does 30 damage for each of your Ancient Pokémon in play.
+2257,Shred,This attack's damage isn't affected by any effects on your opponent's Active Pokémon.
+2258,Tongue Pull,Your opponent reveals their hand. Put up to 2 Basic Pokémon you find there onto your opponent's Bench.
+2260,Retribution Strike,This attack does 10 more damage for each damage counter on this Pokémon.
+2261,Kaiser Tackle,This Pokémon also does 60 damage to itself.
+2262,Peak Acceleration,"Search your deck for up to 2 Basic Energy cards and attach them to your Future Pokémon in any way you like. Then, shuffle your deck."
+2263,Sparking Strike,
+2264,Repulsion Bolt,"If your opponent's Active Pokémon already has any damage counters on it, this attack does 100 more damage."
+2265,Cyber Drive,"During your next turn, this Pokémon can't use Cyber Drive."
+2267,Tonguenado,Flip 4 coins. This attack does 70 damage for each heads.
+2268,Silent Wing,Your opponent reveals their hand.
+2269,Talon Hunt,"You may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
+2275,Tail Trickery,Your opponent's Active Pokémon is now Confused.
+2276,Energy Blender,You may move any amount of Energy from your Pokémon to your other Pokémon in any way you like.
+2277,A Cappella,"Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
+2282,Opposing Winds,You may put 2 Energy attached to your opponent's Active Pokémon into their hand.
+2285,Cleaning Up,Discard up to 2 Pokémon Tools from your opponent's Pokémon.
+2287,Raging Cannon,"If all of your Benched Pokémon have at least 1 damage counter on them, this attack does 120 more damage."
+2289,Special Roll,This attack does 70 damage for each Special Energy card attached to this Pokémon.
+2290,Blasting Wind,
+2378,Daunt,"During your opponent's next turn, attacks used by the Defending Pokémon do 50 less damage (before applying Weakness and Resistance)."
+2379,Proud Fangs,"If your Benched Pokémon have any damage counters on them, this attack does 120 more damage."
+2390,Flat-Out Dash,"Flip a coin until you get tails. For each heads, draw a card."
+2392,Twinkling Hope,"Search your deck for up to 2 Basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+2395,Two Bump Bolt,You may discard up to 2 Lightning Energy from this Pokémon. This attack does 80 more damage for each card you discarded in this way.
+2401,Loom Over,This attack does 10 less damage for each damage counter on this Pokémon.
+2402,Slow Crunch,"Discard all Energy from this Pokémon. At the end of your opponent's next turn, the Defending Pokémon will be Knocked Out."
+2405,Redirected Sunlight,This attack does 60 damage for each Fire Energy attached to all of your opponent's Pokémon.
+2406,Mega Drain,Heal 30 damage from this Pokémon.
+2407,Bullet Seed,Flip 4 coins. This attack does 10 damage for each heads.
+2408,String Bind,This attack does 30 more damage for each Colorless in your opponent's Active Pokémon's Retreat Cost.
+2411,Quick Sign,"If you go first, you can use this attack during your first turn. Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
+2412,Coordinated Strike,"If Illumise is on your Bench, this attack does 60 more damage."
+2413,Slowing Perfume,"You can use this attack only if you go second, and only during your first turn. Shuffle 1 of your opponent's Benched Pokémon and all attached cards into their deck."
+2415,Leaflet Blessings,"Attach a Basic Grass Energy card from your hand to 1 of your Benched Pokémon. If you do, heal all damage from that Pokémon."
+2418,Giga Drain,Heal from this Pokémon the same amount of damage you did to your opponent's Active Pokémon.
+2419,Forest Dump,
+2420,Drum Beating,"During your opponent's next turn, attacks used by the Defending Pokémon cost Colorless more, and its Retreat Cost is Colorless more."
+2421,Wood Hammer,This Pokémon also does 50 damage to itself.
+2422,Do the Wave,This attack does 20 damage for each of your Benched Pokémon.
+2423,Re-Brew,"Put 2 damage counters on 1 of your opponent's Pokémon for each Basic Grass Energy card in your discard pile. Then, shuffle those Energy cards into your deck."
+2424,Matcha Splash,Heal 30 damage from each of your Pokémon.
+2429,Recovery Net,Put up to 2 Pokémon from your discard pile into your hand.
+2430,Avenging Edge,"If any of your Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 60 more damage."
+2432,Tea Server,Put a Basic Grass Energy card from your discard pile into your hand.
+2434,Cursed Drop,Put 4 damage counters on your opponent's Pokémon in any way you like.
+2435,Spill the Tea,Discard up to 3 Grass Energy cards from your Pokémon. This attack does 70 damage for each card you discarded in this way.
+2436,Mountain Stroll,"Search your deck for up to 2 Basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+2437,Ogre Comeback,This attack does 20 more damage for each of your opponent's Benched Pokémon.
+2438,Myriad Leaf Shower,This attack does 30 more damage for each Energy attached to both Active Pokémon.
+2440,Eerie Glow,Your opponent's Active Pokémon is now Burned and Confused.
+2443,Ground Burn,Discard the top card of each player's deck. This attack does 140 more damage for each Energy card discarded in this way.
+2445,Fire Spin,Discard 2 Energy from this Pokémon.
+2448,Heat Blow,Discard an Energy from this Pokémon.
+2449,Scorching Fire,Discard an Energy from this Pokémon.
+2451,Fire Tackle,This Pokémon also does 20 damage to itself.
+2457,Burn It All Up,Discard all Energy from this Pokémon.
+2458,Mind Ruler,This attack does 30 damage for each card in your opponent's hand.
+2460,Ground Melter,"If a Stadium is in play, this attack does 60 more damage. Then, discard that Stadium."
+2461,Wrathful Hearth,This attack does 20 damage for each damage counter on this Pokémon.
+2462,Dynamic Blaze,"If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 140 more damage, and discard all Energy from this Pokémon."
+2464,Tail Rap,Flip 2 coins. This attack does 20 damage for each heads.
+2466,Double Slap,Flip 2 coins. This attack does 30 damage for each heads.
+2468,Jumping Uppercut,"You may do 120 more damage. If you do, shuffle this Pokémon and all attached cards into your deck."
+2469,Whirlpool,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+2470,Peck Off,"Before doing damage, discard all Pokémon Tools from your opponent's Active Pokémon."
+2471,Horn Drill,
+2472,Inviting Kiss,"Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck. If you put any Pokémon onto your Bench in this way, move an Energy from this Pokémon to the new Benched Pokémon."
+2473,Icy Snow,
+2475,Snip Snip,"Flip 2 coins. For each heads, discard the top card of your opponent's deck."
+2477,Flail,This attack does 10 damage for each damage counter on this Pokémon.
+2479,Astonish,Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck.
+2480,Damage Beat,This attack does 20 damage for each damage counter on your opponent's Active Pokémon.
+2481,Crazy Headbutt,Discard an Energy from this Pokémon.
+2485,Numbing Water,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+2486,Permeating Chill,"At the end of your opponent's next turn, put 9 damage counters on the Defending Pokémon."
+2488,Beckon,Put a Supporter card from your discard pile into your hand.
+2489,Energy Press,This attack does 20 damage for each Energy attached to your opponent's Active Pokémon.
+2491,Spit Shot,Discard all Energy from this Pokémon. This attack does 120 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2492,Interjet,"Switch this Pokémon with 1 of your Benched Pokémon. If you do, switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)"
+2495,Giga Impact,"During your next turn, this Pokémon can't attack."
+2497,Undulating Slice,Put up to 9 damage counters on this Pokémon. This attack does 20 damage for each damage counter you placed in this way.
+2498,Sob,"During your opponent's next turn, the Defending Pokémon can't retreat."
+2499,Torrential Pump,"You may shuffle 3 Energy attached to this Pokémon into your deck. If you do, this attack also does 120 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+2502,Curiosity,Your opponent reveals their hand.
+2505,Sky Wave,This attack also does 10 damage to each Benched Pokémon (both yours and your opponent's). (Don't apply Weakness and Resistance for Benched Pokémon.)
+2506,Piercing Gaze,Your opponent reveals their hand. Discard a card you find there.
+2507,Volt Strike,Discard all Energy from this Pokémon.
+2511,Pick and Stick,Attach up to 2 Basic Energy cards from your discard pile to your Pokémon in any way you like.
+2517,Wind Power Charge,"During your next turn, attacks used by this Pokémon do 120 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+2519,Volt Cyclone,Move an Energy from this Pokémon to 1 of your Benched Pokémon.
+2520,Moon Kick,
+2521,Metronome,Choose 1 of your opponent's Active Pokémon's attacks and use it as this attack.
+2525,Strange Hacking,Your opponent's Active Pokémon is now Confused. You may move any number of damage counters from your opponent's Pokémon to their other Pokémon in any way you like.
+2527,Dual Headbutt,This attack also does 10 damage to 1 of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2528,One-derful Rumble,This attack does 40 damage for each of your Stage 1 Pokémon in play.
+2533,Homeward Chime,Shuffle 1 of your Benched Pokémon and all attached cards into your deck.
+2536,Sneaky Placement,Put 2 damage counters on 1 of your opponent's Pokémon.
+2538,Slurp Slurp,"Flip 2 coins. This attack does 90 damage for each heads. If both of them are tails,  your opponent's Active Pokémon is now Confused."
+2539,Sand Attack,"During your opponent's next turn, if the Defending Pokémon tries to use an attack, your opponent flips a coin. If tails, that attack doesn't happen."
+2542,Spooky Sand,
+2543,Heart Sign,
+2544,Love Resonance,"If any of your Pokémon in play are the same type as any of your opponent's Pokémon in play, this attack does 120 more damage."
+2545,Scream,"You can use this attack only if you go second, and only during your first turn. Your opponent can't play any Supporter cards from their hand during their next turn."
+2548,Energy Feather,This attack does 30 damage for each Energy attached to this Pokémon.
+2557,Power Rush,"Flip a coin. If tails, during your next turn, this Pokémon can't attack."
+2558,Assault Laser,"If your opponent's Active Pokémon has a Pokémon Tool attached, this attack does 80 more damage."
+2560,Best Punch,"Flip a coin. If tails, this attack does nothing."
+2562,Superpower,"You may do 30 more damage. If you do, this Pokémon also does 30 damage to itself."
+2563,Tantrum,This Pokémon is now Confused.
+2564,Gutsy Swing,"If this Pokémon is affected by a Special Condition, ignore all Energy in this attack's cost."
+2565,Shinobi Blade,"You may search your deck for a card and put it into your hand. Then, shuffle your deck."
+2566,Mirage Barrage,Discard 2 Energy from this Pokémon. This attack does 120 damage to 2 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2568,Rock Shot,Discard an Energy from this Pokémon.
+2569,Stun Poison,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed and Poisoned."
+2571,Ground Crasher,"If a Stadium is in play, this attack also does 30 damage to each of your opponent's Benched Pokémon, and discard that Stadium. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+2573,Good Punch,
+2574,Demolish,"This attack's damage isn't affected by Weakness or Resistance, or by any effects on your opponent's Active Pokémon."
+2575,Continuous Steps,Flip a coin until you get tails. This attack does 10 damage for each heads.
+2577,Hunting Pack,"If Mightyena is on your Bench, this attack does 90 more damage."
+2583,Dastardly Jab,Put damage counters on your opponent's Active Pokémon until its remaining HP is 10.
+2585,Poison Spray,Your opponent's Active Pokémon is now Poisoned.
+2586,Relentless Punches,This attack does 50 more damage for each damage counter on your opponent's Active Pokémon.
+2588,Big Storm,Discard a Stadium in play.
+2592,Angry Slam,This attack does 50 damage for each of your Pokémon that has any damage counters on it.
+2593,Guard Claw,"During your opponent's next turn, this Pokémon takes 50 less damage from attacks (after applying Weakness and Resistance)."
+2594,Steel Burst,Discard all Metal Energy from this Pokémon. This attack does 50 damage for each card you discarded in this way.
+2595,Metal Coating,Attach a Basic Metal Energy card from your discard pile to this Pokémon.
+2597,Rally Back,"If any of your Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 90 more damage."
+2598,Running Charge,Flip a coin until you get tails. This attack does 100 damage for each heads.
+2601,Syrup Catcher,Switch in 1 of your opponent's Benched Pokémon to the Active Spot. This attack does 70 damage to the new Active Pokémon.
+2602,Petty Grudge,
+2604,Dragon Headbutt,
+2606,Phantom Dive,Put 6 damage counters on your opponent's Benched Pokémon in any way you like.
+2608,Mach Cut,Discard a Special Energy from your opponent's Active Pokémon.
+2609,Lucky Attachment,Attach a Basic Energy card from your hand to 1 of your Pokémon.
+2611,Return,You may draw cards until you have 6 cards in your hand.
+2614,"But First, Food","Attach an Energy card from your hand to this Pokémon. If you do, heal 60 damage from this Pokémon."
+2621,Fighting Wings,"If your opponent's Active Pokémon is a Pokémon ex or Pokémon V, this attack does 90 more damage."
+2623,Blood Moon,"During your next turn, this Pokémon can't attack."
+2697,Toxic Teeth,Your opponent's Active Pokémon is now Poisoned.
+2698,Numbing Saliva,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+2699,Toxic Throw,"Your opponent's Active Pokémon is now Poisoned. During your next turn, this Pokémon can't use Toxic Throw."
+2704,Armor Cannon,Discard a Fire Energy from this Pokémon.
+2711,Wind of Darkness,
+2712,Night Impact,
+2724,Swagger,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+2725,Huge Tackle,"If you have more cards in your hand than your opponent, this attack does 80 more damage."
+2726,Lazy Press,
+2733,Electric Claws,
+2736,Shocking Web,"If this Pokémon has any Lightning Energy attached, this attack does 80 more damage."
+2737,Add On,Draw a card.
+2741,Stock Up on Feathers,Draw cards until you have 7 cards in your hand.
+2742,Power Shot,"Discard a Basic Grass Energy card from your hand. If you can't, this attack does nothing."
+2747,Snarl,"During your opponent's next turn, attacks used by the Defending Pokémon do 100 less damage (before applying Weakness and Resistance)."
+2748,Suction,Heal from this Pokémon the same amount of damage you did to your opponent's Active Pokémon.
+2749,Anachronism Repulsor,"During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Ancient Pokémon."
+2750,Hold Still,Heal 30 damage from this Pokémon.
+2752,Call for Backup,"Search your deck for up to 3 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
+2754,King's Order,Put up to 3 Water Pokémon from your discard pile onto your Bench.
+2757,Beset,"During your opponent's next turn, the Defending Pokémon can't retreat."
+2759,Hail Claw,Discard all Energy from this Pokémon. Your opponent's Active Pokémon is now Paralyzed.
+2760,Accelerator Flash,"If this Pokémon moved from your Bench to the Active Spot this turn, this attack does 120 more damage."
+2761,Shattering Speed,Discard this Pokémon and all attached cards.
+2762,Eerie Gaze,Your opponent reveals their hand.
+2763,Daydream,"During your opponent's next turn, if they attach an Energy card from their hand to the Defending Pokémon, their turn ends."
+2764,Come and Get You,Put up to 3 Duskull from your discard pile onto your Bench.
+2768,Healing Pirouette,Heal 20 damage from each of your Pokémon.
+2769,Crescent Purge,"You may turn 1 of your face-down Prize cards face up. If you do, this attack does 80 more damage. (That Prize card remains face up for the rest of the game.)"
+2770,Mystical Return,"Flip a coin. If heads, choose 1 of your opponent's Benched Pokémon. Shuffle that Pokémon and all attached cards into their deck."
+2775,Clean Hit,"If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 90 more damage."
+2776,Mad Bite,This attack does 30 more damage for each damage counter on your opponent's Active Pokémon.
+2777,Iron Smasher,"If your opponent has any Future Pokémon in play, this attack does 120 more damage."
+2778,Smashing Wing,Discard 2 Energy from this Pokémon.
+2783,Poison Fang,"Your opponent's Active Pokémon is now Poisoned. During Pokémon Checkup, put 2 damage counters on that Pokémon instead of 1."
+2784,Darkfall,"If you have at least 3 Darkness Energy in play, this attack does 50 more damage."
+2787,Illusory Hijacking,This attack does 60 damage for each of your opponent's Pokémon ex and Pokémon V in play.
+2789,Mischievous Tentacles,Look at the top card of your opponent's deck. You may have your opponent shuffle their deck.
+2791,Colluding Tentacles,"Switch in 1 of your opponent's Benched Pokémon to the Active Spot. If you do, this attack does 120 damage to the new Active Pokémon. If you didn't play Xerosic's Machinations from your hand during this turn, this attack does nothing."
+2793,Corrosive Winds,Put 2 damage counters on each of your opponent's Pokémon that has any damage counters on it.
+2794,Destructive Beam,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+2795,Poisonous Musculature,"Search your deck for up to 2 Basic Darkness Energy cards and attach them to this Pokémon. Then, shuffle your deck. If you attached Energy to a Pokémon in this way, this Pokémon is now Poisoned."
+2796,Chain-Crazed,"If this Pokémon is Poisoned, this attack does 130 more damage."
+2797,Dirty Headbutt,"During your next turn, this Pokémon can't use Dirty Headbutt."
+2798,Cruel Arrow,This attack does 100 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2799,Irritated Outburst,This attack does 60 damage for each Prize card your opponent has taken.
+2800,Magnetic Blast,
+2803,Nasal Lariat,"You may do 100 more damage. If you do, during your next turn, this Pokémon can't attack."
+2809,Bring Down the Axe,"If your opponent's Active Pokémon has any Special Energy attached, it is Knocked Out."
+2811,Trifrost,Discard all Energy from this Pokémon. This attack does 110 damage to 3 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2812,Fury Swipes,Flip 3 coins. This attack does 20 damage for each heads.
+2815,Colorful Catch,"Search your deck for up to 3 Basic Energy cards of different types, reveal them, and put them into your hand. Then, shuffle your deck."
+2817,Energy Assist,Attach a Basic Energy card from your discard pile to 1 of your Benched Pokémon.
+2819,Power Charger,"Search your deck for a Basic Energy card and attach it to this Pokémon. Then, shuffle your deck."
+2865,Miasma Wind,This attack does 100 damage for each Special Condition affecting your opponent's Active Pokémon.
+2866,Nosh,Heal 40 damage from this Pokémon.
+2869,Reaping Dash,"Before doing damage, discard all Pokémon Tools and Special Energy from your opponent's Active Pokémon."
+2871,Breezy Gift,"Put this Pokémon and all attached cards into your deck. If you do, search your deck for up to 3 cards and put them into your hand. Then, shuffle your deck."
+2874,Coated Attack,"During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Basic Pokémon."
+2875,Syrup Storm,This attack does 30 more damage for each Grass Energy attached to all of your Pokémon.
+2881,Whip Smash,
+2883,Burning Run,"Flip a coin. If heads, this attack does 60 more damage."
+2887,Sudden Scorching,"Your opponent discards a card from their hand. If this Pokémon evolved from Salandit during this turn, your opponent discards 2 more cards."
+2888,Flamethrower,Discard an Energy from this Pokémon.
+2890,Ring of Fire,"Your opponent's Active Pokémon is now Burned. During your opponent's next turn, that Pokémon can't retreat."
+2896,Garnet Volley,This attack does 180 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2901,Power Splash,This attack does 40 damage for each Energy attached to this Pokémon.
+2902,Larimar Rain,Look at the top 20 cards of your deck and attach any number of Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck.
+2908,Splashing Turn,Switch this Pokémon with 1 of your Benched Pokémon.
+2909,Tidal Wave,
+2912,Shifting Shuriken,"Flip a coin. If heads, this attack does 100 more damage."
+2913,Haymaker,"During your next turn, this Pokémon can't use Haymaker."
+2914,Hard Crunch,"If your opponent's Active Pokémon already has any damage counters on it, this attack does 80 more damage."
+2916,Sonic Edge,This attack's damage isn't affected by any effects on your opponent's Active Pokémon.
+2920,Unleash Lightning,"During your next turn, your Pokémon can't attack. (This includes new Pokémon that come into play.)"
+2921,Double Voltage,Flip 2 coins. This attack does 20 damage for each heads.
+2922,Disorienting Flash,Your opponent's Active Pokémon is now Confused. Put 8 damage counters instead of 3 on that Pokémon for this Special Condition.
+2923,Thunderous Bolt,"During your next turn, this Pokémon can't attack."
+2924,Jolting Charge,"Search your deck for up to 2 Basic Grass Energy cards and up to 2 Basic Lightning Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
+2925,Charged Web,"If your opponent's Active Pokémon is a Pokémon ex or Pokémon V, this attack does 110 more damage."
+2926,Fulgurite,"Discard all Energy from this Pokémon. During your opponent's next turn, they can't play any Item cards from their hand."
+2927,Parallel Placement,"Search your deck for up to 3 Charjabug and put them onto your Bench. Then, shuffle your deck."
+2928,Volt Switch,Switch this Pokémon with 1 of your Benched Lightning Pokémon.
+2930,Combat Thunder,This attack does 20 more damage for each of your opponent's Benched Pokémon.
+2931,Electrifying Chance,"If you have exactly 1 Prize card remaining, your opponent's Active Pokémon is now Paralyzed."
+2932,Targeted Spark,This attack does 20 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2933,Dangle Tail,Put a Pokémon from your discard pile into your hand.
+2935,Seek Inspiration,"Discard the top card of your deck, and if that card is a Pokémon that doesn't have a Rule Box, choose 1 of its attacks and use it as this attack. (Pokémon ex, Pokémon V, etc. have Rule Boxes.)"
+2938,Expand,"During your opponent's next turn, this Pokémon takes 10 less damage from attacks (after applying Weakness and Resistance)."
+2939,Everyone Explode Now,This attack does 50 damage for each of your Drifloon and Drifblim in play. This attack also does 30 damage to each of your Drifloon and Drifblim. (Don't apply Weakness and Resistance for Benched Pokémon.)
+2941,Flower Shower,Each player draws 3 cards.
+2944,Colorful Confection,"Search your deck for up to 5 Pokémon that are the same type as any Basic Energy attached to this Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
+2946,Pleasant Aroma,"Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
+2948,Wonder Shine,Your opponent's Active Pokémon is now Confused.
+2950,Psychic Flash,
+2953,Adjusted Horn,"If you don't have the same number of cards in your hand as your opponent, this attack does nothing."
+2956,Bone Vengeance,"If any of your Benched Cubone have any damage counters on them, this attack does 120 more damage."
+2958,Destructive Horn,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+2959,Drill Run,Discard an Energy from your opponent's Active Pokémon.
+2961,Calm Mind,Heal 20 damage from this Pokémon.
+2963,Double Smash,Flip 2 coins. This attack does 40 damage for each heads.
+2964,Chi-Atsu,Put damage counters on your opponent's Active Pokémon until its remaining HP is 50.
+2965,Yoga Kick,This attack's damage isn't affected by Weakness or Resistance.
+2968,Aura Knuckle,
+2969,Knock Off,Discard a random card from your opponent's hand.
+2970,Gale Roundhouse,"If your opponent has 5 or fewer cards in their hand, this attack does 60 more damage."
+2973,Diffuse Reflection,This attack does 40 damage for each Special Energy attached to all of your opponent's Pokémon.
+2977,Form Ranks,"Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
+2978,All-Out Attack,"If this Pokémon used Form Ranks during your last turn, this attack does 90 more damage."
+2979,Block Hammer,"During your opponent's next turn, this Pokémon takes 60 less damage from attacks (after applying Weakness and Resistance)."
+2980,Resolute Fang,"If your opponent's Active Pokémon is a Pokémon ex, this attack does 70 more damage."
+2983,Devouring Mouth,"If this Pokémon has more Energy attached than your opponent's Active Pokémon, this attack does 160 more damage."
+2985,Pull,Switch in 1 of your opponent's Benched Pokémon to the Active Spot.
+2991,Goad 'n' Grab,"Switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.) If you do, this attack does 160 damage to the new Active Pokémon."
+2992,Knuckle Sandwich,Discard 2 Energy from this Pokémon.
+2994,Swelling Wish,Attach a Basic Energy card from your discard pile to 1 of your Benched Pokémon.
+2999,Hyper Ray,Discard all Energy from this Pokémon.
+3005,Reforged Axe,"Before doing damage, discard all Pokémon Tools from this Pokémon. If you can't discard any, this attack does nothing."
+3006,Iron Swing,Flip 2 coins. This attack does 100 damage for each heads.
+3008,Raging Hammer,This attack does 10 more damage for each damage counter on this Pokémon.
+3009,Iron Blaster,"During your next turn, this Pokémon can't attack."
+3011,Outta-Control Dash,
+3012,Rock Tomb,"During your opponent's next turn, the Defending Pokémon can't retreat."
+3013,Thunderburst Storm,This attack does 30 damage to 1 of your opponent's Pokémon for each Energy attached to this Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+3018,Triple Stab,Flip 3 coins. This attack does 10 damage for each heads.
+3021,Nyan Roll,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+3022,Assault Landing,"If there is no Stadium in play, this attack does nothing."
+3025,Storm Barrier,"During your opponent's next turn, this Pokémon takes 50 less damage from attacks (after applying Weakness and Resistance)."
+3028,Aero Chase,"If the Retreat Cost of your opponent's Active Pokémon is ColorlessColorless or more, this attack does 110 more damage."
+3029,Knock Over,You may discard a Stadium in play.
+3034,Unified Beatdown,"If you go second, you can't use this attack during your first turn. This attack does 30 damage for each of your Benched Pokémon."
+3035,Crown Opal,"During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Basic non-Colorless Pokémon."
+3079,Poison Chain,"Your opponent's Active Pokémon is now Poisoned. During your opponent's next turn, that Pokémon can't retreat."
+3089,Wild Press,This Pokémon also does 60 damage to itself.
+3102,Precocious Evolution,"If you go first, you can use this attack during your first turn. Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
+3104,Barrage O'Clock,Flip a coin for each Energy attached to both Active Pokémon. This attack does 60 damage for each heads.
+3105,Vengeful Crush,This attack does 30 more damage for each Prize card your opponent has taken.
+3107,Wander About,Switch this Pokémon with 1 of your Benched Pokémon.
+3109,Evo-Powder,"For each of your Benched Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
+3112,Spiral Rush,Flip a coin until you get tails. This attack does 30 more damage for each heads.
+3113,Rescue Kedge,Put up to 2 Pokémon from your discard pile into your hand.
+3114,Annihilating Anchor,"Before doing damage, discard all Pokémon Tools from your opponent's Active Pokémon."
+3116,Jungle Whip,You may put all Energy attached to this Pokémon into your hand to have this attack do 80 more damage.
+3121,Counterturn,"If there are 3 or fewer cards in your deck, this attack does 200 more damage."
+3122,Hazardous Greed,"If there are 3 or fewer cards in your deck, this attack also does 120 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+3123,Entangling Whip,Discard the top 3 cards of your deck.
+3125,Fire Soul,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+3127,Spirited Tackle,"If your opponent's Active Pokémon is a Stage 1 Pokémon, this attack does 90 more damage."
+3129,Shining Blaze,"If you have any Tera Pokémon on your Bench, this attack does 100 more damage."
+3131,Sunny Assist,Move all Energy from this Pokémon to 1 of your Benched Pokémon.
+3138,Turbulent Wings,This Pokémon also does 50 damage to itself.
+3140,Fireworks,Discard an Energy from this Pokémon.
+3143,Billowing Heat Wave,This attack also does 30 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+3145,Heat Burn,Your opponent's Active Pokémon is now Burned.
+3146,Heat Breath,"Flip a coin. If heads, this attack does 50 more damage."
+3147,Torcherto,This attack does 20 more damage for each Benched Pokémon (both yours and your opponent's).
+3152,Crimson Blaster,"Discard all Fire Energy from this Pokémon, and this attack does 180 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+3153,Cursed Edge,Discard all Special Energy from all of your opponent's Pokémon.
+3154,Black Blaze Slash,"During your next turn, this Pokémon can't attack."
+3155,Abyssal Flames,This attack does 20 more damage for each Energy card in your discard pile.
+3156,Raging Amethyst,Discard all Energy from this Pokémon.
+3157,Spicy Rage,This attack does 70 more damage for each damage counter on this Pokémon.
+3159,Blazing Charge,"If your opponent has 4 or fewer Prize cards remaining, this attack does 70 more damage."
+3160,Upthrusting Horns,You may put 2 Energy attached to your opponent's Active Stage 2 Pokémon into their hand.
+3164,Leap Out,Switch this Pokémon with 1 of your Benched Pokémon.
+3168,Ice Ball,
+3169,Frigid Fangs,"During your opponent's next turn, Pokémon that have 2 or less Energy attached can't attack. (This includes new Pokémon that come into play.)"
+3170,Megaton Fall,This Pokémon also does 50 damage to itself.
+3172,Call Sign,"Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
+3173,Ice Beam,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+3174,Ice Age,"If your opponent's Active Pokémon is a Dragon Pokémon, it is now Paralyzed."
+3175,Black Frost,This Pokémon also does 30 damage to itself.
+3177,Aerial Ace,"Flip a coin. If heads, this attack does 20 more damage."
+3180,Draining Fin,Heal 20 damage from this Pokémon.
+3181,Dangerous Mouth,
+3182,Gusting Collision,This attack does 50 less damage for each Colorless in your opponent's Active Pokémon's Retreat Cost.
+3183,Icicle Loop,Put an Energy attached to this Pokémon into your hand.
+3184,Topaz Bolt,Discard 3 Energy from this Pokémon.
+3187,Mighty Magnetism,"Your opponent's Active Pokémon is now Confused. During your opponent's next turn, that Pokémon can't retreat."
+3188,Zap Cannon,"During your next turn, this Pokémon can't use Zap Cannon."
+3189,Crushing Pulse,Your opponent reveals their hand. Discard all Item cards and Pokémon Tool cards you find there.
+3190,Energy Short,This attack does 20 damage for each Energy attached to your opponent's Active Pokémon.
+3195,Paralyzing Crackle,"Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed, and discard an Energy from that Pokémon."
+3196,Summon Lightning,"Search your deck for up to 2 Lightning Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
+3200,Storm Bolt,Move all Energy from this Pokémon to your Benched Pokémon in any way you like.
+3201,Return Charge,"Switch this Pokémon with 1 of your Benched Pokémon. If you do, attach up to 2 Basic Lightning Energy cards from your hand to this Pokémon."
+3202,Thunder Lance,This attack does 40 more damage for each Lightning Energy attached to this Pokémon.
+3203,C.O.D.E.: Protect,"During your opponent's next turn, prevent all damage done to each of your Future Pokémon by attacks from Pokémon ex. If this Pokémon is no longer your Active Pokémon, this effect ends."
+3204,Thunder Claws,
+3206,Draining Kiss,Heal 30 damage from this Pokémon.
+3210,Delightful Kiss,"Search your deck for up to 2 Basic Psychic Energy cards and attach them to 1 of your Benched Pokémon. Then, shuffle your deck."
+3211,Eon Blade,"During your next turn, this Pokémon can't attack."
+3214,Painful Memories,Put 2 damage counters on each of your opponent's Pokémon.
+3215,Full Heart,Attach up to 2 Basic Psychic Energy cards from your hand to your Pokémon in any way you like.
+3216,Guardian Burst,"If you don't have Uxie and Azelf on your Bench, this attack does nothing."
+3217,Neurokinesis,This attack does 10 more damage for each damage counter on all of your opponent's Pokémon.
+3222,Law of the Underworld,Put 6 damage counters on each Pokémon that has an Ability (both yours and your opponent's).
+3224,See Through,Your opponent reveals their hand.
+3227,Magical Charm,"During your opponent's next turn, attacks used by the Defending Pokémon do 100 less damage (before applying Weakness and Resistance)."
+3228,Angelite,"Choose 2 of your opponent's Benched Pokémon. Shuffle those Pokémon and all attached cards into your opponent's deck. If 1 of your Pokémon used Angelite during your last turn, this attack can't be used."
+3229,Electromagnetic Sonar,Put a Trainer card from your discard pile into your hand.
+3234,Dazzle Dance,Your opponent's Active Pokémon is now Confused.
+3236,Sand Tomb,"During your opponent's next turn, the Defending Pokémon can't retreat."
+3237,Barite Jail,Put damage counters on each of your opponent's Benched Pokémon until its remaining HP is 100.
+3238,Perplex,Your opponent's Active Pokémon is now Confused.
+3239,Mental Crush,"If your opponent's Active Pokémon is Confused, this attack does 90 more damage."
+3242,Mystical Eyes,Devolve 1 of your opponent's evolved Pokémon by putting the highest Stage Evolution card on it into your opponent's hand.
+3244,Perplexing Transfer,Move all damage counters from 1 of your Benched Ancient Pokémon to your opponent's Active Pokémon.
+3248,Dual Chop,Flip 2 coins. This attack does 10 damage for each heads.
+3249,Sweep the Leg,"Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+3250,Mega Punch,
+3252,Destined Fight,Both Active Pokémon are Knocked Out.
+3254,Blocking Stomp,"If the Defending Pokémon is a Basic Pokémon, it can't attack during your opponent's next turn."
+3256,Knock Flat,This attack's damage isn't affected by any effects on your opponent's Active Pokémon.
+3257,Guarded Rolling,"Discard 2 Energy from this Pokémon. During your opponent's next turn, this Pokémon takes 100 less damage from attacks (after applying Weakness and Resistance)."
+3260,Screech,"During your next turn, the Defending Pokémon takes 50 more damage from attacks (after applying Weakness and Resistance)."
+3262,Reversing Storm,You may switch this Pokémon with 1 of your Benched Pokémon.
+3263,Sonic Peridot,This attack does 100 damage to each of your opponent's Pokémon ex and Pokémon V. This attack's damage isn't affected by Weakness or Resistance.
+3265,Burrow,Discard the top card of your opponent's deck.
+3267,Digging Claw,Discard the top card of your opponent's deck.
+3268,Drill Smash,"If you have any Metal Pokémon on your Bench, this attack does 80 more damage."
+3269,Fist of Focus,Attach an Energy card from your discard pile to this Pokémon.
+3270,Buster Swing,This attack's damage isn't affected by Resistance.
+3271,Coordinated Throwing,This attack does 20 damage for each of your Basic Pokémon in play.
+3274,Raging Tentacles,"If this Pokémon has any damage counters on it, this attack can be used for Fighting."
+3275,Rock Hurl,This attack's damage isn't affected by Resistance.
+3276,Corrosive Shards,"Your opponent's Active Pokémon is now Poisoned. During your opponent's next turn, Energy cards can't be attached from your opponent's hand to that Pokémon."
+3278,Unrelenting Onslaught,"If 1 of your other Ancient Pokémon used an attack during your last turn, this attack does 150 more damage."
+3284,Crashing Headbutt,Discard the top 3 cards of your opponent's deck.
+3285,Obsidian,This attack also does 130 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+3287,Mischievous Painting,Attach up to 3 Energy cards from your opponent's discard pile to their Pokémon in any way you like.
+3288,Energized Graffiti,This attack does 40 damage for each Energy attached to all of your opponent's Pokémon.
+3290,Trio-Cheehoo,"If you don't have exactly 3 cards in your hand, this attack does nothing."
+3293,Shield Attack,"Flip a coin. If heads, this attack does 20 more damage."
+3295,Double Impact,Flip 2 coins. This attack does 100 damage for each heads.
+3296,Stick 'n' Draw,"Discard a card from your hand. If you do, draw 2 cards."
+3299,Duralubeam,Discard 2 Energy from this Pokémon.
+3300,Metal Defender,"During your opponent's next turn, this Pokémon has no Weakness."
+3301,Strike It Rich,"If this Pokémon evolved from Gimmighoul during this turn, this attack does 90 more damage."
+3302,Surf Back,You may shuffle this Pokémon and all attached cards into your deck.
+3303,Deleting Slash,"If your opponent has 3 or more Benched Pokémon, this attack does 80 more damage."
+3305,Tropical Frenzy,You may attach any number of Basic Energy cards from your hand to your Pokémon in any way you like.
+3306,Swinging Sphene,"Flip a coin. If heads, Knock Out your opponent's Active Basic Pokémon. If tails, Knock Out 1 of your opponent's Benched Basic Pokémon."
+3307,Humming Charge,"Search your deck for up to 2 Basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
+3308,Cotton Wings,"Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
+3309,Time Manipulation,"Search your deck for 2 cards, shuffle your deck, then put those cards on top of it in any order."
+3311,Space Crash,This attack does 40 damage for each Basic Energy attached to this Pokémon.
+3312,Fully Singe,Discard an Energy from your opponent's Active Pokémon ex.
+3316,Acidic Spit,This attack does 20 damage for each damage counter on your opponent's Active Pokémon.
+3318,Melting Sweetness,"During your opponent's next turn, the Defending Pokémon can't attack."
+3320,Dyna-Blast,"If your opponent's Active Pokémon is a Pokémon ex, this attack does 80 more damage."
+3321,World Ender,"Discard a Stadium in play. If you can't, this attack does nothing."
+3322,Surprise Pump,This attack's damage isn't affected by any effects on your opponent's Active Pokémon.
+3323,Cinnabar Lure,Look at the top 10 cards of your deck. You may put any number of Pokémon you find there onto your Bench. Shuffle the other cards back into your deck.
+3327,Take It Easy,"Heal 60 damage from this Pokémon. During your next turn, this Pokémon can't retreat."
+3329,Great Swing,Discard an Energy from this Pokémon.
+3332,Lick Whip,This attack does 30 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+3333,Ready to Ram,"During your opponent's next turn, if this Pokémon is damaged by an attack (even if this Pokémon is Knocked Out), put 6 damage counters on the Attacking Pokémon."
+3334,Smashing Headbutt,Discard 2 Energy from this Pokémon.
+3340,Parabolic Charge,"Search your deck for up to 4 Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+3342,Now You're in My Power,"Until the end of your next turn, the Defending Pokémon's Weakness is now Colorless. (The amount of Weakness doesn't change.)"
+3345,Familial March,"Search your deck for up to 2 in any combination of Maushold and Maushold ex and put them onto your Bench. Then, shuffle your deck."
+3346,Incessant Incisors,Flip 4 coins. This attack does 30 damage for each heads.
+3347,Break Through,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+3348,Zircon Road,You may draw 5 cards.
+3349,Precise Beak,"If this Pokémon and your opponent's Active Pokémon have the same amount of Energy attached, this attack does 100 more damage."
+3350,Brave Bird,This Pokémon also does 30 damage to itself.
+3351,Prism Charge,"Search your deck for up to 3 Basic Energy cards of different types and attach them to your Tera Pokémon in any way you like. Then, shuffle your deck."
+3352,Hard Tackle,
+3353,Fluorite,"Discard all Energy from this Pokémon, and heal all damage from each of your Tera Pokémon."
+3425,Scoop Water,Shuffle up to 3 Basic Water Energy cards from your discard pile into your deck.
+3428,Drenched Headbutt,Discard the top 3 cards of your deck. This attack does 80 damage for each Energy card you discarded in this way.
+3429,Follow-Up Bolt,This attack does 10 more damage for each damage counter on your opponent's Active Pokémon.
+3430,Drill Peck,
+3431,Crackling Charge,Flip 3 coins. Attach a number of Basic Lightning Energy cards up to the number of heads from your discard pile to your Benched Pokémon in any way you like.
+3437,Horrifying Fang,Flip a coin until you get tails. This attack does 20 more damage for each heads.
+3448,Verdant Storm,This attack does 60 damage for each Energy attached to all of your opponent's Pokémon.
+3449,Moss Agate,Heal 100 damage from each of your Benched Pokémon.
+3452,Itchy Pollen,"During your opponent's next turn, they can't play any Item cards from their hand."
+3459,Burning Charge,"Search your deck for up to 2 Basic Energy cards and attach them to 1 of your Pokémon. Then, shuffle your deck."
+3460,Carnelian,"During your next turn, this Pokémon can't attack."
+3465,Severe Squall,This attack does 60 damage to each of your opponent's Pokémon ex. This attack's damage isn't affected by Weakness or Resistance.
+3466,Aquamarine,"During your next turn, this Pokémon can't attack."
+3479,Flashing Spear,You may discard up to 2 Basic Energy from your Benched Pokémon. This attack does 90 more damage for each card you discarded in this way.
+3480,Dravite,"During your next turn, this Pokémon can't attack."
+3486,Euclase,Knock Out 1 of your opponent's Pokémon that has exactly 6 damage counters on it.
+3490,Flame Tackle,"During your next turn, this Pokémon can't attack."
+3493,Wash the Slate Clean,You may put 2 Energy attached to your opponent's Active Pokémon into their hand.
+3500,Amazez,Devolve each of your opponent's evolved Pokémon by shuffling the highest Stage Evolution card on it into your opponent's deck.
+3523,Aura Uppercut,
+3524,Tornado Rush,"During your next turn, this Pokémon's Tornado Rush attack does 100 more damage (before applying Weakness and Resistance)."
+3528,Moon Mirage,Your opponent's Active Pokémon is now Confused.
+3529,Onyx,"Discard all Energy from this Pokémon, and take a Prize card."
+3537,Grind,This attack does 50 damage for each Energy attached to this Pokémon.
+3538,Tyrannical Crush,Discard a random card from your opponent's hand.
+3539,Call to Muster,"Search your deck for up to 2 Basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
+3540,Pitch-Black Fangs,
+3556,Coruscating Quartz,
+3558,Toss-and-Turn Press,Flip 3 coins. This attack does 120 damage for each heads.
+3564,Moomoo Rolling,You can use this attack only if this Pokémon used Rollout during your last turn.
+3567,Hyper Whirlpool,"Flip a coin until you get tails. For each heads, discard an Energy from your opponent's Active Pokémon."
+3570,Jewel Breaker,"If your opponent's Active Pokémon is a Tera Pokémon, this attack does 230 more damage."
+3571,Reflect Energy,Move an Energy from this Pokémon to 1 of your Benched Pokémon.
+3572,Rising Tackle,"If your opponent's Active Pokémon is a Pokémon ex, this attack does 50 more damage."
+3576,Sonic Blast,This Pokémon also does 30 damage to itself.
+3628,Harden,"During your opponent's next turn, prevent all damage done to this Pokémon by attacks if that damage is 60 or less."
+3629,Scale Hurricane,"Flip 4 coins. This attack does 60 damage for each heads. If at least 2 of them are heads, your opponent's Active Pokémon is now Paralyzed."
+3632,Scissor Swing,Flip 2 coins. This attack does 30 more damage for each heads.
+3639,Champignon's Swing,"Flip a coin. If heads, this attack does 80 more damage."
+3640,Shell Smack,"Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
+3641,Poisonous Ploy,Your opponent's Active Pokémon is now Confused and Poisoned. Switch this Pokémon with 1 of your Benched Pokémon.
+3645,Tons of Treading,Flip 3 coins. This attack does 10 damage for each heads.
+3647,Rising Bloom,"If your opponent's Active Pokémon is a Pokémon ex, this attack does 90 more damage."
+3653,Smolder-sault,"During your next turn, this Pokémon can't attack."
+3658,Back Draft,This attack does 30 damage for each Basic Energy card in your opponent's discard pile.
+3659,Flamebody Cannon,"Discard all Energy from this Pokémon, and this attack also does 90 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+3661,Smoldering Scales,
+3662,Fire Wing,
+3664,Scorching Cyclone,Move an Energy from this Pokémon to 1 of your Benched Pokémon.
+3665,Frigid Fluttering,"Search your deck for up to 2 Basic Water Energy cards and attach them to this Pokémon. Then, shuffle your deck."
+3666,Ice Blast,
+3669,Aqua Wash,You may put an Energy attached to your opponent's Active Pokémon into their hand.
+3670,Octo Beatdown,Flip a coin until you get tails. This attack does 90 damage for each heads.
+3682,Purging Strike,"You may discard your hand. If you discarded any cards in this way, this attack does 120 more damage."
+3687,Electromagnetic Catapult,Flip a coin until you get tails. This attack does 70 damage for each heads.
+3689,Voltaic Chain,This attack does 20 more damage for each Lightning Energy attached to all of your Iono's Pokémon.
+3690,Thump-Thump Boom,"This Pokémon does 100 damage to itself. Flip a coin. If heads, your opponent's Active Pokémon is Knocked Out."
+3692,Zapping Short,"Before doing damage, discard all Pokémon Tools from your opponent's Active Pokémon. If you discarded a Pokémon Tool in this way, your opponent's Active Pokémon is now Paralyzed."
+3693,Toge Spark,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+3694,Linked Lightning,This attack does 20 more damage for each of your Benched Pokémon.
+3699,Full Moon Rondo,This attack does 20 more damage for each Benched Pokémon (both yours and your opponent's).
+3700,Retaliate,"If any of your Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 90 more damage."
+3702,Mimic,"Shuffle your hand into your deck. Then, draw a card for each card in your opponent's hand."
+3705,Cursed Words,Your opponent chooses 3 cards from their hand and shuffles those cards into their deck.
+3712,Conjoined Beams,"If Beldum and Metang are on your Bench, this attack does 150 more damage."
+3714,Victory Symbol,"If you use this attack when you have exactly 1 Prize card remaining, you win this game."
+3719,Inviting Flowers,"You may search your deck for any number of Basic Lillie's Pokémon and put them onto your Bench. Then, shuffle your deck."
+3721,Mischievous Hands,Choose 2 of your opponent's Pokémon and put 3 damage counters on each of them.
+3722,Ghostly Trip,Your opponent's Active Pokémon is now Confused.
+3724,Anchor Smash,
+3728,Shadowy Knot,This attack does 50 damage for each Colorless in your opponent's Active Pokémon's Retreat Cost.
+3731,Whipped Shot,
+3737,Impaling Tusk,
+3738,Rumbling March,This attack does 40 more damage for each Stage 2 Pokémon on your Bench.
+3741,Breaching Lariat,This attack's damage isn't affected by Resistance.
+3743,Focus Fist,"Flip a coin. If tails, this attack does nothing."
+3744,Dig It Up,Look at the top card of your deck. You may discard that card.
+3746,Clamping Fangs,This attack does 40 more damage for each damage counter on your opponent's Active Pokémon.
+3747,Turf Maker,"Search your deck for a Stadium card, reveal it, and put it into your hand. Then, shuffle your deck."
+3750,Break Ground,This attack also does 20 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+3753,Snipping Pincers,"Flip 2 coins. For each heads, discard an Energy from your opponent's Active Pokémon."
+3757,Pervasive Gas,Your opponent's Active Pokémon is now Confused.
+3758,Crazy Blast,"If this Pokémon used Pervasive Gas during your last turn, this attack does 120 more damage."
+3762,Cracking Stomp,Discard the top 2 cards of your opponent's deck.
+3763,Thieving Swipe,"Your opponent reveals their hand, and you choose a card you find there and put it on the bottom of their deck."
+3765,Night Joker,Choose 1 of your Benched N's Pokémon's attacks and use it as this attack.
+3766,Torment,"Choose 1 of your opponent's Active Pokémon's attacks. During your opponent's next turn, that Pokémon can't use that attack."
+3770,Drop Shot,"Discard all Energy from this Pokémon, and this attack does 120 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+3774,Spinning Gears,Your opponent's Active Pokémon is now Confused.
+3779,Bounding Bite,This Pokémon also does 30 damage to itself.
+3786,Insta-Strike,This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+3787,Brave Slash,"During your next turn, this Pokémon can't use Brave Slash."
+3792,Wide Blast,This attack does 50 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+3793,Dragon Impact,Discard 2 Energy from this Pokémon.
+3794,Dragon's Fury,Attach a Basic Fire Energy card from your discard pile to 1 of your Dragon Pokémon.
+3796,Powerful Rage,This attack does 20 damage for each damage counter on this Pokémon.
+3797,Virtuous Flame,
+3798,Dynamic Press,This Pokémon also does 80 damage to itself.
+3802,Trading Places,Switch this Pokémon with 1 of your Benched Pokémon.
+3804,Tenacious Tail,This attack does 60 damage for each of your opponent's Pokémon ex in play.
+3805,Destructive Drill,This attack's damage isn't affected by any effects on your opponent's Active Pokémon.
+3806,Stealth Attack,"Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+3807,Fruit Bearing,"Discard a card from your hand. If you do, draw 3 cards."
+3814,Frightening Howl,Your opponent's Active Pokémon is now Confused.
+3815,Slumbering Smack,"Both Active Pokémon are now Asleep. During your next turn, attacks used by this Pokémon do 100 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+3817,Dragon Claw,
+3820,Gluttonous Tail,Draw 2 cards.
+3821,Intimidating Stare,"During your opponent's next turn, attacks used by the Defending Pokémon do 20 less damage (before applying Weakness and Resistance)."
+3827,Ceaseless Spitting,Flip a coin until you get tails. This attack does 50 damage for each heads.
+3828,Fickle Spitting,"If your opponent doesn't have exactly 3 or 4 Prize cards remaining, this attack does nothing."
+3830,Aromatic Stomps,"Flip a coin. If heads, during your opponent's next turn, the Defending Pokémon can't attack."

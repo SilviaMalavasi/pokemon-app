@@ -104,7 +104,7 @@ export default function FullFormScreen() {
       headerBackgroundColor={Colors.mediumGrey}
       headerImage={
         <Image
-          source={require("@/assets/images/fondo.png")}
+          source={require("@/assets/fondo.png")}
           resizeMode="contain"
         />
       }

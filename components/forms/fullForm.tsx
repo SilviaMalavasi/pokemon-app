@@ -10,7 +10,7 @@ import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 import ThemedText from "@/components/base/ThemedText";
 import { supabase } from "@/lib/supabase";
 
-import uniqueIdentifiers from "@/assets/uniqueIdentifiers.json";
+import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 
 const cardSupertypeOptions = uniqueIdentifiers.cardSupertype.map((v: string) => ({ value: v, label: v }));
 const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => ({ value: v, label: v }));
@@ -18,23 +18,29 @@ const cardTypesOptions = uniqueIdentifiers.cardTypes.map((v: string) => ({ value
 const cardRegulationMarkOptions = uniqueIdentifiers.cardRegulationMark.map((v: string) => ({ value: v, label: v }));
 const cardSetNamesOptions = uniqueIdentifiers.cardSetNames.map((v: string) => ({ value: v, label: v }));
 
+const allSubtypes = Array.from(
+  new Set([
+    ...(uniqueIdentifiers.cardSubtypePokémon || []),
+    ...(uniqueIdentifiers.cardSubtypeTrainer || []),
+    ...(uniqueIdentifiers.cardSubtypeEnergy || []),
+  ])
+);
+
 const getCardSubtypesOptions = (supertypes: string[]) => {
-  if (!supertypes || supertypes.length === 0) {
-    return uniqueIdentifiers.cardSubtypes.map((v: string) => ({ value: v, label: v }));
-  }
   let subtypeSet = new Set<string>();
-  supertypes.forEach((supertype) => {
-    if (supertype === "Pokémon" && uniqueIdentifiers.cardSubtypePokémon) {
-      uniqueIdentifiers.cardSubtypePokémon.forEach((v: string) => subtypeSet.add(v));
-    } else if (supertype === "Trainer" && uniqueIdentifiers.cardSubtypeTrainer) {
-      uniqueIdentifiers.cardSubtypeTrainer.forEach((v: string) => subtypeSet.add(v));
-    } else if (supertype === "Energy" && uniqueIdentifiers.cardSubtypeEnergy) {
-      uniqueIdentifiers.cardSubtypeEnergy.forEach((v: string) => subtypeSet.add(v));
-    }
-  });
-  // If no known supertype, fallback to all subtypes
-  if (subtypeSet.size === 0) {
-    uniqueIdentifiers.cardSubtypes.forEach((v: string) => subtypeSet.add(v));
+
+  if (!supertypes || supertypes.length === 0 || subtypeSet.size === 0) {
+    allSubtypes.forEach((v) => subtypeSet.add(v));
+  } else {
+    supertypes.forEach((supertype) => {
+      if (supertype === "Pokémon" && uniqueIdentifiers.cardSubtypePokémon) {
+        uniqueIdentifiers.cardSubtypePokémon.forEach((v: string) => subtypeSet.add(v));
+      } else if (supertype === "Trainer" && uniqueIdentifiers.cardSubtypeTrainer) {
+        uniqueIdentifiers.cardSubtypeTrainer.forEach((v: string) => subtypeSet.add(v));
+      } else if (supertype === "Energy" && uniqueIdentifiers.cardSubtypeEnergy) {
+        uniqueIdentifiers.cardSubtypeEnergy.forEach((v: string) => subtypeSet.add(v));
+      }
+    });
   }
   return Array.from(subtypeSet).map((v) => ({ value: v, label: v }));
 };

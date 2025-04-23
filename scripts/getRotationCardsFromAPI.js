@@ -1,0 +1,188 @@
+import dotenv from "dotenv";
+dotenv.config();
+import axios from "axios";
+import fs from "fs";
+import path from "path";
+import https from "https";
+import sharp from "sharp";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const API_URL = "https://api.pokemontcg.io/v2/";
+const API_KEY = ""; // Your API key here
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const rootDir = path.resolve(__dirname, "..");
+
+async function getrotationCardsFromAPI() {
+  try {
+    console.log("Fetching Pokémon cards...");
+
+    let allCards = [];
+    let page = 1;
+    let hasMore = true;
+
+    // --- First query: regulationMark G or H (original logic) ---
+    while (hasMore) {
+      console.log(`Fetching page ${page}...`);
+
+      // Fetch cards with regulationMark G or H for the current page
+      const response = await axios.get(`${API_URL}cards`, {
+        headers: {
+          "X-Api-Key": API_KEY,
+        },
+        params: {
+          q: 'regulationMark:"G" OR regulationMark:"H" OR regulationMark:"I"', // Query for regulationMark G, H, or I
+          pageSize: 250, // Fetch up to 250 cards per page
+          page, // Current page
+        },
+      });
+
+      const cards = response.data.data;
+      allCards = allCards.concat(cards); // Add the cards to the list
+
+      // Check if there are more pages
+      hasMore = cards.length === 250; // If less than 250 cards, we've reached the last page
+      page++; // Increment the page number
+    }
+
+    // --- Second query: fetch specific cards by ID (sve-9 to sve-16) ---
+    const specificCardIds = ["sve-9", "sve-10", "sve-11", "sve-12", "sve-13", "sve-14", "sve-15", "sve-16"];
+    let specificCards = [];
+    for (const cardId of specificCardIds) {
+      try {
+        const response = await axios.get(`${API_URL}cards/${cardId}`, {
+          headers: {
+            "X-Api-Key": API_KEY,
+          },
+        });
+        if (response.data && response.data.data) {
+          specificCards.push(response.data.data);
+        }
+      } catch {
+        console.warn(`Failed to fetch card with ID ${cardId}`);
+      }
+    }
+
+    // Remove all cards with the same name as those in specificCards from allCards
+    const specificCardNames = specificCards.map((card) => card.name);
+    const removedCards = allCards.filter((card) => specificCardNames.includes(card.name));
+    removedCards.forEach((card) => {
+      console.log(`Removed card: Name = ${card.name}, ID = ${card.id}`);
+    });
+    allCards = allCards.filter((card) => !specificCardNames.includes(card.name));
+
+    // Merge specificCards into allCards
+    allCards = allCards.concat(specificCards);
+
+    console.log(`Found ${allCards.length - specificCards.length} cards in rotation.`);
+    console.log(`Found ${specificCards.length} basic energy cards.`);
+
+    // Directories for PNG downloads and WebP outputs
+    const downloadCardImageDir = path.resolve(rootDir, "assets/downloads/card-images");
+    const webpCardImageDir = path.resolve(rootDir, "assets/card-images");
+
+    // Ensure all directories exist
+    [downloadCardImageDir, webpCardImageDir].forEach((dir) => {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+    });
+
+    async function downloadImage(url, dest, maxRetries = 10) {
+      let attempt = 0;
+      while (attempt < maxRetries) {
+        try {
+          return await new Promise((resolve, reject) => {
+            const file = fs.createWriteStream(dest);
+            https
+              .get(url, (response) => {
+                if (response.statusCode !== 200) {
+                  file.close();
+                  fs.unlinkSync(dest);
+                  return reject(new Error(`Failed to get '${url}' (${response.statusCode})`));
+                }
+                response.pipe(file);
+                file.on("finish", () => file.close(resolve));
+              })
+              .on("error", (err) => {
+                file.close();
+                fs.unlinkSync(dest);
+                reject(err);
+              });
+          });
+        } catch (err) {
+          attempt++;
+          if (attempt >= maxRetries) {
+            throw new Error(`Failed to download image from ${url} after ${maxRetries} attempts. Last error: ${err}`);
+          }
+          // Wait a bit before retrying
+          await new Promise((res) => setTimeout(res, 500));
+        }
+      }
+    }
+
+    // Download and convert images to WebP format
+    for (const card of allCards) {
+      if (card.images && card.images.small) {
+        const ext = path.extname(card.images.small) || ".png";
+        const pngSmall = `${card.id}_small${ext}`;
+        const pngSmallAbs = path.resolve(downloadCardImageDir, pngSmall);
+        const webpSmall = `${card.id}_small.webp`;
+        const webpSmallAbs = path.resolve(webpCardImageDir, webpSmall);
+        // If WebP already exists, skip download and conversion
+        if (fs.existsSync(webpSmallAbs)) {
+          card.images.small = `/card-images/${webpSmall}`;
+        } else {
+          if (!fs.existsSync(pngSmallAbs)) {
+            try {
+              await downloadImage(card.images.small, pngSmallAbs);
+              await sharp(pngSmallAbs).webp({ quality: 60 }).toFile(webpSmallAbs);
+              card.images.small = `/card-images/${webpSmall}`;
+            } catch (e) {
+              console.warn(`Failed to download/convert small image for ${card.id}`);
+              console.warn(e);
+            }
+          } else {
+            await sharp(pngSmallAbs).webp({ quality: 60 }).toFile(webpSmallAbs);
+            card.images.small = `/card-images/${webpSmall}`;
+          }
+        }
+      }
+      if (card.images && card.images.large) {
+        const ext = path.extname(card.images.large) || ".png";
+        const pngLarge = `${card.id}_large${ext}`;
+        const pngLargeAbs = path.resolve(downloadCardImageDir, pngLarge);
+        const webpLarge = `${card.id}_large.webp`;
+        const webpLargeAbs = path.resolve(webpCardImageDir, webpLarge);
+        // If WebP already exists, skip download and conversion
+        if (fs.existsSync(webpLargeAbs)) {
+          card.images.large = `/card-images/${webpLarge}`;
+        } else {
+          if (!fs.existsSync(pngLargeAbs)) {
+            try {
+              await downloadImage(card.images.large, pngLargeAbs);
+              await sharp(pngLargeAbs).webp({ quality: 60 }).toFile(webpLargeAbs);
+              card.images.large = `/card-images/${webpLarge}`;
+            } catch (e) {
+              console.warn(`Failed to download/convert large image for ${card.id}`);
+              console.warn(e);
+            }
+          } else {
+            await sharp(pngLargeAbs).webp({ quality: 60 }).toFile(webpLargeAbs);
+            card.images.large = `/card-images/${webpLarge}`;
+          }
+        }
+      }
+    }
+
+    // Write all the filtered cards to a file (with local image paths)
+    fs.writeFileSync(path.resolve(rootDir, "db/rotationCards.json"), JSON.stringify(allCards, null, 2));
+    console.log("Filtered cards and images saved to rotationCards.json and assets/card-images/");
+  } catch (error) {
+    console.error("Error fetching or saving cards:", error);
+  }
+}
+
+getrotationCardsFromAPI();
