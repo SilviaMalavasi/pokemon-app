@@ -55,7 +55,15 @@ export default function SearchResult({
         </ThemedView>
       ))}
       {totalPages > 1 && (
-        <ThemedView style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 16 }}>
+        <ThemedView
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: 16,
+            paddingVertical: 8,
+          }}
+        >
           <ThemedButton
             type="alternative"
             title="Prev"
