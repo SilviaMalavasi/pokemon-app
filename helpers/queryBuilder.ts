@@ -19,7 +19,8 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   let query = supabase.from("Card").select("cardId");
 
   filters.forEach(({ config, value, operator }) => {
-    if (!value || config.table !== "Card") return;
+    // Only skip if value is null or undefined, not if 0 or ''
+    if (value === null || value === undefined || config.table !== "Card") return;
     const col = config.column;
     if (config.type === "text") {
       const trimmed = String(value).trim();
@@ -27,6 +28,8 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     } else if (config.type === "number") {
       if (config.valueType === "int") {
         const op = operator || "=";
+        // Exclude NULLs from results
+        query = query.not(col, "is", null);
         if (op === ">=") query = query.gte(col, value);
         else if (op === "<=") query = query.lte(col, value);
         else query = query.eq(col, value);
@@ -45,12 +48,15 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       }
     } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
       if (config.valueType === "json-object-array") {
-        // JSON array of objects: use .or with .contains for each object value (OR search)
+        // Map string values to objects: [{ type: value }]
         if (Array.isArray(value)) {
-          const orString = value.map((typeValue: any) => `${col}.contains.[${JSON.stringify(typeValue)}]`).join(",");
+          // OR search: any of the types
+          const orString = value
+            .map((typeValue: string) => `${col}.contains.${JSON.stringify([{ type: typeValue }])}`)
+            .join(",");
           query = query.or(orString);
         } else {
-          query = query.contains(col, [value]);
+          query = query.contains(col, [{ type: value }]);
         }
       } else if (config.valueType === "json-string-array") {
         // Use ilike for each string value (OR search)
