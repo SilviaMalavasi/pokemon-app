@@ -38,7 +38,7 @@ export default function FreeSearchScreen() {
             scrollNativeNode,
             () => {},
             (x, y) => {
-              scrollNode.scrollTo({ y: y - 30, animated: true });
+              scrollNode.scrollTo({ y: y - 40, animated: true });
             }
           );
         }
@@ -87,9 +87,7 @@ export default function FreeSearchScreen() {
 
   // Scroll to SearchResult on page change
   React.useEffect(() => {
-    if (currentPage !== 1) {
-      scrollToSearchResult();
-    }
+    scrollToSearchResult();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
