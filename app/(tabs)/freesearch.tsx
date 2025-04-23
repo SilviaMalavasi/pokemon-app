@@ -1,9 +1,11 @@
 import { StyleSheet } from "react-native";
 import { Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { supabase } from "@/lib/supabase";
 import type { CardType } from "@/types/PokemonCardType";
+import { findNodeHandle, UIManager } from "react-native";
+import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedText from "@/components/base/ThemedText";
@@ -20,6 +22,8 @@ export default function FreeSearchScreen() {
   const [cards, setCards] = useState<Pick<CardType, "cardId" | "name" | "imagesSmall">[]>([]);
   const ITEMS_PER_PAGE = 20;
   const [currentPage, setCurrentPage] = useState(1);
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const searchResultRef = useRef(null);
 
   // Handler to receive card IDs from FreeSearch
   const handleSearchResults = (ids: string[], query: string) => {
@@ -27,6 +31,25 @@ export default function FreeSearchScreen() {
     setSearchQuery(query);
     setLoading(false);
     setCurrentPage(1);
+    // Scroll to SearchResult after results are set
+    setTimeout(() => {
+      const scrollNode = scrollRef.current;
+      const searchNode = searchResultRef.current;
+      if (searchNode && scrollNode) {
+        const searchNativeNode = findNodeHandle(searchNode);
+        const scrollNativeNode = findNodeHandle(scrollNode);
+        if (searchNativeNode && scrollNativeNode) {
+          UIManager.measureLayout(
+            searchNativeNode,
+            scrollNativeNode,
+            () => {},
+            (x, y) => {
+              scrollNode.scrollTo({ y, animated: true });
+            }
+          );
+        }
+      }
+    }, 100);
   };
 
   // Fetch paginated card data when cardIds or currentPage changes
@@ -79,6 +102,7 @@ export default function FreeSearchScreen() {
         />
       }
       headerTitle="Free Search"
+      scrollRef={scrollRef}
     >
       <ThemedView>
         <FreeSearch
@@ -87,7 +111,7 @@ export default function FreeSearchScreen() {
           resetKey={resetKey}
         />
       </ThemedView>
-      <ThemedView>
+      <ThemedView ref={searchResultRef}>
         <SearchResult
           cardIds={cardIds}
           cards={cards}
