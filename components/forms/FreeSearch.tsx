@@ -58,8 +58,8 @@ export default function FreeSearch({
   // Columns to search in each table
   const cardSetColumns = ["setId", "name", "series"];
   const abilitiesColumns = ["name", "text"];
-  const attacksColumns = ["name", "text", "damage"];
-  const cardAttacksColumns = ["cost", "convertedEnergyCost"];
+  const attacksColumns = ["name", "text"];
+  const cardAttacksColumns = ["cost", "convertedEnergyCost", "damage"];
 
   useEffect(() => {
     setCardSearch("");
@@ -69,13 +69,20 @@ export default function FreeSearch({
   const handleSubmit = async () => {
     if (setLoading) setLoading(true);
     // Trim only leading/trailing spaces for search
-    const trimmedSearch = cardSearch.trim();
-    const isNumeric = trimmedSearch !== "" && !isNaN(Number(trimmedSearch));
-    const searchVariants = [
+    let trimmedSearch = cardSearch.trim();
+    // If search contains 'x' or '×', search for both variants
+    let searchVariants = [
       trimmedSearch,
       trimmedSearch.charAt(0).toUpperCase() + trimmedSearch.slice(1),
       trimmedSearch.toLowerCase(),
     ];
+    if (trimmedSearch.includes("x") || trimmedSearch.includes("×")) {
+      const xVariant = trimmedSearch.replace(/×/g, "x");
+      const timesVariant = trimmedSearch.replace(/x/g, "×");
+      searchVariants.push(xVariant, timesVariant);
+      searchVariants = Array.from(new Set(searchVariants));
+    }
+    const isNumeric = trimmedSearch !== "" && !isNaN(Number(trimmedSearch));
     let cardIds = new Set();
     let cardResults: any[] = [];
 

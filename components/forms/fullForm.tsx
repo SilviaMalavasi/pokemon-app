@@ -29,7 +29,7 @@ const allSubtypes = Array.from(
 const getCardSubtypesOptions = (supertypes: string[]) => {
   let subtypeSet = new Set<string>();
 
-  if (!supertypes || supertypes.length === 0 || subtypeSet.size === 0) {
+  if (!supertypes || supertypes.length === 0) {
     allSubtypes.forEach((v) => subtypeSet.add(v));
   } else {
     supertypes.forEach((supertype) => {
@@ -83,6 +83,7 @@ export default function FullForm({
   const [cardSetName, setCardSetName] = useState<string[]>([]);
   const [cardNumber, setCardNumber] = useState<number | "">("");
   const [cardStage, setCardStage] = useState<string[]>([]);
+  const [cardSetNumber, setCardSetNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [cardIds, setCardIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -117,6 +118,7 @@ export default function FullForm({
     setCardSetName([]);
     setCardNumber("");
     setCardStage([]);
+    setCardSetNumber("");
     setCardIds([]);
     setSearchQuery("");
     setError(null);
@@ -271,6 +273,10 @@ export default function FullForm({
         value: cardNumber,
         operator: "=",
       },
+      cardSetNumber && {
+        config: { key: "cardSetNumber", type: "text", table: "Card", column: "cardId" },
+        value: cardSetNumber,
+      },
     ].filter(Boolean) as QueryBuilderFilter[];
     try {
       const { cardIds, query } = await queryBuilder(filters);
@@ -341,7 +347,7 @@ export default function FullForm({
           labelHint="Rules refers to Pokémon special rules (es Pokémon-EX rules) or Trainer card rules."
         />
       </Collapsible>
-      {cardSupertype.includes("Pokémon") && (
+      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
         <Collapsible
           title="Attacks"
           resetKey={resetKey}
@@ -391,7 +397,7 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {cardSupertype.includes("Pokémon") && (
+      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
         <Collapsible
           title="Abilities"
           resetKey={resetKey}
@@ -410,7 +416,7 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {cardSupertype.includes("Pokémon") && (
+      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
         <Collapsible
           title="Evolution"
           resetKey={resetKey}
@@ -436,7 +442,7 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {cardSupertype.includes("Pokémon") && (
+      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
         <Collapsible
           title="Stats"
           resetKey={resetKey}
@@ -463,7 +469,7 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {cardSupertype.includes("Pokémon") && (
+      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
         <Collapsible
           title="Weaknesses/Resistances"
           resetKey={resetKey}
@@ -484,23 +490,6 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      <Collapsible
-        title="Artist/Flavor"
-        resetKey={resetKey}
-      >
-        <TextInput
-          label="Artist"
-          value={cardArtist}
-          onChange={setCardArtist}
-          placeholder="Artist"
-        />
-        <TextInput
-          label="Flavor"
-          value={cardFlavor}
-          onChange={setCardFlavor}
-          placeholder="Flavor text"
-        />
-      </Collapsible>
       <Collapsible
         title="Edition"
         resetKey={resetKey}
@@ -525,7 +514,31 @@ export default function FullForm({
           onChange={setCardNumber}
           placeholder="Card number"
         />
+        <TextInput
+          label="Card/Set Number"
+          value={cardSetNumber}
+          onChange={setCardSetNumber}
+          placeholder="Card/Set Number"
+        />
       </Collapsible>
+      <Collapsible
+        title="Artist/Flavor"
+        resetKey={resetKey}
+      >
+        <TextInput
+          label="Artist"
+          value={cardArtist}
+          onChange={setCardArtist}
+          placeholder="Artist"
+        />
+        <TextInput
+          label="Flavor"
+          value={cardFlavor}
+          onChange={setCardFlavor}
+          placeholder="Flavor text"
+        />
+      </Collapsible>
+
       <ThemedButton
         title="Search"
         onPress={handleSubmit}

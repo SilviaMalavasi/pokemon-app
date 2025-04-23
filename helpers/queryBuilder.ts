@@ -122,17 +122,62 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   // 4. CardAttacks filters (directly on CardAttacks)
   let cardAttacksCardIds: string[] = [];
   if (grouped["CardAttacks"]) {
-    const caQuery = buildQuery("CardAttacks", "cardId", grouped["CardAttacks"]);
-    const { data, error } = await caQuery;
-    if (error) return { cardIds: [], query: error.message };
-    const cardIdInts = data?.map((row: any) => row.cardId) || [];
-    if (cardIdInts.length > 0) {
-      const { data: cardData, error: cardError } = await supabase
-        .from("Card")
-        .select("cardId, id")
-        .in("id", cardIdInts);
-      if (cardError) return { cardIds: [], query: cardError.message };
-      cardAttacksCardIds = cardData?.map((row: any) => row.cardId) || [];
+    // Check if any filter is a number type with valueType 'text'
+    const numberTextFilters = grouped["CardAttacks"].filter(
+      (f) => f.config.type === "number" && f.config.valueType === "text"
+    );
+    if (numberTextFilters.length > 0) {
+      // Fetch all CardAttacks rows with the relevant column
+      const { data: caData, error: caError } = await supabase.from("CardAttacks").select("cardId, id, damage");
+      if (caError) return { cardIds: [], query: caError.message };
+      let filteredRows = caData || [];
+      numberTextFilters.forEach(({ config, value, operator }) => {
+        const col = config.column;
+        const op = operator || "=";
+        if (["=", ">=", "<="].includes(op)) {
+          filteredRows = filteredRows.filter((row) => {
+            const num =
+              row[col as keyof typeof row] && typeof row[col as keyof typeof row] === "string"
+                ? parseInt((row[col as keyof typeof row] as string).replace(/[^0-9]/g, ""), 10)
+                : null;
+            if (num === null || isNaN(num)) return false;
+            if (op === ">=") return num >= value;
+            if (op === "<=") return num <= value;
+            return num === value;
+          });
+        } else if (op === "+" || op === "x" || op === "×") {
+          const matchStrings = [`${value}x`, `${value}×`, `${value}+`];
+          filteredRows = filteredRows.filter((row) => {
+            if (!row[col as keyof typeof row]) return false;
+            const str = String(row[col as keyof typeof row]);
+            if (op === "+") return str.includes(matchStrings[2]);
+            // For x/×, match either
+            return str.includes(matchStrings[0]) || str.includes(matchStrings[1]);
+          });
+        }
+      });
+      const cardIdInts = filteredRows.map((row) => row.cardId);
+      if (cardIdInts.length > 0) {
+        const { data: cardData, error: cardError } = await supabase
+          .from("Card")
+          .select("cardId, id")
+          .in("id", cardIdInts);
+        if (cardError) return { cardIds: [], query: cardError.message };
+        cardAttacksCardIds = cardData?.map((row: any) => row.cardId) || [];
+      }
+    } else {
+      const caQuery = buildQuery("CardAttacks", "cardId", grouped["CardAttacks"]);
+      const { data, error } = await caQuery;
+      if (error) return { cardIds: [], query: error.message };
+      const cardIdInts = data?.map((row: any) => row.cardId) || [];
+      if (cardIdInts.length > 0) {
+        const { data: cardData, error: cardError } = await supabase
+          .from("Card")
+          .select("cardId, id")
+          .in("id", cardIdInts);
+        if (cardError) return { cardIds: [], query: cardError.message };
+        cardAttacksCardIds = cardData?.map((row: any) => row.cardId) || [];
+      }
     }
   }
 

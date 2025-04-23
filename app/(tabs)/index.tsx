@@ -22,10 +22,14 @@ export default function HomeScreen() {
           type="defaultSemiBold"
           style={{ paddingBottom: 12 }}
         >
-          This app helps players build their Pokémon decks by searching only for cards in the current rotation.
+          This app helps players build their Pokémon decks by searching only for cards in the current rotation. LAST
+          UPDATE: 24-04-2025.
         </ThemedText>
-        <ThemedText type="default">
-          Developed by Pokémon nerd and developer{" "}
+        <ThemedText
+          type="default"
+          style={{ paddingBottom: 12 }}
+        >
+          This app was created with ♥ by Pokémon nerd and developer{" "}
           <ExternalLink
             href="https://www.linkedin.com/in/silvia-malavasi/"
             style={{ color: Colors.alternativeText }}
@@ -40,6 +44,12 @@ export default function HomeScreen() {
             pokemontcg.io{" "}
           </ExternalLink>
           for the Card Archive.
+        </ThemedText>
+        <ThemedText
+          type="hintText"
+          style={{ color: Colors.darkText }}
+        >
+          This app is not produced, endorsed, supported, or affiliated with Nintendo or The Pokémon Company.
         </ThemedText>
       </ThemedView>
     </ParallaxScrollView>
