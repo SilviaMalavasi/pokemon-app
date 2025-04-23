@@ -4,12 +4,18 @@ import { Colors } from "@/style/Colors";
 const styles = StyleSheet.create({
   container: {
     borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 24,
     marginBottom: 4,
+  },
+  containerLarge: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+  },
+  containerSmall: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
   },
   default: {
     backgroundColor: Colors.highlight,
