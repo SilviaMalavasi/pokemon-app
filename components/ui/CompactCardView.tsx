@@ -13,7 +13,7 @@ function getCardImage(imagePath: string) {
 }
 
 interface CompactCardViewProps {
-  card: Pick<CardType, "name" | "imagesSmall">;
+  card: Pick<CardType, "cardId" | "name" | "imagesSmall">;
 }
 
 export default function CompactCardView({ card }: CompactCardViewProps) {

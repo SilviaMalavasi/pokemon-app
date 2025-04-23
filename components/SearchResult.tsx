@@ -7,7 +7,7 @@ import { CardType } from "@/types/PokemonCardType";
 
 interface SearchResultProps {
   cardIds: string[];
-  cards?: Pick<CardType, "name" | "imagesSmall">[];
+  cards?: Pick<CardType, "cardId" | "name" | "imagesSmall">[];
   query?: string;
   loading?: boolean;
   currentPage?: number;
@@ -56,7 +56,9 @@ export default function SearchResult({
           style={{ marginBottom: 8 }}
         >
           {cards ? (
-            <CompactCardView card={cards.find((c) => c.name === item) || { name: item, imagesSmall: "" }} />
+            <CompactCardView
+              card={cards.find((c) => c.cardId === item) || { cardId: item, name: item, imagesSmall: "" }}
+            />
           ) : (
             <ThemedText type="default">{item}</ThemedText>
           )}

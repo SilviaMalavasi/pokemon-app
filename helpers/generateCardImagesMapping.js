@@ -9,7 +9,7 @@ const files = fs.readdirSync(imagesDir).filter((f) => f.endsWith("_small.webp") 
 let mapping = "const cardImages: Record<string, any> = {\n";
 
 files.forEach((filename) => {
-  mapping += `  '${filename}': require('../../assets/images/card-images/${filename}'),\n`;
+  mapping += `  '${filename}': require('../assets/images/card-images/${filename}'),\n`;
 });
 
 mapping += "};\n\nexport default cardImages;\n";
