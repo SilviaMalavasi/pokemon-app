@@ -25,13 +25,7 @@ export default function FreeSearchScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const searchResultRef = useRef(null);
 
-  // Handler to receive card IDs from FreeSearch
-  const handleSearchResults = (ids: string[], query: string) => {
-    setCardIds(ids);
-    setSearchQuery(query);
-    setLoading(false);
-    setCurrentPage(1);
-    // Scroll to SearchResult after results are set
+  const scrollToSearchResult = () => {
     setTimeout(() => {
       const scrollNode = scrollRef.current;
       const searchNode = searchResultRef.current;
@@ -44,12 +38,21 @@ export default function FreeSearchScreen() {
             scrollNativeNode,
             () => {},
             (x, y) => {
-              scrollNode.scrollTo({ y, animated: true });
+              scrollNode.scrollTo({ y: y - 30, animated: true });
             }
           );
         }
       }
     }, 100);
+  };
+
+  // Handler to receive card IDs from FreeSearch
+  const handleSearchResults = (ids: string[], query: string) => {
+    setCardIds(ids);
+    setSearchQuery(query);
+    setLoading(false);
+    setCurrentPage(1);
+    scrollToSearchResult();
   };
 
   // Fetch paginated card data when cardIds or currentPage changes
@@ -81,6 +84,14 @@ export default function FreeSearchScreen() {
     fetchCards();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIds, currentPage]);
+
+  // Scroll to SearchResult on page change
+  React.useEffect(() => {
+    if (currentPage !== 1) {
+      scrollToSearchResult();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   // Reset the search results when the screen is focused
   useFocusEffect(
