@@ -37,3 +37,7 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# downloads
+
+assets/downloads
+

@@ -4,7 +4,7 @@ import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { CardType } from "@/types/PokemonCardType";
 import CompactCardViewStyle from "@/style/ui/CompactCardViewStyle";
-import cardImages from "@/helpers/cardImages";
+import cardImages from "@/db/cardImages";
 
 function getCardImage(imagePath: string) {
   if (!imagePath) return undefined;

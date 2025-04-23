@@ -1,12 +1,6 @@
-import fs from "fs";
-import path from "path";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-
-import Database from "better-sqlite3";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const fs = require("fs");
+const path = require("path");
+const Database = require("better-sqlite3");
 
 const dbPath = path.resolve(__dirname, "../db/pokemonCardsDB.sqlite");
 const db = new Database(dbPath);

@@ -1,18 +1,15 @@
-import dotenv from "dotenv";
+// Convert to CommonJS (CJS) syntax
+const dotenv = require("dotenv");
 dotenv.config();
-import axios from "axios";
-import fs from "fs";
-import path from "path";
-import https from "https";
-import sharp from "sharp";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
+const https = require("https");
+const sharp = require("sharp");
 
 const API_URL = "https://api.pokemontcg.io/v2/";
-const API_KEY = ""; // Your API key here
+const API_KEY = ""; // Add your API key here
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 
 async function getrotationCardsFromAPI() {
@@ -23,28 +20,27 @@ async function getrotationCardsFromAPI() {
     let page = 1;
     let hasMore = true;
 
-    // --- First query: regulationMark G or H (original logic) ---
+    // --- First query: regulationMark G, H and I ---
     while (hasMore) {
       console.log(`Fetching page ${page}...`);
 
-      // Fetch cards with regulationMark G or H for the current page
       const response = await axios.get(`${API_URL}cards`, {
         headers: {
           "X-Api-Key": API_KEY,
         },
         params: {
-          q: 'regulationMark:"G" OR regulationMark:"H" OR regulationMark:"I"', // Query for regulationMark G, H, or I
-          pageSize: 250, // Fetch up to 250 cards per page
-          page, // Current page
+          q: 'regulationMark:"G" OR regulationMark:"H" OR regulationMark:"I"',
+          pageSize: 250,
+          page,
         },
       });
 
       const cards = response.data.data;
-      allCards = allCards.concat(cards); // Add the cards to the list
+      allCards = allCards.concat(cards);
 
       // Check if there are more pages
-      hasMore = cards.length === 250; // If less than 250 cards, we've reached the last page
-      page++; // Increment the page number
+      hasMore = cards.length === 250;
+      page++;
     }
 
     // --- Second query: fetch specific cards by ID (sve-9 to sve-16) ---

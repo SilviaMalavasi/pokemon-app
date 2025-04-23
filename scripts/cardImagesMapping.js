@@ -1,10 +1,5 @@
-import fs from "fs";
-import path from "path";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const fs = require("fs");
+const path = require("path");
 
 const imagesDir = path.resolve(__dirname, "../assets/card-images");
 const outputFile = path.resolve(__dirname, "../db/cardImages.ts");

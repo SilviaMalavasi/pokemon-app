@@ -1,18 +1,13 @@
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import fs from "fs";
-import path from "path";
-import Database from "better-sqlite3";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const fs = require("fs");
+const path = require("path");
+const Database = require("better-sqlite3");
 
 const dbPath = path.resolve(__dirname, "../db/pokemonCardsDB.sqlite");
 const db = new Database(dbPath);
 
 // Create tables
 const createTables = () => {
-  db.exec(`
+  const schemaSQL = `
     CREATE TABLE IF NOT EXISTS CardSet (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       setId TEXT UNIQUE,
@@ -82,7 +77,13 @@ const createTables = () => {
       FOREIGN KEY (cardId) REFERENCES Card (id),
       FOREIGN KEY (attackId) REFERENCES Attacks (id)
     );
-  `);
+  `;
+
+  // Write schema to db/schema.sql
+  const schemaPath = path.resolve(__dirname, "../db/schema.sql");
+  fs.writeFileSync(schemaPath, schemaSQL.trim() + "\n");
+
+  db.exec(schemaSQL);
 };
 
 const insertOrGetId = (tableName, uniqueColumn, data) => {
@@ -224,6 +225,48 @@ const fillDatabase = () => {
   });
 
   console.log("Database seeding complete.");
+
+  fixNullConvertedRetreatCost();
+  updateCardSetCodes();
 };
+
+function fixNullConvertedRetreatCost() {
+  const db = new Database(dbPath);
+  const result = db
+    .prepare("UPDATE Card SET convertedRetreatCost = 0 WHERE supertype = 'Pokémon' AND convertedRetreatCost IS NULL")
+    .run();
+  db.close();
+  console.log(`Set convertedRetreatCost = 0 for ${result.changes} Pokémon cards where it was null.`);
+}
+
+function updateCardSetCodes() {
+  const nameToCode = [
+    { name: "Journey Together", ptcgoCode: "JTG" },
+    { name: "Prismatic Evolutions", ptcgoCode: "PRE" },
+    { name: "Surging Sparks", ptcgoCode: "SSP" },
+    { name: "Stellar Crown", ptcgoCode: "SCR" },
+    { name: "Shrouded Fable", ptcgoCode: "SFA" },
+    { name: "Twilight Masquerade", ptcgoCode: "TWM" },
+    { name: "Temporal Forces", ptcgoCode: "TEF" },
+    { name: "Paldean Fates", ptcgoCode: "PAF" },
+    { name: "Paradox Rift", ptcgoCode: "PAR" },
+    { name: "151", ptcgoCode: "MEW" },
+    { name: "McDonald’s Match Battle 2023", ptcgoCode: "M23" },
+    { name: "Obsidian Flames", ptcgoCode: "OBF" },
+    { name: "Paldea Evolved", ptcgoCode: "PAL" },
+    { name: "Scarlet & Violet Energies", ptcgoCode: "SVE" },
+    { name: "Scarlet & Violet", ptcgoCode: "SVI" },
+    { name: "Scarlet & Violet Promos", ptcgoCode: "SVP" },
+  ];
+
+  const db = new Database(dbPath);
+  let updated = 0;
+  for (const entry of nameToCode) {
+    const result = db.prepare("UPDATE CardSet SET ptcgoCode = ? WHERE name = ?").run(entry.ptcgoCode, entry.name);
+    if (result.changes > 0) updated++;
+  }
+  db.close();
+  console.log(`Updated ${updated} CardSet rows with ptcgoCode.`);
+}
 
 fillDatabase();
