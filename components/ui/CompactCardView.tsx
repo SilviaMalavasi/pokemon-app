@@ -27,7 +27,12 @@ export default function CompactCardView({ card }: CompactCardViewProps) {
         />
       ) : null}
       <View style={CompactCardViewStyle.textContainer}>
-        <ThemedText type="default">{card.name}</ThemedText>
+        <ThemedText
+          type="default"
+          style={{ textAlign: "center" }}
+        >
+          {card.name}
+        </ThemedText>
       </View>
     </ThemedView>
   );

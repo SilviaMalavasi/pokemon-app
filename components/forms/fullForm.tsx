@@ -315,15 +315,13 @@ export default function FullForm({
           onChange={setCardSubtypes}
           labelHint="Include cards that match ANY of the selected choices."
         />
-        {cardSupertype[0] !== "Trainer" && (
-          <DynamicMultiSelect
-            label="Types"
-            value={cardTypes}
-            options={cardTypesOptions}
-            onChange={setCardTypes}
-            labelHint="Include cards that match ANY of the selected choices."
-          />
-        )}
+        <DynamicMultiSelect
+          label="Types"
+          value={cardTypes}
+          options={cardTypesOptions}
+          onChange={setCardTypes}
+          labelHint="Include cards that match ANY of the selected choices."
+        />
       </Collapsible>
       <Collapsible
         title="Card Rules"
@@ -337,7 +335,7 @@ export default function FullForm({
           labelHint="Rules refers to Pokémon special rules (es Pokémon-EX rules) or Trainer card rules."
         />
       </Collapsible>
-      {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
+      {cardSupertype.includes("Pokémon") && (
         <Collapsible
           title="Attacks"
           resetKey={resetKey}
@@ -387,7 +385,7 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
+      {cardSupertype.includes("Pokémon") && (
         <Collapsible
           title="Abilities"
           resetKey={resetKey}
@@ -406,20 +404,18 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
+      {cardSupertype.includes("Pokémon") && (
         <Collapsible
           title="Evolution"
           resetKey={resetKey}
         >
-          {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
-            <DynamicMultiSelect
-              label="Stage"
-              value={cardStage}
-              options={cardStageOptions}
-              onChange={setCardStage}
-              labelHint="Include cards that match ANY of the selected choices."
-            />
-          )}
+          <DynamicMultiSelect
+            label="Stage"
+            value={cardStage}
+            options={cardStageOptions}
+            onChange={setCardStage}
+            labelHint="Include cards that match ANY of the selected choices."
+          />
           <TextInput
             label="Evolves From"
             value={cardEvolvesFrom}
@@ -434,7 +430,7 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
+      {cardSupertype.includes("Pokémon") && (
         <Collapsible
           title="Stats"
           resetKey={resetKey}
@@ -461,7 +457,7 @@ export default function FullForm({
           />
         </Collapsible>
       )}
-      {cardSupertype[0] !== "Energy" && cardSupertype[0] !== "Trainer" && (
+      {cardSupertype.includes("Pokémon") && (
         <Collapsible
           title="Weaknesses/Resistances"
           resetKey={resetKey}
