@@ -2,9 +2,12 @@ import React from "react";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
+import CompactCardView from "@/components/ui/CompactCardView";
+import { CardType } from "@/types/PokemonCardType";
 
 interface SearchResultProps {
   cardIds: string[];
+  cards?: Pick<CardType, "name" | "imagesSmall">[];
   query?: string;
   loading?: boolean;
   currentPage?: number;
@@ -14,6 +17,7 @@ interface SearchResultProps {
 
 export default function SearchResult({
   cardIds,
+  cards,
   query,
   loading,
   currentPage = 1,
@@ -51,7 +55,11 @@ export default function SearchResult({
           key={item + idx}
           style={{ marginBottom: 8 }}
         >
-          <ThemedText type="default">{item}</ThemedText>
+          {cards ? (
+            <CompactCardView card={cards.find((c) => c.name === item) || { name: item, imagesSmall: "" }} />
+          ) : (
+            <ThemedText type="default">{item}</ThemedText>
+          )}
         </ThemedView>
       ))}
       {totalPages > 1 && (

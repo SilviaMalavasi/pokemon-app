@@ -267,10 +267,7 @@ export default function FullForm({
       },
     ].filter(Boolean) as QueryBuilderFilter[];
     try {
-      console.clear();
-      console.log("QueryBuilder input filters:", filters);
       const { cardIds, query } = await queryBuilder(filters);
-      console.log("QueryBuilder built query:", query);
       setCardIds(cardIds);
       setSearchQuery(query);
       if (onSearchResults) onSearchResults(cardIds, query);
@@ -280,11 +277,7 @@ export default function FullForm({
         const { data, error } = await supabase.from("Card").select("cardId, name").in("cardId", cardIds);
         if (error) {
           console.error("Error fetching card names:", error.message);
-        } else {
-          console.log("Number of cards found:", cardIds.length);
         }
-      } else {
-        console.log("No cardIds found.");
       }
     } catch (err: any) {
       setError(err.message || "Search failed");

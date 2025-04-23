@@ -12,7 +12,7 @@ import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
 import { Colors } from "@/style/Colors";
-import styles from "@/style/base/ParallaxScrollViewStyle";
+import styles from "@/style/ui/ParallaxScrollViewStyle";
 
 const HEADER_HEIGHT = 150;
 

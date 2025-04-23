@@ -9,12 +9,13 @@ export interface Attack {
   name: string;
   damage: string;
   text: string;
-  cost: string[];
-  convertedEnergyCost: number;
+  cost?: string[];
+  convertedEnergyCost?: number;
 }
 
 export interface CardSet {
-  id: string;
+  id: number;
+  setId: string;
   name: string;
   series: string;
   printedTotal: number;
@@ -26,8 +27,9 @@ export interface CardSet {
   ptcgoCode: string | null;
 }
 
-export interface PokemonCard {
-  id: string;
+export interface CardType {
+  id: number;
+  cardId: string;
   name: string;
   supertype: string;
   subtypes: string[];
@@ -42,15 +44,14 @@ export interface PokemonCard {
   resistances: { type: string; value: string }[] | null;
   retreatCost: string[] | null;
   convertedRetreatCost: number | null;
-  cardSet: CardSet;
+  cardSet?: CardSet;
+  setId: number;
   number: string;
   artist: string | null;
   rarity: string | null;
   flavorText: string | null;
   nationalPokedexNumbers: number[] | null;
   regulationMark: string | null;
-  images: {
-    small: string;
-    large: string;
-  };
+  imagesSmall: string;
+  imagesLarge: string;
 }

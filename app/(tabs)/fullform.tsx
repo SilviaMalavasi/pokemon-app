@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { Image, findNodeHandle, UIManager } from "react-native";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
+import { supabase } from "@/lib/supabase";
+import type { CardType } from "@/types/PokemonCardType";
 
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
@@ -16,6 +18,7 @@ export default function FullFormScreen() {
   const [resetKey, setResetKey] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 20;
+  const [cards, setCards] = useState<Pick<CardType, "name" | "imagesSmall">[]>([]);
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const searchResultRef = useRef<any>(null);
@@ -46,6 +49,31 @@ export default function FullFormScreen() {
       }
     }, 100);
   };
+
+  // Fetch paginated card data when cardIds or currentPage changes
+  React.useEffect(() => {
+    const fetchCards = async () => {
+      if (!cardIds || cardIds.length === 0) {
+        setCards([]);
+        return;
+      }
+      setLoading(true);
+      const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+      const endIdx = startIdx + ITEMS_PER_PAGE;
+      const paginatedIds = cardIds.slice(startIdx, endIdx);
+      const { data, error } = await supabase.from("Card").select("name, imagesSmall").in("name", paginatedIds);
+      if (error) {
+        setCards([]);
+      } else {
+        // Ensure order matches paginatedIds
+        const cardsOrdered = paginatedIds.map((id) => data.find((c) => c.name === id) || { name: id, imagesSmall: "" });
+        setCards(cardsOrdered);
+      }
+      setLoading(false);
+    };
+    fetchCards();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardIds, currentPage]);
 
   //Reset the search results when the screen is focused
   useFocusEffect(
@@ -79,6 +107,7 @@ export default function FullFormScreen() {
       <ThemedView ref={searchResultRef}>
         <SearchResult
           cardIds={cardIds}
+          cards={cards}
           query={searchQuery}
           loading={loading}
           currentPage={currentPage}
