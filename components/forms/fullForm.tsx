@@ -171,7 +171,7 @@ export default function FullForm({
         value: attacksName,
       },
       attacksDamage !== "" && {
-        config: { key: "attackDamage", type: "number", table: "Attacks", column: "damage", valueType: "text" },
+        config: { key: "attackDamage", type: "number", table: "CardAttacks", column: "damage", valueType: "text" },
         value: attacksDamage,
         operator: attacksDamageOperator,
       },
