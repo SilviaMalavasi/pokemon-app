@@ -4,7 +4,6 @@ import { Image, findNodeHandle, UIManager } from "react-native";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
-import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import FullForm from "@/components/forms/FullForm";
 import { Colors } from "@/style/Colors";
@@ -15,6 +14,8 @@ export default function FullFormScreen() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 50;
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const searchResultRef = useRef<any>(null);
@@ -24,6 +25,7 @@ export default function FullFormScreen() {
     setCardIds(ids);
     setSearchQuery(query);
     setLoading(false);
+    setCurrentPage(1); // Reset to first page on new search
     // Scroll to SearchResult after results are set
     setTimeout(() => {
       const scrollNode = scrollRef.current;
@@ -79,6 +81,9 @@ export default function FullFormScreen() {
           cardIds={cardIds}
           query={searchQuery}
           loading={loading}
+          currentPage={currentPage}
+          itemsPerPage={ITEMS_PER_PAGE}
+          onPageChange={setCurrentPage}
         />
       </ThemedView>
     </ParallaxScrollView>
