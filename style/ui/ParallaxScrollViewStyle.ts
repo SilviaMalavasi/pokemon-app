@@ -7,23 +7,23 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   header: {
-    height: 175,
+    height: 185,
     alignItems: "flex-start",
     justifyContent: "center",
     overflow: "hidden",
     display: "flex",
   },
   headerImageCont: {
-    width: "100%",
+    width: 110,
     flexShrink: 0,
     flexGrow: 0,
-    flexBasis: 120,
+    flexBasis: 110,
   },
   headerTitle: {
     flex: 1,
-    paddingLeft: 8,
+    paddingLeft: 4,
     paddingRight: 32,
-    paddingTop: 32,
+    paddingTop: 28,
     color: Colors.highlight,
   },
   content: {

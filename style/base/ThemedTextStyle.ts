@@ -14,11 +14,12 @@ const styles = StyleSheet.create({
     color: Colors.text,
   },
   title: {
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: "bold",
     lineHeight: 32,
     paddingBottom: 16,
     color: Colors.text,
+    paddingTop: 4,
   },
   subtitle: {
     fontSize: 18,
