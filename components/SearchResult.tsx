@@ -17,7 +17,7 @@ export default function SearchResult({
   query,
   loading,
   currentPage = 1,
-  itemsPerPage = 50,
+  itemsPerPage = 20,
   onPageChange,
 }: SearchResultProps): JSX.Element {
   // Pagination logic
@@ -72,7 +72,7 @@ export default function SearchResult({
           />
           <ThemedText
             type="default"
-            style={{ marginHorizontal: 8 }}
+            style={{ marginHorizontal: 4, paddingTop: 16 }}
           >
             Page {currentPage} of {totalPages}
           </ThemedText>

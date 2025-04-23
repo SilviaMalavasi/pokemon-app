@@ -15,7 +15,7 @@ export default function FullFormScreen() {
   const [loading, setLoading] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 50;
+  const ITEMS_PER_PAGE = 20;
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const searchResultRef = useRef<any>(null);
