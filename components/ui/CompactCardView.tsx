@@ -19,15 +19,13 @@ interface CompactCardViewProps {
 export default function CompactCardView({ card }: CompactCardViewProps) {
   return (
     <ThemedView style={CompactCardViewStyle.container}>
-      <View style={CompactCardViewStyle.imageContainer}>
-        {getCardImage(card.imagesSmall) ? (
-          <Image
-            source={getCardImage(card.imagesSmall)}
-            style={CompactCardViewStyle.image}
-            resizeMode="contain"
-          />
-        ) : null}
-      </View>
+      {getCardImage(card.imagesSmall) ? (
+        <Image
+          source={getCardImage(card.imagesSmall)}
+          style={CompactCardViewStyle.image}
+          resizeMode="contain"
+        />
+      ) : null}
       <View style={CompactCardViewStyle.textContainer}>
         <ThemedText type="default">{card.name}</ThemedText>
       </View>

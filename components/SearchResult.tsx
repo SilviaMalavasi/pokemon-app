@@ -49,21 +49,23 @@ export default function SearchResult({
     return <></>;
   }
   return (
-    <ThemedView style={{ padding: 16 }}>
-      {paginatedIds.map((item, idx) => (
-        <ThemedView
-          key={item + idx}
-          style={{ marginBottom: 8 }}
-        >
-          {cards ? (
-            <CompactCardView
-              card={cards.find((c) => c.cardId === item) || { cardId: item, name: item, imagesSmall: "" }}
-            />
-          ) : (
-            <ThemedText type="default">{item}</ThemedText>
-          )}
-        </ThemedView>
-      ))}
+    <ThemedView style={{ padding: 8 }}>
+      <ThemedView style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", padding: 0 }}>
+        {paginatedIds.map((item, idx) => (
+          <ThemedView
+            key={item + idx}
+            style={{ width: "48%", marginTop: 12 }}
+          >
+            {cards ? (
+              <CompactCardView
+                card={cards.find((c) => c.cardId === item) || { cardId: item, name: item, imagesSmall: "" }}
+              />
+            ) : (
+              <ThemedText type="default">{item}</ThemedText>
+            )}
+          </ThemedView>
+        ))}
+      </ThemedView>
       {totalPages > 1 && (
         <ThemedView
           style={{

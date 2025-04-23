@@ -1,25 +1,28 @@
 import { StyleSheet } from "react-native";
+import { vw } from "@/helpers/viewport";
+
+const containersPadding = 24;
+const gap = 16; // px, gap between cards (increased from 12)
+const columns = 2;
+const cardWidth = (vw(100) - containersPadding * 2 - gap * (columns - 1)) / columns;
 
 const CompactCardViewStyle = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
-    padding: 0,
-  },
-  imageContainer: {
-    flex: 2,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 0,
+    justifyContent: "flex-start",
+    width: cardWidth,
+    paddingVertical: 8,
   },
   textContainer: {
-    flex: 8,
+    width: "100%",
+    alignItems: "center",
     justifyContent: "center",
-    paddingLeft: 12,
+    paddingTop: 4,
   },
   image: {
-    width: 50,
-    height: 70,
+    width: "100%",
+    height: cardWidth / 0.71,
   },
 });
 
