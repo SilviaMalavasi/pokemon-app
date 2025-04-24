@@ -69,9 +69,9 @@ const styles = StyleSheet.create({
   hintText: {
     fontSize: 14,
     lineHeight: 15,
-    color: Colors.alternativeText,
+    color: Colors.lightPurple,
     marginTop: 6,
-    marginBottom: 8,
+    marginBottom: 16,
   },
 });
 

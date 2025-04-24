@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { TouchableOpacity } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
@@ -8,6 +9,7 @@ import Collapsible from "@/components/base/Collapsible";
 import { queryBuilder } from "@/helpers/queryBuilder";
 import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 import ThemedText from "@/components/base/ThemedText";
+import ThemedSwitch from "@/components/base/ThemedSwitch";
 import { supabase } from "@/lib/supabase";
 
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
@@ -49,11 +51,15 @@ export default function FullForm({
   onSearchResults,
   setLoading: setLoadingProp,
   resetKey,
+  removeDuplicates,
+  onRemoveDuplicatesChange,
 }: {
   onSearchResults?: (ids: string[], query: string) => void;
   setLoading?: (loading: boolean) => void;
   resetKey?: number;
-} = {}): JSX.Element {
+  removeDuplicates: boolean;
+  onRemoveDuplicatesChange: (val: boolean) => void;
+}): JSX.Element {
   // State for all fields
   const [cardSupertype, setCardSupertype] = useState<string[]>([]);
   const [cardSubtypes, setCardSubtypes] = useState<string[]>([]);
@@ -88,6 +94,8 @@ export default function FullForm({
   const [cardIds, setCardIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [showHint, setShowHint] = useState(false);
+  const [hasAnyAbility, setHasAnyAbility] = useState(false);
 
   useEffect(() => {
     setCardSupertype([]);
@@ -203,6 +211,10 @@ export default function FullForm({
       abilitiesText && {
         config: { key: "abilityText", type: "text", table: "Abilities", column: "text" },
         value: abilitiesText,
+      },
+      hasAnyAbility && {
+        config: { key: "hasAnyAbility", type: "exists", table: "CardAbilities", column: "cardId" },
+        value: true,
       },
       cardStage.length > 0 && {
         config: { key: "stage", type: "multiselect", table: "Card", column: "subtypes" },
@@ -414,6 +426,18 @@ export default function FullForm({
             onChange={setAbilitiesText}
             placeholder="Ability text"
           />
+          <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
+            <ThemedSwitch
+              value={hasAnyAbility}
+              onValueChange={setHasAnyAbility}
+            />
+            <ThemedText
+              type="default"
+              style={{ paddingLeft: 8 }}
+            >
+              Has any ability
+            </ThemedText>
+          </ThemedView>
         </Collapsible>
       )}
       {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
@@ -538,7 +562,38 @@ export default function FullForm({
           placeholder="Flavor text"
         />
       </Collapsible>
-
+      <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
+        <ThemedSwitch
+          value={removeDuplicates}
+          onValueChange={onRemoveDuplicatesChange}
+        />
+        <ThemedText
+          type="default"
+          style={{ paddingLeft: 8 }}
+        >
+          Remove duplicates
+        </ThemedText>
+        <TouchableOpacity
+          onPress={() => setShowHint((v) => !v)}
+          accessibilityLabel="Hint for Remove duplicates"
+        >
+          <ThemedText
+            type="hintIcon"
+            style={{ marginLeft: 8, marginTop: 4 }}
+          >
+            ?
+          </ThemedText>
+        </TouchableOpacity>
+      </ThemedView>
+      {showHint && (
+        <ThemedText
+          type="hintText"
+          style={{ marginTop: 4 }}
+        >
+          If enabled, only one card per unique Card will be shown. Cards with same stats but different images or sets
+          will be removed.
+        </ThemedText>
+      )}
       <ThemedButton
         title="Search"
         onPress={handleSubmit}

@@ -2,7 +2,7 @@ import { supabase } from "@/lib/supabase";
 
 export type InputConfig = {
   key: string;
-  type: "text" | "number" | "multiselect";
+  type: "text" | "number" | "multiselect" | "exists";
   table: string;
   column: string;
   valueType?: "int" | "text" | "json-string-array";
@@ -233,11 +233,38 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     }
   }
 
+  // 6. CardAbilities exists filter (for 'has any ability')
+  let hasAnyAbilityCardIds: string[] = [];
+  if (grouped["CardAbilities"]) {
+    const existsFilter = grouped["CardAbilities"].find(
+      (f) => f.config.type === "exists" && f.config.table === "CardAbilities"
+    );
+    if (existsFilter) {
+      // Get all unique cardIds from CardAbilities
+      const { data, error } = await supabase.from("CardAbilities").select("cardId");
+      if (error) return { cardIds: [], query: error.message };
+      const cardIdInts = data?.map((row: any) => row.cardId) || [];
+      if (cardIdInts.length > 0) {
+        const { data: cardData, error: cardError } = await supabase
+          .from("Card")
+          .select("cardId, id")
+          .in("id", cardIdInts);
+        if (cardError) return { cardIds: [], query: cardError.message };
+        hasAnyAbilityCardIds = cardData?.map((row: any) => row.cardId) || [];
+      }
+    }
+  }
+
   // Intersect or union all non-empty arrays
   let finalCardIds: string[] = [];
-  const allArrays = [cardTableIds, cardSetIds, attackCardIds, cardAttacksCardIds, abilityCardIds].filter(
-    (arr) => arr.length > 0
-  );
+  const allArrays = [
+    cardTableIds,
+    cardSetIds,
+    attackCardIds,
+    cardAttacksCardIds,
+    abilityCardIds,
+    hasAnyAbilityCardIds,
+  ].filter((arr) => arr.length > 0);
   // If any filter group uses logic: 'or', use union, else use intersection
   const hasOrLogic = Object.values(grouped).some((filters) => filters.some((f) => f.config.logic === "or"));
   if (allArrays.length > 0) {

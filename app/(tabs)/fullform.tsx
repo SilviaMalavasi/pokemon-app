@@ -19,6 +19,7 @@ export default function FullFormScreen() {
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 20;
   const [cards, setCards] = useState<Pick<CardType, "cardId" | "name" | "imagesSmall">[]>([]);
+  const [removeDuplicates, setRemoveDuplicates] = useState(false);
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const searchResultRef = useRef<any>(null);
@@ -45,8 +46,36 @@ export default function FullFormScreen() {
   };
 
   // Handler to receive card IDs from FullForm
-  const handleSearchResults = (ids: string[], query: string) => {
-    setCardIds(ids);
+  const handleSearchResults = async (ids: string[], query: string) => {
+    let filteredIds = ids;
+    if (removeDuplicates && ids.length > 0) {
+      // Fetch card details for duplicate removal
+      const { data, error } = await supabase
+        .from("Card")
+        .select("cardId, name, supertype, setId, rules")
+        .in("cardId", ids);
+      if (!error && data) {
+        const seen = new Set();
+        filteredIds = [];
+        for (const card of data) {
+          let key = "";
+          if (card.supertype === "Pokémon") {
+            key = `${card.name}|${card.setId}`;
+          } else if (card.supertype === "Trainer") {
+            key = `${card.name}|${card.rules}`;
+          } else {
+            key = card.cardId;
+          }
+          if (!seen.has(key)) {
+            seen.add(key);
+            filteredIds.push(card.cardId);
+          }
+        }
+        // Preserve original order
+        filteredIds = ids.filter((id) => filteredIds.includes(id));
+      }
+    }
+    setCardIds(filteredIds);
     setSearchQuery(query);
     setLoading(false);
     setCurrentPage(1); // Reset to first page on new search
@@ -116,6 +145,8 @@ export default function FullFormScreen() {
           onSearchResults={handleSearchResults}
           setLoading={setLoading}
           resetKey={resetKey}
+          removeDuplicates={removeDuplicates}
+          onRemoveDuplicatesChange={setRemoveDuplicates}
         />
       </ThemedView>
       <ThemedView ref={searchResultRef}>

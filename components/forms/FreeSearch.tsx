@@ -4,7 +4,7 @@ import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import TextInput from "@/components/base/TextInput";
 import Collapsible from "@/components/base/Collapsible";
-import { Switch } from "react-native";
+import ThemedSwitch from "@/components/base/ThemedSwitch";
 import { Colors } from "@/style/Colors";
 import { queryBuilder } from "@/helpers/queryBuilder";
 import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
@@ -13,13 +13,16 @@ export default function FreeSearch({
   onSearchResults,
   setLoading,
   resetKey,
+  removeDuplicates,
+  onRemoveDuplicatesChange,
 }: {
   onSearchResults?: (ids: string[], query: string) => void;
   setLoading?: (loading: boolean) => void;
   resetKey?: number;
+  removeDuplicates: boolean;
+  onRemoveDuplicatesChange: (val: boolean) => void;
 }): JSX.Element {
   const [cardSearch, setCardSearch] = useState("");
-
   // All card columns that can be excluded from search
   const allCardColumns = [
     { key: "name", table: "Card", label: "Name" },
@@ -105,7 +108,6 @@ export default function FreeSearch({
   const handleSubmit = async () => {
     if (setLoading) setLoading(true);
     let trimmedSearch = cardSearch.trim();
-    console.log("[FreeSearch] handleSubmit called. Search:", trimmedSearch);
     if (!trimmedSearch) {
       if (setLoading) setLoading(false);
       if (onSearchResults) onSearchResults([], "");
@@ -124,7 +126,6 @@ export default function FreeSearch({
       searchVariants = Array.from(new Set(searchVariants));
     }
     const isNumeric = trimmedSearch !== "" && !isNaN(Number(trimmedSearch));
-    console.log("[FreeSearch] searchVariants:", searchVariants, "isNumeric:", isNumeric);
 
     // Build QueryBuilderFilter[] with OR logic for both text and numbers, split numeric OR by table
     const intColumns = ["hp", "convertedRetreatCost", "number"];
@@ -260,11 +261,9 @@ export default function FreeSearch({
           value: cardSetOrFilters,
         });
     }
-    console.log("[FreeSearch] QueryBuilderFilter array (OR logic):", filters);
     // Query
     try {
       const { cardIds, query } = await queryBuilder(filters);
-      console.log("[FreeSearch] queryBuilder result:", cardIds, query);
       if (onSearchResults) onSearchResults(cardIds, query);
     } catch (err: any) {
       console.error("[FreeSearch] queryBuilder error:", err);
@@ -301,10 +300,10 @@ export default function FreeSearch({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <Switch
+                <ThemedSwitch
                   value={excludedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
                   thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
@@ -330,10 +329,10 @@ export default function FreeSearch({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <Switch
+                <ThemedSwitch
                   value={excludedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
                   thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
@@ -359,10 +358,10 @@ export default function FreeSearch({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <Switch
+                <ThemedSwitch
                   value={excludedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
                   thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
@@ -380,10 +379,10 @@ export default function FreeSearch({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <Switch
+                <ThemedSwitch
                   value={excludedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
                   thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
@@ -409,10 +408,10 @@ export default function FreeSearch({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <Switch
+                <ThemedSwitch
                   value={excludedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
                   thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
@@ -438,10 +437,10 @@ export default function FreeSearch({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <Switch
+                <ThemedSwitch
                   value={excludedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
                   thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
@@ -467,10 +466,10 @@ export default function FreeSearch({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <Switch
+                <ThemedSwitch
                   value={excludedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
                   thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
@@ -496,10 +495,10 @@ export default function FreeSearch({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <Switch
+                <ThemedSwitch
                   value={excludedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
                   thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
@@ -525,10 +524,10 @@ export default function FreeSearch({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <Switch
+                <ThemedSwitch
                   value={excludedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
                   thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
@@ -554,10 +553,10 @@ export default function FreeSearch({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <Switch
+                <ThemedSwitch
                   value={excludedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
                   thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
@@ -570,6 +569,20 @@ export default function FreeSearch({
             ))}
         </ThemedView>
       </Collapsible>
+      <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
+        <ThemedSwitch
+          value={removeDuplicates}
+          onValueChange={onRemoveDuplicatesChange}
+          trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+          thumbColor={removeDuplicates ? Colors.green : Colors.purple}
+        />
+        <ThemedText
+          type="default"
+          style={{ paddingLeft: 8 }}
+        >
+          Remove duplicates
+        </ThemedText>
+      </ThemedView>
       <ThemedButton
         title="Search"
         onPress={handleSubmit}
