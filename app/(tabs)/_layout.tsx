@@ -18,7 +18,7 @@ export default function TabLayout() {
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           default: {
-            backgroundColor: Colors.lightBackground,
+            backgroundColor: Colors.black,
             borderTopWidth: 0,
             height: 62,
             paddingHorizontal: 8,

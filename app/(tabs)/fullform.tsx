@@ -112,11 +112,13 @@ export default function FullFormScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIds, currentPage]);
 
-  // Scroll to SearchResult on page change
+  // Scroll to SearchResult on page change, but only if there are results
   React.useEffect(() => {
-    scrollToSearchResult();
+    if (cardIds.length > 0) {
+      scrollToSearchResult();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [currentPage, cardIds]);
 
   //Reset the search results when the screen is focused
   useFocusEffect(
