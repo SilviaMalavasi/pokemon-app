@@ -14,7 +14,7 @@ const ThemedSwitch: React.FC<ThemedSwitchProps> = ({ value, onValueChange, disab
       value={value}
       onValueChange={onValueChange}
       disabled={disabled}
-      trackColor={{ false: Colors.mediumGrey, true: Colors.mediumDarkGrey }}
+      trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
       thumbColor={value ? Colors.green : Colors.purple}
       {...rest}
     />
