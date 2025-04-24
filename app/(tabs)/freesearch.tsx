@@ -91,7 +91,7 @@ export default function FreeSearchScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
-  // Reset the search results when the screen is focused
+  // Reset the search results and switches when the screen is focused
   useFocusEffect(
     React.useCallback(() => {
       setCardIds([]);
@@ -115,6 +115,7 @@ export default function FreeSearchScreen() {
     >
       <ThemedView>
         <FreeSearch
+          key={resetKey}
           onSearchResults={handleSearchResults}
           setLoading={setLoading}
           resetKey={resetKey}

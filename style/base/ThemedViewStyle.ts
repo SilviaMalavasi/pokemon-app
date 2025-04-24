@@ -5,6 +5,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.background,
   },
+  bordered: {
+    borderWidth: 3,
+    borderStyle: "dashed",
+    borderColor: Colors.purple,
+    borderRadius: 16,
+    padding: 8,
+  },
 });
 
 export default styles;

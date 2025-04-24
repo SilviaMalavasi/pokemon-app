@@ -50,11 +50,7 @@ export default function FreeSearch({
   const [excludedColumns, setExcludedColumns] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     allCardColumns.forEach((col) => {
-      if (["artist", "flavorText"].includes(col.key)) {
-        initial[col.key] = true; // excluded by default
-      } else {
-        initial[col.key] = false; // included by default
-      }
+      initial[col.key] = false;
     });
     return initial;
   });
@@ -162,19 +158,21 @@ export default function FreeSearch({
     // CardAttacks numeric (for isNumeric)
     if (isNumeric) {
       cardAttacksColumnsToSearch.forEach((col) => {
-        if (col === "convertedEnergyCost") {
+        if (col === "convertedEnergyCost" && !excludedColumns[col]) {
           cardAttacksNumericOrFilters.push({
             config: { key: col, type: "number", table: "CardAttacks", column: col, valueType: "int" },
             value: Number(trimmedSearch),
             operator: "=",
           });
         }
-      });
-      // Also search damage as text for exact match
-      cardAttacksNumericOrFilters.push({
-        config: { key: "damage", type: "text", table: "CardAttacks", column: "damage" },
-        value: String(trimmedSearch),
-        operator: "eq",
+        // Also search damage as text for exact match, only if not excluded
+        if (col === "damage" && !excludedColumns[col]) {
+          cardAttacksNumericOrFilters.push({
+            config: { key: "damage", type: "text", table: "CardAttacks", column: "damage" },
+            value: String(trimmedSearch),
+            operator: "eq",
+          });
+        }
       });
     }
     if (cardNumericOrFilters.length > 0)
@@ -231,7 +229,7 @@ export default function FreeSearch({
     let cardAttacksOrFilters: QueryBuilderFilter[] = [];
     if (!isNumeric) {
       cardAttacksColumnsToSearch.forEach((col) => {
-        if (col === "convertedEnergyCost") return;
+        if (col === "convertedEnergyCost" || excludedColumns[col]) return;
         searchVariants.forEach((variant) => {
           cardAttacksOrFilters.push({
             config: { key: col, type: "text", table: "CardAttacks", column: col },
@@ -284,29 +282,293 @@ export default function FreeSearch({
         onChange={setCardSearch}
         placeholder="Free text"
       />
+      <ThemedText
+        style={{ paddingTop: 8, paddingBottom: 24 }}
+        type="default"
+      >
+        You can exclude database fields from the search by toggling them off.
+      </ThemedText>
+      {/* Card Type */}
       <Collapsible
-        title="Exclude from search"
+        title="Exclude: Card Type"
         resetKey={resetKey}
       >
-        {allCardColumns.map((col) => (
-          <ThemedView
-            key={`${col.table}-${col.key}`}
-            style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-          >
-            <Switch
-              value={excludedColumns[col.key]}
-              onValueChange={() => handleToggleColumn(col.key)}
-              trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
-              thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
-            />
-            <ThemedText
-              type="default"
-              style={{ paddingLeft: 8 }}
-            >
-              {col.label}
-            </ThemedText>
-          </ThemedView>
-        ))}
+        <ThemedView style={{ marginBottom: 12 }}>
+          {allCardColumns
+            .filter((col) => ["supertype", "subtypes", "types"].includes(col.key))
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <Switch
+                  value={excludedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
+      </Collapsible>
+      {/* Card Rules */}
+      <Collapsible
+        title="Exclude: Card Rules"
+        resetKey={resetKey}
+      >
+        <ThemedView style={{ marginBottom: 12 }}>
+          {allCardColumns
+            .filter((col) => col.key === "rules")
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <Switch
+                  value={excludedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
+      </Collapsible>
+      {/* Attacks */}
+      <Collapsible
+        title="Exclude: Attacks"
+        resetKey={resetKey}
+      >
+        <ThemedView style={{ marginBottom: 12 }}>
+          {allCardColumns
+            .filter((col) => col.table === "Attacks")
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <Switch
+                  value={excludedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+          {allCardColumns
+            .filter((col) => col.table === "CardAttacks")
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <Switch
+                  value={excludedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
+      </Collapsible>
+      {/* Abilities */}
+      <Collapsible
+        title="Exclude: Abilities"
+        resetKey={resetKey}
+      >
+        <ThemedView style={{ marginBottom: 12 }}>
+          {allCardColumns
+            .filter((col) => col.table === "Abilities")
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <Switch
+                  value={excludedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
+      </Collapsible>
+      {/* Evolution */}
+      <Collapsible
+        title="Exclude: Evolution"
+        resetKey={resetKey}
+      >
+        <ThemedView style={{ marginBottom: 12 }}>
+          {allCardColumns
+            .filter((col) => ["evolvesFrom", "evolvesTo"].includes(col.key))
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <Switch
+                  value={excludedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
+      </Collapsible>
+      {/* Stats */}
+      <Collapsible
+        title="Exclude: Stats"
+        resetKey={resetKey}
+      >
+        <ThemedView style={{ marginBottom: 12 }}>
+          {allCardColumns
+            .filter((col) => ["hp", "convertedRetreatCost"].includes(col.key))
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <Switch
+                  value={excludedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
+      </Collapsible>
+      {/* Weaknesses/Resistances */}
+      <Collapsible
+        title="Exclude: Weaknesses/Resistances"
+        resetKey={resetKey}
+      >
+        <ThemedView style={{ marginBottom: 12 }}>
+          {allCardColumns
+            .filter((col) => ["weaknesses", "resistances"].includes(col.key))
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <Switch
+                  value={excludedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
+      </Collapsible>
+      {/* Edition */}
+      <Collapsible
+        title="Exclude: Edition"
+        resetKey={resetKey}
+      >
+        <ThemedView style={{ marginBottom: 12 }}>
+          {allCardColumns
+            .filter((col) => ["regulationMark", "name"].includes(col.key) && col.table === "CardSet")
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <Switch
+                  value={excludedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
+      </Collapsible>
+      {/* Artist/Flavor */}
+      <Collapsible
+        title="Exclude: Artist/Flavor"
+        resetKey={resetKey}
+      >
+        <ThemedView style={{ marginBottom: 12 }}>
+          {allCardColumns
+            .filter((col) => ["artist", "flavorText"].includes(col.key))
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <Switch
+                  value={excludedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
+                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
       </Collapsible>
       <ThemedButton
         title="Search"
