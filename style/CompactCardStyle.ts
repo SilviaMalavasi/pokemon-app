@@ -14,15 +14,19 @@ const CompactCardViewStyle = StyleSheet.create({
     width: cardWidth,
     paddingVertical: 8,
   },
+  imageContainer: {
+    width: "100%",
+    height: cardWidth / 0.71,
+  },
+  image: {
+    width: "100%",
+    height: cardWidth / 0.71,
+  },
   textContainer: {
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 4,
-  },
-  image: {
-    width: "100%",
-    height: cardWidth / 0.71,
   },
 });
 

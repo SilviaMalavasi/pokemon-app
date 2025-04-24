@@ -26,14 +26,7 @@ export default function FullCard({ card }: FullCardProps) {
           resizeMode="contain"
         />
       ) : null}
-      <View style={FullCardStyle.textContainer}>
-        <ThemedText
-          type="default"
-          style={{ textAlign: "center" }}
-        >
-          {card.name}
-        </ThemedText>
-      </View>
+      <ThemedView> </ThemedView>
     </ThemedView>
   );
 }

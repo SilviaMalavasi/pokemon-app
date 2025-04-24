@@ -9,16 +9,12 @@ const cardWidth = (vw(100) - containersPadding * 2 - gap * (columns - 1)) / colu
 const FullCardStyle = StyleSheet.create({
   container: {
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
     width: cardWidth,
     paddingVertical: 8,
   },
-  textContainer: {
+  imageContainer: {
     width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 4,
+    height: cardWidth / 0.71,
   },
   image: {
     width: "100%",
