@@ -46,13 +46,16 @@ export default function DynamicMultiSelect({
       {showHint && labelHint && <ThemedText type="hintText">{labelHint}</ThemedText>}
       <MultiSelect
         ref={dropdownRef}
-        style={styles.picker}
         placeholderStyle={styles.picker}
+        style={styles.picker}
         containerStyle={styles.listContainer}
         itemContainerStyle={styles.listContainer}
         itemTextStyle={styles.listItem}
         selectedStyle={styles.selectedStyle}
         selectedTextStyle={styles.selectedItemText}
+        renderItem={(item, selected) => (
+          <ThemedText style={[styles.listItem, selected ? styles.listItemActive : null]}>{item.label}</ThemedText>
+        )}
         data={options}
         labelField="label"
         valueField="value"

@@ -24,7 +24,8 @@ const AutoCompleteInputStyle = StyleSheet.create({
   },
   customItem: {
     color: Colors.placeholder,
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     fontSize: 16,
   },
 });

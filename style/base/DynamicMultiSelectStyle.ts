@@ -23,16 +23,23 @@ const styles = StyleSheet.create({
   listContainer: {
     backgroundColor: Colors.inputBackground,
     borderWidth: 0,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.mediumDarkGrey,
     marginTop: 3,
+    marginBottom: -1,
     borderRadius: 4,
   },
   listItem: {
     color: Colors.placeholder,
+    backgroundColor: Colors.inputBackground,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.mediumDarkGrey,
+    paddingTop: 6,
+    paddingBottom: 8,
+    paddingHorizontal: 12,
+    margin: 0,
   },
   listItemActive: {
-    color: Colors.placeholder,
+    color: Colors.highlight,
+    backgroundColor: Colors.inputBackground,
   },
   selectedStyle: {
     borderRadius: 12,
