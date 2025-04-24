@@ -1,16 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, TextInput as RNTextInput, ScrollView, TouchableOpacity, Keyboard } from "react-native";
+import React, { useState, useRef, useEffect, useMemo } from "react";
+import { TouchableOpacity } from "react-native";
+import type { IAutocompleteDropdownRef } from "react-native-autocomplete-dropdown";
+import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import AutoCompleteInputStyle from "@/style/base/AutoCompleteInputStyle";
+import { Colors } from "@/style/Colors";
 
 interface AutoCompleteInputProps {
   label?: string;
   value: string;
-  onChange: (val: string) => void;
+  onChange: (value: string) => void;
   suggestions: string[];
   placeholder?: string;
-  style?: any;
   labelHint?: string;
 }
 
@@ -21,61 +23,23 @@ export default function AutoCompleteInput({
   suggestions,
   placeholder,
   labelHint,
-}: AutoCompleteInputProps) {
-  const [showDropdown, setShowDropdown] = useState(false);
+}: AutoCompleteInputProps): JSX.Element {
   const [showHint, setShowHint] = useState(false);
-  const inputRef = useRef<RNTextInput>(null);
-  const isSelecting = useRef(false);
+  const dropdownController = useRef<IAutocompleteDropdownRef | null>(null);
 
-  // Filter suggestions case-insensitively
-  const filteredSuggestions = suggestions.filter(
-    (s) => value.length === 0 || s.toLowerCase().includes(value.toLowerCase())
-  );
+  // Memoize dataSet for performance
+  const dataSet = useMemo(() => suggestions.map((item) => ({ id: item, title: item })), [suggestions]);
 
-  const handleSelect = (item: string) => {
-    console.log("[AutoCompleteInput] Dropdown item clicked:", item);
-    console.log("[AutoCompleteInput] handleSelect", item);
-    onChange(item);
-    setShowDropdown(false);
-    Keyboard.dismiss();
-    isSelecting.current = false;
-    console.log("[AutoCompleteInput] Dropdown closed after select");
+  // Custom handler to close dropdown if not in list and always fire onChange
+  const handleChangeText = (text: string) => {
+    onChange(text); // Always pass value to parent
+    if (!suggestions.some((s) => s.toLowerCase() === text.toLowerCase())) {
+      dropdownController.current?.close();
+    }
   };
-
-  const handleChange = (text: string) => {
-    console.log("[AutoCompleteInput] handleChange", text);
-    onChange(text);
-    setShowDropdown(true);
-    console.log("[AutoCompleteInput] Dropdown opened after change");
-  };
-
-  const handleFocus = () => {
-    setShowDropdown(true);
-    console.log("[AutoCompleteInput] Input focused, dropdown opened");
-  };
-
-  const handleBlur = () => {
-    setTimeout(() => {
-      if (!isSelecting.current) {
-        setShowDropdown(false);
-        console.log("[AutoCompleteInput] Input blurred, dropdown closed");
-      } else {
-        console.log("[AutoCompleteInput] Input blurred, but selection in progress");
-      }
-    }, 100);
-  };
-
-  useEffect(() => {
-    console.log("[AutoCompleteInput] value prop changed:", value);
-    console.log("[AutoCompleteInput] filteredSuggestions:", filteredSuggestions);
-  }, [value, filteredSuggestions]);
-
-  useEffect(() => {
-    console.log("[AutoCompleteInput] showDropdown:", showDropdown);
-  }, [showDropdown]);
 
   return (
-    <ThemedView style={AutoCompleteInputStyle.container}>
+    <ThemedView>
       {label && (
         <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
           <ThemedText style={AutoCompleteInputStyle.label}>{label}</ThemedText>
@@ -90,54 +54,35 @@ export default function AutoCompleteInput({
         </ThemedView>
       )}
       {showHint && labelHint && <ThemedText type="hintText">{labelHint}</ThemedText>}
-      <ThemedView style={AutoCompleteInputStyle.inputWrapper}>
-        <RNTextInput
-          ref={inputRef}
-          value={value}
-          onChangeText={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          placeholder={placeholder}
-          placeholderTextColor={AutoCompleteInputStyle.placeholder.color}
-          style={[AutoCompleteInputStyle.input, { flex: 1 }]}
-          autoCorrect={false}
-          autoCapitalize="none"
-        />
-        {value.length > 0 && (
-          <TouchableOpacity
-            onPress={() => onChange("")}
-            accessibilityLabel={`Clear ${label || "input"}`}
-            style={AutoCompleteInputStyle.clearIcon}
-          >
-            <ThemedText type="hintIcon">×</ThemedText>
-          </TouchableOpacity>
-        )}
-      </ThemedView>
-      {showDropdown && filteredSuggestions.length > 0 && (
-        <View style={[AutoCompleteInputStyle.dropdown, { position: "relative", marginTop: 4 }]}>
-          <ScrollView keyboardShouldPersistTaps="always">
-            {filteredSuggestions.map((item) => (
-              <TouchableOpacity
-                key={item}
-                onPressIn={() => {
-                  isSelecting.current = true;
-                  console.log("[AutoCompleteInput] onPressIn for item:", item);
-                }}
-                onPress={() => {
-                  console.log("[AutoCompleteInput] onPress for item:", item);
-                  handleSelect(item);
-                  setTimeout(() => {
-                    isSelecting.current = false;
-                  }, 150);
-                }}
-                style={AutoCompleteInputStyle.dropdownItem}
-              >
-                <ThemedText>{item}</ThemedText>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-      )}
+      <AutocompleteDropdown
+        controller={(controller) => {
+          dropdownController.current = controller;
+        }}
+        clearOnFocus={false}
+        onSelectItem={(item) => onChange(item?.title || "")}
+        dataSet={dataSet}
+        suggestionsListMaxHeight={200}
+        renderItem={(item) => <ThemedText style={AutoCompleteInputStyle.customItem}>{item.title}</ThemedText>}
+        onRightIconComponentPress={() => {
+          dropdownController.current?.toggle();
+        }}
+        showChevron={false}
+        textInputProps={{
+          placeholder: placeholder || "",
+          autoCorrect: false,
+          autoCapitalize: "none",
+          value: value,
+          placeholderTextColor: Colors.placeholder,
+          onChangeText: handleChangeText,
+        }}
+        inputContainerStyle={AutoCompleteInputStyle.inputContainer}
+        suggestionsListContainerStyle={AutoCompleteInputStyle.suggestionsListContainer}
+        suggestionsListTextStyle={AutoCompleteInputStyle.suggestionsListText}
+        closeOnBlur={true}
+        showClear={true}
+        ClearIconComponent={<ThemedText type="hintIcon">×</ThemedText>}
+        onClear={() => onChange("")}
+      />
     </ThemedView>
   );
 }

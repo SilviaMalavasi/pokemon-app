@@ -11,6 +11,7 @@ import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import { supabase } from "@/lib/supabase";
+import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 
@@ -351,10 +352,11 @@ export default function AdvancedSearchForm({
         title="Card Rules"
         resetKey={resetKey}
       >
-        <TextInput
+        <AutoCompleteInput
           label="Rules"
           value={cardRules}
           onChange={setCardRules}
+          suggestions={["search", "discard pile", "attach", "energy"]}
           placeholder="Card rules"
           labelHint="Rules refers to Pokémon special rules (es Pokémon-EX rules) or Trainer card rules."
         />
@@ -370,7 +372,6 @@ export default function AdvancedSearchForm({
             onChange={setAttacksName}
             placeholder="Attack name"
           />
-
           <NumberInput
             label="Attack Damage"
             value={attacksDamage}
@@ -382,10 +383,11 @@ export default function AdvancedSearchForm({
             showOperatorSelect={"advanced"}
           />
 
-          <TextInput
+          <AutoCompleteInput
             label="Attack Text"
             value={attacksText}
             onChange={setAttacksText}
+            suggestions={["search", "discard pile", "attach", "energy"]}
             placeholder="Attack text"
           />
 
@@ -420,10 +422,11 @@ export default function AdvancedSearchForm({
             onChange={setAbilitiesName}
             placeholder="Ability name"
           />
-          <TextInput
+          <AutoCompleteInput
             label="Abilities Text"
             value={abilitiesText}
             onChange={setAbilitiesText}
+            suggestions={["search", "discard pile", "attach", "energy"]}
             placeholder="Ability text"
           />
           <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>

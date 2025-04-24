@@ -23,16 +23,16 @@ const styles = StyleSheet.create({
   listContainer: {
     backgroundColor: Colors.inputBackground,
     borderWidth: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.mediumDarkGrey,
+    marginTop: 3,
+    borderRadius: 4,
   },
   listItem: {
     color: Colors.placeholder,
   },
   listItemActive: {
     color: Colors.placeholder,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
   },
   selectedStyle: {
     borderRadius: 12,

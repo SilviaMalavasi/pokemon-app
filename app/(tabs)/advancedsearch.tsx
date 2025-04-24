@@ -4,7 +4,7 @@ import { Image, findNodeHandle, UIManager } from "react-native";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { supabase } from "@/lib/supabase";
 import type { CardType } from "@/types/PokemonCardType";
-
+import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
@@ -131,37 +131,39 @@ export default function FullFormScreen() {
   );
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={Colors.mediumGrey}
-      headerImage={
-        <Image
-          source={require("@/assets/fondo.png")}
-          resizeMode="contain"
-        />
-      }
-      headerTitle="Advanced Search"
-      scrollRef={scrollRef}
-    >
-      <ThemedView>
-        <AdvancedSearchForm
-          onSearchResults={handleSearchResults}
-          setLoading={setLoading}
-          resetKey={resetKey}
-          removeDuplicates={removeDuplicates}
-          onRemoveDuplicatesChange={setRemoveDuplicates}
-        />
-      </ThemedView>
-      <ThemedView ref={searchResultRef}>
-        <SearchResult
-          cardIds={cardIds}
-          cards={cards}
-          query={searchQuery}
-          loading={loading}
-          currentPage={currentPage}
-          itemsPerPage={ITEMS_PER_PAGE}
-          onPageChange={setCurrentPage}
-        />
-      </ThemedView>
-    </ParallaxScrollView>
+    <AutocompleteDropdownContextProvider>
+      <ParallaxScrollView
+        headerBackgroundColor={Colors.mediumGrey}
+        headerImage={
+          <Image
+            source={require("@/assets/fondo.png")}
+            resizeMode="contain"
+          />
+        }
+        headerTitle="Advanced Search"
+        scrollRef={scrollRef}
+      >
+        <ThemedView>
+          <AdvancedSearchForm
+            onSearchResults={handleSearchResults}
+            setLoading={setLoading}
+            resetKey={resetKey}
+            removeDuplicates={removeDuplicates}
+            onRemoveDuplicatesChange={setRemoveDuplicates}
+          />
+        </ThemedView>
+        <ThemedView ref={searchResultRef}>
+          <SearchResult
+            cardIds={cardIds}
+            cards={cards}
+            query={searchQuery}
+            loading={loading}
+            currentPage={currentPage}
+            itemsPerPage={ITEMS_PER_PAGE}
+            onPageChange={setCurrentPage}
+          />
+        </ThemedView>
+      </ParallaxScrollView>
+    </AutocompleteDropdownContextProvider>
   );
 }
