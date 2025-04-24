@@ -588,10 +588,9 @@ export default function FullForm({
       {showHint && (
         <ThemedText
           type="hintText"
-          style={{ marginTop: 4 }}
+          style={{ marginTop: 4, marginLeft: 16 }}
         >
-          If enabled, only one card per unique Card will be shown. Cards with same stats but different images or sets
-          will be removed.
+          If enabled, cards with same stats but different images or sets will be displayed only once.
         </ThemedText>
       )}
       <ThemedButton
