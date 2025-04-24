@@ -41,7 +41,7 @@ const AutoCompleteInputStyle = StyleSheet.create({
     borderRadius: 4,
     zIndex: 1000,
     maxHeight: 150,
-    marginTop: 4, // Add margin to separate from input
+    marginTop: 4,
   },
   dropdownItem: {
     color: Colors.placeholder,

@@ -48,12 +48,11 @@ export default function DynamicMultiSelect({
         ref={dropdownRef}
         style={styles.picker}
         placeholderStyle={styles.picker}
-        selectedTextStyle={styles.selectedItemText}
-        inputSearchStyle={styles.inputSearchStyle}
         containerStyle={styles.listContainer}
         itemContainerStyle={styles.listContainer}
         itemTextStyle={styles.listItem}
         selectedStyle={styles.selectedStyle}
+        selectedTextStyle={styles.selectedItemText}
         data={options}
         labelField="label"
         valueField="value"
