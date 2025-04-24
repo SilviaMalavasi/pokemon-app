@@ -3,10 +3,11 @@ import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import TextInput from "@/components/base/TextInput";
-import { supabase } from "@/lib/supabase";
 import Collapsible from "@/components/base/Collapsible";
 import { Switch } from "react-native";
 import { Colors } from "@/style/Colors";
+import { queryBuilder } from "@/helpers/queryBuilder";
+import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 
 export default function FreeSearch({
   onSearchResults,
@@ -21,29 +22,35 @@ export default function FreeSearch({
 
   // All card columns that can be excluded from search
   const allCardColumns = [
-    { key: "cardId", label: "Card ID" },
-    { key: "name", label: "Name" },
-    { key: "supertype", label: "Supertype" },
-    { key: "subtypes", label: "Subtypes" },
-    { key: "hp", label: "HP" },
-    { key: "types", label: "Types" },
-    { key: "evolvesFrom", label: "Evolves From" },
-    { key: "weaknesses", label: "Weaknesses" },
-    { key: "resistances", label: "Resistances" },
-    { key: "evolvesTo", label: "Evolves To" },
-    { key: "convertedRetreatCost", label: "Converted Retreat Cost" },
-    { key: "regulationMark", label: "Regulation Mark" },
-    { key: "rules", label: "Rules" },
-    { key: "number", label: "Number" },
+    { key: "name", table: "Card", label: "Name" },
+    { key: "supertype", table: "Card", label: "Supertype" },
+    { key: "subtypes", table: "Card", label: "Subtypes" },
+    { key: "types", table: "Card", label: "Types" },
+    { key: "rules", table: "Card", label: "Rules" },
+    { key: "name", table: "Attacks", label: "Attack Name" },
+    { key: "text", table: "Attacks", label: "Attack Text" },
+    { key: "cost", table: "CardAttacks", label: "Attack Cost" },
+    { key: "convertedEnergyCost", table: "CardAttacks", label: "Attack Converted Energy Cost" },
+    { key: "damage", table: "CardAttacks", label: "Attack Damage" },
+    { key: "name", table: "Abilities", label: "Abilities Name" },
+    { key: "text", table: "Abilities", label: "Abilities Text" },
+    { key: "evolvesFrom", table: "Card", label: "Evolves From" },
+    { key: "evolvesTo", table: "Card", label: "Evolves To" },
+    { key: "hp", table: "Card", label: "HP" },
+    { key: "convertedRetreatCost", table: "Card", label: "Converted Retreat Cost" },
+    { key: "weaknesses", table: "Card", label: "Weaknesses Type" },
+    { key: "resistances", table: "Card", label: "Resistances Type" },
+    { key: "name", table: "CardSet", label: "Set Name" },
+    { key: "regulationMark", table: "Card", label: "Regulation Mark" },
+    { key: "cardId", table: "Card", label: "Set/Number" },
     { key: "flavorText", label: "Flavor Text" },
     { key: "artist", label: "Artist" },
-    { key: "rarity", label: "Rarity" },
   ];
   // By default, only 'artist', 'flavorText', and 'rarity' are excluded (checked)
   const [excludedColumns, setExcludedColumns] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     allCardColumns.forEach((col) => {
-      if (["artist", "flavorText", "rarity"].includes(col.key)) {
+      if (["artist", "flavorText"].includes(col.key)) {
         initial[col.key] = true; // excluded by default
       } else {
         initial[col.key] = false; // included by default
@@ -55,11 +62,44 @@ export default function FreeSearch({
     setExcludedColumns((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  // Columns to search in each table
-  const cardSetColumns = ["setId", "name", "series"];
-  const abilitiesColumns = ["name", "text"];
-  const attacksColumns = ["name", "text"];
-  const cardAttacksColumns = ["cost", "convertedEnergyCost", "damage"];
+  // Card Exclusion lists
+  const cardExclusions = ["id", "nationalPokedexNumbers", "imagesSmall", "imagesLarge", "setId", "rarity", "number"];
+  const cardAttacksExclusions = ["id", "cardId", "attackId"];
+  const attacksExclusions = ["id"];
+  const abilitiesExclusions = ["id"];
+
+  // Card columns to search (respect user toggles and exclusions)
+  // Only include columns that actually belong to the Card table
+  // Always exclude fixed exclusions (like 'number', 'cardId') and user-defined exclusions
+  const fixedTextExclusions = ["number", "cardId"];
+  const cardColumnsToSearch = allCardColumns
+    .filter((col) => col.table === "Card")
+    .map((col) => col.key)
+    .filter((key) => !cardExclusions.includes(key) && !fixedTextExclusions.includes(key) && !excludedColumns[key]);
+
+  // Attacks columns to search
+  const attacksColumnsToSearch = allCardColumns
+    .filter((col) => col.table === "Attacks")
+    .map((col) => col.key)
+    .filter((key) => !attacksExclusions.includes(key) && !excludedColumns[key]);
+
+  // Abilities columns to search
+  const abilitiesColumnsToSearch = allCardColumns
+    .filter((col) => col.table === "Abilities")
+    .map((col) => col.key)
+    .filter((key) => !abilitiesExclusions.includes(key) && !excludedColumns[key]);
+
+  // CardAttacks columns to search
+  const cardAttacksColumnsToSearch = allCardColumns
+    .filter((col) => col.table === "CardAttacks")
+    .map((col) => col.key)
+    .filter((key) => !cardAttacksExclusions.includes(key) && !excludedColumns[key]);
+
+  // CardSet columns to search
+  const cardSetColumnsToSearch = allCardColumns
+    .filter((col) => col.table === "CardSet")
+    .map((col) => col.key)
+    .filter((key) => !cardExclusions.includes(key) && !excludedColumns[key]);
 
   useEffect(() => {
     setCardSearch("");
@@ -68,8 +108,13 @@ export default function FreeSearch({
 
   const handleSubmit = async () => {
     if (setLoading) setLoading(true);
-    // Trim only leading/trailing spaces for search
     let trimmedSearch = cardSearch.trim();
+    console.log("[FreeSearch] handleSubmit called. Search:", trimmedSearch);
+    if (!trimmedSearch) {
+      if (setLoading) setLoading(false);
+      if (onSearchResults) onSearchResults([], "");
+      return;
+    }
     // If search contains 'x' or '×', search for both variants
     let searchVariants = [
       trimmedSearch,
@@ -83,161 +128,152 @@ export default function FreeSearch({
       searchVariants = Array.from(new Set(searchVariants));
     }
     const isNumeric = trimmedSearch !== "" && !isNaN(Number(trimmedSearch));
-    let cardIds = new Set();
-    let cardResults: any[] = [];
+    console.log("[FreeSearch] searchVariants:", searchVariants, "isNumeric:", isNumeric);
 
-    // 1. Search Card table directly
-    // Card columns: separate text and int columns
-    const intColumns = ["hp", "convertedRetreatCost", "setId"];
-    const textColumns = allCardColumns
-      .filter((col) => !excludedColumns[col.key] && !intColumns.includes(col.key))
-      .map((col) => col.key);
-    const intColumnsToSearch = allCardColumns
-      .filter((col) => !excludedColumns[col.key] && intColumns.includes(col.key))
-      .map((col) => col.key);
-
-    let cardOrFilters: string[] = [];
+    // Build QueryBuilderFilter[] with OR logic for both text and numbers, split numeric OR by table
+    const intColumns = ["hp", "convertedRetreatCost", "number"];
+    const filters: QueryBuilderFilter[] = [];
+    // Card numeric OR group
+    let cardNumericOrFilters: QueryBuilderFilter[] = [];
+    // CardAttacks numeric OR group
+    let cardAttacksNumericOrFilters: QueryBuilderFilter[] = [];
+    // Card text OR group
+    let cardTextOrFilters: QueryBuilderFilter[] = [];
+    // Card fields
+    cardColumnsToSearch.forEach((col) => {
+      if (isNumeric && intColumns.includes(col)) {
+        cardNumericOrFilters.push({
+          config: { key: col, type: "number", table: "Card", column: col, valueType: "int" },
+          value: Number(trimmedSearch),
+          operator: "=",
+        });
+      }
+      // Always allow text search on text columns, even if isNumeric
+      // But skip fixed exclusions (number, cardId) for text search
+      if (!intColumns.includes(col)) {
+        searchVariants.forEach((variant) => {
+          cardTextOrFilters.push({
+            config: { key: col, type: "text", table: "Card", column: col },
+            value: variant,
+          });
+        });
+      }
+    });
+    // CardAttacks numeric (for isNumeric)
     if (isNumeric) {
-      // Search eq for int columns, ilike for text columns
-      searchVariants.forEach((variant) => {
-        cardOrFilters.push(...textColumns.map((field) => `${field}.ilike.%${variant}%`));
+      cardAttacksColumnsToSearch.forEach((col) => {
+        if (col === "convertedEnergyCost") {
+          cardAttacksNumericOrFilters.push({
+            config: { key: col, type: "number", table: "CardAttacks", column: col, valueType: "int" },
+            value: Number(trimmedSearch),
+            operator: "=",
+          });
+        }
       });
-      intColumnsToSearch.forEach((field) => {
-        cardOrFilters.push(`${field}.eq.${Number(trimmedSearch)}`);
-      });
-    } else {
-      // Only search ilike for text columns
-      searchVariants.forEach((variant) => {
-        cardOrFilters.push(...textColumns.map((field) => `${field}.ilike.%${variant}%`));
+      // Also search damage as text for exact match
+      cardAttacksNumericOrFilters.push({
+        config: { key: "damage", type: "text", table: "CardAttacks", column: "damage" },
+        value: String(trimmedSearch),
+        operator: "eq",
       });
     }
-    const { data: cardData, error: cardError } = await supabase.from("Card").select("*").or(cardOrFilters.join(","));
-    if (cardError) {
-      console.log("Supabase Card error:", cardError);
-    } else if (cardData && cardData.length > 0) {
-      cardData.forEach((c: any) => cardIds.add(c.cardId));
-      cardResults.push(...cardData);
-    }
+    if (cardNumericOrFilters.length > 0)
+      filters.push({
+        config: { key: "or", type: "number", table: "Card", column: "", logic: "or" },
+        value: cardNumericOrFilters,
+      });
+    if (cardAttacksNumericOrFilters.length > 0)
+      filters.push({
+        config: { key: "or", type: "number", table: "CardAttacks", column: "", logic: "or" },
+        value: cardAttacksNumericOrFilters,
+      });
+    if (cardTextOrFilters.length > 0)
+      filters.push({
+        config: { key: "or", type: "text", table: "Card", column: "", logic: "or" },
+        value: cardTextOrFilters,
+      });
 
-    // 2. Search CardSet table, get Card by setId
-    let cardSetOrFilters: string[] = [];
-    searchVariants.forEach((variant) => {
-      cardSetOrFilters.push(...cardSetColumns.map((field) => `${field}.ilike.%${variant}%`));
-    });
-    const { data: setData, error: setError } = await supabase
-      .from("CardSet")
-      .select("id")
-      .or(cardSetOrFilters.join(","));
-    if (!setError && setData && setData.length > 0) {
-      const setIds = setData.map((s: any) => s.id);
-      if (setIds.length > 0) {
-        const { data: cardsBySet, error: cardsBySetError } = await supabase
-          .from("Card")
-          .select("*")
-          .in("setId", setIds);
-        if (!cardsBySetError && cardsBySet) {
-          cardsBySet.forEach((c: any) => cardIds.add(c.cardId)); // Use cardId
-          cardResults.push(...cardsBySet);
-        }
-      }
+    // Attacks fields (text only)
+    let attacksOrFilters: QueryBuilderFilter[] = [];
+    if (!isNumeric) {
+      attacksColumnsToSearch.forEach((col) => {
+        searchVariants.forEach((variant) => {
+          attacksOrFilters.push({
+            config: { key: col, type: "text", table: "Attacks", column: col },
+            value: variant,
+          });
+        });
+      });
+      if (attacksOrFilters.length > 0)
+        filters.push({
+          config: { key: "or", type: "text", table: "Attacks", column: "", logic: "or" },
+          value: attacksOrFilters,
+        });
     }
-
-    // 3. Search Abilities, get Card by CardAbilities
-    let abilitiesOrFilters: string[] = [];
-    searchVariants.forEach((variant) => {
-      abilitiesOrFilters.push(...abilitiesColumns.map((field) => `${field}.ilike.%${variant}%`));
-    });
-    const { data: abilitiesData, error: abilitiesError } = await supabase
-      .from("Abilities")
-      .select("id")
-      .or(abilitiesOrFilters.join(","));
-    if (!abilitiesError && abilitiesData && abilitiesData.length > 0) {
-      const abilityIds = abilitiesData.map((a: any) => a.id);
-      if (abilityIds.length > 0) {
-        const { data: cardAbilities, error: cardAbilitiesError } = await supabase
-          .from("CardAbilities")
-          .select("cardId")
-          .in("abilityId", abilityIds);
-        if (!cardAbilitiesError && cardAbilities) {
-          const cardAbilityIds = cardAbilities.map((ca: any) => ca.cardId);
-          if (cardAbilityIds.length > 0) {
-            const { data: cardsByAbility, error: cardsByAbilityError } = await supabase
-              .from("Card")
-              .select("*")
-              .in("id", cardAbilityIds);
-            if (!cardsByAbilityError && cardsByAbility) {
-              cardsByAbility.forEach((c: any) => cardIds.add(c.cardId)); // Use cardId
-              cardResults.push(...cardsByAbility);
-            }
-          }
-        }
-      }
+    // Abilities fields (text only)
+    let abilitiesOrFilters: QueryBuilderFilter[] = [];
+    if (!isNumeric) {
+      abilitiesColumnsToSearch.forEach((col) => {
+        searchVariants.forEach((variant) => {
+          abilitiesOrFilters.push({
+            config: { key: col, type: "text", table: "Abilities", column: col },
+            value: variant,
+          });
+        });
+      });
+      if (abilitiesOrFilters.length > 0)
+        filters.push({
+          config: { key: "or", type: "text", table: "Abilities", column: "", logic: "or" },
+          value: abilitiesOrFilters,
+        });
     }
-
-    // 4. Search Attacks, get Card by CardAttacks
-    let attacksOrFilters: string[] = [];
-    searchVariants.forEach((variant) => {
-      attacksOrFilters.push(...attacksColumns.map((field) => `${field}.ilike.%${variant}%`));
-    });
-    const { data: attacksData, error: attacksError } = await supabase
-      .from("Attacks")
-      .select("id")
-      .or(attacksOrFilters.join(","));
-    if (!attacksError && attacksData && attacksData.length > 0) {
-      const attackIds = attacksData.map((a: any) => a.id);
-      if (attackIds.length > 0) {
-        const { data: cardAttacks, error: cardAttacksError } = await supabase
-          .from("CardAttacks")
-          .select("cardId")
-          .in("attackId", attackIds);
-        if (!cardAttacksError && cardAttacks) {
-          const cardAttackIds = cardAttacks.map((ca: any) => ca.cardId);
-          if (cardAttackIds.length > 0) {
-            const { data: cardsByAttack, error: cardsByAttackError } = await supabase
-              .from("Card")
-              .select("*")
-              .in("id", cardAttackIds);
-            if (!cardsByAttackError && cardsByAttack) {
-              cardsByAttack.forEach((c: any) => cardIds.add(c.cardId)); // Use cardId
-              cardResults.push(...cardsByAttack);
-            }
-          }
-        }
-      }
+    // CardAttacks fields (text only, except convertedEnergyCost)
+    let cardAttacksOrFilters: QueryBuilderFilter[] = [];
+    if (!isNumeric) {
+      cardAttacksColumnsToSearch.forEach((col) => {
+        if (col === "convertedEnergyCost") return;
+        searchVariants.forEach((variant) => {
+          cardAttacksOrFilters.push({
+            config: { key: col, type: "text", table: "CardAttacks", column: col },
+            value: variant,
+          });
+        });
+      });
+      if (cardAttacksOrFilters.length > 0)
+        filters.push({
+          config: { key: "or", type: "text", table: "CardAttacks", column: "", logic: "or" },
+          value: cardAttacksOrFilters,
+        });
     }
-
-    // 5. Search CardAttacks table directly (cost, convertedEnergyCost)
-    let cardAttacksOrFilters: string[] = [];
-    searchVariants.forEach((variant) => {
-      cardAttacksOrFilters.push(...cardAttacksColumns.map((field) => `${field}.ilike.%${variant}%`));
-    });
-    if (isNumeric) {
-      cardAttacksOrFilters.push("convertedEnergyCost.eq." + Number(trimmedSearch));
+    // CardSet fields (text only)
+    let cardSetOrFilters: QueryBuilderFilter[] = [];
+    if (!isNumeric) {
+      cardSetColumnsToSearch.forEach((col) => {
+        searchVariants.forEach((variant) => {
+          cardSetOrFilters.push({
+            config: { key: col, type: "text", table: "CardSet", column: col },
+            value: variant,
+          });
+        });
+      });
+      if (cardSetOrFilters.length > 0)
+        filters.push({
+          config: { key: "or", type: "text", table: "CardSet", column: "", logic: "or" },
+          value: cardSetOrFilters,
+        });
     }
-    const { data: cardAttacksData, error: cardAttacksError } = await supabase
-      .from("CardAttacks")
-      .select("cardId")
-      .or(cardAttacksOrFilters.join(","));
-    if (!cardAttacksError && cardAttacksData && cardAttacksData.length > 0) {
-      const cardAttackIds = cardAttacksData.map((ca: any) => ca.cardId);
-      if (cardAttackIds.length > 0) {
-        const { data: cardsByCardAttack, error: cardsByCardAttackError } = await supabase
-          .from("Card")
-          .select("*")
-          .in("id", cardAttackIds);
-        if (!cardsByCardAttackError && cardsByCardAttack) {
-          cardsByCardAttack.forEach((c: any) => cardIds.add(c.cardId)); // Use cardId
-          cardResults.push(...cardsByCardAttack);
-        }
-      }
+    console.log("[FreeSearch] QueryBuilderFilter array (OR logic):", filters);
+    // Query
+    try {
+      const { cardIds, query } = await queryBuilder(filters);
+      console.log("[FreeSearch] queryBuilder result:", cardIds, query);
+      if (onSearchResults) onSearchResults(cardIds, query);
+    } catch (err: any) {
+      console.error("[FreeSearch] queryBuilder error:", err);
+      if (onSearchResults) onSearchResults([], err.message || "Search failed");
+    } finally {
+      if (setLoading) setLoading(false);
     }
-
-    // Deduplicate results by Card cardId
-    const uniqueCards = Array.from(new Map(cardResults.map((c: any) => [c.cardId, c])).values());
-    const foundCardIds = uniqueCards.map((c: any) => c.cardId);
-    if (onSearchResults) onSearchResults(foundCardIds, trimmedSearch);
-    if (setLoading) setLoading(false);
-    return foundCardIds;
   };
 
   return (
@@ -254,7 +290,7 @@ export default function FreeSearch({
       >
         {allCardColumns.map((col) => (
           <ThemedView
-            key={col.key}
+            key={`${col.table}-${col.key}`}
             style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
           >
             <Switch

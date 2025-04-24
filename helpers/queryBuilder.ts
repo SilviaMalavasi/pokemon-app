@@ -6,6 +6,7 @@ export type InputConfig = {
   table: string;
   column: string;
   valueType?: "int" | "text" | "json-string-array";
+  logic?: "and" | "or";
 };
 
 export type QueryBuilderFilter = {
@@ -32,7 +33,12 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   // Helper to build a Supabase query for a table and its filters
   const buildQuery = (table: string, selectCol: string, filters: QueryBuilderFilter[]) => {
     let query = supabase.from(table).select(selectCol);
-    filters.forEach(({ config, value, operator }) => {
+    // Collect all OR groups for this table
+    const orGroups = filters.filter((f) => f.config.logic === "or" && Array.isArray(f.value));
+    // Collect all AND filters for this table
+    const andFilters = filters.filter((f) => !f.config.logic || f.config.logic === "and");
+    // Apply AND filters first
+    andFilters.forEach(({ config, value, operator }) => {
       if (value === null || value === undefined) return;
       const col = config.column;
       if (config.type === "text") {
@@ -68,6 +74,27 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         }
       }
     });
+    // Combine all OR sub-filters into a single .or() clause
+    if (orGroups.length > 0) {
+      const allOrSubs = orGroups.flatMap((g) => g.value);
+      const orFilters = allOrSubs
+        .map((sub: QueryBuilderFilter) => {
+          const { config, value, operator } = sub;
+          if (value === null || value === undefined) return null;
+          const col = config.column;
+          if (config.type === "text") {
+            const trimmed = String(value).trim();
+            return `${col}.ilike.%${trimmed}%`;
+          } else if (config.type === "number" && config.valueType === "int") {
+            // Use 'eq' instead of '=' for Supabase .or()
+            return `${col}.eq.${value}`;
+          }
+          return null;
+        })
+        .filter(Boolean)
+        .join(",");
+      if (orFilters) query = query.or(orFilters);
+    }
     return query;
   };
 
@@ -206,10 +233,21 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     }
   }
 
-  // Intersect all non-empty arrays
+  // Intersect or union all non-empty arrays
+  let finalCardIds: string[] = [];
   const allArrays = [cardTableIds, cardSetIds, attackCardIds, cardAttacksCardIds, abilityCardIds].filter(
     (arr) => arr.length > 0
   );
-  const finalCardIds = allArrays.length > 0 ? intersectArrays(allArrays) : [];
+  // If any filter group uses logic: 'or', use union, else use intersection
+  const hasOrLogic = Object.values(grouped).some((filters) => filters.some((f) => f.config.logic === "or"));
+  if (allArrays.length > 0) {
+    if (hasOrLogic) {
+      // Union
+      finalCardIds = Array.from(new Set(allArrays.flat()));
+    } else {
+      // Intersection
+      finalCardIds = intersectArrays(allArrays);
+    }
+  }
   return { cardIds: finalCardIds, query: JSON.stringify(filters) };
 }
