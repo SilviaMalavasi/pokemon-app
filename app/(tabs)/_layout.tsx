@@ -41,7 +41,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="fullform"
+        name="advancedsearch"
         options={{
           title: "Advanced Search",
           tabBarIcon: ({ color }) => (

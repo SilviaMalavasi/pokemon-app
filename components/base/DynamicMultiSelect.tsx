@@ -54,12 +54,10 @@ export default function DynamicMultiSelect({
         itemContainerStyle={styles.listContainer}
         itemTextStyle={styles.listItem}
         selectedStyle={styles.selectedStyle}
-        search
         data={options}
         labelField="label"
         valueField="value"
         placeholder="Select..."
-        searchPlaceholder="Search..."
         value={value}
         onChange={handleChange}
       />

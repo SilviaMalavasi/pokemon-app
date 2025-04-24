@@ -8,9 +8,8 @@ import { findNodeHandle, UIManager } from "react-native";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
-import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
-import FreeSearch from "@/components/forms/FreeSearch";
+import FreeSearchForm from "@/components/forms/FreeSearchForm";
 import SearchResult from "@/components/SearchResult";
 import { Colors } from "@/style/Colors";
 
@@ -145,7 +144,7 @@ export default function FreeSearchScreen() {
       scrollRef={scrollRef}
     >
       <ThemedView>
-        <FreeSearch
+        <FreeSearchForm
           key={resetKey}
           onSearchResults={handleSearchResults}
           setLoading={setLoading}

@@ -47,7 +47,7 @@ const getCardSubtypesOptions = (supertypes: string[]) => {
   return Array.from(subtypeSet).map((v) => ({ value: v, label: v }));
 };
 
-export default function FullForm({
+export default function AdvancedSearchForm({
   onSearchResults,
   setLoading: setLoadingProp,
   resetKey,

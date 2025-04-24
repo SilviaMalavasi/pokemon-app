@@ -7,7 +7,7 @@ import type { CardType } from "@/types/PokemonCardType";
 
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
-import FullForm from "@/components/forms/FullForm";
+import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
 import { Colors } from "@/style/Colors";
 import SearchResult from "@/components/SearchResult";
 
@@ -143,7 +143,7 @@ export default function FullFormScreen() {
       scrollRef={scrollRef}
     >
       <ThemedView>
-        <FullForm
+        <AdvancedSearchForm
           onSearchResults={handleSearchResults}
           setLoading={setLoading}
           resetKey={resetKey}

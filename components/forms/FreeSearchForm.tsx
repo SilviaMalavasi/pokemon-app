@@ -9,7 +9,7 @@ import { Colors } from "@/style/Colors";
 import { queryBuilder } from "@/helpers/queryBuilder";
 import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 
-export default function FreeSearch({
+export default function FreeSearchForm({
   onSearchResults,
   setLoading,
   resetKey,
