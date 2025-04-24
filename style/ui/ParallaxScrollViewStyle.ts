@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 4,
     paddingRight: 32,
-    paddingTop: 28,
+    paddingTop: 20,
     color: Colors.highlight,
   },
   content: {
@@ -31,7 +31,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 32,
     minHeight: Dimensions.get("window").height - 150,
-    marginTop: -12,
+    marginTop: -16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
 });
 
