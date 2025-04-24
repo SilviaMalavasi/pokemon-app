@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, SwitchProps } from "react-native";
-import { Colors } from "@/style/Colors";
+import { Colors } from "@/style/base/Colors";
 
 interface ThemedSwitchProps extends SwitchProps {
   value: boolean;

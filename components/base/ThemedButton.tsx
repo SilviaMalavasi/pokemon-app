@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import styles from "@/style/base/ThemedButtonStyle";
-import { Colors } from "@/style/Colors";
+import { Colors } from "@/style/base/Colors";
 
 export type ThemedButtonProps = ButtonProps & {
   type?: "default" | "alternative" | "disabled";

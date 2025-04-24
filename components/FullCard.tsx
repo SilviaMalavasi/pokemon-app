@@ -3,7 +3,7 @@ import { View, Image } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { CardType } from "@/types/PokemonCardType";
-import CompactCardViewStyle from "@/style/ui/CompactCardViewStyle";
+import FullCardStyle from "@/style/FullCardStyle";
 import cardImages from "@/db/cardImages";
 
 function getCardImage(imagePath: string) {
@@ -12,21 +12,21 @@ function getCardImage(imagePath: string) {
   return cardImages[filename];
 }
 
-interface CompactCardViewProps {
+interface FullCardProps {
   card: Pick<CardType, "cardId" | "name" | "imagesSmall">;
 }
 
-export default function CompactCardView({ card }: CompactCardViewProps) {
+export default function FullCard({ card }: FullCardProps) {
   return (
-    <ThemedView style={CompactCardViewStyle.container}>
+    <ThemedView style={FullCardStyle.container}>
       {getCardImage(card.imagesSmall) ? (
         <Image
           source={getCardImage(card.imagesSmall)}
-          style={CompactCardViewStyle.image}
+          style={FullCardStyle.image}
           resizeMode="contain"
         />
       ) : null}
-      <View style={CompactCardViewStyle.textContainer}>
+      <View style={FullCardStyle.textContainer}>
         <ThemedText
           type="default"
           style={{ textAlign: "center" }}

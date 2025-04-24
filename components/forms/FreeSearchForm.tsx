@@ -5,7 +5,7 @@ import ThemedButton from "@/components/base/ThemedButton";
 import TextInput from "@/components/base/TextInput";
 import Collapsible from "@/components/base/Collapsible";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
-import { Colors } from "@/style/Colors";
+import { Colors } from "@/style/base/Colors";
 import { queryBuilder } from "@/helpers/queryBuilder";
 import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 

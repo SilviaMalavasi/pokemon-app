@@ -5,7 +5,7 @@ import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import AutoCompleteInputStyle from "@/style/base/AutoCompleteInputStyle";
-import { Colors } from "@/style/Colors";
+import { Colors } from "@/style/base/Colors";
 
 interface AutoCompleteInputProps {
   label?: string;

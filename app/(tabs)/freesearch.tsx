@@ -11,7 +11,7 @@ import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import FreeSearchForm from "@/components/forms/FreeSearchForm";
 import SearchResult from "@/components/SearchResult";
-import { Colors } from "@/style/Colors";
+import { Colors } from "@/style/base/Colors";
 
 export default function FreeSearchScreen() {
   const [cardIds, setCardIds] = useState<string[]>([]);

@@ -8,7 +8,7 @@ import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-d
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
-import { Colors } from "@/style/Colors";
+import { Colors } from "@/style/base/Colors";
 import SearchResult from "@/components/SearchResult";
 
 export default function FullFormScreen() {

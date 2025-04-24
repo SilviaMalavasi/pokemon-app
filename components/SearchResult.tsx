@@ -2,7 +2,7 @@ import React from "react";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
-import CompactCardView from "@/components/ui/CompactCardView";
+import CompactCard from "@/components/CompactCard";
 import { CardType } from "@/types/PokemonCardType";
 
 interface SearchResultProps {
@@ -59,7 +59,7 @@ export default function SearchResult({
             style={{ width: "48%", marginTop: 8 }}
           >
             {cards ? (
-              <CompactCardView
+              <CompactCard
                 card={cards.find((c) => c.cardId === item) || { cardId: item, name: item, imagesSmall: "" }}
               />
             ) : (

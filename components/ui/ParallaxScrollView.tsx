@@ -11,7 +11,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
-import { Colors } from "@/style/Colors";
+import { Colors } from "@/style/base/Colors";
 import styles from "@/style/ui/ParallaxScrollViewStyle";
 
 const HEADER_HEIGHT = 150;
