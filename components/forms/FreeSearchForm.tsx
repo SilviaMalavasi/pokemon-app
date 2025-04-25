@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { TouchableOpacity } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
@@ -65,6 +66,8 @@ export default function FreeSearchForm({
   const handleToggleColumn = (key: string) => {
     setExcludedColumns((prev) => ({ ...prev, [key]: !prev[key] }));
   };
+
+  const [showHint, setShowHint] = useState(false);
 
   // Card Exclusion lists
   const cardExclusions = ["id", "nationalPokedexNumbers", "imagesSmall", "imagesLarge", "setId", "rarity", "number"];
@@ -584,12 +587,11 @@ export default function FreeSearchForm({
             ))}
         </ThemedView>
       </Collapsible>
+
       <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
         <ThemedSwitch
           value={removeDuplicates}
           onValueChange={onRemoveDuplicatesChange}
-          trackColor={{ false: Colors.mediumGrey, true: Colors.green }}
-          thumbColor={removeDuplicates ? Colors.green : Colors.purple}
         />
         <ThemedText
           type="default"
@@ -597,7 +599,27 @@ export default function FreeSearchForm({
         >
           Remove duplicates
         </ThemedText>
+        <TouchableOpacity
+          onPress={() => setShowHint((v) => !v)}
+          accessibilityLabel="Hint for Remove duplicates"
+        >
+          <ThemedText
+            type="hintIcon"
+            style={{ marginLeft: 8, marginTop: 4 }}
+          >
+            ?
+          </ThemedText>
+        </TouchableOpacity>
       </ThemedView>
+      {showHint && (
+        <ThemedText
+          type="hintText"
+          style={{ marginTop: 4, marginLeft: 16 }}
+        >
+          If enabled, cards with same stats but different images or sets will be displayed only once.
+        </ThemedText>
+      )}
+
       <ThemedButton
         title="Search"
         onPress={handleSubmit}

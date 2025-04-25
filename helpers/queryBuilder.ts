@@ -101,7 +101,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   // 1. Card table filters
   let cardTableIds: string[] = [];
   if (grouped["Card"]) {
-    const cardQuery = buildQuery("Card", "cardId", grouped["Card"]);
+    const cardQuery = buildQuery("Card", "cardId", grouped["Card"]).order("name");
     const { data, error } = await cardQuery;
     if (error) return { cardIds: [], query: error.message };
     cardTableIds = data?.map((row: any) => row.cardId) || [];
@@ -115,7 +115,11 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     if (error) return { cardIds: [], query: error.message };
     const setIds = data?.map((row: any) => row.id) || [];
     if (setIds.length > 0) {
-      const { data: cardData, error: cardError } = await supabase.from("Card").select("cardId").in("setId", setIds);
+      const { data: cardData, error: cardError } = await supabase
+        .from("Card")
+        .select("cardId")
+        .in("setId", setIds)
+        .order("name");
       if (cardError) return { cardIds: [], query: cardError.message };
       cardSetIds = cardData?.map((row: any) => row.cardId) || [];
     }
@@ -139,7 +143,8 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         const { data: cardData, error: cardError } = await supabase
           .from("Card")
           .select("cardId, id")
-          .in("id", cardIdInts);
+          .in("id", cardIdInts)
+          .order("name");
         if (cardError) return { cardIds: [], query: cardError.message };
         attackCardIds = cardData?.map((row: any) => row.cardId) || [];
       }
@@ -188,7 +193,8 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         const { data: cardData, error: cardError } = await supabase
           .from("Card")
           .select("cardId, id")
-          .in("id", cardIdInts);
+          .in("id", cardIdInts)
+          .order("name");
         if (cardError) return { cardIds: [], query: cardError.message };
         cardAttacksCardIds = cardData?.map((row: any) => row.cardId) || [];
       }
@@ -201,7 +207,8 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         const { data: cardData, error: cardError } = await supabase
           .from("Card")
           .select("cardId, id")
-          .in("id", cardIdInts);
+          .in("id", cardIdInts)
+          .order("name");
         if (cardError) return { cardIds: [], query: cardError.message };
         cardAttacksCardIds = cardData?.map((row: any) => row.cardId) || [];
       }
@@ -226,7 +233,8 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         const { data: cardData, error: cardError } = await supabase
           .from("Card")
           .select("cardId, id")
-          .in("id", cardIdInts);
+          .in("id", cardIdInts)
+          .order("name");
         if (cardError) return { cardIds: [], query: cardError.message };
         abilityCardIds = cardData?.map((row: any) => row.cardId) || [];
       }
@@ -248,7 +256,8 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         const { data: cardData, error: cardError } = await supabase
           .from("Card")
           .select("cardId, id")
-          .in("id", cardIdInts);
+          .in("id", cardIdInts)
+          .order("name");
         if (cardError) return { cardIds: [], query: cardError.message };
         hasAnyAbilityCardIds = cardData?.map((row: any) => row.cardId) || [];
       }
