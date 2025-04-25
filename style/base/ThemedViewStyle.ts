@@ -6,10 +6,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   bordered: {
-    borderWidth: 3,
+    borderWidth: 2,
     borderStyle: "dashed",
     borderColor: Colors.purple,
-    borderRadius: 16,
+    borderRadius: 8,
     padding: 8,
   },
 });
