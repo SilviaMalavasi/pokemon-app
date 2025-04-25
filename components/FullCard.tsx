@@ -74,7 +74,9 @@ export default function FullCard({ card }: FullCardProps) {
         </ThemedView>
         <ThemedText>HP: {card.hp}</ThemedText>
         {card.evolvesFrom && <ThemedText>Evolves from: {card.evolvesFrom}</ThemedText>}
-        {card.evolvesTo && <ThemedText>Evolves to: {card.evolvesTo.join(", ")}</ThemedText>}
+        {Array.isArray(card.evolvesTo) && card.evolvesTo.length > 0 && (
+          <ThemedText>Evolves to: {card.evolvesTo.join(", ")}</ThemedText>
+        )}
         {Array.isArray(card.rules) && card.rules.length > 0 && (
           <View>
             <ThemedText>Rules:</ThemedText>
@@ -83,7 +85,7 @@ export default function FullCard({ card }: FullCardProps) {
             ))}
           </View>
         )}
-        {card.abilities && card.abilities.length > 0 && (
+        {Array.isArray(card.abilities) && card.abilities.length > 0 && (
           <View>
             <ThemedText>Abilities:</ThemedText>
             {card.abilities.map((ab, idx) => (
@@ -97,7 +99,7 @@ export default function FullCard({ card }: FullCardProps) {
             ))}
           </View>
         )}
-        {card.attacks && card.attacks.length > 0 && (
+        {Array.isArray(card.attacks) && card.attacks.length > 0 && (
           <View>
             <ThemedText>Attacks:</ThemedText>
             {card.attacks.map((atk, idx) => (
@@ -109,7 +111,7 @@ export default function FullCard({ card }: FullCardProps) {
                   - {atk.name} ({atk.damage})
                 </ThemedText>
                 <ThemedText>{atk.text}</ThemedText>
-                {atk.cost && <ThemedText>Cost: {atk.cost.join(", ")}</ThemedText>}
+                {Array.isArray(atk.cost) && atk.cost.length > 0 && <ThemedText>Cost: {atk.cost.join(", ")}</ThemedText>}
                 {atk.convertedEnergyCost !== undefined && (
                   <ThemedText>Converted Energy Cost: {atk.convertedEnergyCost}</ThemedText>
                 )}
@@ -140,7 +142,7 @@ export default function FullCard({ card }: FullCardProps) {
         {Array.isArray(card.retreatCost) && card.retreatCost.length > 0 && (
           <ThemedText>Retreat Cost: {card.retreatCost.join(", ")}</ThemedText>
         )}
-        {card.convertedRetreatCost !== null && (
+        {card.convertedRetreatCost !== null && card.convertedRetreatCost !== undefined && (
           <ThemedText>Converted Retreat Cost: {card.convertedRetreatCost}</ThemedText>
         )}
         {card.flavorText && <ThemedText>Flavor: {card.flavorText}</ThemedText>}
