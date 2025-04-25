@@ -16,9 +16,10 @@ function getCardImage(imagePath: string) {
 
 interface CompactCardProps {
   card: Pick<CardType, "cardId" | "name" | "imagesSmall">;
+  onImageLoad?: () => void;
 }
 
-export default function CompactCard({ card }: CompactCardProps) {
+export default function CompactCard({ card, onImageLoad }: CompactCardProps) {
   const [loading, setLoading] = useState(true);
   const imageSource = getCardImage(card.imagesSmall);
 
@@ -33,7 +34,10 @@ export default function CompactCard({ card }: CompactCardProps) {
                 style={CompactCardStyle.image}
                 resizeMode="contain"
                 onLoadStart={() => setLoading(true)}
-                onLoadEnd={() => setLoading(false)}
+                onLoadEnd={() => {
+                  setLoading(false);
+                  if (onImageLoad) onImageLoad();
+                }}
               />
               {loading && (
                 <ActivityIndicator

@@ -13,6 +13,7 @@ interface SearchResultProps {
   currentPage?: number;
   itemsPerPage?: number;
   onPageChange?: (page: number) => void;
+  onAllImagesLoaded?: () => void;
 }
 
 export default function SearchResult({
@@ -23,12 +24,24 @@ export default function SearchResult({
   currentPage = 1,
   itemsPerPage = 20,
   onPageChange,
+  onAllImagesLoaded,
 }: SearchResultProps): JSX.Element {
   // Pagination logic
   const totalPages = Math.ceil((cardIds?.length || 0) / itemsPerPage);
   const startIdx = (currentPage - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
   const paginatedIds = cardIds.slice(startIdx, endIdx);
+
+  // Track image loading
+  const [imagesLoaded, setImagesLoaded] = React.useState(0);
+  React.useEffect(() => {
+    setImagesLoaded(0);
+  }, [cardIds, currentPage]);
+  React.useEffect(() => {
+    if (paginatedIds.length > 0 && imagesLoaded === paginatedIds.length) {
+      onAllImagesLoaded && onAllImagesLoaded();
+    }
+  }, [imagesLoaded, paginatedIds.length, onAllImagesLoaded]);
 
   if (loading) {
     return (
@@ -49,7 +62,7 @@ export default function SearchResult({
     return <></>;
   }
   return (
-    <ThemedView style={{ padding: 6 }}>
+    <ThemedView style={{ padding: 16 }}>
       <ThemedView
         style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", padding: 0, marginTop: 16 }}
       >
@@ -61,6 +74,7 @@ export default function SearchResult({
             {cards ? (
               <CompactCard
                 card={cards.find((c) => c.cardId === item) || { cardId: item, name: item, imagesSmall: "" }}
+                onImageLoad={() => setImagesLoaded((n) => n + 1)}
               />
             ) : (
               <ThemedText type="default">{item}</ThemedText>

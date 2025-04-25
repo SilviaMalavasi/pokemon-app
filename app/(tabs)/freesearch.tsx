@@ -113,13 +113,12 @@ export default function FreeSearchScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIds, currentPage]);
 
-  // Scroll to SearchResult on page change, but only if there are results
-  React.useEffect(() => {
+  // Scroll only after all images are loaded
+  const handleAllImagesLoaded = React.useCallback(() => {
     if (cardIds.length > 0) {
       scrollToSearchResult();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, cardIds]);
+  }, [cardIds]);
 
   // Reset the search results and switches when the screen is focused
   useFocusEffect(
@@ -164,6 +163,7 @@ export default function FreeSearchScreen() {
           currentPage={currentPage}
           itemsPerPage={ITEMS_PER_PAGE}
           onPageChange={setCurrentPage}
+          onAllImagesLoaded={handleAllImagesLoaded}
         />
       </ThemedView>
     </ParallaxScrollView>
