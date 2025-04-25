@@ -62,6 +62,7 @@ export default function DynamicMultiSelect({
         placeholder="Select..."
         value={value}
         onChange={handleChange}
+        dropdownPosition="auto"
       />
     </ThemedView>
   );

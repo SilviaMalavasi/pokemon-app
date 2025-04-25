@@ -26,6 +26,8 @@ const styles = StyleSheet.create({
     marginTop: 3,
     marginBottom: -1,
     borderRadius: 4,
+    zIndex: 1000, // Ensure dropdown is above other elements
+    elevation: 10, // For Android
   },
   listItem: {
     color: Colors.placeholder,
