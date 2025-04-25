@@ -7,6 +7,7 @@ import Collapsible from "@/components/base/Collapsible";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import { Colors } from "@/style/base/Colors";
 import { queryBuilder } from "@/helpers/queryBuilder";
+import { supabase } from "@/lib/supabase";
 import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 
 export default function FreeSearchForm({
@@ -15,12 +16,16 @@ export default function FreeSearchForm({
   resetKey,
   removeDuplicates,
   onRemoveDuplicatesChange,
+  currentPage,
+  itemsPerPage,
 }: {
   onSearchResults?: (ids: string[], query: string) => void;
   setLoading?: (loading: boolean) => void;
   resetKey?: number;
   removeDuplicates: boolean;
   onRemoveDuplicatesChange: (val: boolean) => void;
+  currentPage: number;
+  itemsPerPage: number;
 }): JSX.Element {
   const [cardSearch, setCardSearch] = useState("");
   // All card columns that can be excluded from search
@@ -265,6 +270,16 @@ export default function FreeSearchForm({
     try {
       const { cardIds, query } = await queryBuilder(filters);
       if (onSearchResults) onSearchResults(cardIds, query);
+      // Fetch and log card names for the returned cardIds (only for paginated IDs)
+      const startIdx = (currentPage - 1) * itemsPerPage;
+      const endIdx = startIdx + itemsPerPage;
+      const paginatedIds = cardIds.slice(startIdx, endIdx);
+      if (paginatedIds.length > 0) {
+        const { data, error } = await supabase.from("Card").select("cardId, name").in("cardId", paginatedIds);
+        if (error) {
+          console.error("Error fetching card names:", error.message);
+        }
+      }
     } catch (err: any) {
       console.error("[FreeSearch] queryBuilder error:", err);
       if (onSearchResults) onSearchResults([], err.message || "Search failed");

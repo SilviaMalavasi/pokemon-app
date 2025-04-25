@@ -54,12 +54,16 @@ export default function AdvancedSearchForm({
   resetKey,
   removeDuplicates,
   onRemoveDuplicatesChange,
+  currentPage,
+  itemsPerPage,
 }: {
   onSearchResults?: (ids: string[], query: string) => void;
   setLoading?: (loading: boolean) => void;
   resetKey?: number;
   removeDuplicates: boolean;
   onRemoveDuplicatesChange: (val: boolean) => void;
+  currentPage: number;
+  itemsPerPage: number;
 }): JSX.Element {
   // State for all fields
   const [cardSupertype, setCardSupertype] = useState<string[]>([]);
@@ -297,9 +301,12 @@ export default function AdvancedSearchForm({
       setSearchQuery(query);
       if (onSearchResults) onSearchResults(cardIds, query);
 
-      // Fetch and log card names for the returned cardIds
-      if (cardIds.length > 0) {
-        const { data, error } = await supabase.from("Card").select("cardId, name").in("cardId", cardIds);
+      // Fetch and log card names for the returned cardIds (only for paginated IDs)
+      const startIdx = (currentPage - 1) * itemsPerPage;
+      const endIdx = startIdx + itemsPerPage;
+      const paginatedIds = cardIds.slice(startIdx, endIdx);
+      if (paginatedIds.length > 0) {
+        const { data, error } = await supabase.from("Card").select("cardId, name").in("cardId", paginatedIds);
         if (error) {
           console.error("Error fetching card names:", error.message);
         }

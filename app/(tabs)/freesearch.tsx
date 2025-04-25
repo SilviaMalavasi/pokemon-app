@@ -151,6 +151,8 @@ export default function FreeSearchScreen() {
           resetKey={resetKey}
           removeDuplicates={removeDuplicates}
           onRemoveDuplicatesChange={setRemoveDuplicates}
+          currentPage={currentPage}
+          itemsPerPage={ITEMS_PER_PAGE}
         />
       </ThemedView>
       <ThemedView ref={searchResultRef}>

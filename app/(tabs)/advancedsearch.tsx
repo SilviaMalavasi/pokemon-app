@@ -150,6 +150,8 @@ export default function FullFormScreen() {
             resetKey={resetKey}
             removeDuplicates={removeDuplicates}
             onRemoveDuplicatesChange={setRemoveDuplicates}
+            currentPage={currentPage}
+            itemsPerPage={ITEMS_PER_PAGE}
           />
         </ThemedView>
         <ThemedView ref={searchResultRef}>
