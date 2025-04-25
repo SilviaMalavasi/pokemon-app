@@ -20,6 +20,8 @@ const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => 
 const cardTypesOptions = uniqueIdentifiers.cardTypes.map((v: string) => ({ value: v, label: v }));
 const cardRegulationMarkOptions = uniqueIdentifiers.cardRegulationMark.map((v: string) => ({ value: v, label: v }));
 const cardSetNamesOptions = uniqueIdentifiers.cardSetNames.map((v: string) => ({ value: v, label: v }));
+const cardWeaknessesTypeOptions = uniqueIdentifiers.cardWeaknessTypes.map((v: string) => ({ value: v, label: v }));
+const cardResistancesTypeOptions = uniqueIdentifiers.cardResistanceTypes.map((v: string) => ({ value: v, label: v }));
 
 const allSubtypes = Array.from(
   new Set([
@@ -511,14 +513,14 @@ export default function AdvancedSearchForm({
           <DynamicMultiSelect
             label="Weaknesses Type"
             value={cardWeaknessesType}
-            options={cardTypesOptions}
+            options={cardWeaknessesTypeOptions}
             onChange={setCardWeaknessesType}
             labelHint="Include cards that match ANY of the selected choices."
           />
           <DynamicMultiSelect
             label="Resistances Type"
             value={cardResistancesType}
-            options={cardTypesOptions}
+            options={cardResistancesTypeOptions}
             onChange={setCardResistancesType}
             labelHint="Include cards that match ANY of the selected choices."
           />

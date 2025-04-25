@@ -10,6 +10,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.text,
   },
+  input: {
+    borderRadius: 4,
+    padding: 12,
+    fontSize: 16,
+    backgroundColor: Colors.inputBackground,
+    color: Colors.highlight,
+    paddingRight: 36,
+    borderWidth: 1,
+    borderColor: Colors.mediumDarkGrey,
+  },
   placeholder: {
     color: Colors.placeholder,
   },
@@ -25,14 +35,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: "100%",
     zIndex: 1,
-  },
-  input: {
-    borderRadius: 4,
-    padding: 12,
-    fontSize: 16,
-    backgroundColor: Colors.inputBackground,
-    color: Colors.highlight,
-    paddingRight: 36,
   },
 });
 

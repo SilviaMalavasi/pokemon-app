@@ -7,7 +7,7 @@ const db = new Database(dbPath);
 
 function getUniqueValues(table, column) {
   const stmt = db.prepare(`SELECT DISTINCT ${column} FROM ${table} WHERE ${column} IS NOT NULL`);
-  if (column === "subtypes") {
+  if (column === "subtypes" || column === "types") {
     const all = stmt.all().map((row) => {
       try {
         return Array.isArray(row[column]) ? row[column] : JSON.parse(row[column]);
@@ -17,7 +17,7 @@ function getUniqueValues(table, column) {
     });
     return Array.from(new Set(all.flat().filter(Boolean)));
   }
-  if (column === "types") {
+  if (column === "weaknesses" || column === "resistances") {
     const all = stmt.all().map((row) => {
       try {
         return Array.isArray(row[column]) ? row[column] : JSON.parse(row[column]);
@@ -35,19 +35,6 @@ function getUniqueValues(table, column) {
         .filter(Boolean)
     )
   );
-}
-
-function getUniqueValueFields(table, column, field) {
-  const stmt = db.prepare(`SELECT DISTINCT ${column} FROM ${table} WHERE ${column} IS NOT NULL`);
-  const all = stmt.all().map((row) => {
-    try {
-      const arr = Array.isArray(row[column]) ? row[column] : JSON.parse(row[column]);
-      return arr.map((obj) => (obj && typeof obj === "object" ? obj[field] : undefined));
-    } catch {
-      return [];
-    }
-  });
-  return Array.from(new Set(all.flat().filter(Boolean)));
 }
 
 // Helper to get subtypes by supertype
@@ -92,6 +79,8 @@ const uniqueIdentifiers = {
   cardRegulationMark: getUniqueValues("Card", "regulationMark"),
   cardSetNames: getUniqueValues("CardSet", "name"),
   cardSetSeries: getUniqueValues("CardSet", "series"),
+  cardWeaknessTypes: getUniqueValues("Card", "weaknesses"),
+  cardResistanceTypes: getUniqueValues("Card", "resistances"),
 };
 
 const outPath = path.resolve(__dirname, "../db/uniqueIdentifiers.json");
