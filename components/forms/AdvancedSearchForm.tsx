@@ -24,6 +24,7 @@ const cardRegulationMarkOptions = uniqueIdentifiers.cardRegulationMark.map((v: s
 const cardSetNamesOptions = uniqueIdentifiers.cardSetNames.map((v: string) => ({ value: v, label: v }));
 const cardWeaknessesTypeOptions = uniqueIdentifiers.cardWeaknessTypes.map((v: string) => ({ value: v, label: v }));
 const cardResistancesTypeOptions = uniqueIdentifiers.cardResistanceTypes.map((v: string) => ({ value: v, label: v }));
+const energyTypesOptions = uniqueIdentifiers.energyTypes.map((v: string) => ({ value: v, label: v }));
 
 const allSubtypes = Array.from(
   new Set([
@@ -455,7 +456,7 @@ export default function AdvancedSearchForm({
             <DynamicMultiSelect
               label="Attack Cost"
               value={attacksCost}
-              options={cardTypesOptions}
+              options={energyTypesOptions}
               onChange={setAttacksCost}
               labelHint="Include cards that match ANY of the selected choices."
             />
@@ -468,7 +469,7 @@ export default function AdvancedSearchForm({
                   <Dropdown
                     key={idx}
                     style={{ marginVertical: 8 }}
-                    data={cardTypesOptions}
+                    data={energyTypesOptions}
                     labelField="label"
                     valueField="value"
                     placeholder="Select type"

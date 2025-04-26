@@ -36,5 +36,6 @@
   ],
   "cardSetSeries": ["Scarlet & Violet"],
   "cardWeaknessTypes": ["Fire", "Lightning", "Water", "Metal", "Fighting", "Darkness", "Psychic", "Grass"],
-  "cardResistanceTypes": ["Fighting", "Grass"]
+  "cardResistanceTypes": ["Fighting", "Grass"],
+  "energyTypes": ["Grass", "Fire", "Water", "Lightning", "Psychic", "Fighting", "Darkness", "Metal"]
 }

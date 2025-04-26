@@ -67,6 +67,32 @@ function getSubtypesBySupertype() {
   };
 }
 
+// Helper to get unique energy types for Basic Energy cards
+function getUniqueEnergyTypes() {
+  const stmt = db.prepare(
+    "SELECT subtypes, types FROM Card WHERE supertype = 'Energy' AND subtypes IS NOT NULL AND types IS NOT NULL"
+  );
+  const all = stmt
+    .all()
+    .filter((row) => {
+      let subArr;
+      try {
+        subArr = Array.isArray(row.subtypes) ? row.subtypes : JSON.parse(row.subtypes);
+      } catch {
+        subArr = [];
+      }
+      return subArr.includes("Basic");
+    })
+    .map((row) => {
+      try {
+        return Array.isArray(row.types) ? row.types : JSON.parse(row.types);
+      } catch {
+        return [];
+      }
+    });
+  return Array.from(new Set(all.flat().filter(Boolean)));
+}
+
 const subtypesBySupertype = getSubtypesBySupertype();
 
 const uniqueIdentifiers = {
@@ -81,6 +107,7 @@ const uniqueIdentifiers = {
   cardSetSeries: getUniqueValues("CardSet", "series"),
   cardWeaknessTypes: getUniqueValues("Card", "weaknesses"),
   cardResistanceTypes: getUniqueValues("Card", "resistances"),
+  energyTypes: getUniqueEnergyTypes(),
 };
 
 const outPath = path.resolve(__dirname, "../db/uniqueIdentifiers.json");
