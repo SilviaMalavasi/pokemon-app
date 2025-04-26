@@ -1,47 +1,18 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { supabase } from "@/lib/supabase";
-import type { CardType } from "@/types/PokemonCardType";
-import { findNodeHandle, UIManager } from "react-native";
-import Animated, { useAnimatedRef } from "react-native-reanimated";
-
+import { useRouter } from "expo-router";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import FreeSearchForm from "@/components/forms/FreeSearchForm";
-import SearchResult from "@/components/SearchResult";
+import { useSearchResultContext } from "@/components/context/SearchResultContext";
 
 export default function FreeSearchScreen() {
-  const [cardIds, setCardIds] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [loading, setLoading] = useState(false);
   const [resetKey, setResetKey] = useState(0);
-  const [cards, setCards] = useState<Pick<CardType, "cardId" | "name" | "imagesSmall">[]>([]);
-  const ITEMS_PER_PAGE = 20;
-  const [currentPage, setCurrentPage] = useState(1);
   const [removeDuplicates, setRemoveDuplicates] = useState(false);
-  const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const searchResultRef = useRef(null);
-
-  const scrollToSearchResult = () => {
-    setTimeout(() => {
-      const scrollNode = scrollRef.current;
-      const searchNode = searchResultRef.current;
-      if (searchNode && scrollNode) {
-        const searchNativeNode = findNodeHandle(searchNode);
-        const scrollNativeNode = findNodeHandle(scrollNode);
-        if (searchNativeNode && scrollNativeNode) {
-          UIManager.measureLayout(
-            searchNativeNode,
-            scrollNativeNode,
-            () => {},
-            (x, y) => {
-              scrollNode.scrollTo({ y: y - 40, animated: true });
-            }
-          );
-        }
-      }
-    }, 100);
-  };
+  const ITEMS_PER_PAGE = 20;
+  const router = useRouter();
+  const { setCardIds, setQuery, setCurrentPage, setItemsPerPage, setCards, setLoading } = useSearchResultContext();
 
   // Handler to receive card IDs from FreeSearch
   const handleSearchResults = async (ids: string[], query: string) => {
@@ -74,55 +45,17 @@ export default function FreeSearchScreen() {
       }
     }
     setCardIds(filteredIds);
-    setSearchQuery(query);
-    setLoading(false);
+    setQuery(query);
     setCurrentPage(1);
-    scrollToSearchResult();
+    setItemsPerPage(ITEMS_PER_PAGE);
+    setCards([]);
+    setLoading(false);
+    router.push("/(tabs)/searchresult");
   };
 
-  // Fetch paginated card data when cardIds or currentPage changes
-  React.useEffect(() => {
-    const fetchCards = async () => {
-      if (!cardIds || cardIds.length === 0) {
-        setCards([]);
-        return;
-      }
-      setLoading(true);
-      const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
-      const endIdx = startIdx + ITEMS_PER_PAGE;
-      const paginatedIds = cardIds.slice(startIdx, endIdx);
-      const { data, error } = await supabase
-        .from("Card")
-        .select("cardId, name, imagesSmall")
-        .in("cardId", paginatedIds);
-      if (error) {
-        setCards([]);
-      } else {
-        // Ensure order matches paginatedIds
-        const cardsOrdered = paginatedIds.map(
-          (id) => data.find((c) => c.cardId === id) || { cardId: id, name: id, imagesSmall: "" }
-        );
-        setCards(cardsOrdered);
-      }
-      setLoading(false);
-    };
-    fetchCards();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardIds, currentPage]);
-
-  // Scroll only after all images are loaded
-  const handleAllImagesLoaded = React.useCallback(() => {
-    if (cardIds.length > 0) {
-      scrollToSearchResult();
-    }
-  }, [cardIds]);
-
-  // Reset the search results and switches when the screen is focused
+  // Reset the search form when the screen is focused
   useFocusEffect(
     React.useCallback(() => {
-      setCardIds([]);
-      setSearchQuery("");
-      setLoading(false);
       setResetKey((k) => k + 1);
     }, [])
   );
@@ -131,30 +64,17 @@ export default function FreeSearchScreen() {
     <ParallaxScrollView
       headerImage="advanced-search.webp"
       headerTitle="Free Search"
-      scrollRef={scrollRef}
     >
       <ThemedView>
         <FreeSearchForm
           key={resetKey}
           onSearchResults={handleSearchResults}
-          setLoading={setLoading}
+          setLoading={() => {}}
           resetKey={resetKey}
           removeDuplicates={removeDuplicates}
           onRemoveDuplicatesChange={setRemoveDuplicates}
-          currentPage={currentPage}
+          currentPage={1}
           itemsPerPage={ITEMS_PER_PAGE}
-        />
-      </ThemedView>
-      <ThemedView ref={searchResultRef}>
-        <SearchResult
-          cardIds={cardIds}
-          cards={cards}
-          query={searchQuery}
-          loading={loading}
-          currentPage={currentPage}
-          itemsPerPage={ITEMS_PER_PAGE}
-          onPageChange={setCurrentPage}
-          onAllImagesLoaded={handleAllImagesLoaded}
         />
       </ThemedView>
     </ParallaxScrollView>
