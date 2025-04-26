@@ -71,7 +71,7 @@ export default function TabLayout() {
         options={{
           href: null,
         }}
-      />{" "}
+      />
       <Tabs.Screen
         name="searchresult"
         options={{
