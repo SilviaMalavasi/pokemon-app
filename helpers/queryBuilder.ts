@@ -133,29 +133,66 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     }
   }
 
-  // 3. Attacks filters (Attacks -> CardAttacks -> Card)
-  let attackCardIds: string[] = [];
-  if (grouped["Attacks"]) {
-    const attackQuery = buildQuery("Attacks", "id", grouped["Attacks"]);
-    const { data, error } = await attackQuery;
-    if (error) return { cardIds: [], query: error.message };
-    const attackIds = data?.map((row: any) => row.id) || [];
-    if (attackIds.length > 0) {
-      const { data: caData, error: caError } = await supabase
-        .from("CardAttacks")
-        .select("cardId")
-        .in("attackId", attackIds);
-      if (caError) return { cardIds: [], query: caError.message };
-      const cardIdInts = caData?.map((row: any) => row.cardId) || [];
-      if (cardIdInts.length > 0) {
-        const { data: cardData, error: cardError } = await supabase
-          .from("Card")
-          .select("cardId, id")
-          .in("id", cardIdInts)
-          .order("name");
-        if (cardError) return { cardIds: [], query: cardError.message };
-        attackCardIds = cardData?.map((row: any) => row.cardId) || [];
+  // --- NEW: Unified Attacks+CardAttacks filter logic ---
+  // Collect all attack-related filters
+  const attackRelatedFilters = [...(grouped["Attacks"] || []), ...(grouped["CardAttacks"] || [])];
+  let unifiedAttackCardIds: string[] = [];
+  if (attackRelatedFilters.length > 0) {
+    // Build a query joining CardAttacks and Attacks, applying all filters at the attack row level
+    let query = supabase
+      .from("CardAttacks")
+      .select("cardId, attackId, damage, cost, convertedEnergyCost, Attacks!inner(name, text)");
+    attackRelatedFilters.forEach(({ config, value, operator }) => {
+      if (value === null || value === undefined) return;
+      let col = config.column;
+      // If the filter is for Attacks, prefix with Attacks.
+      if (config.table === "Attacks") col = `Attacks.${col}`;
+      if (config.type === "text") {
+        const trimmed = String(value).trim();
+        const words = trimmed.split(/\s+/).filter(Boolean);
+        if (words.length > 1) {
+          words.forEach((word) => {
+            query = query.ilike(col, `%${word}%`);
+          });
+        } else {
+          query = query.ilike(col, `%${trimmed}%`);
+        }
+      } else if (config.type === "number") {
+        if (config.valueType === "int") {
+          const op = operator || "=";
+          query = query.not(col, "is", null);
+          if (op === ">=") query = query.gte(col, value);
+          else if (op === "<=") query = query.lte(col, value);
+          else query = query.eq(col, value);
+        } else if (config.valueType === "text") {
+          const op = operator || "=";
+          if (op === ">=" || op === "<=") {
+            const sqlOp = op === ">=" ? ">=" : "<=";
+            query = query.filter(`CAST(regexp_replace(${col}, '[^0-9].*', '', 'g') AS INTEGER)`, sqlOp, value);
+          } else {
+            let matchString = String(value);
+            if (op === "+" || op === "x") {
+              matchString = matchString + op;
+            }
+            query = query.eq(col, matchString);
+          }
+        }
+      } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
+        const orString = value.map((v: string) => `${col}.ilike.%${v}%`).join(",");
+        query = query.or(orString);
       }
+    });
+    const { data, error } = await query;
+    if (error) return { cardIds: [], query: error.message };
+    const cardIdInts = data?.map((row: any) => row.cardId) || [];
+    if (cardIdInts.length > 0) {
+      const { data: cardData, error: cardError } = await supabase
+        .from("Card")
+        .select("cardId, id")
+        .in("id", cardIdInts)
+        .order("name");
+      if (cardError) return { cardIds: [], query: cardError.message };
+      unifiedAttackCardIds = cardData?.map((row: any) => row.cardId) || [];
     }
   }
 
@@ -277,8 +314,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   const allArrays = [
     cardTableIds,
     cardSetIds,
-    attackCardIds,
-    cardAttacksCardIds,
+    unifiedAttackCardIds, // use unified attack filter result
     abilityCardIds,
     hasAnyAbilityCardIds,
   ].filter((arr) => arr.length > 0);

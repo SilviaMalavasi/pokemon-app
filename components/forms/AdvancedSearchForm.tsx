@@ -357,6 +357,32 @@ export default function AdvancedSearchForm({
           labelHint="Include cards that match ANY of the selected choices."
         />
       </Collapsible>
+      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
+        <Collapsible
+          title="Evolution"
+          resetKey={resetKey}
+        >
+          <DynamicMultiSelect
+            label="Stage"
+            value={cardStage}
+            options={cardStageOptions}
+            onChange={setCardStage}
+            labelHint="Include cards that match ANY of the selected choices."
+          />
+          <TextInput
+            label="Evolves From"
+            value={cardEvolvesFrom}
+            onChange={setCardEvolvesFrom}
+            placeholder="Evolves from"
+          />
+          <TextInput
+            label="Evolves To"
+            value={cardEvolvesTo}
+            onChange={setCardEvolvesTo}
+            placeholder="Evolves to"
+          />
+        </Collapsible>
+      )}
       <Collapsible
         title="Card Rules"
         resetKey={resetKey}
@@ -452,32 +478,7 @@ export default function AdvancedSearchForm({
           </ThemedView>
         </Collapsible>
       )}
-      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
-        <Collapsible
-          title="Evolution"
-          resetKey={resetKey}
-        >
-          <DynamicMultiSelect
-            label="Stage"
-            value={cardStage}
-            options={cardStageOptions}
-            onChange={setCardStage}
-            labelHint="Include cards that match ANY of the selected choices."
-          />
-          <TextInput
-            label="Evolves From"
-            value={cardEvolvesFrom}
-            onChange={setCardEvolvesFrom}
-            placeholder="Evolves from"
-          />
-          <TextInput
-            label="Evolves To"
-            value={cardEvolvesTo}
-            onChange={setCardEvolvesTo}
-            placeholder="Evolves to"
-          />
-        </Collapsible>
-      )}
+
       {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
         <Collapsible
           title="Stats"

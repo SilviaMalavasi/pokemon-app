@@ -21,6 +21,7 @@ export const theme = {
     secondary: purple,
   },
   padding: {
+    none: 0,
     xsmall: 4,
     small: 8,
     medium: 16,

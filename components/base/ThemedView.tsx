@@ -4,13 +4,13 @@ import { theme } from "@/style/ui/Theme";
 
 // Add type prop to props
 interface ThemedViewProps extends ViewProps {
-  padding?: "xsmall" | "small" | "medium" | "large" | "xlarge";
+  padding?: "none" | "xsmall" | "small" | "medium" | "large" | "xlarge";
   backgroundColor?: "background" | "lightBackground";
   borderRadius?: "none" | "small" | "medium" | "large";
 }
 
 const ThemedView = React.forwardRef<View, ThemedViewProps>(
-  ({ style, padding = "small", backgroundColor = "background", borderRadius = "none", ...otherProps }, ref) => {
+  ({ style, padding = "none", backgroundColor = "background", borderRadius = "none", ...otherProps }, ref) => {
     const themedStyle = {
       padding: theme.padding[padding],
       backgroundColor: theme.colors[backgroundColor],
