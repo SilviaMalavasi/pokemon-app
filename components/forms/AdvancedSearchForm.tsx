@@ -10,8 +10,10 @@ import { queryBuilder } from "@/helpers/queryBuilder";
 import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
-import { supabase } from "@/lib/supabase";
+import { Dropdown } from "react-native-element-dropdown";
 import AutoCompleteInput from "@/components/base/AutoCompleteInput";
+import { supabase } from "@/lib/supabase";
+import dynamicMultiSelectStyle from "@/style/base/DynamicMultiSelectStyle";
 
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 
@@ -103,6 +105,7 @@ export default function AdvancedSearchForm({
   const [error, setError] = useState<string | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [hasAnyAbility, setHasAnyAbility] = useState(false);
+  const [attacksCostSlots, setAttacksCostSlots] = useState<string[]>([]);
 
   useEffect(() => {
     setCardSupertype([]);
@@ -143,6 +146,18 @@ export default function AdvancedSearchForm({
   useEffect(() => {
     setCardSubtypes([]);
   }, [cardSupertype]);
+
+  useEffect(() => {
+    if (
+      attacksConvertedEnergyCostOperator === "=" &&
+      attacksConvertedEnergyCost &&
+      Number(attacksConvertedEnergyCost) > 0
+    ) {
+      setAttacksCostSlots(Array(Number(attacksConvertedEnergyCost)).fill(""));
+    } else {
+      setAttacksCostSlots([]);
+    }
+  }, [attacksConvertedEnergyCost, attacksConvertedEnergyCostOperator]);
 
   const handleSubmit = async (): Promise<void> => {
     if (setLoadingProp) setLoadingProp(true);
@@ -425,15 +440,6 @@ export default function AdvancedSearchForm({
             suggestions={["search", "discard pile", "attach", "energy"]}
             placeholder="Attack text"
           />
-
-          <DynamicMultiSelect
-            label="Attack Cost"
-            value={attacksCost}
-            options={cardTypesOptions}
-            onChange={setAttacksCost}
-            labelHint="Include cards that match ANY of the selected choices."
-          />
-
           <NumberInput
             label="Attacks Converted Energy Cost"
             value={attacksConvertedEnergyCost}
@@ -444,6 +450,42 @@ export default function AdvancedSearchForm({
             placeholder="Converted energy cost"
             showOperatorSelect={"basic"}
           />
+
+          {attacksConvertedEnergyCostOperator !== "=" && (
+            <DynamicMultiSelect
+              label="Attack Cost"
+              value={attacksCost}
+              options={cardTypesOptions}
+              onChange={setAttacksCost}
+              labelHint="Include cards that match ANY of the selected choices."
+            />
+          )}
+          {attacksConvertedEnergyCostOperator === "=" &&
+            attacksConvertedEnergyCost &&
+            Number(attacksConvertedEnergyCost) > 0 && (
+              <>
+                {Array.from({ length: Number(attacksConvertedEnergyCost) }).map((_, idx) => (
+                  <Dropdown
+                    key={idx}
+                    style={{ marginVertical: 8 }}
+                    data={cardTypesOptions}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select type"
+                    containerStyle={dynamicMultiSelectStyle.listContainer}
+                    itemTextStyle={dynamicMultiSelectStyle.listItem}
+                    selectedTextStyle={dynamicMultiSelectStyle.selectedItemText}
+                    placeholderStyle={dynamicMultiSelectStyle.label}
+                    value={attacksCostSlots[idx] || ""}
+                    onChange={(item) => {
+                      const newSlots = [...attacksCostSlots];
+                      newSlots[idx] = item.value;
+                      setAttacksCostSlots(newSlots);
+                    }}
+                  />
+                ))}
+              </>
+            )}
         </Collapsible>
       )}
       {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
