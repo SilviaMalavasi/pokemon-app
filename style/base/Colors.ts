@@ -1,9 +1,9 @@
 export const white = "#ffffff";
 export const black = "#000000";
-export const darkGrey = "#111218";
-export const mediumDarkGrey = "#3c3c47";
+export const darkmediumGrey = "#111218";
+export const mediumDarkmediumGrey = "#3C3C47";
 export const mediumGrey = "#242426";
-export const lightGrey = "#a6a6b6";
+export const lightmediumGrey = "#a6a6b6";
 export const green = "#30F51B";
 export const lightGreen = "#0cf78a";
 export const purple = "#6a1dff";
@@ -13,7 +13,7 @@ export const orange = "#f1c430";
 
 export const Colors = {
   // Container
-  background: darkGrey,
+  background: darkmediumGrey,
   darkBackground: black,
   lightBackground: mediumGrey,
 
@@ -26,20 +26,20 @@ export const Colors = {
   text: white,
   highlight: green,
   alternativeText: purple,
-  darkText: lightGrey,
+  darkText: lightmediumGrey,
   borderColor: mediumGrey,
 
   // Input
-  placeholder: lightGrey,
+  placeholder: lightmediumGrey,
   inputBackground: mediumGrey,
 
   //Colors
   white: white,
   black: black,
-  darkGrey: darkGrey,
+  darkmediumGrey: darkmediumGrey,
   mediumGrey: mediumGrey,
-  mediumDarkGrey: mediumDarkGrey,
-  lightGrey: lightGrey,
+  mediumDarkmediumGrey: mediumDarkmediumGrey,
+  lightmediumGrey: lightmediumGrey,
   green: green,
   lightGreen: lightGreen,
   purple: purple,

@@ -5,14 +5,14 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "com.silviamalavasi.pokemondeckbuilder",
+    "scheme": "com.silviamalavasi.pokedeckbuilder",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "package": "com.silviamalavasi.pokemondeckbuilder",
+      "package": "com.silviamalavasi.pokedeckbuilder",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#6a1dff"
@@ -29,8 +29,8 @@
         "expo-splash-screen",
         {
           "image": "./assets/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
+          "imageWidth": "100%",
+          "resizeMode": "cover",
           "backgroundColor": "#6a1dff"
         }
       ]

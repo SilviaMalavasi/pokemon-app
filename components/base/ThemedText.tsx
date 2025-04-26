@@ -1,13 +1,13 @@
 import { Text, type TextProps } from "react-native";
-import { Colors } from "@/style/base/Colors";
+import { theme } from "@/style/ui/Theme";
 import styles from "@/style/base/ThemedTextStyle";
 
 export type ThemedTextProps = TextProps & {
   type?:
-    | "default"
     | "title"
-    | "defaultSemiBold"
     | "subtitle"
+    | "default"
+    | "defaultSemiBold"
     | "link"
     | "button"
     | "buttonAlternative"
@@ -34,7 +34,7 @@ export default function ThemedText({ style, type = "default", color, gradient, .
     type === "hintText" ? styles.hintText : undefined,
     style,
     color ? { color } : undefined,
-    isButtonType && !color ? { color: Colors.darkBackground } : undefined,
+    isButtonType && !color ? { color: theme.colors.background } : undefined,
   ];
 
   return (

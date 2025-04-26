@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     color: Colors.highlight,
     paddingRight: 36,
     borderWidth: 1,
-    borderColor: Colors.mediumDarkGrey,
+    borderColor: Colors.mediumDarkmediumGrey,
   },
   placeholder: {
     color: Colors.placeholder,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Image, ActivityIndicator } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { Colors } from "@/style/base/Colors";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
@@ -70,13 +70,7 @@ export default function FullCardScreen() {
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={Colors.mediumGrey}
-      headerImage={
-        <Image
-          source={require("@/assets/fondo.png")}
-          resizeMode="contain"
-        />
-      }
+      headerImage="advanced-search.webp"
       headerTitle="Card Details"
     >
       <ThemedView>

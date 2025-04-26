@@ -1,4 +1,3 @@
-import { Image } from "react-native";
 import { Colors } from "@/style/base/Colors";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedText from "@/components/base/ThemedText";
@@ -8,13 +7,7 @@ import { ExternalLink } from "@/components/base/ExternalLink";
 export default function HomeScreen() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={Colors.mediumGrey}
-      headerImage={
-        <Image
-          source={require("@/assets/fondo.png")}
-          resizeMode="contain"
-        />
-      }
+      headerImage="advanced-search.webp"
       headerTitle="Pokémon Deck Builder"
     >
       <ThemedView>

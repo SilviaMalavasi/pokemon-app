@@ -2,59 +2,63 @@ import { StyleSheet } from "react-native";
 import { Colors } from "@/style/base/Colors";
 
 const styles = StyleSheet.create({
-  default: {
-    fontSize: 16,
-    lineHeight: 24,
-    color: Colors.text,
-  },
-  defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: "600",
-    color: Colors.text,
-  },
   title: {
+    fontFamily: "Inter-Black",
     fontSize: 36,
-    fontWeight: "bold",
-    lineHeight: 32,
+    lineHeight: 36,
     paddingBottom: 16,
     color: Colors.text,
     paddingTop: 4,
   },
   subtitle: {
+    fontFamily: "Inter-ExtraBold",
     fontSize: 18,
     fontWeight: "bold",
     color: Colors.text,
   },
+  default: {
+    fontFamily: "Inter-Regular",
+    fontSize: 16,
+    lineHeight: 24,
+    color: Colors.text,
+  },
+  defaultSemiBold: {
+    fontFamily: "Inter-SemiBold",
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: "600",
+    color: Colors.text,
+  },
   link: {
+    fontFamily: "Inter-Regular",
     lineHeight: 30,
     fontSize: 16,
     color: Colors.highlight,
   },
   button: {
+    fontFamily: "Inter-Bold",
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: "900",
     textTransform: "uppercase",
     color: Colors.text,
   },
   buttonAlternative: {
+    fontFamily: "Inter-Bold",
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: "900",
     textTransform: "uppercase",
     color: Colors.text,
   },
   buttonDisabled: {
+    fontFamily: "Inter-Bold",
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: "900",
     textTransform: "uppercase",
     color: Colors.text,
   },
   hintIcon: {
+    fontFamily: "Inter-Medium",
     fontSize: 12,
-    fontWeight: "500",
     lineHeight: 12,
     color: Colors.alternativeText,
     borderWidth: 1,
@@ -67,6 +71,7 @@ const styles = StyleSheet.create({
     marginTop: -2,
   },
   hintText: {
+    fontFamily: "Inter-Regular",
     fontSize: 14,
     lineHeight: 15,
     color: Colors.lightPurple,

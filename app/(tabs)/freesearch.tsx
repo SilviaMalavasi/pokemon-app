@@ -1,5 +1,3 @@
-import { StyleSheet } from "react-native";
-import { Image } from "react-native";
 import React, { useState, useRef } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { supabase } from "@/lib/supabase";
@@ -11,7 +9,6 @@ import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import FreeSearchForm from "@/components/forms/FreeSearchForm";
 import SearchResult from "@/components/SearchResult";
-import { Colors } from "@/style/base/Colors";
 
 export default function FreeSearchScreen() {
   const [cardIds, setCardIds] = useState<string[]>([]);
@@ -132,13 +129,7 @@ export default function FreeSearchScreen() {
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={Colors.mediumGrey}
-      headerImage={
-        <Image
-          source={require("@/assets/fondo.png")}
-          resizeMode="contain"
-        />
-      }
+      headerImage="advanced-search.webp"
       headerTitle="Free Search"
       scrollRef={scrollRef}
     >

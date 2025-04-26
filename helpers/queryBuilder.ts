@@ -43,7 +43,15 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       const col = config.column;
       if (config.type === "text") {
         const trimmed = String(value).trim();
-        query = query.ilike(col, `%${trimmed}%`);
+        const words = trimmed.split(/\s+/).filter(Boolean);
+        if (words.length > 1) {
+          // Chain .ilike for each word (AND logic)
+          words.forEach((word) => {
+            query = query.ilike(col, `%${word}%`);
+          });
+        } else {
+          query = query.ilike(col, `%${trimmed}%`);
+        }
       } else if (config.type === "number") {
         if (config.valueType === "int") {
           const op = operator || "=";

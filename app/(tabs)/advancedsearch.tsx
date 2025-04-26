@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { Image, findNodeHandle, UIManager } from "react-native";
+import { findNodeHandle, UIManager } from "react-native";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { supabase } from "@/lib/supabase";
 import type { CardType } from "@/types/PokemonCardType";
@@ -8,7 +8,6 @@ import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-d
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
-import { Colors } from "@/style/base/Colors";
 import SearchResult from "@/components/SearchResult";
 
 export default function FullFormScreen() {
@@ -132,13 +131,7 @@ export default function FullFormScreen() {
   return (
     <AutocompleteDropdownContextProvider>
       <ParallaxScrollView
-        headerBackgroundColor={Colors.mediumGrey}
-        headerImage={
-          <Image
-            source={require("@/assets/fondo.png")}
-            resizeMode="contain"
-          />
-        }
+        headerImage="advanced-search.webp"
         headerTitle="Advanced Search"
         scrollRef={scrollRef}
       >

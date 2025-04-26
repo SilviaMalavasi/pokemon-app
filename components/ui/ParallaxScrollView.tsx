@@ -1,4 +1,6 @@
-import type { PropsWithChildren, ReactElement } from "react";
+import type { PropsWithChildren } from "react";
+import { View } from "react-native";
+import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -6,30 +8,26 @@ import Animated, {
   useScrollViewOffset,
   AnimatedRef,
 } from "react-native-reanimated";
-import { LinearGradient } from "expo-linear-gradient";
-
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
-import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
-import { Colors } from "@/style/base/Colors";
+import { Image } from "expo-image";
 import styles from "@/style/ui/ParallaxScrollViewStyle";
 
-const HEADER_HEIGHT = 150;
+const headerHeight = 160;
+
+// Mapping of header image filenames to require statements
+const headerImages: Record<string, any> = {
+  "advanced-search.webp": require("@/assets/header-images/advanced-search.webp"),
+  "fondo.webp": require("@/assets/header-images/fondo.webp"),
+};
 
 type Props = PropsWithChildren<{
-  headerImage: ReactElement;
-  headerBackgroundColor: string;
+  headerImage: string;
   headerTitle: string;
-  scrollRef?: AnimatedRef<Animated.ScrollView>; // <-- use correct type
+  scrollRef?: AnimatedRef<Animated.ScrollView>;
 }>;
 
-export default function ParallaxScrollView({
-  children,
-  headerImage,
-  headerBackgroundColor,
-  headerTitle,
-  scrollRef,
-}: Props) {
+export default function ParallaxScrollView({ children, headerImage, headerTitle, scrollRef }: Props) {
   const internalScrollRef = useAnimatedRef<Animated.ScrollView>();
   const usedScrollRef = scrollRef || internalScrollRef;
   const scrollOffset = useScrollViewOffset(usedScrollRef);
@@ -40,51 +38,53 @@ export default function ParallaxScrollView({
         {
           translateY: interpolate(
             scrollOffset.value,
-            [-HEADER_HEIGHT, 0, HEADER_HEIGHT],
-            [-HEADER_HEIGHT / 2, 0, HEADER_HEIGHT * 0.75]
+            [-headerHeight, 0, headerHeight],
+            [-headerHeight / 2, 0, headerHeight * 0.75]
           ),
         },
         {
-          scale: interpolate(scrollOffset.value, [-HEADER_HEIGHT, 0, HEADER_HEIGHT], [2, 1, 1]),
+          scale: interpolate(scrollOffset.value, [-headerHeight, 0, headerHeight], [2, 1, 1]),
         },
       ],
     };
   });
+  // Get the image source from the mapping
+  const headerImageSource = headerImages[headerImage];
 
   return (
-    <ThemedView style={styles.container}>
-      <Animated.ScrollView
-        ref={usedScrollRef}
-        scrollEventThrottle={16}
-        scrollIndicatorInsets={{ bottom }}
-        contentContainerStyle={{ paddingBottom: bottom }}
-      >
-        <Animated.View style={[styles.header, headerAnimatedStyle]}>
-          <ThemedView
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: headerBackgroundColor,
-              marginTop: 32,
-            }}
-          >
-            <LinearGradient
-              colors={[Colors.darkGrey, Colors.darkGrey, Colors.mediumGrey]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, zIndex: 1 }}
-            ></LinearGradient>
-            <ThemedView style={[styles.headerImageCont, { zIndex: 2 }]}>{headerImage}</ThemedView>
+    <Animated.ScrollView
+      ref={usedScrollRef}
+      scrollEventThrottle={16}
+      scrollIndicatorInsets={{ bottom }}
+      contentContainerStyle={{ paddingBottom: bottom }}
+    >
+      <Animated.View style={[styles.header, headerAnimatedStyle]}>
+        <View style={styles.headerBackground}>
+          <Image
+            style={styles.headerBackgroundImage}
+            source={headerImageSource}
+            contentFit="cover"
+          />
+        </View>
+        <View style={styles.headerContainer}>
+          <View style={styles.headerImageContainer}>
+            <Image
+              style={styles.headerImageContainerImage}
+              source={require("@/assets/header-images/header-logo.webp")}
+              contentFit="contain"
+            />
+          </View>
+          <View style={styles.headerTitleContainer}>
             <ThemedText
               type="title"
-              style={[styles.headerTitle, { zIndex: 3 }]}
+              style={styles.headerTitle}
             >
               {headerTitle}
             </ThemedText>
-          </ThemedView>
-        </Animated.View>
-        <ThemedView style={styles.content}>{children}</ThemedView>
-      </Animated.ScrollView>
-    </ThemedView>
+          </View>
+        </View>
+      </Animated.View>
+      <ThemedView style={styles.content}>{children}</ThemedView>
+    </Animated.ScrollView>
   );
 }

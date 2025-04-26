@@ -42,7 +42,7 @@ export default function FullCard({ card }: FullCardProps) {
           </View>
         ) : null}
         <ThemedText type="title">{card.name}</ThemedText>
-        <ThemedView type="bordered">
+        <ThemedView>
           <ThemedText>Supertype: {card.supertype}</ThemedText>
           {/* Stage and Subtypes separation */}
           {(() => {
