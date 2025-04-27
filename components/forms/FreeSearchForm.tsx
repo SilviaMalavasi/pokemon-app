@@ -7,9 +7,7 @@ import TextInput from "@/components/base/TextInput";
 import Collapsible from "@/components/base/Collapsible";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import { Colors } from "@/style/base/Colors";
-import { queryBuilder } from "@/helpers/queryBuilder";
-import { supabase } from "@/lib/supabase";
-import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
+import { freeQueryBuilder } from "@/helpers/freeQueryBuilder";
 
 export default function FreeSearchForm({
   onSearchResults,
@@ -17,8 +15,6 @@ export default function FreeSearchForm({
   resetKey,
   removeDuplicates,
   onRemoveDuplicatesChange,
-  currentPage,
-  itemsPerPage,
 }: {
   onSearchResults?: (ids: string[], query: string) => void;
   setLoading?: (loading: boolean) => void;
@@ -121,170 +117,12 @@ export default function FreeSearchForm({
       if (onSearchResults) onSearchResults([], "");
       return;
     }
-    // If search contains 'x' or '×', search for both variants
-    let searchVariants = [
-      trimmedSearch,
-      trimmedSearch.charAt(0).toUpperCase() + trimmedSearch.slice(1),
-      trimmedSearch.toLowerCase(),
-    ];
-    if (trimmedSearch.includes("x") || trimmedSearch.includes("×")) {
-      const xVariant = trimmedSearch.replace(/×/g, "x");
-      const timesVariant = trimmedSearch.replace(/x/g, "×");
-      searchVariants.push(xVariant, timesVariant);
-      searchVariants = Array.from(new Set(searchVariants));
-    }
-    const isNumeric = trimmedSearch !== "" && !isNaN(Number(trimmedSearch));
-
-    // Build QueryBuilderFilter[] with OR logic for both text and numbers, split numeric OR by table
-    const intColumns = ["hp", "convertedRetreatCost", "number"];
-    const filters: QueryBuilderFilter[] = [];
-    // Card numeric OR group
-    let cardNumericOrFilters: QueryBuilderFilter[] = [];
-    // CardAttacks numeric OR group
-    let cardAttacksNumericOrFilters: QueryBuilderFilter[] = [];
-    // Card text OR group
-    let cardTextOrFilters: QueryBuilderFilter[] = [];
-    // Card fields
-    cardColumnsToSearch.forEach((col) => {
-      if (isNumeric && intColumns.includes(col)) {
-        cardNumericOrFilters.push({
-          config: { key: col, type: "number", table: "Card", column: col, valueType: "int" },
-          value: Number(trimmedSearch),
-          operator: "=",
-        });
-      }
-      // Always allow text search on text columns, even if isNumeric
-      // But skip fixed exclusions (number, cardId) for text search
-      if (!intColumns.includes(col)) {
-        searchVariants.forEach((variant) => {
-          cardTextOrFilters.push({
-            config: { key: col, type: "text", table: "Card", column: col },
-            value: variant,
-          });
-        });
-      }
-    });
-    // CardAttacks numeric (for isNumeric)
-    if (isNumeric) {
-      cardAttacksColumnsToSearch.forEach((col) => {
-        if (col === "convertedEnergyCost" && !excludedColumns[col]) {
-          cardAttacksNumericOrFilters.push({
-            config: { key: col, type: "number", table: "CardAttacks", column: col, valueType: "int" },
-            value: Number(trimmedSearch),
-            operator: "=",
-          });
-        }
-        // Also search damage as text for exact match, only if not excluded
-        if (col === "damage" && !excludedColumns[col]) {
-          cardAttacksNumericOrFilters.push({
-            config: { key: "damage", type: "text", table: "CardAttacks", column: "damage" },
-            value: String(trimmedSearch),
-            operator: "eq",
-          });
-        }
-      });
-    }
-    if (cardNumericOrFilters.length > 0)
-      filters.push({
-        config: { key: "or", type: "number", table: "Card", column: "", logic: "or" },
-        value: cardNumericOrFilters,
-      });
-    if (cardAttacksNumericOrFilters.length > 0)
-      filters.push({
-        config: { key: "or", type: "number", table: "CardAttacks", column: "", logic: "or" },
-        value: cardAttacksNumericOrFilters,
-      });
-    if (cardTextOrFilters.length > 0)
-      filters.push({
-        config: { key: "or", type: "text", table: "Card", column: "", logic: "or" },
-        value: cardTextOrFilters,
-      });
-
-    // Attacks fields (text only)
-    let attacksOrFilters: QueryBuilderFilter[] = [];
-    if (!isNumeric) {
-      attacksColumnsToSearch.forEach((col) => {
-        searchVariants.forEach((variant) => {
-          attacksOrFilters.push({
-            config: { key: col, type: "text", table: "Attacks", column: col },
-            value: variant,
-          });
-        });
-      });
-      if (attacksOrFilters.length > 0)
-        filters.push({
-          config: { key: "or", type: "text", table: "Attacks", column: "", logic: "or" },
-          value: attacksOrFilters,
-        });
-    }
-    // Abilities fields (text only)
-    let abilitiesOrFilters: QueryBuilderFilter[] = [];
-    if (!isNumeric) {
-      abilitiesColumnsToSearch.forEach((col) => {
-        searchVariants.forEach((variant) => {
-          abilitiesOrFilters.push({
-            config: { key: col, type: "text", table: "Abilities", column: col },
-            value: variant,
-          });
-        });
-      });
-      if (abilitiesOrFilters.length > 0)
-        filters.push({
-          config: { key: "or", type: "text", table: "Abilities", column: "", logic: "or" },
-          value: abilitiesOrFilters,
-        });
-    }
-    // CardAttacks fields (text only, except convertedEnergyCost)
-    let cardAttacksOrFilters: QueryBuilderFilter[] = [];
-    if (!isNumeric) {
-      cardAttacksColumnsToSearch.forEach((col) => {
-        if (col === "convertedEnergyCost" || excludedColumns[col]) return;
-        searchVariants.forEach((variant) => {
-          cardAttacksOrFilters.push({
-            config: { key: col, type: "text", table: "CardAttacks", column: col },
-            value: variant,
-          });
-        });
-      });
-      if (cardAttacksOrFilters.length > 0)
-        filters.push({
-          config: { key: "or", type: "text", table: "CardAttacks", column: "", logic: "or" },
-          value: cardAttacksOrFilters,
-        });
-    }
-    // CardSet fields (text only)
-    let cardSetOrFilters: QueryBuilderFilter[] = [];
-    if (!isNumeric) {
-      cardSetColumnsToSearch.forEach((col) => {
-        searchVariants.forEach((variant) => {
-          cardSetOrFilters.push({
-            config: { key: col, type: "text", table: "CardSet", column: col },
-            value: variant,
-          });
-        });
-      });
-      if (cardSetOrFilters.length > 0)
-        filters.push({
-          config: { key: "or", type: "text", table: "CardSet", column: "", logic: "or" },
-          value: cardSetOrFilters,
-        });
-    }
-    // Query
     try {
-      const { cardIds, query } = await queryBuilder(filters);
+      // Use freeQueryBuilder for free search
+      const { cardIds, query } = await freeQueryBuilder(trimmedSearch);
       if (onSearchResults) onSearchResults(cardIds, query);
-      // Fetch and log card names for the returned cardIds (only for paginated IDs)
-      const startIdx = (currentPage - 1) * itemsPerPage;
-      const endIdx = startIdx + itemsPerPage;
-      const paginatedIds = cardIds.slice(startIdx, endIdx);
-      if (paginatedIds.length > 0) {
-        const { data, error } = await supabase.from("Card").select("cardId, name").in("cardId", paginatedIds);
-        if (error) {
-          console.error("Error fetching card names:", error.message);
-        }
-      }
     } catch (err: any) {
-      console.error("[FreeSearch] queryBuilder error:", err);
+      console.error("[FreeSearch] freeQueryBuilder error:", err);
       if (onSearchResults) onSearchResults([], err.message || "Search failed");
     } finally {
       if (setLoading) setLoading(false);
@@ -313,6 +151,35 @@ export default function FreeSearchForm({
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
             .filter((col) => ["supertype", "subtypes", "types"].includes(col.key))
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <ThemedSwitch
+                  value={excludedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
+                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
+      </Collapsible>
+      {/* Evolution */}
+      <Collapsible
+        title="Exclude: Evolution"
+        resetKey={resetKey}
+      >
+        <ThemedView style={{ marginBottom: 12 }}>
+          {allCardColumns
+            .filter((col) => ["evolvesFrom", "evolvesTo"].includes(col.key))
             .map((col) => (
               <ThemedView
                 key={`${col.table}-${col.key}`}
@@ -421,35 +288,6 @@ export default function FreeSearchForm({
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
             .filter((col) => col.table === "Abilities")
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedSwitch
-                  value={excludedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
-                />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
-              </ThemedView>
-            ))}
-        </ThemedView>
-      </Collapsible>
-      {/* Evolution */}
-      <Collapsible
-        title="Exclude: Evolution"
-        resetKey={resetKey}
-      >
-        <ThemedView style={{ marginBottom: 12 }}>
-          {allCardColumns
-            .filter((col) => ["evolvesFrom", "evolvesTo"].includes(col.key))
             .map((col) => (
               <ThemedView
                 key={`${col.table}-${col.key}`}
