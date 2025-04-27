@@ -27,7 +27,10 @@ const allFields: { table: string; column: string; type: "text" | "int" | "json-s
   { table: "Card", column: "artist", type: "text" },
 ];
 
-export async function freeQueryBuilder(search: string): Promise<{ cardIds: string[]; query: string }> {
+export async function freeQueryBuilder(
+  search: string,
+  includedKeys?: string[]
+): Promise<{ cardIds: string[]; query: string }> {
   const trimmed = search.trim();
   if (!trimmed) return { cardIds: [], query: "" };
   const searchLower = trimmed.toLowerCase();
@@ -47,8 +50,10 @@ export async function freeQueryBuilder(search: string): Promise<{ cardIds: strin
     return data?.map((row: any) => row.cardId).filter(Boolean) || [];
   }
 
-  // For each field, run the appropriate query
-  for (const field of allFields) {
+  // Only search included fields if provided
+  const fieldsToSearch = includedKeys ? allFields.filter((f) => includedKeys.includes(f.column)) : allFields;
+
+  for (const field of fieldsToSearch) {
     if (field.type === "text") {
       let query = supabase.from(field.table).select(field.table === "Card" ? "cardId" : "id");
       query = query.ilike(field.column, `%${searchLower}%`);

@@ -51,16 +51,16 @@ export default function FreeSearchForm({
     { key: "flavorText", label: "Flavor Text" },
     { key: "artist", label: "Artist" },
   ];
-  // By default, only 'artist', 'flavorText', and 'rarity' are excluded (checked)
-  const [excludedColumns, setExcludedColumns] = useState<Record<string, boolean>>(() => {
+  // By default, all fields are included (checked)
+  const [includedColumns, setIncludedColumns] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     allCardColumns.forEach((col) => {
-      initial[col.key] = false;
+      initial[col.key] = true;
     });
     return initial;
   });
   const handleToggleColumn = (key: string) => {
-    setExcludedColumns((prev) => ({ ...prev, [key]: !prev[key] }));
+    setIncludedColumns((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   const [showHint, setShowHint] = useState(false);
@@ -71,41 +71,46 @@ export default function FreeSearchForm({
   const attacksExclusions = ["id"];
   const abilitiesExclusions = ["id"];
 
-  // Card columns to search (respect user toggles and exclusions)
-  // Only include columns that actually belong to the Card table
-  // Always exclude fixed exclusions (like 'number', 'cardId') and user-defined exclusions
-  const fixedTextExclusions = ["number", "cardId"];
+  // Card columns to search (only include checked fields)
   const cardColumnsToSearch = allCardColumns
     .filter((col) => col.table === "Card")
     .map((col) => col.key)
-    .filter((key) => !cardExclusions.includes(key) && !fixedTextExclusions.includes(key) && !excludedColumns[key]);
+    .filter((key) => includedColumns[key]);
 
   // Attacks columns to search
   const attacksColumnsToSearch = allCardColumns
     .filter((col) => col.table === "Attacks")
     .map((col) => col.key)
-    .filter((key) => !attacksExclusions.includes(key) && !excludedColumns[key]);
+    .filter((key) => includedColumns[key]);
 
   // Abilities columns to search
   const abilitiesColumnsToSearch = allCardColumns
     .filter((col) => col.table === "Abilities")
     .map((col) => col.key)
-    .filter((key) => !abilitiesExclusions.includes(key) && !excludedColumns[key]);
+    .filter((key) => includedColumns[key]);
 
   // CardAttacks columns to search
   const cardAttacksColumnsToSearch = allCardColumns
     .filter((col) => col.table === "CardAttacks")
     .map((col) => col.key)
-    .filter((key) => !cardAttacksExclusions.includes(key) && !excludedColumns[key]);
+    .filter((key) => includedColumns[key]);
 
   // CardSet columns to search
   const cardSetColumnsToSearch = allCardColumns
     .filter((col) => col.table === "CardSet")
     .map((col) => col.key)
-    .filter((key) => !cardExclusions.includes(key) && !excludedColumns[key]);
+    .filter((key) => includedColumns[key]);
 
   useEffect(() => {
     setCardSearch("");
+    // Reset all switches to checked on resetKey change
+    setIncludedColumns(() => {
+      const initial: Record<string, boolean> = {};
+      allCardColumns.forEach((col) => {
+        initial[col.key] = true;
+      });
+      return initial;
+    });
     // Optionally reset other internal state if needed
   }, [resetKey]);
 
@@ -118,8 +123,10 @@ export default function FreeSearchForm({
       return;
     }
     try {
-      // Use freeQueryBuilder for free search
-      const { cardIds, query } = await freeQueryBuilder(trimmedSearch);
+      // Collect all included (checked) columns
+      const includedKeys = Object.keys(includedColumns).filter((key) => includedColumns[key]);
+      // Use freeQueryBuilder for free search, passing includedKeys
+      const { cardIds, query } = await freeQueryBuilder(trimmedSearch, includedKeys);
       if (onSearchResults) onSearchResults(cardIds, query);
     } catch (err: any) {
       console.error("[FreeSearch] freeQueryBuilder error:", err);
@@ -141,11 +148,11 @@ export default function FreeSearchForm({
         style={{ paddingTop: 8, paddingBottom: 24 }}
         type="default"
       >
-        You can exclude database fields from the search by toggling them off.
+        You can include database fields in the search by toggling them on.
       </ThemedText>
       {/* Card Type */}
       <Collapsible
-        title="Exclude: Card Type"
+        title="Include: Card Type"
         resetKey={resetKey}
       >
         <ThemedView style={{ marginBottom: 12 }}>
@@ -157,10 +164,10 @@ export default function FreeSearchForm({
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
                 <ThemedSwitch
-                  value={excludedColumns[col.key]}
+                  value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
                   trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -174,7 +181,7 @@ export default function FreeSearchForm({
       </Collapsible>
       {/* Evolution */}
       <Collapsible
-        title="Exclude: Evolution"
+        title="Include: Evolution"
         resetKey={resetKey}
       >
         <ThemedView style={{ marginBottom: 12 }}>
@@ -186,10 +193,10 @@ export default function FreeSearchForm({
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
                 <ThemedSwitch
-                  value={excludedColumns[col.key]}
+                  value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
                   trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -203,7 +210,7 @@ export default function FreeSearchForm({
       </Collapsible>
       {/* Card Rules */}
       <Collapsible
-        title="Exclude: Card Rules"
+        title="Include: Card Rules"
         resetKey={resetKey}
       >
         <ThemedView style={{ marginBottom: 12 }}>
@@ -215,10 +222,10 @@ export default function FreeSearchForm({
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
                 <ThemedSwitch
-                  value={excludedColumns[col.key]}
+                  value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
                   trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -232,7 +239,7 @@ export default function FreeSearchForm({
       </Collapsible>
       {/* Attacks */}
       <Collapsible
-        title="Exclude: Attacks"
+        title="Include: Attacks"
         resetKey={resetKey}
       >
         <ThemedView style={{ marginBottom: 12 }}>
@@ -244,10 +251,10 @@ export default function FreeSearchForm({
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
                 <ThemedSwitch
-                  value={excludedColumns[col.key]}
+                  value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
                   trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -265,10 +272,10 @@ export default function FreeSearchForm({
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
                 <ThemedSwitch
-                  value={excludedColumns[col.key]}
+                  value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
                   trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -282,7 +289,7 @@ export default function FreeSearchForm({
       </Collapsible>
       {/* Abilities */}
       <Collapsible
-        title="Exclude: Abilities"
+        title="Include: Abilities"
         resetKey={resetKey}
       >
         <ThemedView style={{ marginBottom: 12 }}>
@@ -294,10 +301,10 @@ export default function FreeSearchForm({
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
                 <ThemedSwitch
-                  value={excludedColumns[col.key]}
+                  value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
                   trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -311,7 +318,7 @@ export default function FreeSearchForm({
       </Collapsible>
       {/* Stats */}
       <Collapsible
-        title="Exclude: Stats"
+        title="Include: Stats"
         resetKey={resetKey}
       >
         <ThemedView style={{ marginBottom: 12 }}>
@@ -323,10 +330,10 @@ export default function FreeSearchForm({
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
                 <ThemedSwitch
-                  value={excludedColumns[col.key]}
+                  value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
                   trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -340,7 +347,7 @@ export default function FreeSearchForm({
       </Collapsible>
       {/* Weaknesses/Resistances */}
       <Collapsible
-        title="Exclude: Weaknesses/Resistances"
+        title="Include: Weaknesses/Resistances"
         resetKey={resetKey}
       >
         <ThemedView style={{ marginBottom: 12 }}>
@@ -352,10 +359,10 @@ export default function FreeSearchForm({
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
                 <ThemedSwitch
-                  value={excludedColumns[col.key]}
+                  value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
                   trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -369,7 +376,7 @@ export default function FreeSearchForm({
       </Collapsible>
       {/* Edition */}
       <Collapsible
-        title="Exclude: Edition"
+        title="Include: Edition"
         resetKey={resetKey}
       >
         <ThemedView style={{ marginBottom: 12 }}>
@@ -381,10 +388,10 @@ export default function FreeSearchForm({
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
                 <ThemedSwitch
-                  value={excludedColumns[col.key]}
+                  value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
                   trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -398,7 +405,7 @@ export default function FreeSearchForm({
       </Collapsible>
       {/* Artist/Flavor */}
       <Collapsible
-        title="Exclude: Artist/Flavor"
+        title="Include: Artist/Flavor"
         resetKey={resetKey}
       >
         <ThemedView style={{ marginBottom: 12 }}>
@@ -410,10 +417,10 @@ export default function FreeSearchForm({
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
                 <ThemedSwitch
-                  value={excludedColumns[col.key]}
+                  value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key)}
                   trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={excludedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
                 />
                 <ThemedText
                   type="default"
