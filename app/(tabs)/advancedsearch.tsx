@@ -8,6 +8,7 @@ import ThemedView from "@/components/base/ThemedView";
 import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import ThemedModal from "@/components/base/ThemedModal";
+import { useSearchFormContext } from "@/components/context/SearchFormContext";
 
 export default function FullFormScreen() {
   const [resetKey, setResetKey] = useState(0);
@@ -16,6 +17,7 @@ export default function FullFormScreen() {
   const ITEMS_PER_PAGE = 20;
   const router = useRouter();
   const { setCardIds, setQuery, setCurrentPage, setItemsPerPage, setCards, setLoading } = useSearchResultContext();
+  const { setAdvancedForm, setLastSearchType, clearAdvancedForm } = useSearchFormContext();
 
   // Handler to receive card IDs from AdvancedSearch
   const handleSearchResults = async (ids: string[], query: string) => {
@@ -58,13 +60,18 @@ export default function FullFormScreen() {
     setItemsPerPage(ITEMS_PER_PAGE);
     setCards([]);
     setLoading(false);
+    setLastSearchType("advanced");
     router.push("/cards/searchresult");
   };
 
-  // Reset the search form when the screen is focused
+  // Reset the search form when the screen is focused, but only if not coming from searchresult
   useFocusEffect(
     React.useCallback(() => {
-      setResetKey((k) => k + 1);
+      // If not coming from searchresult, reset form
+      if (window && window.history && window.history.state && window.history.state.idx === 0) {
+        setResetKey((k) => k + 1);
+        clearAdvancedForm();
+      }
     }, [])
   );
 

@@ -4,10 +4,17 @@ import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import SearchResult from "@/components/SearchResult";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
+import { useRouter } from "expo-router";
+import { useSearchFormContext } from "@/components/context/SearchFormContext";
+import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity, View } from "react-native";
+import ThemedText from "@/components/base/ThemedText";
 
 export default function SearchResultScreen() {
   const { cardIds, query, currentPage, itemsPerPage, cards, loading, setCards, setLoading, setCurrentPage } =
     useSearchResultContext();
+  const router = useRouter();
+  const { lastSearchType, clearAdvancedForm } = useSearchFormContext();
 
   // Fetch paginated card data when cardIds or currentPage changes
   useEffect(() => {
@@ -49,12 +56,37 @@ export default function SearchResultScreen() {
 
   const handleAllImagesLoaded = useCallback(() => {}, [cardIds]);
 
+  // Back button handler
+  const handleBack = () => {
+    if (lastSearchType === "advanced") {
+      router.replace("/advancedsearch");
+    } else if (lastSearchType === "free") {
+      router.replace("/freesearch");
+    } else {
+      clearAdvancedForm();
+      router.replace("/advancedsearch");
+    }
+  };
+
   return (
     <ParallaxScrollView
       headerImage="advanced-search.webp"
       headerTitle="Search Results"
     >
       <ThemedView>
+        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
+          <TouchableOpacity
+            onPress={handleBack}
+            style={{ marginRight: 12 }}
+          >
+            <Ionicons
+              name="arrow-back"
+              size={28}
+              color="#888"
+            />
+            <ThemedText>Back to search</ThemedText>
+          </TouchableOpacity>
+        </View>
         <SearchResult
           cardIds={cardIds}
           cards={cards}

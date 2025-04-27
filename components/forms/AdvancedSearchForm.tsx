@@ -16,6 +16,7 @@ import { supabase } from "@/lib/supabase";
 import dynamicMultiSelectStyle from "@/style/base/DynamicMultiSelectStyle";
 
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
+import { useSearchFormContext } from "@/components/context/SearchFormContext";
 
 const cardSupertypeOptions = uniqueIdentifiers.cardSupertype.map((v: string) => ({ value: v, label: v }));
 const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => ({ value: v, label: v }));
@@ -70,45 +71,100 @@ export default function AdvancedSearchForm({
   currentPage: number;
   itemsPerPage: number;
 }): JSX.Element {
+  // Context for form state
+  const { advancedForm, setAdvancedForm, lastSearchType } = useSearchFormContext();
+
   // State for all fields
-  const [cardSupertype, setCardSupertype] = useState<string[]>([]);
-  const [cardSubtypes, setCardSubtypes] = useState<string[]>([]);
-  const [cardName, setCardName] = useState("");
-  const [cardHp, setCardHp] = useState<number | "">("");
-  const [cardHpOperator, setCardHpOperator] = useState("=");
-  const [cardTypes, setCardTypes] = useState<string[]>([]);
-  const [cardEvolvesFrom, setCardEvolvesFrom] = useState("");
-  const [cardEvolvesTo, setCardEvolvesTo] = useState("");
-  const [cardRules, setCardRules] = useState("");
-  const [abilitiesName, setAbilitiesName] = useState("");
-  const [abilitiesText, setAbilitiesText] = useState("");
-  const [attacksName, setAttacksName] = useState("");
-  const [attacksDamage, setAttacksDamage] = useState<number | "">("");
-  const [attacksDamageOperator, setAttacksDamageOperator] = useState("=");
-  const [attacksText, setAttacksText] = useState("");
-  const [attacksCost, setAttacksCost] = useState<string[]>([]);
-  const [attacksConvertedEnergyCost, setAttacksConvertedEnergyCost] = useState<number | "">("");
-  const [attacksConvertedEnergyCostOperator, setAttacksConvertedEnergyCostOperator] = useState("=");
-  const [cardWeaknessesType, setCardWeaknessesType] = useState<string[]>([]);
-  const [cardResistancesType, setCardResistancesType] = useState<string[]>([]);
-  const [cardConvertedRetreatCost, setCardConvertedRetreatCost] = useState<number | "">("");
-  const [cardConvertedRetreatCostOperator, setCardConvertedRetreatCostOperator] = useState("=");
-  const [cardArtist, setCardArtist] = useState("");
-  const [cardFlavor, setCardFlavor] = useState("");
-  const [cardRegulationMark, setCardRegulationMark] = useState<string[]>([]);
-  const [cardSetName, setCardSetName] = useState<string[]>([]);
-  const [cardNumber, setCardNumber] = useState<number | "">("");
-  const [cardStage, setCardStage] = useState<string[]>([]);
-  const [cardSetNumber, setCardSetNumber] = useState("");
+  const [cardSupertype, setCardSupertype] = useState<string[]>(advancedForm?.cardSupertype ?? []);
+  const [cardSubtypes, setCardSubtypes] = useState<string[]>(advancedForm?.cardSubtypes ?? []);
+  const [cardName, setCardName] = useState(advancedForm?.cardName ?? "");
+  const [cardHp, setCardHp] = useState<number | "">(advancedForm?.cardHp ?? "");
+  const [cardHpOperator, setCardHpOperator] = useState(advancedForm?.cardHpOperator ?? "=");
+  const [cardTypes, setCardTypes] = useState<string[]>(advancedForm?.cardTypes ?? []);
+  const [cardEvolvesFrom, setCardEvolvesFrom] = useState(advancedForm?.cardEvolvesFrom ?? "");
+  const [cardEvolvesTo, setCardEvolvesTo] = useState(advancedForm?.cardEvolvesTo ?? "");
+  const [cardRules, setCardRules] = useState(advancedForm?.cardRules ?? "");
+  const [abilitiesName, setAbilitiesName] = useState(advancedForm?.abilitiesName ?? "");
+  const [abilitiesText, setAbilitiesText] = useState(advancedForm?.abilitiesText ?? "");
+  const [attacksName, setAttacksName] = useState(advancedForm?.attacksName ?? "");
+  const [attacksDamage, setAttacksDamage] = useState<number | "">(advancedForm?.attacksDamage ?? "");
+  const [attacksDamageOperator, setAttacksDamageOperator] = useState(advancedForm?.attacksDamageOperator ?? "=");
+  const [attacksText, setAttacksText] = useState(advancedForm?.attacksText ?? "");
+  const [attacksCost, setAttacksCost] = useState<string[]>(advancedForm?.attacksCost ?? []);
+  const [attacksConvertedEnergyCost, setAttacksConvertedEnergyCost] = useState<number | "">(
+    advancedForm?.attacksConvertedEnergyCost ?? ""
+  );
+  const [attacksConvertedEnergyCostOperator, setAttacksConvertedEnergyCostOperator] = useState(
+    advancedForm?.attacksConvertedEnergyCostOperator ?? "="
+  );
+  const [cardWeaknessesType, setCardWeaknessesType] = useState<string[]>(advancedForm?.cardWeaknessesType ?? []);
+  const [cardResistancesType, setCardResistancesType] = useState<string[]>(advancedForm?.cardResistancesType ?? []);
+  const [cardConvertedRetreatCost, setCardConvertedRetreatCost] = useState<number | "">(
+    advancedForm?.cardConvertedRetreatCost ?? ""
+  );
+  const [cardConvertedRetreatCostOperator, setCardConvertedRetreatCostOperator] = useState(
+    advancedForm?.cardConvertedRetreatCostOperator ?? "="
+  );
+  const [cardArtist, setCardArtist] = useState(advancedForm?.cardArtist ?? "");
+  const [cardFlavor, setCardFlavor] = useState(advancedForm?.cardFlavor ?? "");
+  const [cardRegulationMark, setCardRegulationMark] = useState<string[]>(advancedForm?.cardRegulationMark ?? []);
+  const [cardSetName, setCardSetName] = useState<string[]>(advancedForm?.cardSetName ?? []);
+  const [cardNumber, setCardNumber] = useState<number | "">(advancedForm?.cardNumber ?? "");
+  const [cardStage, setCardStage] = useState<string[]>(advancedForm?.cardStage ?? []);
+  const [cardSetNumber, setCardSetNumber] = useState(advancedForm?.cardSetNumber ?? "");
+  const [hasAnyAbility, setHasAnyAbility] = useState(advancedForm?.hasAnyAbility ?? false);
+  const [attacksCostSlots, setAttacksCostSlots] = useState<string[]>(advancedForm?.attacksCostSlots ?? []);
+  // Collapsible open state
+  const [collapsibles, setCollapsibles] = useState<Record<string, boolean>>(advancedForm?.collapsibles ?? {});
+
+  // Local state
   const [loading, setLoading] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [cardIds, setCardIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [showHint, setShowHint] = useState(false);
-  const [hasAnyAbility, setHasAnyAbility] = useState(false);
-  const [attacksCostSlots, setAttacksCostSlots] = useState<string[]>([]);
 
+  // Save form state to context on search
+  const saveFormToContext = () => {
+    setAdvancedForm({
+      cardSupertype,
+      cardSubtypes,
+      cardName,
+      cardHp,
+      cardHpOperator,
+      cardTypes,
+      cardEvolvesFrom,
+      cardEvolvesTo,
+      cardRules,
+      abilitiesName,
+      abilitiesText,
+      attacksName,
+      attacksDamage,
+      attacksDamageOperator,
+      attacksText,
+      attacksCost,
+      attacksConvertedEnergyCost,
+      attacksConvertedEnergyCostOperator,
+      cardWeaknessesType,
+      cardResistancesType,
+      cardConvertedRetreatCost,
+      cardConvertedRetreatCostOperator,
+      cardArtist,
+      cardFlavor,
+      cardRegulationMark,
+      cardSetName,
+      cardNumber,
+      cardStage,
+      cardSetNumber,
+      hasAnyAbility,
+      attacksCostSlots,
+      collapsibles,
+      removeDuplicates,
+    });
+  };
+
+  // Reset form fields when resetKey changes
   useEffect(() => {
     setCardSupertype([]);
     setCardSubtypes([]);
@@ -139,9 +195,9 @@ export default function AdvancedSearchForm({
     setCardNumber("");
     setCardStage([]);
     setCardSetNumber("");
-    setCardIds([]);
-    setSearchQuery("");
-    setError(null);
+    setAttacksCostSlots([]);
+    setHasAnyAbility(false);
+    setCollapsibles({});
   }, [resetKey]);
 
   // Reset subtypes when supertype changes
@@ -161,11 +217,17 @@ export default function AdvancedSearchForm({
     }
   }, [attacksConvertedEnergyCost, attacksConvertedEnergyCostOperator]);
 
+  // Collapsible open/close handler
+  const handleCollapsibleChange = (title: string, open: boolean) => {
+    setCollapsibles((prev) => ({ ...prev, [title]: open }));
+  };
+
   const handleSubmit = async (): Promise<void> => {
     if (setLoadingProp) setLoadingProp(true);
     setLoading(true);
     setButtonLoading(true);
     setError(null);
+    saveFormToContext();
 
     // Build filters array
     const filters: QueryBuilderFilter[] = [

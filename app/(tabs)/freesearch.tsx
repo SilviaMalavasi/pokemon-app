@@ -7,6 +7,7 @@ import ThemedView from "@/components/base/ThemedView";
 import FreeSearchForm from "@/components/forms/FreeSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import ThemedModal from "@/components/base/ThemedModal";
+import { useSearchFormContext } from "@/components/context/SearchFormContext";
 
 export default function FreeSearchScreen() {
   const [resetKey, setResetKey] = useState(0);
@@ -15,6 +16,7 @@ export default function FreeSearchScreen() {
   const ITEMS_PER_PAGE = 20;
   const router = useRouter();
   const { setCardIds, setQuery, setCurrentPage, setItemsPerPage, setCards, setLoading } = useSearchResultContext();
+  const { setLastSearchType } = useSearchFormContext();
 
   // Handler to receive card IDs from FreeSearch
   const handleSearchResults = async (ids: string[], query: string) => {
@@ -57,6 +59,7 @@ export default function FreeSearchScreen() {
     setItemsPerPage(ITEMS_PER_PAGE);
     setCards([]);
     setLoading(false);
+    setLastSearchType("free"); // Ensure context knows this was a free search
     router.push("/cards/searchresult");
   };
 

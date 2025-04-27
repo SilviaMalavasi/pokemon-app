@@ -11,18 +11,32 @@ export default function Collapsible({
   children,
   title,
   resetKey,
-}: PropsWithChildren & { title: string; resetKey?: number }) {
+  open,
+  onToggle,
+}: PropsWithChildren & { title: string; resetKey?: number; open?: boolean; onToggle?: (open: boolean) => void }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  // If controlled, use the open prop; otherwise, use internal state
+  const actualOpen = open !== undefined ? open : isOpen;
 
   useEffect(() => {
     setIsOpen(false);
   }, [resetKey]);
 
+  const handleToggle = () => {
+    if (open === undefined) {
+      setIsOpen((value) => !value);
+      if (onToggle) onToggle(!isOpen);
+    } else {
+      if (onToggle) onToggle(!open);
+    }
+  };
+
   return (
     <ThemedView>
       <TouchableOpacity
         style={styles.heading}
-        onPress={() => setIsOpen((value) => !value)}
+        onPress={handleToggle}
         activeOpacity={0.8}
       >
         <IconSymbol
@@ -30,12 +44,11 @@ export default function Collapsible({
           size={18}
           weight="medium"
           color={Colors.icon}
-          style={{ transform: [{ rotate: isOpen ? "90deg" : "0deg" }] }}
+          style={{ transform: [{ rotate: actualOpen ? "90deg" : "0deg" }] }}
         />
-
         <ThemedText type="subtitle">{title}</ThemedText>
       </TouchableOpacity>
-      {isOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
+      {actualOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
     </ThemedView>
   );
 }
