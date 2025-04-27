@@ -50,7 +50,7 @@ export default function FreeSearchScreen() {
     setItemsPerPage(ITEMS_PER_PAGE);
     setCards([]);
     setLoading(false);
-    router.push("/(tabs)/searchresult");
+    router.push("/cards/searchresult");
   };
 
   // Reset the search form when the screen is focused

@@ -24,7 +24,7 @@ export default function CompactCard({ card, onImageLoad }: CompactCardProps) {
   const imageSource = getCardImage(card.imagesSmall);
 
   return (
-    <Link href={`/fullcard/${card.cardId}`}>
+    <Link href={{ pathname: "/cards/[cardId]", params: { cardId: card.cardId } }}>
       <ThemedView style={CompactCardStyle.container}>
         <View style={CompactCardStyle.imageContainer}>
           {imageSource ? (
