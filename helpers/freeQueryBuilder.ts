@@ -33,7 +33,8 @@ export async function freeQueryBuilder(
 ): Promise<{ cardIds: string[]; query: string }> {
   const trimmed = search.trim();
   if (!trimmed) return { cardIds: [], query: "" };
-  const searchLower = trimmed.toLowerCase();
+  // Lowercase, then normalize all variants of 'pokemon', 'pokèmon', 'pokémon' to 'Pokémon' (capital P, é)
+  const searchNormalized = trimmed.replace(/pok[eèé]mon/gi, "Pokémon");
   const cardIdSet = new Set<string>();
 
   // Helper to resolve Card.id to Card.cardId
@@ -56,7 +57,7 @@ export async function freeQueryBuilder(
   for (const field of fieldsToSearch) {
     if (field.type === "text") {
       let query = supabase.from(field.table).select(field.table === "Card" ? "cardId" : "id");
-      query = query.ilike(field.column, `%${searchLower}%`);
+      query = query.ilike(field.column, `%${searchNormalized}%`);
       const { data, error } = await query;
       if (!error && data && data.length > 0) {
         if (field.table === "Card") {
@@ -102,7 +103,7 @@ export async function freeQueryBuilder(
     } else if (field.type === "json-string-array") {
       // Use .or() with ilike for arrays (as in queryBuilder)
       let query = supabase.from(field.table).select(field.table === "Card" ? "cardId" : "id");
-      query = query.or(`${field.column}.ilike.%${searchLower}%`);
+      query = query.or(`${field.column}.ilike.%${searchNormalized}%`);
       const { data, error } = await query;
       if (!error && data && data.length > 0) {
         if (field.table === "Card") {

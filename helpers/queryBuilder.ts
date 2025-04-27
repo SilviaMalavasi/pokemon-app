@@ -21,9 +21,20 @@ function intersectArrays(arrays: string[][]): string[] {
 }
 
 export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ cardIds: string[]; query: string }> {
+  // Normalize all variants of 'pokemon', 'pokèmon', 'pokémon' (any case) to 'Pokémon' (capital P, é)
+  const normalizedFilters = filters.map((f) => {
+    if (f.config.type === "text" && typeof f.value === "string") {
+      return {
+        ...f,
+        value: f.value.replace(/pok[eèé]mon/gi, "Pokémon"),
+      };
+    }
+    return f;
+  });
+
   // Group filters by table
   const grouped: Record<string, QueryBuilderFilter[]> = {};
-  filters.forEach((f) => {
+  normalizedFilters.forEach((f) => {
     if (f.value !== null && f.value !== undefined) {
       if (!grouped[f.config.table]) grouped[f.config.table] = [];
       grouped[f.config.table].push(f);
