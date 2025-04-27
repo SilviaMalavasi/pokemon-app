@@ -1,3 +1,5 @@
+import { vw } from "@/helpers/viewport";
+
 export const white = "#ffffff";
 export const grey = "#3C3C47";
 export const black = "#000000";
@@ -23,17 +25,18 @@ export const theme = {
   },
   padding: {
     none: 0,
-    xsmall: 4,
-    small: 8,
-    medium: 16,
-    large: 24,
-    xlarge: 32,
+    xsmall: vw(2),
+    small: vw(4),
+    medium: vw(6),
+    large: vw(8),
+    xlarge: vw(10),
   },
   fontSizes: {
-    small: 12,
-    medium: 16,
-    large: 20,
-    xlarge: 24,
+    xsmall: vw(3),
+    small: vw(4),
+    medium: vw(5),
+    large: vw(7),
+    xlarge: vw(10),
   },
   borderRadius: {
     none: 0,

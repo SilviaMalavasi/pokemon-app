@@ -9,21 +9,22 @@ interface ThemedViewProps extends ViewProps {
   borderRadius?: "none" | "small" | "medium" | "large";
 }
 
-const ThemedView = React.forwardRef<View, ThemedViewProps>(
-  ({ style, padding = "none", backgroundColor = "background", borderRadius = "none", ...otherProps }, ref) => {
-    const themedStyle = {
-      padding: theme.padding[padding],
-      backgroundColor: theme.colors[backgroundColor],
-      borderRadius: theme.borderRadius[borderRadius],
-    };
-    return (
-      <View
-        ref={ref}
-        style={[themedStyle, style]}
-        {...otherProps}
-      />
-    );
-  }
-);
-
-export default ThemedView;
+export default function ThemedView({
+  style,
+  padding = "none",
+  backgroundColor = "background",
+  borderRadius = "none",
+  ...otherProps
+}: ThemedViewProps) {
+  const themedStyle = {
+    padding: theme.padding[padding],
+    backgroundColor: theme.colors[backgroundColor],
+    borderRadius: theme.borderRadius[borderRadius],
+  };
+  return (
+    <View
+      style={[themedStyle, style]}
+      {...otherProps}
+    />
+  );
+}

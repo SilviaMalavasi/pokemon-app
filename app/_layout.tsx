@@ -4,7 +4,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { View } from "react-native";
+import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
 
 import "react-native-reanimated";
@@ -35,7 +35,7 @@ export default function RootLayout() {
 
   return (
     <SearchResultProvider>
-      <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+      <ThemedView style={{ flex: 1 }}>
         <Stack
           screenOptions={{
             contentStyle: { backgroundColor: theme.colors.background },
@@ -49,7 +49,7 @@ export default function RootLayout() {
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
-      </View>
+      </ThemedView>
     </SearchResultProvider>
   );
 }
