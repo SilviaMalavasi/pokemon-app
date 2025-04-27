@@ -69,6 +69,7 @@ export default function FreeSearchScreen() {
       if (lastSearchPage !== "free") {
         setResetKey((k) => k + 1);
         clearFreeForm();
+        setRemoveDuplicates(false);
       }
       setLastSearchPage("free");
     }, [lastSearchPage])

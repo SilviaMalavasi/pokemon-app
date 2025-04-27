@@ -164,10 +164,9 @@ export default function AdvancedSearchForm({
     setCollapsibles({});
     setShowHint(false);
     setError(null);
-    // Reset context
     clearAdvancedForm();
-    // Optionally increment local resetKey to force child resets
     setLocalResetKey((k) => k + 1);
+    onRemoveDuplicatesChange(false);
   };
 
   // Save form to context

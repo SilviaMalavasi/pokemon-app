@@ -187,6 +187,7 @@ export default function FreeSearchForm({
     setButtonLoading(false);
     clearFreeForm();
     setLocalResetKey((k) => k + 1);
+    onRemoveDuplicatesChange(false);
   };
 
   return (

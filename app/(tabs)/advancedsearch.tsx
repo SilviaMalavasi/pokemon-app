@@ -67,9 +67,11 @@ export default function FullFormScreen() {
   // Reset the search form when the screen is focused, but only if not coming from searchresult
   useFocusEffect(
     React.useCallback(() => {
+      console.log("[AdvancedSearch] lastSearchPage:", lastSearchPage);
       if (lastSearchPage !== "advanced") {
         setResetKey((k) => k + 1);
         clearAdvancedForm();
+        setRemoveDuplicates(false);
       }
       setLastSearchPage("advanced");
     }, [lastSearchPage])
