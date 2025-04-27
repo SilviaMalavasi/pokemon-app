@@ -1,21 +1,14 @@
 import { Stack } from "expo-router";
 import React from "react";
-import { Colors } from "@/style/base/Colors";
+import { theme } from "@/style/ui/Theme";
 
 export default function CardsLayout() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: {
-          backgroundColor: Colors.black,
-        },
-        headerTintColor: Colors.highlight,
-        headerTitleStyle: {
-          color: Colors.text,
-        },
-        contentStyle: {
-          backgroundColor: Colors.background,
-        },
+        headerShown: false,
+        animation: "fade",
+        contentStyle: { backgroundColor: theme.colors.background },
       }}
     />
   );

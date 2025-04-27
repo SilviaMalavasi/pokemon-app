@@ -4,6 +4,8 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { View } from "react-native";
+import { theme } from "@/style/ui/Theme";
 
 import "react-native-reanimated";
 
@@ -33,8 +35,12 @@ export default function RootLayout() {
 
   return (
     <SearchResultProvider>
-      <>
-        <Stack>
+      <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+        <Stack
+          screenOptions={{
+            contentStyle: { backgroundColor: theme.colors.background },
+          }}
+        >
           <Stack.Screen
             name="(tabs)"
             options={{ headerShown: false }}
@@ -46,7 +52,7 @@ export default function RootLayout() {
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
-      </>
+      </View>
     </SearchResultProvider>
   );
 }

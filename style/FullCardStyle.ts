@@ -7,6 +7,7 @@ const cardWidth = vw(100) - containersPadding;
 const FullCardStyle = StyleSheet.create({
   container: {
     flexDirection: "column",
+    minHeight: 900,
   },
   imageContainer: {
     width: "100%",

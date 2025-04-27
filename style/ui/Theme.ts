@@ -19,6 +19,7 @@ export const theme = {
     textAlternative: purple,
     primary: green,
     secondary: purple,
+    black: black,
   },
   padding: {
     none: 0,

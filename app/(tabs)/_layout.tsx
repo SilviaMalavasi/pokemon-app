@@ -5,20 +5,20 @@ import { Platform } from "react-native";
 import { HapticTab } from "@/components/ui/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
-import { Colors } from "@/style/base/Colors";
+import { theme } from "@/style/ui/Theme";
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarInactiveTintColor: Colors.text,
-        tabBarActiveTintColor: Colors.highlight,
+        tabBarInactiveTintColor: theme.colors.text,
+        tabBarActiveTintColor: theme.colors.textHilight,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           default: {
-            backgroundColor: Colors.black,
+            backgroundColor: theme.colors.black,
             borderTopWidth: 0,
             height: 62,
             paddingHorizontal: 8,
