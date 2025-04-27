@@ -43,24 +43,6 @@ export default function SearchResult({
     }
   }, [imagesLoaded, paginatedIds.length, onAllImagesLoaded]);
 
-  if (loading) {
-    return (
-      <ThemedView style={{ padding: 16 }}>
-        <ThemedText type="default">Loading...</ThemedText>
-      </ThemedView>
-    );
-  }
-  if (query && (!cardIds || cardIds.length === 0)) {
-    return (
-      <ThemedView style={{ padding: 16 }}>
-        <ThemedText type="default">No Cards found.</ThemedText>
-      </ThemedView>
-    );
-  }
-  if (!cardIds || cardIds.length === 0) {
-    // Don't show anything if no search has been done
-    return <></>;
-  }
   return (
     <ThemedView style={{ padding: 16 }}>
       <ThemedView
