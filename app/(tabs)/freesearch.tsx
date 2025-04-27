@@ -6,10 +6,12 @@ import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import FreeSearchForm from "@/components/forms/FreeSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
+import ThemedModal from "@/components/base/ThemedModal";
 
 export default function FreeSearchScreen() {
   const [resetKey, setResetKey] = useState(0);
   const [removeDuplicates, setRemoveDuplicates] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const ITEMS_PER_PAGE = 20;
   const router = useRouter();
   const { setCardIds, setQuery, setCurrentPage, setItemsPerPage, setCards, setLoading } = useSearchResultContext();
@@ -44,6 +46,11 @@ export default function FreeSearchScreen() {
         filteredIds = ids.filter((id) => filteredIds.includes(id));
       }
     }
+    if (filteredIds.length === 0) {
+      setModalVisible(true);
+      setLoading(false);
+      return;
+    }
     setCardIds(filteredIds);
     setQuery(query);
     setCurrentPage(1);
@@ -77,6 +84,11 @@ export default function FreeSearchScreen() {
           itemsPerPage={ITEMS_PER_PAGE}
         />
       </ThemedView>
+      <ThemedModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        message="No cards found"
+      />
     </ParallaxScrollView>
   );
 }
