@@ -9,7 +9,7 @@ export type ThemedButtonProps = ButtonProps & {
   type?: "default" | "alternative" | "disabled";
   size?: "small" | "large";
   style?: any;
-  gradient?: string[]; // Add gradient prop for background
+  gradient?: string[];
 };
 
 const buttonGradient = [Colors.green, Colors.lightGreen, Colors.green];

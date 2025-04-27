@@ -25,7 +25,7 @@ export default function FreeSearchForm({
   currentPage: number;
   itemsPerPage: number;
 }): JSX.Element {
-  const { freeForm, setFreeForm, lastSearchType } = useSearchFormContext();
+  const { freeForm, setFreeForm, lastSearchType, clearFreeForm } = useSearchFormContext();
   const [cardSearch, setCardSearch] = useState("");
   // All card columns that can be excluded from search
   const allCardColumns = [
@@ -124,19 +124,8 @@ export default function FreeSearchForm({
     setCollapsibles({});
   }, [resetKey]);
 
-  // Log collapsibles state whenever it changes
-  useEffect(() => {
-    console.log("[FreeSearchForm] collapsibles state changed:", collapsibles);
-  }, [collapsibles]);
-
   // Log when saving to context
   const handleSubmit = async () => {
-    console.log("[FreeSearchForm] Saving to context:", {
-      cardSearch,
-      includedColumns,
-      collapsibles,
-      removeDuplicates,
-    });
     setFreeForm({
       cardSearch,
       includedColumns,
@@ -170,7 +159,6 @@ export default function FreeSearchForm({
   // Log when restoring from context
   useEffect(() => {
     if (lastSearchType === "free" && freeForm) {
-      console.log("[FreeSearchForm] Restoring from context:", freeForm);
       setCardSearch(freeForm.cardSearch);
       setIncludedColumns(freeForm.includedColumns);
       setCollapsibles(freeForm.collapsibles || {});
@@ -181,8 +169,33 @@ export default function FreeSearchForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Add a local resetKey to force reset
+  const [localResetKey, setLocalResetKey] = useState(0);
+
+  // Reset handler
+  const handleReset = () => {
+    setCardSearch("");
+    setIncludedColumns(() => {
+      const initial: Record<string, boolean> = {};
+      allCardColumns.forEach((col) => {
+        initial[col.key] = true;
+      });
+      return initial;
+    });
+    setCollapsibles({});
+    setShowHint(false);
+    setButtonLoading(false);
+    clearFreeForm();
+    setLocalResetKey((k) => k + 1);
+  };
+
   return (
     <ThemedView>
+      <ThemedButton
+        title="Reset"
+        onPress={handleReset}
+        style={{ marginBottom: 16 }}
+      />
       <TextInput
         label="Free Search"
         value={cardSearch}

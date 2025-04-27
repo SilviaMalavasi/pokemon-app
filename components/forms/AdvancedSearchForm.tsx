@@ -72,7 +72,7 @@ export default function AdvancedSearchForm({
   itemsPerPage: number;
 }): JSX.Element {
   // Context for form state
-  const { advancedForm, setAdvancedForm, lastSearchType } = useSearchFormContext();
+  const { advancedForm, setAdvancedForm, lastSearchType, clearAdvancedForm } = useSearchFormContext();
 
   // State for all fields
   const [cardSupertype, setCardSupertype] = useState<string[]>(advancedForm?.cardSupertype ?? []);
@@ -124,8 +124,53 @@ export default function AdvancedSearchForm({
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [showHint, setShowHint] = useState(false);
+  // Add a local resetKey to force reset
+  const [localResetKey, setLocalResetKey] = useState(0);
 
-  // Save form state to context on search
+  // Reset handler
+  const handleReset = () => {
+    // Reset all local state
+    setCardSupertype([]);
+    setCardSubtypes([]);
+    setCardName("");
+    setCardHp("");
+    setCardHpOperator("=");
+    setCardTypes([]);
+    setCardEvolvesFrom("");
+    setCardEvolvesTo("");
+    setCardRules("");
+    setAbilitiesName("");
+    setAbilitiesText("");
+    setAttacksName("");
+    setAttacksDamage("");
+    setAttacksDamageOperator("=");
+    setAttacksText("");
+    setAttacksCost([]);
+    setAttacksConvertedEnergyCost("");
+    setAttacksConvertedEnergyCostOperator("=");
+    setCardWeaknessesType([]);
+    setCardResistancesType([]);
+    setCardConvertedRetreatCost("");
+    setCardConvertedRetreatCostOperator("=");
+    setCardArtist("");
+    setCardFlavor("");
+    setCardRegulationMark([]);
+    setCardSetName([]);
+    setCardNumber("");
+    setCardStage([]);
+    setCardSetNumber("");
+    setAttacksCostSlots([]);
+    setHasAnyAbility(false);
+    setCollapsibles({});
+    setShowHint(false);
+    setError(null);
+    // Reset context
+    clearAdvancedForm();
+    // Optionally increment local resetKey to force child resets
+    setLocalResetKey((k) => k + 1);
+  };
+
+  // Save form to context
   const saveFormToContext = () => {
     setAdvancedForm({
       cardSupertype,
@@ -419,6 +464,11 @@ export default function AdvancedSearchForm({
 
   return (
     <ThemedView>
+      <ThemedButton
+        title="Reset"
+        onPress={handleReset}
+        style={{ marginBottom: 16 }}
+      />
       <TextInput
         label="Name"
         value={cardName}

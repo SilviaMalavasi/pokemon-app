@@ -6,9 +6,8 @@ import SearchResult from "@/components/SearchResult";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import { useRouter } from "expo-router";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
-import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity, View } from "react-native";
-import ThemedText from "@/components/base/ThemedText";
+import { View } from "react-native";
+import ThemedButton from "@/components/base/ThemedButton";
 
 export default function SearchResultScreen() {
   const { cardIds, query, currentPage, itemsPerPage, cards, loading, setCards, setLoading, setCurrentPage } =
@@ -75,17 +74,11 @@ export default function SearchResultScreen() {
     >
       <ThemedView>
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
-          <TouchableOpacity
+          <ThemedButton
+            title="Back to search"
             onPress={handleBack}
-            style={{ marginRight: 12 }}
-          >
-            <Ionicons
-              name="arrow-back"
-              size={28}
-              color="#888"
-            />
-            <ThemedText>Back to search</ThemedText>
-          </TouchableOpacity>
+            style={{ marginBottom: 16 }}
+          />
         </View>
         <SearchResult
           cardIds={cardIds}
