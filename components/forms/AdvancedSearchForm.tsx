@@ -378,13 +378,15 @@ export default function AdvancedSearchForm({
           onChange={setCardSubtypes}
           labelHint="Include cards that match ANY of the selected choices."
         />
-        <DynamicMultiSelect
-          label="Types"
-          value={cardTypes}
-          options={cardTypesOptions}
-          onChange={setCardTypes}
-          labelHint="Include cards that match ANY of the selected choices."
-        />
+        {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon") || cardSupertype.includes("Energy")) && (
+          <DynamicMultiSelect
+            label="Types"
+            value={cardTypes}
+            options={cardTypesOptions}
+            onChange={setCardTypes}
+            labelHint="Include cards that match ANY of the selected choices."
+          />
+        )}
       </Collapsible>
       {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
         <Collapsible
@@ -412,19 +414,20 @@ export default function AdvancedSearchForm({
           />
         </Collapsible>
       )}
-      <Collapsible
-        title="Card Rules"
-        resetKey={resetKey}
-      >
-        <AutoCompleteInput
-          label="Rules"
-          value={cardRules}
-          onChange={setCardRules}
-          suggestions={["search", "discard pile", "attach", "energy"]}
-          placeholder="Card rules"
-          labelHint="Rules refers to Pokémon special rules (es Pokémon-EX rules) or Trainer card rules."
-        />
-      </Collapsible>
+      {(cardSupertype.length === 0 || cardSupertype.includes("Trainer")) && (
+        <Collapsible
+          title="Card Rules"
+          resetKey={resetKey}
+        >
+          <AutoCompleteInput
+            label="Rules"
+            value={cardRules}
+            onChange={setCardRules}
+            suggestions={["search", "discard pile", "attach", "energy"]}
+            placeholder="Card rules"
+          />
+        </Collapsible>
+      )}
       {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
         <Collapsible
           title="Attacks"
