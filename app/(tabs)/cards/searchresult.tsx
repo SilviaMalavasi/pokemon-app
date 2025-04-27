@@ -13,7 +13,7 @@ export default function SearchResultScreen() {
   const { cardIds, query, currentPage, itemsPerPage, cards, loading, setCards, setLoading, setCurrentPage } =
     useSearchResultContext();
   const router = useRouter();
-  const { lastSearchType, clearAdvancedForm } = useSearchFormContext();
+  const { lastSearchPage, clearAdvancedForm } = useSearchFormContext();
 
   // Fetch paginated card data when cardIds or currentPage changes
   useEffect(() => {
@@ -57,9 +57,9 @@ export default function SearchResultScreen() {
 
   // Back button handler
   const handleBack = () => {
-    if (lastSearchType === "advanced") {
+    if (lastSearchPage === "advanced") {
       router.replace("/advancedsearch");
-    } else if (lastSearchType === "free") {
+    } else if (lastSearchPage === "free") {
       router.replace("/freesearch");
     } else {
       clearAdvancedForm();

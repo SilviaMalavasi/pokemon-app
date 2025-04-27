@@ -17,7 +17,7 @@ export default function FullFormScreen() {
   const ITEMS_PER_PAGE = 20;
   const router = useRouter();
   const { setCardIds, setQuery, setCurrentPage, setItemsPerPage, setCards, setLoading } = useSearchResultContext();
-  const { setAdvancedForm, setLastSearchType, clearAdvancedForm } = useSearchFormContext();
+  const { setAdvancedForm, setLastSearchPage, clearAdvancedForm, lastSearchPage } = useSearchFormContext();
 
   // Handler to receive card IDs from AdvancedSearch
   const handleSearchResults = async (ids: string[], query: string) => {
@@ -60,19 +60,19 @@ export default function FullFormScreen() {
     setItemsPerPage(ITEMS_PER_PAGE);
     setCards([]);
     setLoading(false);
-    setLastSearchType("advanced");
+    setLastSearchPage("advanced");
     router.push("/cards/searchresult");
   };
 
   // Reset the search form when the screen is focused, but only if not coming from searchresult
   useFocusEffect(
     React.useCallback(() => {
-      // If not coming from searchresult, reset form
-      if (window && window.history && window.history.state && window.history.state.idx === 0) {
+      if (lastSearchPage !== "advanced") {
         setResetKey((k) => k + 1);
         clearAdvancedForm();
       }
-    }, [])
+      setLastSearchPage("advanced");
+    }, [lastSearchPage])
   );
 
   return (

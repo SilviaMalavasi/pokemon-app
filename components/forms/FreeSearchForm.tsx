@@ -25,7 +25,7 @@ export default function FreeSearchForm({
   currentPage: number;
   itemsPerPage: number;
 }): JSX.Element {
-  const { freeForm, setFreeForm, lastSearchType, clearFreeForm } = useSearchFormContext();
+  const { freeForm, setFreeForm, lastSearchPage, clearFreeForm } = useSearchFormContext();
   const [cardSearch, setCardSearch] = useState("");
   // All card columns that can be excluded from search
   const allCardColumns = [
@@ -158,7 +158,7 @@ export default function FreeSearchForm({
 
   // Log when restoring from context
   useEffect(() => {
-    if (lastSearchType === "free" && freeForm) {
+    if (lastSearchPage === "free" && freeForm) {
       setCardSearch(freeForm.cardSearch);
       setIncludedColumns(freeForm.includedColumns);
       setCollapsibles(freeForm.collapsibles || {});

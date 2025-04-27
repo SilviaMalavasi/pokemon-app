@@ -16,7 +16,7 @@ export default function FreeSearchScreen() {
   const ITEMS_PER_PAGE = 20;
   const router = useRouter();
   const { setCardIds, setQuery, setCurrentPage, setItemsPerPage, setCards, setLoading } = useSearchResultContext();
-  const { setLastSearchType } = useSearchFormContext();
+  const { setLastSearchPage, lastSearchPage, clearFreeForm } = useSearchFormContext();
 
   // Handler to receive card IDs from FreeSearch
   const handleSearchResults = async (ids: string[], query: string) => {
@@ -59,15 +59,19 @@ export default function FreeSearchScreen() {
     setItemsPerPage(ITEMS_PER_PAGE);
     setCards([]);
     setLoading(false);
-    setLastSearchType("free"); // Ensure context knows this was a free search
+    setLastSearchPage("free"); // Ensure context knows this was a free search
     router.push("/cards/searchresult");
   };
 
   // Reset the search form when the screen is focused
   useFocusEffect(
     React.useCallback(() => {
-      setResetKey((k) => k + 1);
-    }, [])
+      if (lastSearchPage !== "free") {
+        setResetKey((k) => k + 1);
+        clearFreeForm();
+      }
+      setLastSearchPage("free");
+    }, [lastSearchPage])
   );
 
   return (

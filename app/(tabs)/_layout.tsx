@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { SearchFormProvider } from "@/components/context/SearchFormContext";
 import { Tabs } from "expo-router";
 import React from "react";
@@ -7,10 +9,25 @@ import { HapticTab } from "@/components/ui/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { theme } from "@/style/ui/Theme";
+import { usePathname } from "expo-router";
+
+function SearchFormContextWatcher() {
+  const pathname = usePathname();
+  const { setLastSearchPage } = useSearchFormContext();
+  useEffect(() => {
+    if (pathname === "/advancedsearch" || pathname === "/freesearch" || pathname.startsWith("/cards/")) {
+      // do nothing
+    } else {
+      setLastSearchPage(null);
+    }
+  }, [pathname, setLastSearchPage]);
+  return null;
+}
 
 export default function TabLayout() {
   return (
     <SearchFormProvider>
+      <SearchFormContextWatcher />
       <Tabs
         screenOptions={{
           tabBarInactiveTintColor: theme.colors.text,

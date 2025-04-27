@@ -47,14 +47,14 @@ export type FreeSearchFormState = {
 };
 
 export type SearchFormContextType = {
-  lastSearchType: "advanced" | "free" | null;
+  lastSearchPage: "advanced" | "free" | null;
   advancedForm: AdvancedSearchFormState | null;
   setAdvancedForm: (state: AdvancedSearchFormState) => void;
   clearAdvancedForm: () => void;
   freeForm: FreeSearchFormState | null;
   setFreeForm: (state: FreeSearchFormState) => void;
   clearFreeForm: () => void;
-  setLastSearchType: (type: "advanced" | "free" | null) => void;
+  setLastSearchPage: (type: "advanced" | "free" | null) => void;
 };
 
 const defaultAdvancedForm: AdvancedSearchFormState = {
@@ -109,7 +109,7 @@ export function useSearchFormContext() {
 }
 
 export const SearchFormProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [lastSearchType, setLastSearchType] = useState<"advanced" | "free" | null>(null);
+  const [lastSearchPage, setLastSearchPage] = useState<"advanced" | "free" | null>(null);
   const [advancedForm, setAdvancedFormState] = useState<AdvancedSearchFormState | null>(null);
   const [freeForm, setFreeFormState] = useState<FreeSearchFormState | null>(null);
 
@@ -121,14 +121,14 @@ export const SearchFormProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   return (
     <SearchFormContext.Provider
       value={{
-        lastSearchType,
+        lastSearchPage,
         advancedForm,
         setAdvancedForm,
         clearAdvancedForm,
         freeForm,
         setFreeForm,
         clearFreeForm,
-        setLastSearchType,
+        setLastSearchPage,
       }}
     >
       {children}

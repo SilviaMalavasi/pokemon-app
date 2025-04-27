@@ -72,7 +72,7 @@ export default function AdvancedSearchForm({
   itemsPerPage: number;
 }): JSX.Element {
   // Context for form state
-  const { advancedForm, setAdvancedForm, lastSearchType, clearAdvancedForm } = useSearchFormContext();
+  const { advancedForm, setAdvancedForm, lastSearchPage, clearAdvancedForm } = useSearchFormContext();
 
   // State for all fields
   const [cardSupertype, setCardSupertype] = useState<string[]>(advancedForm?.cardSupertype ?? []);
