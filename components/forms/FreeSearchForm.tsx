@@ -64,6 +64,7 @@ export default function FreeSearchForm({
   };
 
   const [showHint, setShowHint] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
 
   // Card Exclusion lists
   const cardExclusions = ["id", "nationalPokedexNumbers", "imagesSmall", "imagesLarge", "setId", "rarity", "number"];
@@ -115,10 +116,12 @@ export default function FreeSearchForm({
   }, [resetKey]);
 
   const handleSubmit = async () => {
+    setButtonLoading(true);
     if (setLoading) setLoading(true);
     let trimmedSearch = cardSearch.trim();
     if (!trimmedSearch) {
       if (setLoading) setLoading(false);
+      setButtonLoading(false);
       if (onSearchResults) onSearchResults([], "");
       return;
     }
@@ -133,6 +136,7 @@ export default function FreeSearchForm({
       if (onSearchResults) onSearchResults([], err.message || "Search failed");
     } finally {
       if (setLoading) setLoading(false);
+      setButtonLoading(false);
     }
   };
 
@@ -466,8 +470,10 @@ export default function FreeSearchForm({
       )}
 
       <ThemedButton
-        title="Search"
+        title={buttonLoading ? "Searching..." : "Search"}
         onPress={handleSubmit}
+        disabled={buttonLoading}
+        style={{ position: "relative" }}
       />
     </ThemedView>
   );

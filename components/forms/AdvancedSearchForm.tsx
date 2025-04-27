@@ -101,6 +101,7 @@ export default function AdvancedSearchForm({
   const [cardStage, setCardStage] = useState<string[]>([]);
   const [cardSetNumber, setCardSetNumber] = useState("");
   const [loading, setLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
   const [cardIds, setCardIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -163,6 +164,7 @@ export default function AdvancedSearchForm({
   const handleSubmit = async (): Promise<void> => {
     if (setLoadingProp) setLoadingProp(true);
     setLoading(true);
+    setButtonLoading(true);
     setError(null);
 
     // Build filters array
@@ -346,6 +348,7 @@ export default function AdvancedSearchForm({
       setError(err.message || "Search failed");
     } finally {
       setLoading(false);
+      setButtonLoading(false);
       if (setLoadingProp) setLoadingProp(false);
     }
   };
@@ -668,8 +671,10 @@ export default function AdvancedSearchForm({
         </ThemedText>
       )}
       <ThemedButton
-        title="Search"
+        title={buttonLoading ? "Searching..." : "Search"}
         onPress={handleSubmit}
+        disabled={buttonLoading}
+        style={{ position: "relative" }}
       />
       {error && (
         <ThemedText
