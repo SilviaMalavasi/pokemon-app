@@ -452,7 +452,9 @@ export default function AdvancedSearchForm({
             showOperatorSelect={"basic"}
           />
 
-          {attacksConvertedEnergyCostOperator !== "=" && (
+          {(!attacksConvertedEnergyCostOperator ||
+            !attacksConvertedEnergyCost ||
+            attacksConvertedEnergyCostOperator !== "=") && (
             <DynamicMultiSelect
               label="Attack Cost"
               value={attacksCost}
