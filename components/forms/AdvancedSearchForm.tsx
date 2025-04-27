@@ -312,6 +312,19 @@ export default function AdvancedSearchForm({
         config: { key: "cardSetNumber", type: "text", table: "Card", column: "cardId" },
         value: cardSetNumber,
       },
+      attacksConvertedEnergyCostOperator === "=" &&
+        attacksConvertedEnergyCost !== "" &&
+        attacksCostSlots.length > 0 &&
+        attacksCostSlots.some((v) => v) && {
+          config: {
+            key: "costSlots",
+            type: "multiselect",
+            table: "CardAttacks",
+            column: "cost",
+            valueType: "json-string-array",
+          },
+          value: attacksCostSlots,
+        },
     ].filter(Boolean) as QueryBuilderFilter[];
     try {
       const { cardIds, query } = await queryBuilder(filters);

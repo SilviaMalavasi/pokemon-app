@@ -137,7 +137,79 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   // Collect all attack-related filters
   const attackRelatedFilters = [...(grouped["Attacks"] || []), ...(grouped["CardAttacks"] || [])];
   let unifiedAttackCardIds: string[] = [];
-  if (attackRelatedFilters.length > 0) {
+  // Special handling for exact cost + types (order does not matter)
+  const costOpFilter = attackRelatedFilters.find(
+    (f) =>
+      (f.config.key === "convertedEnergyCost" || f.config.key === "attacksConvertedEnergyCost") &&
+      f.operator === "=" &&
+      f.value !== null &&
+      f.value !== undefined
+  );
+  const costSlotsFilter = attackRelatedFilters.find(
+    (f) =>
+      (f.config.key === "costSlots" || f.config.key === "attackCostSlots") &&
+      Array.isArray(f.value) &&
+      f.value.some((v) => v)
+  );
+  if (costOpFilter && costSlotsFilter) {
+    // Use only non-empty types
+    const slotTypes = costSlotsFilter.value.filter((v: string) => v);
+    const emptySlots = costSlotsFilter.value.filter((v: string) => !v).length;
+    const typeCounts: Record<string, number> = {};
+    slotTypes.forEach((type: string) => {
+      typeCounts[type] = (typeCounts[type] || 0) + 1;
+    });
+    let query = supabase
+      .from("CardAttacks")
+      .select("cardId, attackId, damage, cost, convertedEnergyCost, Attacks!inner(name, text)")
+      .eq("convertedEnergyCost", costOpFilter.value);
+
+    // Do not filter by type or array length in SQL, filter in JS for correct count
+    const { data, error } = await query;
+    if (error) return { cardIds: [], query: error.message };
+    // JS filter: for each attack, check cost array matches the slot requirements
+    const slots = costSlotsFilter.value;
+    const filtered = (data || []).filter((row: any) => {
+      let costArr: string[] = [];
+      try {
+        costArr = Array.isArray(row.cost) ? row.cost : JSON.parse(row.cost);
+      } catch {
+        return false;
+      }
+      if (costArr.length !== slots.length) {
+        return false;
+      }
+      const costArrCopy = [...costArr];
+      let match = true;
+      for (const slot of slots) {
+        if (slot) {
+          const idx = costArrCopy.indexOf(slot);
+          if (idx === -1) {
+            match = false;
+            break;
+          }
+          costArrCopy.splice(idx, 1);
+        } else {
+          if (costArrCopy.length === 0) {
+            match = false;
+            break;
+          }
+          costArrCopy.splice(0, 1);
+        }
+      }
+      return match;
+    });
+    const cardIdInts = filtered.map((row: any) => row.cardId) || [];
+    if (cardIdInts.length > 0) {
+      const { data: cardData, error: cardError } = await supabase
+        .from("Card")
+        .select("cardId, id")
+        .in("id", cardIdInts)
+        .order("name");
+      if (cardError) return { cardIds: [], query: cardError.message };
+      unifiedAttackCardIds = cardData?.map((row: any) => row.cardId) || [];
+    }
+  } else if (attackRelatedFilters.length > 0) {
     // Build a query joining CardAttacks and Attacks, applying all filters at the attack row level
     let query = supabase
       .from("CardAttacks")
@@ -199,7 +271,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   // 4. CardAttacks filters (directly on CardAttacks)
   let cardAttacksCardIds: string[] = [];
   if (grouped["CardAttacks"]) {
-    // Check if any filter is a number type with valueType 'text'
     const numberTextFilters = grouped["CardAttacks"].filter(
       (f) => f.config.type === "number" && f.config.valueType === "text"
     );
