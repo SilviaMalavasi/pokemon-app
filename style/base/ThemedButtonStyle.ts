@@ -4,294 +4,69 @@ export type ButtonType = "main" | "alternative" | "outline";
 export type ButtonSize = "small" | "large";
 export type ButtonStatus = "default" | "active" | "disabled";
 
-// Optionally extend ButtonStyle for icon-aware styles
-export type ButtonStyle = {
-  container: object;
-  text: object;
-  icon: object;
-  containerWithIcon?: object;
-  textWithIcon?: object;
-};
+// Factory function for button styles
+export function createButtonStyle(type: ButtonType, size: ButtonSize, status: ButtonStatus, hasIcon: boolean) {
+  // Shared values
+  const borderRadius = theme.borderRadius.medium;
+  const paddingVertical = size === "large" ? theme.padding.medium : theme.padding.small;
+  const paddingHorizontal = size === "large" ? theme.padding.medium : theme.padding.small;
+  const iconSize = size === "large" ? theme.padding.medium : theme.padding.small;
+  const textWithIconMargin = size === "large" ? theme.padding.medium : theme.padding.small;
 
-export type ThemedButtonStyle = {
-  [K in ButtonType]: {
-    [S in ButtonSize]: {
-      [T in ButtonStatus]: ButtonStyle;
-    };
+  // Base container
+  let container: any = {
+    borderRadius,
+    paddingVertical,
+    paddingHorizontal,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: theme.padding.small,
   };
-};
 
-// Shared style variables for DRYness
-const shared = {
-  small: {
-    paddingHorizontal: theme.padding.medium,
-    paddingVertical: theme.padding.small,
-    borderRadius: 8,
-    icon: { width: theme.padding.small, height: theme.padding.small },
-    textWithIcon: { marginLeft: 6 },
-  },
-  large: {
-    paddingHorizontal: theme.padding.large,
-    paddingVertical: theme.padding.medium,
-    borderRadius: 8,
-    icon: { width: theme.padding.medium, height: theme.padding.medium },
-    textWithIcon: { marginLeft: 8 },
-  },
-};
+  // Outline special case
+  if (type === "outline") {
+    container = {
+      ...container,
+      backgroundColor: "transparent",
+      borderWidth: 2,
+      borderColor:
+        status === "active" ? theme.colors.green : status === "disabled" ? theme.colors.lightGrey : theme.colors.purple,
+      opacity: status === "disabled" ? 0.6 : 1,
+    };
+  } else {
+    // Main/alternative: only opacity for disabled
+    if (status === "disabled") container.opacity = 0.6;
+  }
 
-// Shared container and containerWithIcon for DRYness
-const sharedFlexWithIcon = {
-  flexDirection: "row",
-  alignItems: "center",
-};
-const sharedContainer = {
-  small: {
-    borderRadius: shared.small.borderRadius,
-    paddingVertical: shared.small.paddingVertical,
-    paddingHorizontal: shared.small.paddingHorizontal,
+  // Text color
+  let textColor = theme.colors.background;
+  if (type === "outline") {
+    textColor =
+      status === "active"
+        ? theme.colors.textHilight
+        : status === "disabled"
+        ? theme.colors.lightGrey
+        : theme.colors.text;
+  }
+
+  // Icon style
+  const icon = { width: iconSize, height: iconSize, zIndex: 1 };
+
+  // containerWithIcon
+  const containerWithIcon = {
+    ...container,
+    flexDirection: "row",
     alignItems: "center",
-  },
-  large: {
-    borderRadius: shared.large.borderRadius,
-    paddingVertical: shared.large.paddingVertical,
-    paddingHorizontal: shared.large.paddingHorizontal,
-    alignItems: "center",
-  },
-};
-const sharedContainerWithIcon = {
-  small: {
-    ...sharedContainer.small,
-    ...sharedFlexWithIcon,
-  },
-  large: {
-    ...sharedContainer.large,
-    ...sharedFlexWithIcon,
-  },
-};
+    justifyContent: "flex-start",
+  };
 
-export function getButtonStyle(
-  type: ButtonType,
-  size: ButtonSize,
-  status: ButtonStatus,
-  hasIcon: boolean
-): { container: object; text: object; icon: object } {
-  const base = styles[type][size][status];
+  // textWithIcon
+  const textWithIcon = { color: textColor, marginLeft: hasIcon ? textWithIconMargin : 0, zIndex: 1 };
+
   return {
-    container: hasIcon && base.containerWithIcon ? base.containerWithIcon : base.container,
-    text: hasIcon && base.textWithIcon ? base.textWithIcon : base.text,
-    icon: base.icon,
+    container: hasIcon ? containerWithIcon : container,
+    text: { color: textColor, zIndex: 1 },
+    icon,
+    textWithIcon: hasIcon ? textWithIcon : undefined,
   };
 }
-
-const styles: ThemedButtonStyle = {
-  main: {
-    large: {
-      default: {
-        container: sharedContainer.large,
-        text: { color: theme.colors.background },
-        icon: shared.large.icon,
-        containerWithIcon: sharedContainerWithIcon.large,
-        textWithIcon: shared.large.textWithIcon,
-      },
-      active: {
-        container: sharedContainer.large,
-        text: { color: theme.colors.background },
-        icon: shared.large.icon,
-        containerWithIcon: sharedContainerWithIcon.large,
-        textWithIcon: shared.large.textWithIcon,
-      },
-      disabled: {
-        container: { ...sharedContainer.large, opacity: 0.6 },
-        text: { color: theme.colors.background },
-        icon: shared.large.icon,
-        containerWithIcon: { ...sharedContainerWithIcon.large, opacity: 0.6 },
-        textWithIcon: shared.large.textWithIcon,
-      },
-    },
-    small: {
-      default: {
-        container: sharedContainer.small,
-        text: { color: theme.colors.background },
-        icon: shared.small.icon,
-        containerWithIcon: sharedContainerWithIcon.small,
-        textWithIcon: shared.small.textWithIcon,
-      },
-      active: {
-        container: sharedContainer.small,
-        text: { color: theme.colors.background },
-        icon: shared.small.icon,
-        containerWithIcon: sharedContainerWithIcon.small,
-        textWithIcon: shared.small.textWithIcon,
-      },
-      disabled: {
-        container: { ...sharedContainer.small, opacity: 0.6 },
-        text: { color: theme.colors.background },
-        icon: shared.small.icon,
-        containerWithIcon: { ...sharedContainerWithIcon.small, opacity: 0.6 },
-        textWithIcon: shared.small.textWithIcon,
-      },
-    },
-  },
-  alternative: {
-    large: {
-      default: {
-        container: sharedContainer.large,
-        text: { color: theme.colors.background },
-        icon: shared.large.icon,
-        containerWithIcon: sharedContainerWithIcon.large,
-        textWithIcon: shared.large.textWithIcon,
-      },
-      active: {
-        container: sharedContainer.large,
-        text: { color: theme.colors.background },
-        icon: shared.large.icon,
-        containerWithIcon: sharedContainerWithIcon.large,
-        textWithIcon: shared.large.textWithIcon,
-      },
-      disabled: {
-        container: { ...sharedContainer.large, opacity: 0.6 },
-        text: { color: theme.colors.background },
-        icon: shared.large.icon,
-        containerWithIcon: { ...sharedContainerWithIcon.large, opacity: 0.6 },
-        textWithIcon: shared.large.textWithIcon,
-      },
-    },
-    small: {
-      default: {
-        container: sharedContainer.small,
-        text: { color: theme.colors.background },
-        icon: shared.small.icon,
-        containerWithIcon: sharedContainerWithIcon.small,
-        textWithIcon: shared.small.textWithIcon,
-      },
-      active: {
-        container: sharedContainer.small,
-        text: { color: theme.colors.background },
-        icon: shared.small.icon,
-        containerWithIcon: sharedContainerWithIcon.small,
-        textWithIcon: shared.small.textWithIcon,
-      },
-      disabled: {
-        container: { ...sharedContainer.small, opacity: 0.6 },
-        text: { color: theme.colors.background },
-        icon: shared.small.icon,
-        containerWithIcon: { ...sharedContainerWithIcon.small, opacity: 0.6 },
-        textWithIcon: shared.small.textWithIcon,
-      },
-    },
-  },
-  outline: {
-    large: {
-      default: {
-        container: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.primary,
-          ...sharedContainer.large,
-        },
-        text: { color: theme.colors.primary },
-        icon: shared.large.icon,
-        containerWithIcon: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.primary,
-          ...sharedContainerWithIcon.large,
-        },
-        textWithIcon: shared.large.textWithIcon,
-      },
-      active: {
-        container: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.textHilight,
-          ...sharedContainer.large,
-        },
-        text: { color: theme.colors.textHilight },
-        icon: shared.large.icon,
-        containerWithIcon: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.textHilight,
-          ...sharedContainerWithIcon.large,
-        },
-        textWithIcon: shared.large.textWithIcon,
-      },
-      disabled: {
-        container: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.lightGrey,
-          ...sharedContainer.large,
-          opacity: 0.6,
-        },
-        text: { color: theme.colors.lightGrey },
-        icon: shared.large.icon,
-        containerWithIcon: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.lightGrey,
-          ...sharedContainerWithIcon.large,
-          opacity: 0.6,
-        },
-        textWithIcon: shared.large.textWithIcon,
-      },
-    },
-    small: {
-      default: {
-        container: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.primary,
-          ...sharedContainer.small,
-        },
-        text: { color: theme.colors.primary },
-        icon: shared.small.icon,
-        containerWithIcon: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.primary,
-          ...sharedContainerWithIcon.small,
-        },
-        textWithIcon: shared.small.textWithIcon,
-      },
-      active: {
-        container: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.textHilight,
-          ...sharedContainer.small,
-        },
-        text: { color: theme.colors.textHilight },
-        icon: shared.small.icon,
-        containerWithIcon: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.textHilight,
-          ...sharedContainerWithIcon.small,
-        },
-        textWithIcon: shared.small.textWithIcon,
-      },
-      disabled: {
-        container: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.lightGrey,
-          ...sharedContainer.small,
-          opacity: 0.6,
-        },
-        text: { color: theme.colors.lightGrey },
-        icon: shared.small.icon,
-        containerWithIcon: {
-          backgroundColor: "transparent",
-          borderWidth: 2,
-          borderColor: theme.colors.lightGrey,
-          ...sharedContainerWithIcon.small,
-          opacity: 0.6,
-        },
-        textWithIcon: shared.small.textWithIcon,
-      },
-    },
-  },
-};
-
-export default styles;

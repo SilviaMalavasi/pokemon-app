@@ -18,19 +18,6 @@ export default function HomeScreen() {
           This app helps players build their Pokémon decks by searching only for cards in the current rotation. LAST
           UPDATE: 24-04-2025.
         </ThemedText>
-        <ThemedView>
-          <ThemedButton
-            type="main"
-            size="large"
-            disabled={false}
-            icon="search"
-            status="active"
-            title="Start building your deck"
-            onPress={() => {
-              console.log("Button pressed!");
-            }}
-          />
-        </ThemedView>
         <ThemedText
           type="default"
           style={{ paddingBottom: 12 }}

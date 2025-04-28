@@ -5,7 +5,7 @@ import { Svg, Path, Rect } from "react-native-svg";
 import { theme } from "@/style/ui/Theme";
 import { Image } from "expo-image";
 
-import { getButtonStyle } from "@/style/base/ThemedButtonStyle";
+import { createButtonStyle } from "@/style/base/ThemedButtonStyle";
 import { ButtonType, ButtonSize, ButtonStatus } from "@/style/base/ThemedButtonStyle";
 
 export type ThemedButtonProps = ButtonProps & {
@@ -72,9 +72,9 @@ export default function ThemedButton({
 }: ThemedButtonProps & { title: string }) {
   const IconComponent = icon !== "void" && icons[icon] ? icons[icon] : null;
   const hasIcon = icon !== "void" && !!IconComponent;
-  const buttonStyle = getButtonStyle(type, size, status, hasIcon);
+  const buttonStyle = createButtonStyle(type, size, status, hasIcon);
   const containerStyle = [buttonStyle.container, style].filter(Boolean);
-  const textStyle = [buttonStyle.text].filter(Boolean);
+  const textStyle = [hasIcon && buttonStyle.textWithIcon ? buttonStyle.textWithIcon : buttonStyle.text].filter(Boolean);
   const iconContainerStyle = [buttonStyle.icon].filter(Boolean);
   const iconFill = getIconFill(status);
 
@@ -101,7 +101,7 @@ export default function ThemedButton({
             left: 0,
             right: 0,
             bottom: 0,
-            borderRadius: 8,
+            borderRadius: 8, // match button border radius
             zIndex: 0,
           }}
           contentFit="cover"
@@ -109,12 +109,12 @@ export default function ThemedButton({
         />
       )}
       {IconComponent ? (
-        <View style={[iconContainerStyle, { zIndex: 1 }]}>
+        <View style={[iconContainerStyle]}>
           <IconComponent fill={iconFill} />
         </View>
       ) : null}
       <ThemedText
-        style={[textStyle, { zIndex: 1 }]}
+        style={[textStyle]}
         type={size === "large" ? "button" : "buttonSmall"}
       >
         {title}
