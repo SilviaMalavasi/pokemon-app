@@ -19,6 +19,7 @@ import { theme } from "@/style/ui/Theme";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import CardTypeModal from "@/components/forms/modals/CardTypeModal";
+import RulesModal from "@/components/forms/modals/RulesModal";
 
 const cardSupertypeOptions = uniqueIdentifiers.cardSupertype.map((v: string) => ({ value: v, label: v }));
 const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => ({ value: v, label: v }));
@@ -129,6 +130,7 @@ export default function AdvancedSearchForm({
   // Add a local resetKey to force reset
   const [localResetKey, setLocalResetKey] = useState(0);
   const [cardTypeModalVisible, setCardTypeModalVisible] = useState(false);
+  const [rulesModalVisible, setRulesModalVisible] = useState(false);
 
   // Reset handler
   const handleReset = () => {
@@ -489,8 +491,32 @@ export default function AdvancedSearchForm({
           size="small"
           disabled={false}
           icon="arrow"
+          status={cardRules ? "active" : "default"}
+          title="rules"
+          onPress={() => setRulesModalVisible(true)}
+          style={styles.halfButton}
+        />
+      </ThemedView>
+      <ThemedView style={styles.buttonRow}>
+        <ThemedButton
+          type="outline"
+          size="small"
+          disabled={false}
+          icon="arrow"
           status="default"
-          title="evolution"
+          title="attacks"
+          onPress={() => {
+            console.log("Button pressed!");
+          }}
+          style={styles.halfButton}
+        />
+        <ThemedButton
+          type="outline"
+          size="small"
+          disabled={false}
+          icon="arrow"
+          status="default"
+          title="abilities"
           onPress={() => {
             console.log("Button pressed!");
           }}
@@ -516,33 +542,7 @@ export default function AdvancedSearchForm({
           disabled={false}
           icon="arrow"
           status="default"
-          title="rules"
-          onPress={() => {
-            console.log("Button pressed!");
-          }}
-          style={styles.halfButton}
-        />
-      </ThemedView>
-      <ThemedView style={styles.buttonRow}>
-        <ThemedButton
-          type="outline"
-          size="small"
-          disabled={false}
-          icon="arrow"
-          status="default"
-          title="attacks"
-          onPress={() => {
-            console.log("Button pressed!");
-          }}
-          style={styles.halfButton}
-        />
-        <ThemedButton
-          type="outline"
-          size="small"
-          disabled={false}
-          icon="arrow"
-          status="default"
-          title="abilities"
+          title="evolution"
           onPress={() => {
             console.log("Button pressed!");
           }}
@@ -588,6 +588,12 @@ export default function AdvancedSearchForm({
         cardSubtypesOptions={cardSubtypesOptions}
         cardTypesOptions={cardTypesOptions}
       />
+      <RulesModal
+        visible={rulesModalVisible}
+        onClose={() => setRulesModalVisible(false)}
+        cardRules={cardRules}
+        setCardRules={setCardRules}
+      />
       {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
         <Collapsible
           title="Evolution"
@@ -614,20 +620,7 @@ export default function AdvancedSearchForm({
           />
         </Collapsible>
       )}
-      {(cardSupertype.length === 0 || cardSupertype.includes("Trainer")) && (
-        <Collapsible
-          title="Card Rules"
-          resetKey={resetKey}
-        >
-          <AutoCompleteInput
-            label="Rules"
-            value={cardRules}
-            onChange={setCardRules}
-            suggestions={["search", "discard pile", "attach", "energy"]}
-            placeholder="Card rules"
-          />
-        </Collapsible>
-      )}
+
       {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
         <Collapsible
           title="Attacks"
@@ -836,14 +829,22 @@ export default function AdvancedSearchForm({
           placeholder="Flavor text"
         />
       </Collapsible>
-      {/* CardType summary before reset button */}
-      {(cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0) && (
+      {/* Card Type, Name, and Rules summary before reset button */}
+      {(cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 || cardRules) && (
         <ThemedView style={{ marginBottom: 8 }}>
           <ThemedText type="default">
-            {cardSupertype.length > 0 && `Supertype: ${cardSupertype.join(", ")}`}
-            {cardSubtypes.length > 0 && `${cardSupertype.length > 0 ? " | " : ""}Subtypes: ${cardSubtypes.join(", ")}`}
+            {cardName && `Card Name: ${cardName}`}
+            {cardSupertype.length > 0 && `${cardName ? " | " : ""}Supertype: ${cardSupertype.join(", ")}`}
+            {cardSubtypes.length > 0 &&
+              `${cardName || cardSupertype.length > 0 ? " | " : ""}Subtypes: ${cardSubtypes.join(", ")}`}
             {cardTypes.length > 0 &&
-              `${cardSupertype.length > 0 || cardSubtypes.length > 0 ? " | " : ""}Types: ${cardTypes.join(", ")}`}
+              `${cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 ? " | " : ""}Types: ${cardTypes.join(
+                ", "
+              )}`}
+            {cardRules &&
+              `${
+                cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 ? " | " : ""
+              }Rules: ${cardRules}`}
           </ThemedText>
         </ThemedView>
       )}
