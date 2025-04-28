@@ -4,6 +4,7 @@ import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
+import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 import styles from "@/style/base/ThemedModalStyle";
 
 interface EvolutionModalProps {
@@ -15,7 +16,6 @@ interface EvolutionModalProps {
   setCardEvolvesFrom: (val: string) => void;
   cardEvolvesTo: string;
   setCardEvolvesTo: (val: string) => void;
-  cardStageOptions: { value: string; label: string }[];
 }
 
 export default function EvolutionModal({
@@ -27,8 +27,8 @@ export default function EvolutionModal({
   setCardEvolvesFrom,
   cardEvolvesTo,
   setCardEvolvesTo,
-  cardStageOptions,
 }: EvolutionModalProps) {
+  const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => ({ value: v, label: v }));
   return (
     <Modal
       visible={visible}

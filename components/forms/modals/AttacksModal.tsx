@@ -9,6 +9,7 @@ import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import { Dropdown } from "react-native-element-dropdown";
 import styles from "@/style/base/ThemedModalStyle";
 import dynamicMultiSelectStyle from "@/style/base/DynamicMultiSelectStyle";
+import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 
 interface AttacksModalProps {
   visible: boolean;
@@ -29,7 +30,6 @@ interface AttacksModalProps {
   setAttacksConvertedEnergyCostOperator: (val: string) => void;
   attacksCostSlots: string[];
   setAttacksCostSlots: (val: string[]) => void;
-  energyTypesOptions: { value: string; label: string }[];
 }
 
 export default function AttacksModal({
@@ -51,8 +51,8 @@ export default function AttacksModal({
   setAttacksConvertedEnergyCostOperator,
   attacksCostSlots,
   setAttacksCostSlots,
-  energyTypesOptions,
 }: AttacksModalProps) {
+  const energyTypesOptions = uniqueIdentifiers.energyTypes.map((v: string) => ({ value: v, label: v }));
   return (
     <Modal
       visible={visible}

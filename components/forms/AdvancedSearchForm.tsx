@@ -12,8 +12,6 @@ import { queryBuilder } from "@/helpers/queryBuilder";
 import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 import { supabase } from "@/lib/supabase";
 
-import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
-
 import CardTypeModal from "@/components/forms/modals/CardTypeModal";
 import RulesModal from "@/components/forms/modals/RulesModal";
 import AttacksModal from "@/components/forms/modals/AttacksModal";
@@ -25,13 +23,6 @@ import EditionModal from "@/components/forms/modals/EditionModal";
 
 import styles from "@/style/forms/AdvancedSearchFormStyle";
 import { theme } from "@/style/ui/Theme";
-
-const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => ({ value: v, label: v }));
-const cardRegulationMarkOptions = uniqueIdentifiers.cardRegulationMark.map((v: string) => ({ value: v, label: v }));
-const cardSetNamesOptions = uniqueIdentifiers.cardSetNames.map((v: string) => ({ value: v, label: v }));
-const cardWeaknessesTypeOptions = uniqueIdentifiers.cardWeaknessTypes.map((v: string) => ({ value: v, label: v }));
-const cardResistancesTypeOptions = uniqueIdentifiers.cardResistanceTypes.map((v: string) => ({ value: v, label: v }));
-const energyTypesOptions = uniqueIdentifiers.energyTypes.map((v: string) => ({ value: v, label: v }));
 
 export default function AdvancedSearchForm({
   onSearchResults,
@@ -581,7 +572,6 @@ export default function AdvancedSearchForm({
         setAttacksConvertedEnergyCostOperator={setAttacksConvertedEnergyCostOperator}
         attacksCostSlots={attacksCostSlots}
         setAttacksCostSlots={setAttacksCostSlots}
-        energyTypesOptions={energyTypesOptions}
       />
       <AbilitiesModal
         visible={abilitiesModalVisible}
@@ -614,7 +604,6 @@ export default function AdvancedSearchForm({
         setCardEvolvesFrom={setCardEvolvesFrom}
         cardEvolvesTo={cardEvolvesTo}
         setCardEvolvesTo={setCardEvolvesTo}
-        cardStageOptions={cardStageOptions}
       />
       <WeakResModal
         visible={weakResModalVisible}
@@ -623,8 +612,6 @@ export default function AdvancedSearchForm({
         setCardWeaknessesType={setCardWeaknessesType}
         cardResistancesType={cardResistancesType}
         setCardResistancesType={setCardResistancesType}
-        cardWeaknessesTypeOptions={cardWeaknessesTypeOptions}
-        cardResistancesTypeOptions={cardResistancesTypeOptions}
       />
       <EditionModal
         visible={editionModalVisible}
@@ -637,8 +624,6 @@ export default function AdvancedSearchForm({
         setCardNumber={setCardNumber}
         cardSetNumber={cardSetNumber}
         setCardSetNumber={setCardSetNumber}
-        cardRegulationMarkOptions={cardRegulationMarkOptions}
-        cardSetNamesOptions={cardSetNamesOptions}
       />
       <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
         <ThemedSwitch

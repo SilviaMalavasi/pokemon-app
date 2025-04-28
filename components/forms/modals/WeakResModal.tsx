@@ -4,6 +4,7 @@ import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import styles from "@/style/base/ThemedModalStyle";
+import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 
 interface WeakResModalProps {
   visible: boolean;
@@ -12,8 +13,6 @@ interface WeakResModalProps {
   setCardWeaknessesType: (val: string[]) => void;
   cardResistancesType: string[];
   setCardResistancesType: (val: string[]) => void;
-  cardWeaknessesTypeOptions: { value: string; label: string }[];
-  cardResistancesTypeOptions: { value: string; label: string }[];
 }
 
 export default function WeakResModal({
@@ -23,9 +22,9 @@ export default function WeakResModal({
   setCardWeaknessesType,
   cardResistancesType,
   setCardResistancesType,
-  cardWeaknessesTypeOptions,
-  cardResistancesTypeOptions,
 }: WeakResModalProps) {
+  const cardWeaknessesTypeOptions = uniqueIdentifiers.cardWeaknessTypes.map((v: string) => ({ value: v, label: v }));
+  const cardResistancesTypeOptions = uniqueIdentifiers.cardResistanceTypes.map((v: string) => ({ value: v, label: v }));
   return (
     <Modal
       visible={visible}

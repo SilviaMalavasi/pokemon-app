@@ -6,6 +6,7 @@ import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import NumberInput from "@/components/base/NumberInput";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import styles from "@/style/base/ThemedModalStyle";
+import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 
 interface EditionModalProps {
   visible: boolean;
@@ -18,8 +19,6 @@ interface EditionModalProps {
   setCardNumber: (val: number | "") => void;
   cardSetNumber: string;
   setCardSetNumber: (val: string) => void;
-  cardRegulationMarkOptions: { value: string; label: string }[];
-  cardSetNamesOptions: { value: string; label: string }[];
 }
 
 export default function EditionModal({
@@ -33,9 +32,9 @@ export default function EditionModal({
   setCardNumber,
   cardSetNumber,
   setCardSetNumber,
-  cardRegulationMarkOptions,
-  cardSetNamesOptions,
 }: EditionModalProps) {
+  const cardRegulationMarkOptions = uniqueIdentifiers.cardRegulationMark.map((v: string) => ({ value: v, label: v }));
+  const cardSetNamesOptions = uniqueIdentifiers.cardSetNames.map((v: string) => ({ value: v, label: v }));
   return (
     <Modal
       visible={visible}
