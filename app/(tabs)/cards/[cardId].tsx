@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
-import { Colors } from "@/style/base/Colors";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import FullCard from "@/components/FullCard";
 import { useLocalSearchParams } from "expo-router";
 import { supabase } from "@/lib/supabase";
 import { CardType, Ability, Attack } from "@/types/PokemonCardType";
+import { theme } from "@/style/ui/Theme";
 
 export default function FullCardScreen() {
   const { cardId } = useLocalSearchParams<{ cardId: string }>();
@@ -77,7 +77,7 @@ export default function FullCardScreen() {
         {loading ? (
           <ActivityIndicator
             size="large"
-            color={Colors.highlight}
+            color={theme.colors.textAlternative}
           />
         ) : card ? (
           <FullCard card={card} />

@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
-import { Colors } from "@/style/base/Colors";
+import { theme } from "@/style/ui/Theme";
 import styles from "@/style/base/CollapsibleStyle";
 
 export default function Collapsible({
@@ -43,7 +43,7 @@ export default function Collapsible({
           name="chevron.right"
           size={18}
           weight="medium"
-          color={Colors.icon}
+          color={theme.colors.textAlternative}
           style={{ transform: [{ rotate: actualOpen ? "90deg" : "0deg" }] }}
         />
         <ThemedText type="subtitle">{title}</ThemedText>

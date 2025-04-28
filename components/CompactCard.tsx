@@ -6,7 +6,7 @@ import { CardType } from "@/types/PokemonCardType";
 import CompactCardStyle from "@/style/CompactCardStyle";
 import cardImages from "@/db/cardImages";
 import { Link } from "expo-router";
-import { Colors } from "@/style/base/Colors";
+import { theme } from "@/style/ui/Theme";
 
 function getCardImage(imagePath: string) {
   if (!imagePath) return undefined;
@@ -43,7 +43,7 @@ export default function CompactCard({ card, onImageLoad }: CompactCardProps) {
                 <ActivityIndicator
                   style={{ position: "absolute" }}
                   size="small"
-                  color={Colors.highlight}
+                  color={theme.colors.textAlternative}
                 />
               )}
             </View>

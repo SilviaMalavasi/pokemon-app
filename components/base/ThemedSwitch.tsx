@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, SwitchProps } from "react-native";
-import { Colors } from "@/style/base/Colors";
+import { theme } from "@/style/ui/Theme";
 
 interface ThemedSwitchProps extends SwitchProps {
   value: boolean;
@@ -14,8 +14,8 @@ const ThemedSwitch: React.FC<ThemedSwitchProps> = ({ value, onValueChange, disab
       value={value}
       onValueChange={onValueChange}
       disabled={disabled}
-      trackColor={{ false: Colors.mediumGrey, true: Colors.mediumDarkmediumGrey }}
-      thumbColor={value ? Colors.green : Colors.purple}
+      trackColor={{ false: theme.colors.lightGrey, true: theme.colors.lightGrey }}
+      thumbColor={value ? theme.colors.green : theme.colors.purple}
       {...rest}
     />
   );

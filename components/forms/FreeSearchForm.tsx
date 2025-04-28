@@ -6,9 +6,9 @@ import ThemedButton from "@/components/base/ThemedButton";
 import TextInput from "@/components/base/TextInput";
 import Collapsible from "@/components/base/Collapsible";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
-import { Colors } from "@/style/base/Colors";
 import { freeQueryBuilder } from "@/helpers/freeQueryBuilder";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
+import { theme } from "@/style/ui/Theme";
 
 export default function FreeSearchForm({
   onSearchResults,
@@ -227,8 +227,7 @@ export default function FreeSearchForm({
                 <ThemedSwitch
                   value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key, "Include: Card Type")}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -258,8 +257,7 @@ export default function FreeSearchForm({
                 <ThemedSwitch
                   value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key, "Include: Evolution")}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -289,8 +287,7 @@ export default function FreeSearchForm({
                 <ThemedSwitch
                   value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key, "Include: Card Rules")}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -320,8 +317,7 @@ export default function FreeSearchForm({
                 <ThemedSwitch
                   value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key, "Include: Attacks")}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -341,8 +337,7 @@ export default function FreeSearchForm({
                 <ThemedSwitch
                   value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key, "Include: Attacks")}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -372,8 +367,7 @@ export default function FreeSearchForm({
                 <ThemedSwitch
                   value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key, "Include: Abilities")}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -403,8 +397,7 @@ export default function FreeSearchForm({
                 <ThemedSwitch
                   value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key, "Include: Stats")}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -434,8 +427,7 @@ export default function FreeSearchForm({
                 <ThemedSwitch
                   value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key, "Include: Weaknesses/Resistances")}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -465,8 +457,7 @@ export default function FreeSearchForm({
                 <ThemedSwitch
                   value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key, "Include: Edition")}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
                   type="default"
@@ -496,8 +487,7 @@ export default function FreeSearchForm({
                 <ThemedSwitch
                   value={includedColumns[col.key]}
                   onValueChange={() => handleToggleColumn(col.key, "Include: Artist/Flavor")}
-                  trackColor={{ false: Colors.mediumGrey, true: Colors.purple }}
-                  thumbColor={includedColumns[col.key] ? Colors.green : Colors.purple}
+                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
                   type="default"

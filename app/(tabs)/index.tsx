@@ -1,8 +1,7 @@
-import { Colors } from "@/style/base/Colors";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
-import { ExternalLink } from "@/components/base/ExternalLink";
+import ExternalLink from "@/components/base/ExternalLink";
 
 export default function HomeScreen() {
   return (
@@ -24,24 +23,16 @@ export default function HomeScreen() {
         >
           This app was created with ♥ by Pokémon nerd and developer{" "}
           <ExternalLink
+            color="alternative"
             href="https://www.linkedin.com/in/silvia-malavasi/"
-            style={{ color: Colors.alternativeText }}
           >
             Silvia Malavasi
           </ExternalLink>{" "}
           for the Pokémon TCG community. Credits goes to{" "}
-          <ExternalLink
-            href="https://pokemontcg.io/"
-            style={{ color: Colors.highlight }}
-          >
-            pokemontcg.io{" "}
-          </ExternalLink>
+          <ExternalLink href="https://pokemontcg.io/">pokemontcg.io </ExternalLink>
           for the Card Archive.
         </ThemedText>
-        <ThemedText
-          type="hintText"
-          style={{ color: Colors.darkText }}
-        >
+        <ThemedText type="hintText">
           This app is not produced, endorsed, supported, or affiliated with Nintendo or The Pokémon Company.
         </ThemedText>
       </ThemedView>

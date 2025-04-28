@@ -1,5 +1,5 @@
 import { StyleSheet, StatusBar, Platform } from "react-native";
-import { Colors } from "@/style/base/Colors";
+import { theme } from "@/style/ui/Theme";
 
 const STATUSBAR_HEIGHT = Platform.OS === "android" ? StatusBar.currentHeight || 0 : 0;
 
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   modalView: {
-    backgroundColor: Colors.background,
+    backgroundColor: theme.colors.background,
     borderRadius: 16,
     padding: 24,
     alignItems: "center",
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   message: {
     marginBottom: 20,
     textAlign: "center",
-    color: Colors.text,
+    color: theme.colors.text,
     fontSize: 18,
   },
   button: {

@@ -1,12 +1,12 @@
 import { vw } from "@/helpers/viewport";
 
 export const white = "#ffffff";
-export const grey = "#3C3C47";
+export const grey = "#676776";
 export const black = "#000000";
 
 export const darkGrey = "#111218";
 export const mediumGrey = "#171926";
-export const lightGrey = "#6C6C81";
+export const lightGrey = "#4D4E70";
 
 export const green = "#30F51B";
 export const purple = "#6a1dff";
@@ -22,6 +22,13 @@ export const theme = {
     primary: green,
     secondary: purple,
     black: black,
+    white: white,
+    grey: grey,
+    darkGrey: darkGrey,
+    mediumGrey: mediumGrey,
+    lightGrey: lightGrey,
+    green: green,
+    purple: purple,
   },
   padding: {
     none: 0,
