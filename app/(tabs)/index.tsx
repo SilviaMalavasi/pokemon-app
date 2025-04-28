@@ -20,7 +20,7 @@ export default function HomeScreen() {
         </ThemedText>
         <ThemedView>
           <ThemedButton
-            type="alternative"
+            type="main"
             size="large"
             disabled={false}
             icon="search"
