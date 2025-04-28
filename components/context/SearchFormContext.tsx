@@ -33,8 +33,6 @@ export type AdvancedSearchFormState = {
   cardSetNumber: string;
   hasAnyAbility: boolean;
   attacksCostSlots: string[];
-  // Collapsible open states (by title)
-  collapsibles: Record<string, boolean>;
   // Remove duplicates
   removeDuplicates: boolean;
 };
@@ -42,7 +40,6 @@ export type AdvancedSearchFormState = {
 export type FreeSearchFormState = {
   cardSearch: string;
   includedColumns: Record<string, boolean>;
-  collapsibles: Record<string, boolean>;
   removeDuplicates: boolean;
 };
 
@@ -89,14 +86,12 @@ const defaultAdvancedForm: AdvancedSearchFormState = {
   cardSetNumber: "",
   hasAnyAbility: false,
   attacksCostSlots: [],
-  collapsibles: {},
   removeDuplicates: false,
 };
 
 const defaultFreeForm: FreeSearchFormState = {
   cardSearch: "",
   includedColumns: {},
-  collapsibles: {},
   removeDuplicates: false,
 };
 

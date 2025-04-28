@@ -61,11 +61,8 @@ export default function FreeSearchForm({
     });
     return initial;
   });
-  const handleToggleColumn = (key: string, sectionTitle?: string) => {
+  const handleToggleColumn = (key: string) => {
     setIncludedColumns((prev) => ({ ...prev, [key]: !prev[key] }));
-    if (sectionTitle) {
-      setCollapsibles((prev) => ({ ...prev, [sectionTitle]: true }));
-    }
   };
 
   const [showHint, setShowHint] = useState(false);
@@ -107,11 +104,6 @@ export default function FreeSearchForm({
     .map((col) => col.key)
     .filter((key) => includedColumns[key]);
 
-  const [collapsibles, setCollapsibles] = useState<Record<string, boolean>>(freeForm?.collapsibles ?? {});
-  const handleCollapsibleChange = (title: string, open: boolean) => {
-    setCollapsibles((prev) => ({ ...prev, [title]: open }));
-  };
-
   useEffect(() => {
     setCardSearch("");
     setIncludedColumns(() => {
@@ -121,7 +113,6 @@ export default function FreeSearchForm({
       });
       return initial;
     });
-    setCollapsibles({});
   }, [resetKey]);
 
   // Log when saving to context
@@ -129,7 +120,6 @@ export default function FreeSearchForm({
     setFreeForm({
       cardSearch,
       includedColumns,
-      collapsibles,
       removeDuplicates,
     });
     setButtonLoading(true);
@@ -161,7 +151,6 @@ export default function FreeSearchForm({
     if (lastSearchPage === "free" && freeForm) {
       setCardSearch(freeForm.cardSearch);
       setIncludedColumns(freeForm.includedColumns);
-      setCollapsibles(freeForm.collapsibles || {});
       if (freeForm.removeDuplicates !== undefined) {
         onRemoveDuplicatesChange(freeForm.removeDuplicates);
       }
@@ -182,7 +171,6 @@ export default function FreeSearchForm({
       });
       return initial;
     });
-    setCollapsibles({});
     setShowHint(false);
     setButtonLoading(false);
     clearFreeForm();
@@ -213,8 +201,8 @@ export default function FreeSearchForm({
       <Collapsible
         title="Include: Card Type"
         resetKey={resetKey}
-        open={collapsibles["Include: Card Type"] || false}
-        onToggle={(open) => handleCollapsibleChange("Include: Card Type", open)}
+        open={false}
+        onToggle={() => {}}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -226,7 +214,7 @@ export default function FreeSearchForm({
               >
                 <ThemedSwitch
                   value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key, "Include: Card Type")}
+                  onValueChange={() => handleToggleColumn(col.key)}
                   thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
@@ -243,8 +231,8 @@ export default function FreeSearchForm({
       <Collapsible
         title="Include: Evolution"
         resetKey={resetKey}
-        open={collapsibles["Include: Evolution"] || false}
-        onToggle={(open) => handleCollapsibleChange("Include: Evolution", open)}
+        open={false}
+        onToggle={() => {}}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -256,7 +244,7 @@ export default function FreeSearchForm({
               >
                 <ThemedSwitch
                   value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key, "Include: Evolution")}
+                  onValueChange={() => handleToggleColumn(col.key)}
                   thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
@@ -273,8 +261,8 @@ export default function FreeSearchForm({
       <Collapsible
         title="Include: Card Rules"
         resetKey={resetKey}
-        open={collapsibles["Include: Card Rules"] || false}
-        onToggle={(open) => handleCollapsibleChange("Include: Card Rules", open)}
+        open={false}
+        onToggle={() => {}}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -286,7 +274,7 @@ export default function FreeSearchForm({
               >
                 <ThemedSwitch
                   value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key, "Include: Card Rules")}
+                  onValueChange={() => handleToggleColumn(col.key)}
                   thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
@@ -303,8 +291,8 @@ export default function FreeSearchForm({
       <Collapsible
         title="Include: Attacks"
         resetKey={resetKey}
-        open={collapsibles["Include: Attacks"] || false}
-        onToggle={(open) => handleCollapsibleChange("Include: Attacks", open)}
+        open={false}
+        onToggle={() => {}}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -316,7 +304,7 @@ export default function FreeSearchForm({
               >
                 <ThemedSwitch
                   value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key, "Include: Attacks")}
+                  onValueChange={() => handleToggleColumn(col.key)}
                   thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
@@ -336,7 +324,7 @@ export default function FreeSearchForm({
               >
                 <ThemedSwitch
                   value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key, "Include: Attacks")}
+                  onValueChange={() => handleToggleColumn(col.key)}
                   thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
@@ -353,8 +341,8 @@ export default function FreeSearchForm({
       <Collapsible
         title="Include: Abilities"
         resetKey={resetKey}
-        open={collapsibles["Include: Abilities"] || false}
-        onToggle={(open) => handleCollapsibleChange("Include: Abilities", open)}
+        open={false}
+        onToggle={() => {}}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -366,7 +354,7 @@ export default function FreeSearchForm({
               >
                 <ThemedSwitch
                   value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key, "Include: Abilities")}
+                  onValueChange={() => handleToggleColumn(col.key)}
                   thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
@@ -383,8 +371,8 @@ export default function FreeSearchForm({
       <Collapsible
         title="Include: Stats"
         resetKey={resetKey}
-        open={collapsibles["Include: Stats"] || false}
-        onToggle={(open) => handleCollapsibleChange("Include: Stats", open)}
+        open={false}
+        onToggle={() => {}}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -396,7 +384,7 @@ export default function FreeSearchForm({
               >
                 <ThemedSwitch
                   value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key, "Include: Stats")}
+                  onValueChange={() => handleToggleColumn(col.key)}
                   thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
@@ -413,8 +401,8 @@ export default function FreeSearchForm({
       <Collapsible
         title="Include: Weaknesses/Resistances"
         resetKey={resetKey}
-        open={collapsibles["Include: Weaknesses/Resistances"] || false}
-        onToggle={(open) => handleCollapsibleChange("Include: Weaknesses/Resistances", open)}
+        open={false}
+        onToggle={() => {}}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -426,7 +414,7 @@ export default function FreeSearchForm({
               >
                 <ThemedSwitch
                   value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key, "Include: Weaknesses/Resistances")}
+                  onValueChange={() => handleToggleColumn(col.key)}
                   thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
@@ -443,8 +431,8 @@ export default function FreeSearchForm({
       <Collapsible
         title="Include: Edition"
         resetKey={resetKey}
-        open={collapsibles["Include: Edition"] || false}
-        onToggle={(open) => handleCollapsibleChange("Include: Edition", open)}
+        open={false}
+        onToggle={() => {}}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -456,7 +444,7 @@ export default function FreeSearchForm({
               >
                 <ThemedSwitch
                   value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key, "Include: Edition")}
+                  onValueChange={() => handleToggleColumn(col.key)}
                   thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText
@@ -473,8 +461,8 @@ export default function FreeSearchForm({
       <Collapsible
         title="Include: Artist/Flavor"
         resetKey={resetKey}
-        open={collapsibles["Include: Artist/Flavor"] || false}
-        onToggle={(open) => handleCollapsibleChange("Include: Artist/Flavor", open)}
+        open={false}
+        onToggle={() => {}}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -486,7 +474,7 @@ export default function FreeSearchForm({
               >
                 <ThemedSwitch
                   value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key, "Include: Artist/Flavor")}
+                  onValueChange={() => handleToggleColumn(col.key)}
                   thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
                 />
                 <ThemedText

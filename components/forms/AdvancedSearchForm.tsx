@@ -93,8 +93,6 @@ export default function AdvancedSearchForm({
   const [cardSetNumber, setCardSetNumber] = useState(advancedForm?.cardSetNumber ?? "");
   const [hasAnyAbility, setHasAnyAbility] = useState(advancedForm?.hasAnyAbility ?? false);
   const [attacksCostSlots, setAttacksCostSlots] = useState<string[]>(advancedForm?.attacksCostSlots ?? []);
-  // Collapsible open state
-  const [collapsibles, setCollapsibles] = useState<Record<string, boolean>>(advancedForm?.collapsibles ?? {});
 
   // Local state
   const [loading, setLoading] = useState(false);
@@ -148,7 +146,6 @@ export default function AdvancedSearchForm({
     setCardSetNumber("");
     setAttacksCostSlots([]);
     setHasAnyAbility(false);
-    setCollapsibles({});
     setShowHint(false);
     setError(null);
     clearAdvancedForm();
@@ -190,7 +187,6 @@ export default function AdvancedSearchForm({
       cardSetNumber,
       hasAnyAbility,
       attacksCostSlots,
-      collapsibles,
       removeDuplicates,
     });
   };
@@ -228,7 +224,6 @@ export default function AdvancedSearchForm({
     setCardSetNumber("");
     setAttacksCostSlots([]);
     setHasAnyAbility(false);
-    setCollapsibles({});
   }, [resetKey]);
 
   // Reset subtypes when supertype changes
