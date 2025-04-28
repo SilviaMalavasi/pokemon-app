@@ -58,6 +58,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    paddingHorizontal: theme.padding.small,
+    paddingVertical: theme.padding.medium,
     minHeight: Dimensions.get("window").height - 150,
   },
 });
