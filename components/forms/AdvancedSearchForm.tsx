@@ -12,17 +12,18 @@ import { queryBuilder } from "@/helpers/queryBuilder";
 import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 import { supabase } from "@/lib/supabase";
 
-import CardTypeModal from "@/components/forms/modals/CardTypeModal";
+import CardTypeModal, { getCardTypeFilters } from "@/components/forms/modals/CardTypeModal";
 import RulesModal from "@/components/forms/modals/RulesModal";
-import AttacksModal from "@/components/forms/modals/AttacksModal";
-import AbilitiesModal from "@/components/forms/modals/AbilitiesModal";
-import StatsModal from "@/components/forms/modals/StatsModal";
-import EvolutionModal from "@/components/forms/modals/EvolutionModal";
-import WeakResModal from "@/components/forms/modals/WeakResModal";
-import EditionModal from "@/components/forms/modals/EditionModal";
+import AttacksModal, { getAttacksFilters } from "@/components/forms/modals/AttacksModal";
+import AbilitiesModal, { getAbilitiesFilters } from "@/components/forms/modals/AbilitiesModal";
+import StatsModal, { getStatsFilters } from "@/components/forms/modals/StatsModal";
+import EvolutionModal, { getEvolutionFilters } from "@/components/forms/modals/EvolutionModal";
+import WeakResModal, { getWeakResFilters } from "@/components/forms/modals/WeakResModal";
+import EditionModal, { getEditionFilters } from "@/components/forms/modals/EditionModal";
 
 import styles from "@/style/forms/AdvancedSearchFormStyle";
 import { theme } from "@/style/ui/Theme";
+import { Svg, Circle } from "react-native-svg";
 
 export default function AdvancedSearchForm({
   onSearchResults,
@@ -241,166 +242,28 @@ export default function AdvancedSearchForm({
     setError(null);
     saveFormToContext();
 
-    // Build filters array
-    const filters: QueryBuilderFilter[] = [
+    // Build filters array using modal filter functions
+    const filters = [
       cardName && {
         config: { key: "cardName", type: "text", table: "Card", column: "name" },
         value: cardName,
       },
-      cardSupertype.length > 0 && {
-        config: { key: "cardSupertype", type: "multiselect", table: "Card", column: "supertype" },
-        value: cardSupertype,
-      },
-      cardSubtypes.length > 0 && {
-        config: {
-          key: "cardSubtypes",
-          type: "multiselect",
-          table: "Card",
-          column: "subtypes",
-          valueType: "json-string-array",
-        },
-        value: cardSubtypes,
-      },
-      cardTypes.length > 0 && {
-        config: {
-          key: "cardTypes",
-          type: "multiselect",
-          table: "Card",
-          column: "types",
-          valueType: "json-string-array",
-        },
-        value: cardTypes,
-      },
-      cardRules && {
-        config: { key: "rules", type: "text", table: "Card", column: "rules" },
-        value: cardRules,
-      },
-      attacksName && {
-        config: { key: "attackName", type: "text", table: "Attacks", column: "name" },
-        value: attacksName,
-      },
-      attacksDamage !== "" && {
-        config: { key: "attackDamage", type: "number", table: "CardAttacks", column: "damage", valueType: "text" },
-        value: attacksDamage,
-        operator: attacksDamageOperator,
-      },
-      attacksText && {
-        config: { key: "attackText", type: "text", table: "Attacks", column: "text" },
-        value: attacksText,
-      },
-      attacksCost.length > 0 && {
-        config: { key: "attackCost", type: "multiselect", table: "CardAttacks", column: "cost" },
-        value: attacksCost,
-      },
-      attacksConvertedEnergyCost !== "" && {
-        config: {
-          key: "attacksConvertedEnergyCost",
-          type: "number",
-          table: "CardAttacks",
-          column: "convertedEnergyCost",
-          valueType: "int",
-        },
-        value: attacksConvertedEnergyCost,
-        operator: attacksConvertedEnergyCostOperator,
-      },
-      abilitiesName && {
-        config: { key: "abilityName", type: "text", table: "Abilities", column: "name" },
-        value: abilitiesName,
-      },
-      abilitiesText && {
-        config: { key: "abilityText", type: "text", table: "Abilities", column: "text" },
-        value: abilitiesText,
-      },
-      hasAnyAbility && {
-        config: { key: "hasAnyAbility", type: "exists", table: "CardAbilities", column: "cardId" },
-        value: true,
-      },
-      cardStage.length > 0 && {
-        config: { key: "stage", type: "multiselect", table: "Card", column: "subtypes" },
-        value: cardStage,
-      },
-      cardEvolvesFrom && {
-        config: { key: "evolvesFrom", type: "text", table: "Card", column: "evolvesFrom" },
-        value: cardEvolvesFrom,
-      },
-      cardEvolvesTo && {
-        config: { key: "evolvesTo", type: "text", table: "Card", column: "evolvesTo", valueType: "json-string-array" },
-        value: cardEvolvesTo,
-      },
-      cardHp !== "" && {
-        config: { key: "hp", type: "number", table: "Card", column: "hp", valueType: "int" },
-        value: cardHp,
-        operator: cardHpOperator,
-      },
-      cardConvertedRetreatCost !== "" && {
-        config: {
-          key: "convertedRetreatCost",
-          type: "number",
-          table: "Card",
-          column: "convertedRetreatCost",
-          valueType: "int",
-        },
-        value: cardConvertedRetreatCost,
-        operator: cardConvertedRetreatCostOperator,
-      },
-      cardWeaknessesType.length > 0 && {
-        config: {
-          key: "weaknesses",
-          type: "multiselect",
-          table: "Card",
-          column: "weaknesses",
-          valueType: "json-string-array",
-        },
-        value: cardWeaknessesType,
-      },
-      cardResistancesType.length > 0 && {
-        config: {
-          key: "resistances",
-          type: "multiselect",
-          table: "Card",
-          column: "resistances",
-          valueType: "json-string-array",
-        },
-        value: cardResistancesType,
-      },
-      cardArtist && {
-        config: { key: "artist", type: "text", table: "Card", column: "artist" },
-        value: cardArtist,
-      },
-      cardFlavor && {
-        config: { key: "flavorText", type: "text", table: "Card", column: "flavorText" },
-        value: cardFlavor,
-      },
-      cardRegulationMark.length > 0 && {
-        config: { key: "regulationMark", type: "multiselect", table: "Card", column: "regulationMark" },
-        value: cardRegulationMark,
-      },
-      cardSetName.length > 0 && {
-        config: { key: "setName", type: "multiselect", table: "CardSet", column: "name" },
-        value: cardSetName,
-      },
-      cardNumber !== "" && {
-        config: { key: "number", type: "number", table: "Card", column: "number", valueType: "text" },
-        value: cardNumber,
-        operator: "=",
-      },
-      cardSetNumber && {
-        config: { key: "cardSetNumber", type: "text", table: "Card", column: "cardId" },
-        value: cardSetNumber,
-      },
-      attacksConvertedEnergyCostOperator === "=" &&
-        attacksConvertedEnergyCost !== "" &&
-        attacksCostSlots.length > 0 &&
-        attacksCostSlots.some((v) => v) && {
-          config: {
-            key: "costSlots",
-            type: "multiselect",
-            table: "CardAttacks",
-            column: "cost",
-            valueType: "json-string-array",
-          },
-          value: attacksCostSlots,
-        },
+      ...getCardTypeFilters(cardSupertype, cardSubtypes, cardTypes),
+      ...getAttacksFilters(
+        attacksName,
+        attacksDamage,
+        attacksDamageOperator,
+        attacksText,
+        attacksCost,
+        attacksConvertedEnergyCost,
+        attacksConvertedEnergyCostOperator,
+        attacksCostSlots
+      ),
+      ...getAbilitiesFilters(abilitiesName, abilitiesText, hasAnyAbility),
+      ...getStatsFilters(cardHp, cardHpOperator, cardConvertedRetreatCost, cardConvertedRetreatCostOperator),
+      ...getEvolutionFilters(cardStage, cardEvolvesFrom, cardEvolvesTo),
+      ...getWeakResFilters(cardWeaknessesType, cardResistancesType),
+      ...getEditionFilters(cardRegulationMark, cardSetName, cardNumber, cardSetNumber),
     ].filter(Boolean) as QueryBuilderFilter[];
     try {
       const { cardIds, query } = await queryBuilder(filters);
@@ -426,6 +289,67 @@ export default function AdvancedSearchForm({
       if (setLoadingProp) setLoadingProp(false);
     }
   };
+
+  // Summary fields for flat summary
+  const summaryFields = [
+    { label: "Card Name", value: cardName },
+    { label: "Supertype", value: cardSupertype.join(", ") },
+    { label: "Subtypes", value: cardSubtypes.join(", ") },
+    { label: "Types", value: cardTypes.join(", ") },
+    { label: "Rules", value: cardRules },
+    { label: "Attack Name", value: attacksName },
+    { label: "Attack Damage", value: attacksDamage !== "" ? `${attacksDamageOperator} ${attacksDamage}` : "" },
+    { label: "Attack Text", value: attacksText },
+    { label: "Attack Cost", value: attacksCost.join(", ") },
+    {
+      label: "Converted Energy Cost",
+      value:
+        attacksConvertedEnergyCost !== "" ? `${attacksConvertedEnergyCostOperator} ${attacksConvertedEnergyCost}` : "",
+    },
+    { label: "Cost Slots", value: attacksCostSlots.filter(Boolean).join(", ") },
+    { label: "Ability Name", value: abilitiesName },
+    { label: "Ability Text", value: abilitiesText },
+    { label: "Has any ability", value: hasAnyAbility ? "Yes" : "" },
+    { label: "HP", value: cardHp !== "" ? `${cardHpOperator} ${cardHp}` : "" },
+    {
+      label: "Retreat Cost",
+      value: cardConvertedRetreatCost !== "" ? `${cardConvertedRetreatCostOperator} ${cardConvertedRetreatCost}` : "",
+    },
+    { label: "Stage", value: cardStage.join(", ") },
+    { label: "Evolves From", value: cardEvolvesFrom },
+    { label: "Evolves To", value: cardEvolvesTo },
+    { label: "Weaknesses", value: cardWeaknessesType.join(", ") },
+    { label: "Resistances", value: cardResistancesType.join(", ") },
+    { label: "Artist", value: cardArtist },
+    { label: "Flavor", value: cardFlavor },
+    { label: "Regulation Mark", value: cardRegulationMark.join(", ") },
+    { label: "Set Name", value: cardSetName.join(", ") },
+    { label: "Card Number", value: cardNumber },
+    { label: "Card/Set Number", value: cardSetNumber },
+  ];
+  const summaryItems = summaryFields
+    .filter((f) => f.value && f.value !== "")
+    .map((f) => (
+      <ThemedView
+        key={f.label}
+        style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", marginBottom: 2 }}
+      >
+        <Svg
+          height={6}
+          width={8}
+          style={{ marginRight: theme.padding.xsmall }}
+        >
+          <Circle
+            cx={3}
+            cy={3}
+            r={3}
+            fill={theme.colors.green}
+          />
+        </Svg>
+        <ThemedText type="defaultSemiBold">{f.label}:</ThemedText>
+        <ThemedText type="default"> {f.value}</ThemedText>
+      </ThemedView>
+    ));
 
   return (
     <ThemedView>
@@ -656,138 +580,21 @@ export default function AdvancedSearchForm({
           If enabled, cards with same stats but different images or sets will be displayed only once.
         </ThemedText>
       )}
-      {/* Card Type, Name, and Rules summary before reset button */}
-      {(cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 || cardRules) && (
-        <ThemedView style={{ marginBottom: 8 }}>
-          <ThemedText type="default">
-            {cardName && `Card Name: ${cardName}`}
-            {cardSupertype.length > 0 && `${cardName ? " | " : ""}Supertype: ${cardSupertype.join(", ")}`}
-            {cardSubtypes.length > 0 &&
-              `${cardName || cardSupertype.length > 0 ? " | " : ""}Subtypes: ${cardSubtypes.join(", ")}`}
-            {cardTypes.length > 0 &&
-              `${cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 ? " | " : ""}Types: ${cardTypes.join(
-                ", "
-              )}`}
-            {cardRules &&
-              `${
-                cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 ? " | " : ""
-              }Rules: ${cardRules}`}
-          </ThemedText>
-        </ThemedView>
-      )}
-      {/* Attacks summary before reset button */}
-      {(attacksName ||
-        attacksDamage !== "" ||
-        attacksText ||
-        attacksCost.length > 0 ||
-        attacksConvertedEnergyCost !== "" ||
-        (attacksCostSlots && attacksCostSlots.some((v) => v))) && (
-        <ThemedView style={{ marginBottom: 8 }}>
-          <ThemedText type="default">
-            {attacksName && `Attack Name: ${attacksName}`}
-            {attacksDamage !== "" &&
-              `${attacksName ? " | " : ""}Attack Damage: ${attacksDamageOperator} ${attacksDamage}`}
-            {attacksText && `${attacksName || attacksDamage !== "" ? " | " : ""}Attack Text: ${attacksText}`}
-            {attacksCost.length > 0 &&
-              `${attacksName || attacksDamage !== "" || attacksText ? " | " : ""}Attack Cost: ${attacksCost.join(
-                ", "
-              )}`}
-            {attacksConvertedEnergyCost !== "" &&
-              `${
-                attacksName || attacksDamage !== "" || attacksText || attacksCost.length > 0 ? " | " : ""
-              }Converted Energy Cost: ${attacksConvertedEnergyCostOperator} ${attacksConvertedEnergyCost}`}
-            {attacksCostSlots &&
-              attacksCostSlots.some((v) => v) &&
-              `${
-                attacksName ||
-                attacksDamage !== "" ||
-                attacksText ||
-                attacksCost.length > 0 ||
-                attacksConvertedEnergyCost !== ""
-                  ? " | "
-                  : ""
-              }Cost Slots: ${attacksCostSlots.filter(Boolean).join(", ")}`}
-          </ThemedText>
-        </ThemedView>
-      )}
-      {/* Abilities summary before reset button */}
-      {(abilitiesName || abilitiesText || hasAnyAbility) && (
-        <ThemedView style={{ marginBottom: 8 }}>
-          <ThemedText type="default">
-            {abilitiesName && `Ability Name: ${abilitiesName}`}
-            {abilitiesText && `${abilitiesName ? " | " : ""}Ability Text: ${abilitiesText}`}
-            {hasAnyAbility && `${abilitiesName || abilitiesText ? " | " : ""}Has any ability`}
-          </ThemedText>
-        </ThemedView>
-      )}
-      {/* Stats summary before reset button */}
-      {(cardHp !== "" || cardConvertedRetreatCost !== "") && (
-        <ThemedView style={{ marginBottom: 8 }}>
-          <ThemedText type="default">
-            {cardHp !== "" && `HP: ${cardHpOperator} ${cardHp}`}
-            {cardConvertedRetreatCost !== "" &&
-              `${
-                cardHp !== "" ? " | " : ""
-              }Retreat Cost: ${cardConvertedRetreatCostOperator} ${cardConvertedRetreatCost}`}
-          </ThemedText>
-        </ThemedView>
-      )}
-      {/* Evolution summary before reset button */}
-      {(cardStage.length > 0 || cardEvolvesFrom || cardEvolvesTo) && (
-        <ThemedView style={{ marginBottom: 8 }}>
-          <ThemedText type="default">
-            {cardStage.length > 0 && `Stage: ${cardStage.join(", ")}`}
-            {cardEvolvesFrom && `${cardStage.length > 0 ? " | " : ""}Evolves From: ${cardEvolvesFrom}`}
-            {cardEvolvesTo && `${cardStage.length > 0 || cardEvolvesFrom ? " | " : ""}Evolves To: ${cardEvolvesTo}`}
-          </ThemedText>
-        </ThemedView>
-      )}
-      {/* Weaknesses/Resistances summary before reset button */}
-      {(cardWeaknessesType.length > 0 || cardResistancesType.length > 0) && (
-        <ThemedView style={{ marginBottom: 8 }}>
-          <ThemedText type="default">
-            {cardWeaknessesType.length > 0 && `Weaknesses: ${cardWeaknessesType.join(", ")}`}
-            {cardResistancesType.length > 0 &&
-              `${cardWeaknessesType.length > 0 ? " | " : ""}Resistances: ${cardResistancesType.join(", ")}`}
-          </ThemedText>
-        </ThemedView>
-      )}
-      {/* Edition summary before reset button */}
-      {(cardRegulationMark.length > 0 || cardSetName.length > 0 || cardNumber !== "" || cardSetNumber) && (
-        <ThemedView style={{ marginBottom: 8 }}>
-          <ThemedText type="default">
-            {cardRegulationMark.length > 0 && `Regulation Mark: ${cardRegulationMark.join(", ")}`}
-            {cardSetName.length > 0 &&
-              `${cardRegulationMark.length > 0 ? " | " : ""}Set Name: ${cardSetName.join(", ")}`}
-            {cardNumber !== "" &&
-              `${cardRegulationMark.length > 0 || cardSetName.length > 0 ? " | " : ""}Card Number: ${cardNumber}`}
-            {cardSetNumber &&
-              `${
-                cardRegulationMark.length > 0 || cardSetName.length > 0 || cardNumber !== "" ? " | " : ""
-              }Card/Set Number: ${cardSetNumber}`}
-          </ThemedText>
-        </ThemedView>
-      )}
-
-      <ThemedButton
-        title="Reset"
-        onPress={handleReset}
-        style={{ marginBottom: 16 }}
-      />
-      <ThemedButton
-        title={buttonLoading ? "Searching..." : "Search"}
-        onPress={handleSubmit}
-        disabled={buttonLoading}
-        style={{ position: "relative" }}
-      />
-      {error && (
-        <ThemedText
-          type="default"
-          style={{ color: "red" }}
-        >
-          {error}
-        </ThemedText>
-      )}
+      {summaryItems.length > 0 && <ThemedView style={{ marginBottom: 8 }}>{summaryItems}</ThemedView>}
+      <ThemedView style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <ThemedButton
+          title="Reset"
+          size="small"
+          onPress={handleReset}
+          style={{ marginBottom: 16 }}
+        />
+        <ThemedButton
+          title={"Search"}
+          onPress={handleSubmit}
+          status={loading ? "disabled" : "default"}
+          disabled={buttonLoading}
+        />
+      </ThemedView>
     </ThemedView>
   );
 }

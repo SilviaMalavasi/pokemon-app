@@ -79,3 +79,20 @@ export default function EvolutionModal({
     </Modal>
   );
 }
+
+export function getEvolutionFilters(cardStage: string[], cardEvolvesFrom: string, cardEvolvesTo: string) {
+  return [
+    cardStage.length > 0 && {
+      config: { key: "stage", type: "multiselect", table: "Card", column: "subtypes" },
+      value: cardStage,
+    },
+    cardEvolvesFrom && {
+      config: { key: "evolvesFrom", type: "text", table: "Card", column: "evolvesFrom" },
+      value: cardEvolvesFrom,
+    },
+    cardEvolvesTo && {
+      config: { key: "evolvesTo", type: "text", table: "Card", column: "evolvesTo", valueType: "json-string-array" },
+      value: cardEvolvesTo,
+    },
+  ].filter(Boolean);
+}

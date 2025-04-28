@@ -70,3 +70,28 @@ export default function WeakResModal({
     </Modal>
   );
 }
+
+export function getWeakResFilters(cardWeaknessesType: string[], cardResistancesType: string[]) {
+  return [
+    cardWeaknessesType.length > 0 && {
+      config: {
+        key: "weaknesses",
+        type: "multiselect",
+        table: "Card",
+        column: "weaknesses",
+        valueType: "json-string-array",
+      },
+      value: cardWeaknessesType,
+    },
+    cardResistancesType.length > 0 && {
+      config: {
+        key: "resistances",
+        type: "multiselect",
+        table: "Card",
+        column: "resistances",
+        valueType: "json-string-array",
+      },
+      value: cardResistancesType,
+    },
+  ].filter(Boolean);
+}

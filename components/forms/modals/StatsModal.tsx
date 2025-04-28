@@ -81,3 +81,29 @@ export default function StatsModal({
     </Modal>
   );
 }
+
+export function getStatsFilters(
+  cardHp: number | "",
+  cardHpOperator: string,
+  cardConvertedRetreatCost: number | "",
+  cardConvertedRetreatCostOperator: string
+) {
+  return [
+    cardHp !== "" && {
+      config: { key: "hp", type: "number", table: "Card", column: "hp", valueType: "int" },
+      value: cardHp,
+      operator: cardHpOperator,
+    },
+    cardConvertedRetreatCost !== "" && {
+      config: {
+        key: "convertedRetreatCost",
+        type: "number",
+        table: "Card",
+        column: "convertedRetreatCost",
+        valueType: "int",
+      },
+      value: cardConvertedRetreatCost,
+      operator: cardConvertedRetreatCostOperator,
+    },
+  ].filter(Boolean);
+}

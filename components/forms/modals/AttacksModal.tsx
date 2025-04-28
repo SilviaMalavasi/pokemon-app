@@ -154,3 +154,58 @@ export default function AttacksModal({
     </Modal>
   );
 }
+
+export function getAttacksFilters(
+  attacksName: string,
+  attacksDamage: number | "",
+  attacksDamageOperator: string,
+  attacksText: string,
+  attacksCost: string[],
+  attacksConvertedEnergyCost: number | "",
+  attacksConvertedEnergyCostOperator: string,
+  attacksCostSlots: string[]
+) {
+  return [
+    attacksName && {
+      config: { key: "attackName", type: "text", table: "Attacks", column: "name" },
+      value: attacksName,
+    },
+    attacksDamage !== "" && {
+      config: { key: "attackDamage", type: "number", table: "CardAttacks", column: "damage", valueType: "text" },
+      value: attacksDamage,
+      operator: attacksDamageOperator,
+    },
+    attacksText && {
+      config: { key: "attackText", type: "text", table: "Attacks", column: "text" },
+      value: attacksText,
+    },
+    attacksCost.length > 0 && {
+      config: { key: "attackCost", type: "multiselect", table: "CardAttacks", column: "cost" },
+      value: attacksCost,
+    },
+    attacksConvertedEnergyCost !== "" && {
+      config: {
+        key: "attacksConvertedEnergyCost",
+        type: "number",
+        table: "CardAttacks",
+        column: "convertedEnergyCost",
+        valueType: "int",
+      },
+      value: attacksConvertedEnergyCost,
+      operator: attacksConvertedEnergyCostOperator,
+    },
+    attacksConvertedEnergyCostOperator === "=" &&
+      attacksConvertedEnergyCost !== "" &&
+      attacksCostSlots.length > 0 &&
+      attacksCostSlots.some((v) => v) && {
+        config: {
+          key: "costSlots",
+          type: "multiselect",
+          table: "CardAttacks",
+          column: "cost",
+          valueType: "json-string-array",
+        },
+        value: attacksCostSlots,
+      },
+  ].filter(Boolean);
+}

@@ -85,3 +85,20 @@ export default function AbilitiesModal({
     </Modal>
   );
 }
+
+export function getAbilitiesFilters(abilitiesName: string, abilitiesText: string, hasAnyAbility: boolean) {
+  return [
+    abilitiesName && {
+      config: { key: "abilityName", type: "text", table: "Abilities", column: "name" },
+      value: abilitiesName,
+    },
+    abilitiesText && {
+      config: { key: "abilityText", type: "text", table: "Abilities", column: "text" },
+      value: abilitiesText,
+    },
+    hasAnyAbility && {
+      config: { key: "hasAnyAbility", type: "exists", table: "CardAbilities", column: "cardId" },
+      value: true,
+    },
+  ].filter(Boolean);
+}

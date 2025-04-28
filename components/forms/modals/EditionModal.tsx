@@ -92,3 +92,30 @@ export default function EditionModal({
     </Modal>
   );
 }
+
+export function getEditionFilters(
+  cardRegulationMark: string[],
+  cardSetName: string[],
+  cardNumber: number | "",
+  cardSetNumber: string
+) {
+  return [
+    cardRegulationMark.length > 0 && {
+      config: { key: "regulationMark", type: "multiselect", table: "Card", column: "regulationMark" },
+      value: cardRegulationMark,
+    },
+    cardSetName.length > 0 && {
+      config: { key: "setName", type: "multiselect", table: "CardSet", column: "name" },
+      value: cardSetName,
+    },
+    cardNumber !== "" && {
+      config: { key: "number", type: "number", table: "Card", column: "number", valueType: "text" },
+      value: cardNumber,
+      operator: "=",
+    },
+    cardSetNumber && {
+      config: { key: "cardSetNumber", type: "text", table: "Card", column: "cardId" },
+      value: cardSetNumber,
+    },
+  ].filter(Boolean);
+}

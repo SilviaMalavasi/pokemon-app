@@ -117,3 +117,32 @@ export default function CardTypeModal({
     </Modal>
   );
 }
+
+export function getCardTypeFilters(cardSupertype: string[], cardSubtypes: string[], cardTypes: string[]) {
+  return [
+    cardSupertype.length > 0 && {
+      config: { key: "cardSupertype", type: "multiselect", table: "Card", column: "supertype" },
+      value: cardSupertype,
+    },
+    cardSubtypes.length > 0 && {
+      config: {
+        key: "cardSubtypes",
+        type: "multiselect",
+        table: "Card",
+        column: "subtypes",
+        valueType: "json-string-array",
+      },
+      value: cardSubtypes,
+    },
+    cardTypes.length > 0 && {
+      config: {
+        key: "cardTypes",
+        type: "multiselect",
+        table: "Card",
+        column: "types",
+        valueType: "json-string-array",
+      },
+      value: cardTypes,
+    },
+  ].filter(Boolean);
+}
