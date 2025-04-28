@@ -14,6 +14,7 @@ interface TextInputProps {
   onChange: (value: string) => void;
   placeholder?: string;
   labelHint?: string;
+  style?: any;
 }
 
 export default function ThemedTextInput({
@@ -22,11 +23,12 @@ export default function ThemedTextInput({
   onChange,
   placeholder,
   labelHint,
+  style,
 }: TextInputProps): JSX.Element {
   const [showHint, setShowHint] = useState(false);
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[styles.container, style]}>
       {label && (
         <LinearGradient
           colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}

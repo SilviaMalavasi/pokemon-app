@@ -40,8 +40,8 @@ export const theme = {
   },
   fontSizes: {
     xsmall: vw(3),
-    small: vw(4),
-    medium: vw(5),
+    small: vw(3.5),
+    medium: vw(4.5),
     large: vw(7),
     xlarge: vw(10),
   },

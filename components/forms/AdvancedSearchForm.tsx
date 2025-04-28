@@ -15,7 +15,7 @@ import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 import { supabase } from "@/lib/supabase";
 import dynamicMultiSelectStyle from "@/style/base/DynamicMultiSelectStyle";
 import styles from "@/style/forms/AdvancedSearchFormStyle";
-
+import { theme } from "@/style/ui/Theme";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 
@@ -464,41 +464,117 @@ export default function AdvancedSearchForm({
 
   return (
     <ThemedView>
-      <ThemedButton
-        title="Reset"
-        onPress={handleReset}
-        style={{ marginBottom: 16 }}
-      />
-      <ThemedView>
-        <ThemedButton
-          type="outline"
-          size="large"
-          disabled={true}
-          icon="arrow"
-          status="default"
-          title="Start building your deck"
-          onPress={() => {
-            console.log("Button pressed!");
-          }}
-        />
-        <ThemedButton
-          type="outline"
-          size="large"
-          disabled={true}
-          icon="arrow"
-          status="default"
-          title="Start building your deck"
-          onPress={() => {
-            console.log("Button pressed!");
-          }}
-        />
-      </ThemedView>
       <ThemedTextInput
         label="Name"
         value={cardName}
         onChange={setCardName}
         placeholder="Card name"
+        style={{ marginBottom: theme.padding.medium }}
       />
+      <ThemedView style={styles.buttonRow}>
+        <ThemedButton
+          type="outline"
+          size="small"
+          disabled={false}
+          icon="arrow"
+          status="default"
+          title="card type"
+          onPress={() => {
+            console.log("Button pressed!");
+          }}
+          style={styles.halfButton}
+        />
+        <ThemedButton
+          type="outline"
+          size="small"
+          disabled={false}
+          icon="arrow"
+          status="default"
+          title="evolution"
+          onPress={() => {
+            console.log("Button pressed!");
+          }}
+          style={styles.halfButton}
+        />
+      </ThemedView>
+      <ThemedView style={styles.buttonRow}>
+        <ThemedButton
+          type="outline"
+          size="small"
+          disabled={false}
+          icon="arrow"
+          status="default"
+          title="stats"
+          onPress={() => {
+            console.log("Button pressed!");
+          }}
+          style={styles.halfButton}
+        />
+        <ThemedButton
+          type="outline"
+          size="small"
+          disabled={false}
+          icon="arrow"
+          status="default"
+          title="rules"
+          onPress={() => {
+            console.log("Button pressed!");
+          }}
+          style={styles.halfButton}
+        />
+      </ThemedView>
+      <ThemedView style={styles.buttonRow}>
+        <ThemedButton
+          type="outline"
+          size="small"
+          disabled={false}
+          icon="arrow"
+          status="default"
+          title="attacks"
+          onPress={() => {
+            console.log("Button pressed!");
+          }}
+          style={styles.halfButton}
+        />
+        <ThemedButton
+          type="outline"
+          size="small"
+          disabled={false}
+          icon="arrow"
+          status="default"
+          title="abilities"
+          onPress={() => {
+            console.log("Button pressed!");
+          }}
+          style={styles.halfButton}
+        />
+      </ThemedView>
+      <ThemedView style={{ ...styles.buttonRow, marginBottom: theme.padding.medium }}>
+        <ThemedButton
+          type="outline"
+          size="small"
+          disabled={false}
+          icon="arrow"
+          status="default"
+          title="weak/res"
+          onPress={() => {
+            console.log("Button pressed!");
+          }}
+          style={styles.halfButton}
+        />
+        <ThemedButton
+          type="outline"
+          size="small"
+          disabled={false}
+          icon="arrow"
+          status="default"
+          title="edition"
+          onPress={() => {
+            console.log("Button pressed!");
+          }}
+          style={styles.halfButton}
+        />
+      </ThemedView>
       <Collapsible
         title="Card Type"
         resetKey={resetKey}
@@ -806,6 +882,11 @@ export default function AdvancedSearchForm({
           If enabled, cards with same stats but different images or sets will be displayed only once.
         </ThemedText>
       )}
+      <ThemedButton
+        title="Reset"
+        onPress={handleReset}
+        style={{ marginBottom: 16 }}
+      />
       <ThemedButton
         title={buttonLoading ? "Searching..." : "Search"}
         onPress={handleSubmit}

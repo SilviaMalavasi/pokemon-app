@@ -11,7 +11,7 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
   const paddingVertical = size === "large" ? theme.padding.medium : theme.padding.small;
   const paddingHorizontal = size === "large" ? theme.padding.medium : theme.padding.small;
   const iconSize = size === "large" ? theme.padding.medium : theme.padding.small;
-  const textWithIconMargin = size === "large" ? theme.padding.medium : theme.padding.small;
+  const textWithIconMargin = size === "large" ? theme.padding.medium : theme.padding.xsmall;
 
   // Base container
   let container: any = {
@@ -20,7 +20,7 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
     paddingHorizontal,
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: theme.padding.small,
+    marginBottom: theme.padding.xsmall,
   };
 
   // Outline special case

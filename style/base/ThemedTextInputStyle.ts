@@ -4,7 +4,7 @@ import { theme } from "@/style/ui/Theme";
 const styles = StyleSheet.create({
   container: {
     paddingTop: theme.padding.small,
-    marginBottom: theme.padding.medium,
+    marginBottom: theme.padding.small,
   },
   label: {
     position: "absolute",
