@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: "100%", // Take full width of parent
     maxWidth: 400, // Limit modal max width for large screens
-    marginHorizontal: 32, // theme.padding.xlarge
+    marginHorizontal: 0, // theme.padding.xlarge
     // Height is auto by default
   },
   message: {

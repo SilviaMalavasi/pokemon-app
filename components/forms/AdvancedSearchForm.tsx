@@ -1,61 +1,37 @@
 import React, { useState, useEffect } from "react";
+
 import { TouchableOpacity } from "react-native";
-import ThemedView from "@/components/base/ThemedView";
-import ThemedButton from "@/components/base/ThemedButton";
-import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
-import ThemedTextInput from "@/components/base/ThemedTextInput";
-import NumberInput from "@/components/base/NumberInput";
-import Collapsible from "@/components/base/Collapsible";
-import { queryBuilder } from "@/helpers/queryBuilder";
-import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
-import { Dropdown } from "react-native-element-dropdown";
-import AutoCompleteInput from "@/components/base/AutoCompleteInput";
-import { supabase } from "@/lib/supabase";
-import dynamicMultiSelectStyle from "@/style/base/DynamicMultiSelectStyle";
-import styles from "@/style/forms/AdvancedSearchFormStyle";
-import { theme } from "@/style/ui/Theme";
-import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
+import ThemedView from "@/components/base/ThemedView";
+import ThemedButton from "@/components/base/ThemedButton";
+import ThemedTextInput from "@/components/base/ThemedTextInput";
+
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
+import { queryBuilder } from "@/helpers/queryBuilder";
+import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
+import { supabase } from "@/lib/supabase";
+
+import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
+
 import CardTypeModal from "@/components/forms/modals/CardTypeModal";
 import RulesModal from "@/components/forms/modals/RulesModal";
+import AttacksModal from "@/components/forms/modals/AttacksModal";
+import AbilitiesModal from "@/components/forms/modals/AbilitiesModal";
+import StatsModal from "@/components/forms/modals/StatsModal";
+import EvolutionModal from "@/components/forms/modals/EvolutionModal";
+import WeakResModal from "@/components/forms/modals/WeakResModal";
+import EditionModal from "@/components/forms/modals/EditionModal";
 
-const cardSupertypeOptions = uniqueIdentifiers.cardSupertype.map((v: string) => ({ value: v, label: v }));
+import styles from "@/style/forms/AdvancedSearchFormStyle";
+import { theme } from "@/style/ui/Theme";
+
 const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => ({ value: v, label: v }));
-const cardTypesOptions = uniqueIdentifiers.cardTypes.map((v: string) => ({ value: v, label: v }));
 const cardRegulationMarkOptions = uniqueIdentifiers.cardRegulationMark.map((v: string) => ({ value: v, label: v }));
 const cardSetNamesOptions = uniqueIdentifiers.cardSetNames.map((v: string) => ({ value: v, label: v }));
 const cardWeaknessesTypeOptions = uniqueIdentifiers.cardWeaknessTypes.map((v: string) => ({ value: v, label: v }));
 const cardResistancesTypeOptions = uniqueIdentifiers.cardResistanceTypes.map((v: string) => ({ value: v, label: v }));
 const energyTypesOptions = uniqueIdentifiers.energyTypes.map((v: string) => ({ value: v, label: v }));
-
-const allSubtypes = Array.from(
-  new Set([
-    ...(uniqueIdentifiers.cardSubtypePokémon || []),
-    ...(uniqueIdentifiers.cardSubtypeTrainer || []),
-    ...(uniqueIdentifiers.cardSubtypeEnergy || []),
-  ])
-);
-
-const getCardSubtypesOptions = (supertypes: string[]) => {
-  let subtypeSet = new Set<string>();
-
-  if (!supertypes || supertypes.length === 0) {
-    allSubtypes.forEach((v) => subtypeSet.add(v));
-  } else {
-    supertypes.forEach((supertype) => {
-      if (supertype === "Pokémon" && uniqueIdentifiers.cardSubtypePokémon) {
-        uniqueIdentifiers.cardSubtypePokémon.forEach((v: string) => subtypeSet.add(v));
-      } else if (supertype === "Trainer" && uniqueIdentifiers.cardSubtypeTrainer) {
-        uniqueIdentifiers.cardSubtypeTrainer.forEach((v: string) => subtypeSet.add(v));
-      } else if (supertype === "Energy" && uniqueIdentifiers.cardSubtypeEnergy) {
-        uniqueIdentifiers.cardSubtypeEnergy.forEach((v: string) => subtypeSet.add(v));
-      }
-    });
-  }
-  return Array.from(subtypeSet).map((v) => ({ value: v, label: v }));
-};
 
 export default function AdvancedSearchForm({
   onSearchResults,
@@ -131,6 +107,12 @@ export default function AdvancedSearchForm({
   const [localResetKey, setLocalResetKey] = useState(0);
   const [cardTypeModalVisible, setCardTypeModalVisible] = useState(false);
   const [rulesModalVisible, setRulesModalVisible] = useState(false);
+  const [attacksModalVisible, setAttacksModalVisible] = useState(false);
+  const [abilitiesModalVisible, setAbilitiesModalVisible] = useState(false);
+  const [statsModalVisible, setStatsModalVisible] = useState(false);
+  const [evolutionModalVisible, setEvolutionModalVisible] = useState(false);
+  const [weakResModalVisible, setWeakResModalVisible] = useState(false);
+  const [editionModalVisible, setEditionModalVisible] = useState(false);
 
   // Reset handler
   const handleReset = () => {
@@ -265,11 +247,6 @@ export default function AdvancedSearchForm({
       setAttacksCostSlots([]);
     }
   }, [attacksConvertedEnergyCost, attacksConvertedEnergyCostOperator]);
-
-  // Collapsible open/close handler
-  const handleCollapsibleChange = (title: string, open: boolean) => {
-    setCollapsibles((prev) => ({ ...prev, [title]: open }));
-  };
 
   const handleSubmit = async (): Promise<void> => {
     if (setLoadingProp) setLoadingProp(true);
@@ -464,8 +441,6 @@ export default function AdvancedSearchForm({
     }
   };
 
-  const cardSubtypesOptions = getCardSubtypesOptions(cardSupertype);
-
   return (
     <ThemedView>
       <ThemedTextInput
@@ -503,11 +478,18 @@ export default function AdvancedSearchForm({
           size="small"
           disabled={false}
           icon="arrow"
-          status="default"
+          status={
+            attacksName ||
+            attacksDamage !== "" ||
+            attacksText ||
+            attacksCost.length > 0 ||
+            attacksConvertedEnergyCost !== "" ||
+            (attacksCostSlots && attacksCostSlots.some((v) => v))
+              ? "active"
+              : "default"
+          }
           title="attacks"
-          onPress={() => {
-            console.log("Button pressed!");
-          }}
+          onPress={() => setAttacksModalVisible(true)}
           style={styles.halfButton}
         />
         <ThemedButton
@@ -515,11 +497,9 @@ export default function AdvancedSearchForm({
           size="small"
           disabled={false}
           icon="arrow"
-          status="default"
+          status={abilitiesName || abilitiesText || hasAnyAbility ? "active" : "default"}
           title="abilities"
-          onPress={() => {
-            console.log("Button pressed!");
-          }}
+          onPress={() => setAbilitiesModalVisible(true)}
           style={styles.halfButton}
         />
       </ThemedView>
@@ -529,11 +509,9 @@ export default function AdvancedSearchForm({
           size="small"
           disabled={false}
           icon="arrow"
-          status="default"
+          status={cardHp !== "" || cardConvertedRetreatCost !== "" ? "active" : "default"}
           title="stats"
-          onPress={() => {
-            console.log("Button pressed!");
-          }}
+          onPress={() => setStatsModalVisible(true)}
           style={styles.halfButton}
         />
         <ThemedButton
@@ -541,11 +519,9 @@ export default function AdvancedSearchForm({
           size="small"
           disabled={false}
           icon="arrow"
-          status="default"
+          status={cardStage.length > 0 || cardEvolvesFrom || cardEvolvesTo ? "active" : "default"}
           title="evolution"
-          onPress={() => {
-            console.log("Button pressed!");
-          }}
+          onPress={() => setEvolutionModalVisible(true)}
           style={styles.halfButton}
         />
       </ThemedView>
@@ -555,11 +531,9 @@ export default function AdvancedSearchForm({
           size="small"
           disabled={false}
           icon="arrow"
-          status="default"
+          status={cardWeaknessesType.length > 0 || cardResistancesType.length > 0 ? "active" : "default"}
           title="weak/res"
-          onPress={() => {
-            console.log("Button pressed!");
-          }}
+          onPress={() => setWeakResModalVisible(true)}
           style={styles.halfButton}
         />
         <ThemedButton
@@ -567,11 +541,13 @@ export default function AdvancedSearchForm({
           size="small"
           disabled={false}
           icon="arrow"
-          status="default"
+          status={
+            cardRegulationMark.length > 0 || cardSetName.length > 0 || cardNumber !== "" || cardSetNumber
+              ? "active"
+              : "default"
+          }
           title="edition"
-          onPress={() => {
-            console.log("Button pressed!");
-          }}
+          onPress={() => setEditionModalVisible(true)}
           style={styles.halfButton}
         />
       </ThemedView>
@@ -584,9 +560,6 @@ export default function AdvancedSearchForm({
         setCardSubtypes={setCardSubtypes}
         cardTypes={cardTypes}
         setCardTypes={setCardTypes}
-        cardSupertypeOptions={cardSupertypeOptions}
-        cardSubtypesOptions={cardSubtypesOptions}
-        cardTypesOptions={cardTypesOptions}
       />
       <RulesModal
         visible={rulesModalVisible}
@@ -594,260 +567,84 @@ export default function AdvancedSearchForm({
         cardRules={cardRules}
         setCardRules={setCardRules}
       />
-      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
-        <Collapsible
-          title="Evolution"
-          resetKey={resetKey}
-        >
-          <DynamicMultiSelect
-            label="Stage"
-            value={cardStage}
-            options={cardStageOptions}
-            onChange={setCardStage}
-            labelHint="Include cards that match ANY of the selected choices."
-          />
-          <ThemedTextInput
-            label="Evolves From"
-            value={cardEvolvesFrom}
-            onChange={setCardEvolvesFrom}
-            placeholder="Evolves from"
-          />
-          <ThemedTextInput
-            label="Evolves To"
-            value={cardEvolvesTo}
-            onChange={setCardEvolvesTo}
-            placeholder="Evolves to"
-          />
-        </Collapsible>
-      )}
-
-      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
-        <Collapsible
-          title="Attacks"
-          resetKey={resetKey}
-        >
-          <ThemedTextInput
-            label="Attack Name"
-            value={attacksName}
-            onChange={setAttacksName}
-            placeholder="Attack name"
-          />
-          <NumberInput
-            label="Attack Damage"
-            value={attacksDamage}
-            onChange={(val, op) => {
-              setAttacksDamage(val);
-              setAttacksDamageOperator(op);
-            }}
-            placeholder="Attack damage"
-            showOperatorSelect={"advanced"}
-          />
-
-          <AutoCompleteInput
-            label="Attack Text"
-            value={attacksText}
-            onChange={setAttacksText}
-            suggestions={["search", "discard pile", "attach", "energy"]}
-            placeholder="Attack text"
-          />
-          <NumberInput
-            label="Attacks Converted Energy Cost"
-            value={attacksConvertedEnergyCost}
-            onChange={(val, op) => {
-              setAttacksConvertedEnergyCost(val);
-              setAttacksConvertedEnergyCostOperator(op);
-            }}
-            placeholder="Converted energy cost"
-            showOperatorSelect={"basic"}
-          />
-
-          {(!attacksConvertedEnergyCostOperator ||
-            !attacksConvertedEnergyCost ||
-            attacksConvertedEnergyCostOperator !== "=") && (
-            <DynamicMultiSelect
-              label="Attack Cost"
-              value={attacksCost}
-              options={energyTypesOptions}
-              onChange={setAttacksCost}
-              labelHint="Include cards that match ANY of the selected choices."
-            />
-          )}
-          {attacksConvertedEnergyCostOperator === "=" &&
-            attacksConvertedEnergyCost &&
-            Number(attacksConvertedEnergyCost) > 0 && (
-              <>
-                {Array.from({ length: Number(attacksConvertedEnergyCost) }).map((_, idx) => (
-                  <Dropdown
-                    key={idx}
-                    style={{ marginVertical: 8 }}
-                    data={energyTypesOptions}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select type"
-                    containerStyle={dynamicMultiSelectStyle.listContainer}
-                    itemTextStyle={dynamicMultiSelectStyle.listItem}
-                    selectedTextStyle={dynamicMultiSelectStyle.selectedItemText}
-                    placeholderStyle={dynamicMultiSelectStyle.label}
-                    value={attacksCostSlots[idx] || ""}
-                    onChange={(item) => {
-                      const newSlots = [...attacksCostSlots];
-                      newSlots[idx] = item.value;
-                      setAttacksCostSlots(newSlots);
-                    }}
-                  />
-                ))}
-              </>
-            )}
-        </Collapsible>
-      )}
-      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
-        <Collapsible
-          title="Abilities"
-          resetKey={resetKey}
-        >
-          <ThemedTextInput
-            label="Abilities Name"
-            value={abilitiesName}
-            onChange={setAbilitiesName}
-            placeholder="Ability name"
-          />
-          <AutoCompleteInput
-            label="Abilities Text"
-            value={abilitiesText}
-            onChange={setAbilitiesText}
-            suggestions={["search", "discard pile", "attach", "energy"]}
-            placeholder="Ability text"
-          />
-          <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
-            <ThemedSwitch
-              value={hasAnyAbility}
-              onValueChange={setHasAnyAbility}
-            />
-            <ThemedText
-              type="default"
-              style={{ paddingLeft: 8 }}
-            >
-              Has any ability
-            </ThemedText>
-          </ThemedView>
-        </Collapsible>
-      )}
-
-      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
-        <Collapsible
-          title="Stats"
-          resetKey={resetKey}
-        >
-          <NumberInput
-            label="HP"
-            value={cardHp}
-            onChange={(val, op) => {
-              setCardHp(val);
-              setCardHpOperator(op);
-            }}
-            placeholder="Card HP"
-            showOperatorSelect={"basic"}
-          />
-          <NumberInput
-            label="Card Converted Retreat Cost"
-            value={cardConvertedRetreatCost}
-            onChange={(val, op) => {
-              setCardConvertedRetreatCost(val);
-              setCardConvertedRetreatCostOperator(op);
-            }}
-            placeholder="Retreat cost"
-            showOperatorSelect={"basic"}
-          />
-        </Collapsible>
-      )}
-      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
-        <Collapsible
-          title="Weaknesses/Resistances"
-          resetKey={resetKey}
-        >
-          <DynamicMultiSelect
-            label="Weaknesses Type"
-            value={cardWeaknessesType}
-            options={cardWeaknessesTypeOptions}
-            onChange={setCardWeaknessesType}
-            labelHint="Include cards that match ANY of the selected choices."
-          />
-          <DynamicMultiSelect
-            label="Resistances Type"
-            value={cardResistancesType}
-            options={cardResistancesTypeOptions}
-            onChange={setCardResistancesType}
-            labelHint="Include cards that match ANY of the selected choices."
-          />
-        </Collapsible>
-      )}
-      <Collapsible
-        title="Edition"
-        resetKey={resetKey}
-      >
-        <DynamicMultiSelect
-          label="Regulation Mark"
-          value={cardRegulationMark}
-          options={cardRegulationMarkOptions}
-          onChange={setCardRegulationMark}
-          labelHint="Include cards that match ANY of the selected choices."
-        />
-        <DynamicMultiSelect
-          label="Set Name"
-          value={cardSetName}
-          options={cardSetNamesOptions}
-          onChange={setCardSetName}
-          labelHint="Include cards that match ANY of the selected choices."
-        />
-        <NumberInput
-          label="Card Number"
-          value={cardNumber}
-          onChange={setCardNumber}
-          placeholder="Card number"
-        />
-        <ThemedTextInput
-          label="Card/Set Number"
-          value={cardSetNumber}
-          onChange={setCardSetNumber}
-          placeholder="Card/Set Number"
-        />
-      </Collapsible>
-      <Collapsible
-        title="Artist/Flavor"
-        resetKey={resetKey}
-      >
-        <ThemedTextInput
-          label="Artist"
-          value={cardArtist}
-          onChange={setCardArtist}
-          placeholder="Artist"
-        />
-        <ThemedTextInput
-          label="Flavor"
-          value={cardFlavor}
-          onChange={setCardFlavor}
-          placeholder="Flavor text"
-        />
-      </Collapsible>
-      {/* Card Type, Name, and Rules summary before reset button */}
-      {(cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 || cardRules) && (
-        <ThemedView style={{ marginBottom: 8 }}>
-          <ThemedText type="default">
-            {cardName && `Card Name: ${cardName}`}
-            {cardSupertype.length > 0 && `${cardName ? " | " : ""}Supertype: ${cardSupertype.join(", ")}`}
-            {cardSubtypes.length > 0 &&
-              `${cardName || cardSupertype.length > 0 ? " | " : ""}Subtypes: ${cardSubtypes.join(", ")}`}
-            {cardTypes.length > 0 &&
-              `${cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 ? " | " : ""}Types: ${cardTypes.join(
-                ", "
-              )}`}
-            {cardRules &&
-              `${
-                cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 ? " | " : ""
-              }Rules: ${cardRules}`}
-          </ThemedText>
-        </ThemedView>
-      )}
+      <AttacksModal
+        visible={attacksModalVisible}
+        onClose={() => setAttacksModalVisible(false)}
+        attacksName={attacksName}
+        setAttacksName={setAttacksName}
+        attacksDamage={attacksDamage}
+        setAttacksDamage={setAttacksDamage}
+        attacksDamageOperator={attacksDamageOperator}
+        setAttacksDamageOperator={setAttacksDamageOperator}
+        attacksText={attacksText}
+        setAttacksText={setAttacksText}
+        attacksCost={attacksCost}
+        setAttacksCost={setAttacksCost}
+        attacksConvertedEnergyCost={attacksConvertedEnergyCost}
+        setAttacksConvertedEnergyCost={setAttacksConvertedEnergyCost}
+        attacksConvertedEnergyCostOperator={attacksConvertedEnergyCostOperator}
+        setAttacksConvertedEnergyCostOperator={setAttacksConvertedEnergyCostOperator}
+        attacksCostSlots={attacksCostSlots}
+        setAttacksCostSlots={setAttacksCostSlots}
+        energyTypesOptions={energyTypesOptions}
+      />
+      <AbilitiesModal
+        visible={abilitiesModalVisible}
+        onClose={() => setAbilitiesModalVisible(false)}
+        abilitiesName={abilitiesName}
+        setAbilitiesName={setAbilitiesName}
+        abilitiesText={abilitiesText}
+        setAbilitiesText={setAbilitiesText}
+        hasAnyAbility={hasAnyAbility}
+        setHasAnyAbility={setHasAnyAbility}
+      />
+      <StatsModal
+        visible={statsModalVisible}
+        onClose={() => setStatsModalVisible(false)}
+        cardHp={cardHp}
+        setCardHp={setCardHp}
+        cardHpOperator={cardHpOperator}
+        setCardHpOperator={setCardHpOperator}
+        cardConvertedRetreatCost={cardConvertedRetreatCost}
+        setCardConvertedRetreatCost={setCardConvertedRetreatCost}
+        cardConvertedRetreatCostOperator={cardConvertedRetreatCostOperator}
+        setCardConvertedRetreatCostOperator={setCardConvertedRetreatCostOperator}
+      />
+      <EvolutionModal
+        visible={evolutionModalVisible}
+        onClose={() => setEvolutionModalVisible(false)}
+        cardStage={cardStage}
+        setCardStage={setCardStage}
+        cardEvolvesFrom={cardEvolvesFrom}
+        setCardEvolvesFrom={setCardEvolvesFrom}
+        cardEvolvesTo={cardEvolvesTo}
+        setCardEvolvesTo={setCardEvolvesTo}
+        cardStageOptions={cardStageOptions}
+      />
+      <WeakResModal
+        visible={weakResModalVisible}
+        onClose={() => setWeakResModalVisible(false)}
+        cardWeaknessesType={cardWeaknessesType}
+        setCardWeaknessesType={setCardWeaknessesType}
+        cardResistancesType={cardResistancesType}
+        setCardResistancesType={setCardResistancesType}
+        cardWeaknessesTypeOptions={cardWeaknessesTypeOptions}
+        cardResistancesTypeOptions={cardResistancesTypeOptions}
+      />
+      <EditionModal
+        visible={editionModalVisible}
+        onClose={() => setEditionModalVisible(false)}
+        cardRegulationMark={cardRegulationMark}
+        setCardRegulationMark={setCardRegulationMark}
+        cardSetName={cardSetName}
+        setCardSetName={setCardSetName}
+        cardNumber={cardNumber}
+        setCardNumber={setCardNumber}
+        cardSetNumber={cardSetNumber}
+        setCardSetNumber={setCardSetNumber}
+        cardRegulationMarkOptions={cardRegulationMarkOptions}
+        cardSetNamesOptions={cardSetNamesOptions}
+      />
       <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
         <ThemedSwitch
           value={removeDuplicates}
@@ -857,7 +654,7 @@ export default function AdvancedSearchForm({
           type="default"
           style={{ paddingLeft: 8 }}
         >
-          Remove duplicates
+          Hide duplicates
         </ThemedText>
         <TouchableOpacity
           onPress={() => setShowHint((v) => !v)}
@@ -879,6 +676,119 @@ export default function AdvancedSearchForm({
           If enabled, cards with same stats but different images or sets will be displayed only once.
         </ThemedText>
       )}
+      {/* Card Type, Name, and Rules summary before reset button */}
+      {(cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 || cardRules) && (
+        <ThemedView style={{ marginBottom: 8 }}>
+          <ThemedText type="default">
+            {cardName && `Card Name: ${cardName}`}
+            {cardSupertype.length > 0 && `${cardName ? " | " : ""}Supertype: ${cardSupertype.join(", ")}`}
+            {cardSubtypes.length > 0 &&
+              `${cardName || cardSupertype.length > 0 ? " | " : ""}Subtypes: ${cardSubtypes.join(", ")}`}
+            {cardTypes.length > 0 &&
+              `${cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 ? " | " : ""}Types: ${cardTypes.join(
+                ", "
+              )}`}
+            {cardRules &&
+              `${
+                cardName || cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 ? " | " : ""
+              }Rules: ${cardRules}`}
+          </ThemedText>
+        </ThemedView>
+      )}
+      {/* Attacks summary before reset button */}
+      {(attacksName ||
+        attacksDamage !== "" ||
+        attacksText ||
+        attacksCost.length > 0 ||
+        attacksConvertedEnergyCost !== "" ||
+        (attacksCostSlots && attacksCostSlots.some((v) => v))) && (
+        <ThemedView style={{ marginBottom: 8 }}>
+          <ThemedText type="default">
+            {attacksName && `Attack Name: ${attacksName}`}
+            {attacksDamage !== "" &&
+              `${attacksName ? " | " : ""}Attack Damage: ${attacksDamageOperator} ${attacksDamage}`}
+            {attacksText && `${attacksName || attacksDamage !== "" ? " | " : ""}Attack Text: ${attacksText}`}
+            {attacksCost.length > 0 &&
+              `${attacksName || attacksDamage !== "" || attacksText ? " | " : ""}Attack Cost: ${attacksCost.join(
+                ", "
+              )}`}
+            {attacksConvertedEnergyCost !== "" &&
+              `${
+                attacksName || attacksDamage !== "" || attacksText || attacksCost.length > 0 ? " | " : ""
+              }Converted Energy Cost: ${attacksConvertedEnergyCostOperator} ${attacksConvertedEnergyCost}`}
+            {attacksCostSlots &&
+              attacksCostSlots.some((v) => v) &&
+              `${
+                attacksName ||
+                attacksDamage !== "" ||
+                attacksText ||
+                attacksCost.length > 0 ||
+                attacksConvertedEnergyCost !== ""
+                  ? " | "
+                  : ""
+              }Cost Slots: ${attacksCostSlots.filter(Boolean).join(", ")}`}
+          </ThemedText>
+        </ThemedView>
+      )}
+      {/* Abilities summary before reset button */}
+      {(abilitiesName || abilitiesText || hasAnyAbility) && (
+        <ThemedView style={{ marginBottom: 8 }}>
+          <ThemedText type="default">
+            {abilitiesName && `Ability Name: ${abilitiesName}`}
+            {abilitiesText && `${abilitiesName ? " | " : ""}Ability Text: ${abilitiesText}`}
+            {hasAnyAbility && `${abilitiesName || abilitiesText ? " | " : ""}Has any ability`}
+          </ThemedText>
+        </ThemedView>
+      )}
+      {/* Stats summary before reset button */}
+      {(cardHp !== "" || cardConvertedRetreatCost !== "") && (
+        <ThemedView style={{ marginBottom: 8 }}>
+          <ThemedText type="default">
+            {cardHp !== "" && `HP: ${cardHpOperator} ${cardHp}`}
+            {cardConvertedRetreatCost !== "" &&
+              `${
+                cardHp !== "" ? " | " : ""
+              }Retreat Cost: ${cardConvertedRetreatCostOperator} ${cardConvertedRetreatCost}`}
+          </ThemedText>
+        </ThemedView>
+      )}
+      {/* Evolution summary before reset button */}
+      {(cardStage.length > 0 || cardEvolvesFrom || cardEvolvesTo) && (
+        <ThemedView style={{ marginBottom: 8 }}>
+          <ThemedText type="default">
+            {cardStage.length > 0 && `Stage: ${cardStage.join(", ")}`}
+            {cardEvolvesFrom && `${cardStage.length > 0 ? " | " : ""}Evolves From: ${cardEvolvesFrom}`}
+            {cardEvolvesTo && `${cardStage.length > 0 || cardEvolvesFrom ? " | " : ""}Evolves To: ${cardEvolvesTo}`}
+          </ThemedText>
+        </ThemedView>
+      )}
+      {/* Weaknesses/Resistances summary before reset button */}
+      {(cardWeaknessesType.length > 0 || cardResistancesType.length > 0) && (
+        <ThemedView style={{ marginBottom: 8 }}>
+          <ThemedText type="default">
+            {cardWeaknessesType.length > 0 && `Weaknesses: ${cardWeaknessesType.join(", ")}`}
+            {cardResistancesType.length > 0 &&
+              `${cardWeaknessesType.length > 0 ? " | " : ""}Resistances: ${cardResistancesType.join(", ")}`}
+          </ThemedText>
+        </ThemedView>
+      )}
+      {/* Edition summary before reset button */}
+      {(cardRegulationMark.length > 0 || cardSetName.length > 0 || cardNumber !== "" || cardSetNumber) && (
+        <ThemedView style={{ marginBottom: 8 }}>
+          <ThemedText type="default">
+            {cardRegulationMark.length > 0 && `Regulation Mark: ${cardRegulationMark.join(", ")}`}
+            {cardSetName.length > 0 &&
+              `${cardRegulationMark.length > 0 ? " | " : ""}Set Name: ${cardSetName.join(", ")}`}
+            {cardNumber !== "" &&
+              `${cardRegulationMark.length > 0 || cardSetName.length > 0 ? " | " : ""}Card Number: ${cardNumber}`}
+            {cardSetNumber &&
+              `${
+                cardRegulationMark.length > 0 || cardSetName.length > 0 || cardNumber !== "" ? " | " : ""
+              }Card/Set Number: ${cardSetNumber}`}
+          </ThemedText>
+        </ThemedView>
+      )}
+
       <ThemedButton
         title="Reset"
         onPress={handleReset}
