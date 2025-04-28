@@ -8,14 +8,13 @@ const styles = StyleSheet.create({
   },
   label: {
     position: "absolute",
-    top: 0,
+    top: theme.padding.xsmall,
     left: 0,
     zIndex: 2,
     flexDirection: "row",
     alignItems: "center",
     marginLeft: theme.padding.xsmall,
-    padding: theme.padding.xsmall,
-    backgroundColor: theme.colors.background,
+    paddingHorizontal: theme.padding.xsmall,
   },
   labelHintIcon: {
     height: theme.fontSizes.small,
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
     paddingRight: theme.padding.xsmall,
   },
   input: {
-    borderRadius: 4,
+    borderRadius: theme.borderRadius.small,
     paddingLeft: theme.padding.small,
     paddingRight: theme.padding.small,
     paddingTop: theme.padding.small * 1.25,
@@ -36,7 +35,6 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSizes.medium,
     lineHeight: theme.fontSizes.medium * 1.25,
     fontFamily: "Inter-Regular",
-    backgroundColor: theme.colors.background,
     color: theme.colors.textHilight,
     borderWidth: 1,
     borderColor: theme.colors.text,
