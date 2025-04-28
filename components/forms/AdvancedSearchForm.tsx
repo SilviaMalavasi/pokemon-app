@@ -18,6 +18,7 @@ import styles from "@/style/forms/AdvancedSearchFormStyle";
 import { theme } from "@/style/ui/Theme";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
+import CardTypeModal from "@/components/forms/modals/CardTypeModal";
 
 const cardSupertypeOptions = uniqueIdentifiers.cardSupertype.map((v: string) => ({ value: v, label: v }));
 const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => ({ value: v, label: v }));
@@ -127,6 +128,7 @@ export default function AdvancedSearchForm({
   const [showHint, setShowHint] = useState(false);
   // Add a local resetKey to force reset
   const [localResetKey, setLocalResetKey] = useState(0);
+  const [cardTypeModalVisible, setCardTypeModalVisible] = useState(false);
 
   // Reset handler
   const handleReset = () => {
@@ -477,11 +479,9 @@ export default function AdvancedSearchForm({
           size="small"
           disabled={false}
           icon="arrow"
-          status="default"
+          status={cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 ? "active" : "default"}
           title="card type"
-          onPress={() => {
-            console.log("Button pressed!");
-          }}
+          onPress={() => setCardTypeModalVisible(true)}
           style={styles.halfButton}
         />
         <ThemedButton
@@ -575,34 +575,19 @@ export default function AdvancedSearchForm({
           style={styles.halfButton}
         />
       </ThemedView>
-      <Collapsible
-        title="Card Type"
-        resetKey={resetKey}
-      >
-        <DynamicMultiSelect
-          label="Supertype"
-          value={cardSupertype}
-          options={cardSupertypeOptions}
-          onChange={setCardSupertype}
-          labelHint="Include cards that match ANY of the selected choices."
-        />
-        <DynamicMultiSelect
-          label="Subtypes"
-          value={cardSubtypes}
-          options={cardSubtypesOptions}
-          onChange={setCardSubtypes}
-          labelHint="Include cards that match ANY of the selected choices."
-        />
-        {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon") || cardSupertype.includes("Energy")) && (
-          <DynamicMultiSelect
-            label="Types"
-            value={cardTypes}
-            options={cardTypesOptions}
-            onChange={setCardTypes}
-            labelHint="Include cards that match ANY of the selected choices."
-          />
-        )}
-      </Collapsible>
+      <CardTypeModal
+        visible={cardTypeModalVisible}
+        onClose={() => setCardTypeModalVisible(false)}
+        cardSupertype={cardSupertype}
+        setCardSupertype={setCardSupertype}
+        cardSubtypes={cardSubtypes}
+        setCardSubtypes={setCardSubtypes}
+        cardTypes={cardTypes}
+        setCardTypes={setCardTypes}
+        cardSupertypeOptions={cardSupertypeOptions}
+        cardSubtypesOptions={cardSubtypesOptions}
+        cardTypesOptions={cardTypesOptions}
+      />
       {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon")) && (
         <Collapsible
           title="Evolution"
@@ -851,6 +836,17 @@ export default function AdvancedSearchForm({
           placeholder="Flavor text"
         />
       </Collapsible>
+      {/* CardType summary before reset button */}
+      {(cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0) && (
+        <ThemedView style={{ marginBottom: 8 }}>
+          <ThemedText type="default">
+            {cardSupertype.length > 0 && `Supertype: ${cardSupertype.join(", ")}`}
+            {cardSubtypes.length > 0 && `${cardSupertype.length > 0 ? " | " : ""}Subtypes: ${cardSubtypes.join(", ")}`}
+            {cardTypes.length > 0 &&
+              `${cardSupertype.length > 0 || cardSubtypes.length > 0 ? " | " : ""}Types: ${cardTypes.join(", ")}`}
+          </ThemedText>
+        </ThemedView>
+      )}
       <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
         <ThemedSwitch
           value={removeDuplicates}

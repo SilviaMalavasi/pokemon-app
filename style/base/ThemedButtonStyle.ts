@@ -30,7 +30,11 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
       backgroundColor: "transparent",
       borderWidth: 2,
       borderColor:
-        status === "active" ? theme.colors.green : status === "disabled" ? theme.colors.lightGrey : theme.colors.purple,
+        status === "active"
+          ? theme.colors.purple
+          : status === "disabled"
+          ? theme.colors.lightGrey
+          : theme.colors.purple,
       opacity: status === "disabled" ? 0.6 : 1,
     };
   } else {
