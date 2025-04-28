@@ -3,7 +3,7 @@ import { TouchableOpacity } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
-import TextInput from "@/components/base/TextInput";
+import ThemedTextInput from "@/components/base/ThemedTextInput";
 import Collapsible from "@/components/base/Collapsible";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import { freeQueryBuilder } from "@/helpers/freeQueryBuilder";
@@ -197,7 +197,7 @@ export default function FreeSearchForm({
         onPress={handleReset}
         style={{ marginBottom: 16 }}
       />
-      <TextInput
+      <ThemedTextInput
         label="Free Search"
         value={cardSearch}
         onChange={setCardSearch}

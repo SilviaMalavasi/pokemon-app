@@ -65,16 +65,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     paddingTop: 2,
     paddingBottom: 0,
-    marginLeft: 6,
-    marginTop: -2,
   },
   hintText: {
     fontFamily: "Inter-Regular",
+    fontSize: theme.fontSizes.medium,
+    lineHeight: theme.fontSizes.medium * 1.15,
+    color: theme.colors.textAlternative,
+  },
+  label: {
+    fontFamily: "Inter-Medium",
     fontSize: theme.fontSizes.small,
     lineHeight: theme.fontSizes.small * 1.15,
-    color: theme.colors.textAlternative,
-    marginTop: 6,
-    marginBottom: 16,
+    color: theme.colors.text,
   },
 });
 

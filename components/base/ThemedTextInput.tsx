@@ -3,7 +3,7 @@ import { TouchableOpacity } from "react-native";
 import { TextInput as RNTextInput } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
-import styles from "@/style/base/TextInputStyle";
+import styles from "@/style/base/ThemedTextInputStyle";
 
 interface TextInputProps {
   label?: string;
@@ -13,14 +13,25 @@ interface TextInputProps {
   labelHint?: string;
 }
 
-export default function TextInput({ label, value, onChange, placeholder, labelHint }: TextInputProps): JSX.Element {
+export default function ThemedTextInput({
+  label,
+  value,
+  onChange,
+  placeholder,
+  labelHint,
+}: TextInputProps): JSX.Element {
   const [showHint, setShowHint] = useState(false);
 
   return (
     <ThemedView style={styles.container}>
       {label && (
         <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
-          <ThemedText style={styles.label}>{label}</ThemedText>
+          <ThemedText
+            type="label"
+            style={styles.label}
+          >
+            {label}
+          </ThemedText>
           {labelHint && (
             <TouchableOpacity
               onPress={() => setShowHint((v) => !v)}
@@ -32,7 +43,7 @@ export default function TextInput({ label, value, onChange, placeholder, labelHi
         </ThemedView>
       )}
       {showHint && labelHint && <ThemedText type="hintText">{labelHint}</ThemedText>}
-      <ThemedView style={styles.inputWrapper}>
+      <ThemedView>
         <RNTextInput
           style={[styles.input, { flex: 1 }]}
           value={value}
@@ -46,7 +57,7 @@ export default function TextInput({ label, value, onChange, placeholder, labelHi
             accessibilityLabel={`Clear ${label || "input"}`}
             style={styles.clearIcon}
           >
-            <ThemedText type="hintIcon">×</ThemedText>
+            <ThemedText type="hintIcon">X</ThemedText>
           </TouchableOpacity>
         )}
       </ThemedView>

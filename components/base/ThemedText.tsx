@@ -13,7 +13,8 @@ export type ThemedTextProps = TextProps & {
     | "buttonAlternative"
     | "buttonDisabled"
     | "hintIcon"
-    | "hintText";
+    | "hintText"
+    | "label";
   color?: string;
   fontSize?: number;
   fontWeight?: "black" | "bold" | "extra-bold" | "light" | "medium" | "regular" | "semi-bold";
@@ -45,6 +46,7 @@ export default function ThemedText({ style, type = "default", color, fontSize, f
     type === "buttonDisabled" ? styles.buttonDisabled : undefined,
     type === "hintIcon" ? styles.hintIcon : undefined,
     type === "hintText" ? styles.hintText : undefined,
+    type === "label" ? styles.label : undefined,
     style,
     fontSize ? { fontSize: vw(fontSize) } : undefined,
     mappedFontWeight ? { fontWeight: mappedFontWeight } : undefined,

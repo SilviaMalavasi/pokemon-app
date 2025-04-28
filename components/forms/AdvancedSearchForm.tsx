@@ -3,7 +3,7 @@ import { TouchableOpacity } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
-import TextInput from "@/components/base/TextInput";
+import ThemedTextInput from "@/components/base/ThemedTextInput";
 import NumberInput from "@/components/base/NumberInput";
 import Collapsible from "@/components/base/Collapsible";
 import { queryBuilder } from "@/helpers/queryBuilder";
@@ -468,7 +468,7 @@ export default function AdvancedSearchForm({
         onPress={handleReset}
         style={{ marginBottom: 16 }}
       />
-      <TextInput
+      <ThemedTextInput
         label="Name"
         value={cardName}
         onChange={setCardName}
@@ -514,13 +514,13 @@ export default function AdvancedSearchForm({
             onChange={setCardStage}
             labelHint="Include cards that match ANY of the selected choices."
           />
-          <TextInput
+          <ThemedTextInput
             label="Evolves From"
             value={cardEvolvesFrom}
             onChange={setCardEvolvesFrom}
             placeholder="Evolves from"
           />
-          <TextInput
+          <ThemedTextInput
             label="Evolves To"
             value={cardEvolvesTo}
             onChange={setCardEvolvesTo}
@@ -547,7 +547,7 @@ export default function AdvancedSearchForm({
           title="Attacks"
           resetKey={resetKey}
         >
-          <TextInput
+          <ThemedTextInput
             label="Attack Name"
             value={attacksName}
             onChange={setAttacksName}
@@ -626,7 +626,7 @@ export default function AdvancedSearchForm({
           title="Abilities"
           resetKey={resetKey}
         >
-          <TextInput
+          <ThemedTextInput
             label="Abilities Name"
             value={abilitiesName}
             onChange={setAbilitiesName}
@@ -726,7 +726,7 @@ export default function AdvancedSearchForm({
           onChange={setCardNumber}
           placeholder="Card number"
         />
-        <TextInput
+        <ThemedTextInput
           label="Card/Set Number"
           value={cardSetNumber}
           onChange={setCardSetNumber}
@@ -737,13 +737,13 @@ export default function AdvancedSearchForm({
         title="Artist/Flavor"
         resetKey={resetKey}
       >
-        <TextInput
+        <ThemedTextInput
           label="Artist"
           value={cardArtist}
           onChange={setCardArtist}
           placeholder="Artist"
         />
-        <TextInput
+        <ThemedTextInput
           label="Flavor"
           value={cardFlavor}
           onChange={setCardFlavor}
