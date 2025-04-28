@@ -2,6 +2,7 @@ import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import ExternalLink from "@/components/base/ExternalLink";
+import ThemedButton from "@/components/base/ThemedButton";
 
 export default function HomeScreen() {
   return (
@@ -17,6 +18,19 @@ export default function HomeScreen() {
           This app helps players build their Pokémon decks by searching only for cards in the current rotation. LAST
           UPDATE: 24-04-2025.
         </ThemedText>
+        <ThemedView>
+          <ThemedButton
+            type="alternative"
+            size="large"
+            disabled={false}
+            icon="search"
+            status="active"
+            title="Start building your deck"
+            onPress={() => {
+              console.log("Button pressed!");
+            }}
+          />
+        </ThemedView>
         <ThemedText
           type="default"
           style={{ paddingBottom: 12 }}

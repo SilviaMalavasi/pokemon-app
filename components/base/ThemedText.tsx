@@ -10,6 +10,7 @@ export type ThemedTextProps = TextProps & {
     | "defaultSemiBold"
     | "link"
     | "button"
+    | "buttonSmall"
     | "buttonAlternative"
     | "buttonDisabled"
     | "hintIcon"
@@ -42,6 +43,7 @@ export default function ThemedText({ style, type = "default", color, fontSize, f
     type === "subtitle" ? styles.subtitle : undefined,
     type === "link" ? styles.link : undefined,
     type === "button" ? styles.button : undefined,
+    type === "buttonSmall" ? styles.buttonSmall : undefined,
     type === "buttonAlternative" ? styles.buttonAlternative : undefined,
     type === "buttonDisabled" ? styles.buttonDisabled : undefined,
     type === "hintIcon" ? styles.hintIcon : undefined,

@@ -40,6 +40,13 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     color: theme.colors.background,
   },
+  buttonSmall: {
+    fontFamily: "Inter-Bold",
+    fontSize: theme.fontSizes.small,
+    lineHeight: theme.fontSizes.small * 1.15,
+    textTransform: "uppercase",
+    color: theme.colors.background,
+  },
   buttonAlternative: {
     fontFamily: "Inter-Bold",
     fontSize: theme.fontSizes.medium,
