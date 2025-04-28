@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
   },
   hintText: {
     fontFamily: "Inter-Regular",
-    fontSize: theme.fontSizes.medium,
-    lineHeight: theme.fontSizes.medium * 1.15,
+    fontSize: theme.fontSizes.small,
+    lineHeight: theme.fontSizes.small * 1.15,
     color: theme.colors.textAlternative,
   },
   label: {
