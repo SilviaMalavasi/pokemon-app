@@ -37,6 +37,9 @@ const styles = StyleSheet.create({
     color: theme.colors.placeholder,
     backgroundColor: "transparent",
   },
+  pickerListContainer: {
+    backgroundColor: theme.colors.background,
+  },
   pickerItem: {
     backgroundColor: theme.colors.background,
     color: theme.colors.text,
@@ -61,6 +64,54 @@ const styles = StyleSheet.create({
   },
   labelHint: {
     paddingTop: theme.padding.xsmall,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.4)",
+    justifyContent: "center",
+  },
+  modalContainer: {
+    margin: 24,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.borderRadius.small,
+    borderWidth: 1,
+    borderColor: theme.colors.text,
+    padding: theme.padding.small,
+  },
+  modalScroll: {
+    maxHeight: 300,
+  },
+  modalItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 12,
+  },
+  modalCheckbox: {
+    height: 20,
+    width: 20,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: theme.colors.text,
+    marginRight: 12,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalCheckboxChecked: {
+    backgroundColor: theme.colors.text,
+  },
+  modalCheckboxInner: {
+    width: 12,
+    height: 12,
+    backgroundColor: theme.colors.background,
+    borderRadius: 2,
+  },
+  modalActions: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop: 12,
+  },
+  modalActionCancel: {
+    marginRight: 16,
   },
 });
 

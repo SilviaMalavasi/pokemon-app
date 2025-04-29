@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { TouchableOpacity, View } from "react-native";
-import { Picker } from "@react-native-picker/picker";
+import React, { useState, useEffect } from "react";
+import { TouchableOpacity, View, Modal, ScrollView, Pressable } from "react-native";
 import { Svg, Rect, Path } from "react-native-svg";
 import { LinearGradient } from "expo-linear-gradient";
 import ThemedText from "@/components/base/ThemedText";
@@ -25,19 +24,31 @@ export default function DynamicMultiSelect({
   labelHint,
 }: DynamicMultiSelectProps): JSX.Element {
   const [showHint, setShowHint] = useState(false);
-  const [pickerValue, setPickerValue] = useState<string | undefined>(undefined);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [tempSelected, setTempSelected] = useState<string[]>(value);
 
-  // Toggle selection for multi-select
   const handleSelect = (selectedValue: string) => {
-    let newValue: string[];
-    if (value.includes(selectedValue)) {
-      newValue = value.filter((v) => v !== selectedValue);
+    if (tempSelected.includes(selectedValue)) {
+      setTempSelected(tempSelected.filter((v) => v !== selectedValue));
     } else {
-      newValue = [...value, selectedValue];
+      setTempSelected([...tempSelected, selectedValue]);
     }
-    onChange(newValue);
-    setPickerValue(undefined); // Reset picker to placeholder
   };
+
+  const confirmSelection = () => {
+    onChange(tempSelected);
+    setModalVisible(false);
+  };
+
+  const cancelSelection = () => {
+    setTempSelected(value);
+    setModalVisible(false);
+  };
+
+  // Sync tempSelected with value when value changes (e.g., chip unselect)
+  useEffect(() => {
+    setTempSelected(value);
+  }, [value]);
 
   return (
     <ThemedView style={styles.wrapper}>
@@ -83,48 +94,67 @@ export default function DynamicMultiSelect({
             </ThemedView>
           </LinearGradient>
         )}
-        {/* Picker for multi-select */}
-        <ThemedView style={styles.pickerWrapper}>
-          <Picker
-            selectedValue={pickerValue}
-            onValueChange={(itemValue) => {
-              if (itemValue) handleSelect(itemValue);
-            }}
-            style={styles.picker}
-          >
-            <Picker.Item
-              label="Select..."
-              value={undefined}
-              style={styles.pickerItem}
-            />
-            {options.map((option) => (
-              <Picker.Item
-                key={option.value}
-                label={value.includes(option.value) ? `✓ ${option.label}` : option.label}
-                value={option.value}
-                color={value.includes(option.value) ? theme.colors.textHilight : undefined}
-                style={styles.pickerItem}
-              />
-            ))}
-          </Picker>
-        </ThemedView>
+        {/* Modal-based multi-select */}
+        <Pressable
+          onPress={() => setModalVisible(true)}
+          style={styles.pickerWrapper}
+        >
+          <ThemedText>Select...</ThemedText>
+        </Pressable>
+        <Modal
+          visible={modalVisible}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={cancelSelection}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <ScrollView style={styles.modalScroll}>
+                {options.map((option) => (
+                  <Pressable
+                    key={option.value}
+                    style={styles.modalItem}
+                    onPress={() => handleSelect(option.value)}
+                  >
+                    <View
+                      style={[styles.modalCheckbox, tempSelected.includes(option.value) && styles.modalCheckboxChecked]}
+                    >
+                      {tempSelected.includes(option.value) && <View style={styles.modalCheckboxInner} />}
+                    </View>
+                    <ThemedText style={{ color: theme.colors.text }}>{option.label}</ThemedText>
+                  </Pressable>
+                ))}
+              </ScrollView>
+              <View style={styles.modalActions}>
+                <Pressable
+                  onPress={cancelSelection}
+                  style={styles.modalActionCancel}
+                >
+                  <ThemedText style={{ color: theme.colors.placeholder }}>Cancel</ThemedText>
+                </Pressable>
+                <Pressable onPress={confirmSelection}>
+                  <ThemedText style={{ color: theme.colors.text, fontWeight: "bold" }}>OK</ThemedText>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </ThemedView>
       <ThemedView style={styles.selectedAndHintWrapper}>
         {/* Show selected items */}
         {value.length > 0 && (
           <ThemedView style={styles.selectedWrapper}>
-            {value.map((val: string) => {
-              const opt = options.find((o) => o.value === val);
-              return (
+            {options
+              .filter((o) => value.includes(o.value))
+              .map((opt) => (
                 <ThemedChip
-                  key={val}
-                  label={opt ? opt.label : val}
+                  key={opt.value}
+                  label={opt.label}
                   icon="clear"
-                  onPress={() => handleSelect(val)}
+                  onPress={() => onChange(value.filter((v) => v !== opt.value))}
                   selected
                 />
-              );
-            })}
+              ))}
           </ThemedView>
         )}
         {showHint && labelHint && (
