@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Pressable, View, SafeAreaView, Platform } from "react-native";
+import { Modal, Pressable, View, SafeAreaView, Platform, ScrollView } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import styles from "@/style/base/ThemedModalStyle";
@@ -46,7 +46,12 @@ export default function ThemedModal({
               style={styles.modalView}
               pointerEvents="auto"
             >
-              {children}
+              <ScrollView
+                contentContainerStyle={{ alignItems: "center" }}
+                style={{ width: "100%" }}
+              >
+                {children}
+              </ScrollView>
               <ThemedButton
                 title={buttonText}
                 type={buttonType}

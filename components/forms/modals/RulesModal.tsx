@@ -1,6 +1,9 @@
 import React from "react";
 import AutoCompleteInput from "@/components/base/AutoCompleteInput";
+import ThemedText from "@/components/base/ThemedText";
 import ThemedModal from "@/components/base/ThemedModal";
+
+import { theme } from "@/style/ui/Theme";
 
 interface RulesModalProps {
   visible: boolean;
@@ -18,6 +21,12 @@ export default function RulesModal({ visible, onClose, cardRules, setCardRules }
       buttonType="alternative"
       buttonSize="small"
     >
+      <ThemedText
+        type="subtitle"
+        style={{ width: "100%", paddingBottom: theme.padding.medium }}
+      >
+        Rules
+      </ThemedText>
       <AutoCompleteInput
         label="Rules"
         value={cardRules}

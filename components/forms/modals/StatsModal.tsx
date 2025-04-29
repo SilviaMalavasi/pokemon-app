@@ -1,6 +1,9 @@
 import React from "react";
 import ThemedModal from "@/components/base/ThemedModal";
 import NumberInput from "@/components/base/NumberInput";
+import ThemedText from "@/components/base/ThemedText";
+
+import { theme } from "@/style/ui/Theme";
 
 interface StatsModalProps {
   visible: boolean;
@@ -35,6 +38,12 @@ export default function StatsModal({
       buttonType="alternative"
       buttonSize="small"
     >
+      <ThemedText
+        type="subtitle"
+        style={{ width: "100%", paddingBottom: theme.padding.medium }}
+      >
+        Stats
+      </ThemedText>
       <NumberInput
         label="HP"
         value={cardHp}

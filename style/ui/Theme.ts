@@ -45,7 +45,7 @@ export const theme = {
     xsmall: vw(3),
     small: vw(3.5),
     medium: vw(4.5),
-    large: vw(7),
+    large: vw(6),
     xlarge: vw(10),
   },
   borderRadius: {

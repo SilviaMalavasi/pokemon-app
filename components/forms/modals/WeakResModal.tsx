@@ -1,7 +1,10 @@
 import React from "react";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import ThemedModal from "@/components/base/ThemedModal";
+import ThemedText from "@/components/base/ThemedText";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
+
+import { theme } from "@/style/ui/Theme";
 
 interface WeakResModalProps {
   visible: boolean;
@@ -30,6 +33,12 @@ export default function WeakResModal({
       buttonType="alternative"
       buttonSize="small"
     >
+      <ThemedText
+        type="subtitle"
+        style={{ width: "100%", paddingBottom: theme.padding.medium }}
+      >
+        Weaknesses & Resistances
+      </ThemedText>
       <DynamicMultiSelect
         label="Weaknesses Type"
         value={cardWeaknessesType}

@@ -4,7 +4,9 @@ import NumberInput from "@/components/base/NumberInput";
 import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import ThemedModal from "@/components/base/ThemedModal";
+import ThemedText from "@/components/base/ThemedText";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
+import { theme } from "@/style/ui/Theme";
 
 interface AttacksModalProps {
   visible: boolean;
@@ -56,6 +58,12 @@ export default function AttacksModal({
       buttonType="alternative"
       buttonSize="small"
     >
+      <ThemedText
+        type="subtitle"
+        style={{ width: "100%", paddingBottom: theme.padding.medium }}
+      >
+        Attacks
+      </ThemedText>
       <ThemedTextInput
         label="Attack Name"
         value={attacksName}

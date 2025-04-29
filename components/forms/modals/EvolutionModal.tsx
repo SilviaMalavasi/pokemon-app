@@ -2,7 +2,10 @@ import React from "react";
 import ThemedModal from "@/components/base/ThemedModal";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
+import ThemedText from "@/components/base/ThemedText";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
+
+import { theme } from "@/style/ui/Theme";
 
 interface EvolutionModalProps {
   visible: boolean;
@@ -34,6 +37,12 @@ export default function EvolutionModal({
       buttonType="alternative"
       buttonSize="small"
     >
+      <ThemedText
+        type="subtitle"
+        style={{ width: "100%", paddingBottom: theme.padding.medium }}
+      >
+        Evolution
+      </ThemedText>
       <DynamicMultiSelect
         label="Stage"
         value={cardStage}

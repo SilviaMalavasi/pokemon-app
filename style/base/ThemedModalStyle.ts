@@ -33,12 +33,11 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: theme.colors.lightGreen,
-    padding: 24,
+    padding: theme.padding.medium,
     alignItems: "center",
-    ...theme.shadow,
+    justifyContent: "flex-start",
     width: "92%",
-    maxWidth: 400,
-    marginHorizontal: "auto",
+    ...theme.shadow,
   },
 });
 

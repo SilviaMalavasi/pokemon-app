@@ -5,6 +5,7 @@ import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedModal from "@/components/base/ThemedModal";
+import { theme } from "@/style/ui/Theme";
 
 interface AbilitiesModalProps {
   visible: boolean;
@@ -35,6 +36,12 @@ export default function AbilitiesModal({
       buttonType="alternative"
       buttonSize="small"
     >
+      <ThemedText
+        type="subtitle"
+        style={{ width: "100%", paddingBottom: theme.padding.medium }}
+      >
+        Abilities
+      </ThemedText>
       <ThemedTextInput
         label="Abilities Name"
         value={abilitiesName}

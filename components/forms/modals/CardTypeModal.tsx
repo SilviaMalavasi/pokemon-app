@@ -2,6 +2,8 @@ import React from "react";
 import ThemedModal from "@/components/base/ThemedModal";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
+import ThemedText from "@/components/base/ThemedText";
+import { theme } from "@/style/ui/Theme";
 
 interface CardTypeModalProps {
   visible: boolean;
@@ -65,6 +67,12 @@ export default function CardTypeModal({
       buttonType="alternative"
       buttonSize="small"
     >
+      <ThemedText
+        type="subtitle"
+        style={{ width: "100%", paddingBottom: theme.padding.medium }}
+      >
+        Card Type
+      </ThemedText>
       <DynamicMultiSelect
         label="Supertype"
         value={cardSupertype}

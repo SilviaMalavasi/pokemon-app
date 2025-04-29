@@ -3,7 +3,10 @@ import ThemedModal from "@/components/base/ThemedModal";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import NumberInput from "@/components/base/NumberInput";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
+import ThemedText from "@/components/base/ThemedText";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
+
+import { theme } from "@/style/ui/Theme";
 
 interface EditionModalProps {
   visible: boolean;
@@ -40,6 +43,12 @@ export default function EditionModal({
       buttonType="alternative"
       buttonSize="small"
     >
+      <ThemedText
+        type="subtitle"
+        style={{ width: "100%", paddingBottom: theme.padding.medium }}
+      >
+        Edition
+      </ThemedText>
       <DynamicMultiSelect
         label="Regulation Mark"
         value={cardRegulationMark}
