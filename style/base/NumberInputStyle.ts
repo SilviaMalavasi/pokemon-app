@@ -1,24 +1,27 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "@/style/base/Colors";
+import { theme } from "@/style/ui/Theme";
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 12,
+    paddingTop: theme.padding.small,
+    marginBottom: theme.padding.small,
+    width: "100%",
+    backgroundColor: "transparent",
   },
   label: {
     marginBottom: 4,
     fontSize: 16,
-    color: Colors.text,
+    color: theme.colors.text,
   },
   placeholder: {
-    color: Colors.placeholder,
+    color: theme.colors.placeholder,
   },
   input: {
     borderRadius: 4,
     padding: 12,
     fontSize: 16,
-    backgroundColor: Colors.inputBackground,
-    color: Colors.highlight,
+    backgroundColor: theme.colors.background,
+    color: theme.colors.textHilight,
   },
   picker: {
     width: 46,
@@ -26,20 +29,20 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingLeft: 18,
     fontSize: 16,
-    backgroundColor: Colors.inputBackground,
-    color: Colors.placeholder,
+    backgroundColor: theme.colors.background,
+    color: theme.colors.placeholder,
     marginBottom: 0,
     marginRight: 4,
   },
   selected: {
-    color: Colors.placeholder,
+    color: theme.colors.placeholder,
   },
   listContainer: {
-    backgroundColor: Colors.inputBackground,
+    backgroundColor: theme.colors.background,
     borderWidth: 0,
   },
   listItem: {
-    color: Colors.placeholder,
+    color: theme.colors.placeholder,
   },
   clearIcon: {
     position: "absolute",
