@@ -4,18 +4,21 @@ import { theme } from "@/style/ui/Theme";
 const styles = StyleSheet.create({
   container: {
     position: "relative",
-
     width: "100%",
     backgroundColor: "transparent",
   },
   suggestionsListContainer: {
+    position: "absolute",
+    bottom: "100%",
+    right: 0,
     width: "100%",
-    maxHeight: 150,
+    height: 140,
+    marginBottom: theme.padding.xsmall,
     backgroundColor: theme.colors.background,
     borderRadius: theme.borderRadius.medium,
     borderWidth: 1,
     borderColor: theme.colors.grey,
-    marginBottom: theme.padding.xsmall,
+    zIndex: 1,
   },
   suggestionLabel: {
     padding: theme.padding.small,

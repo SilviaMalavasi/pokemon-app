@@ -24,6 +24,7 @@ export default function AutoCompleteInput({
   labelHint,
 }: AutoCompleteInputProps): JSX.Element {
   const [inputFocused, setInputFocused] = useState(false);
+  const selectingSuggestion = useRef(false); // Use ref to track if a suggestion is being selected
   const inputRef = useRef<TextInput>(null);
 
   const filteredSuggestions =
@@ -31,11 +32,12 @@ export default function AutoCompleteInput({
   const showSuggestions = inputFocused && filteredSuggestions.length > 0;
 
   return (
-    <ThemedView style={styles.container}>
+    // Apply padding conditionally here
+    <ThemedView style={[styles.container, showSuggestions && { paddingTop: 140 }]}>
       {showSuggestions && (
         <ScrollView
           style={styles.suggestionsListContainer}
-          keyboardShouldPersistTaps="handled"
+          keyboardShouldPersistTaps="always"
         >
           <ThemedText
             type="label"
@@ -44,19 +46,25 @@ export default function AutoCompleteInput({
             Are you searchig for...
           </ThemedText>
           {filteredSuggestions.map((suggestion) => {
-            console.log("Rendering suggestion:", suggestion);
             return (
-              <Pressable
-                key={suggestion}
-                onPress={() => {
-                  console.log("Selected suggestion (Pressable):", suggestion);
-                  onChange(suggestion);
-                  setInputFocused(false);
-                }}
-                accessibilityLabel={`Select suggestion ${suggestion}`}
-              >
-                <ThemedText style={styles.customItem}>{suggestion}</ThemedText>
-              </Pressable>
+              <ScrollView>
+                <Pressable
+                  key={suggestion}
+                  // Use touch events to set/reset the flag
+                  onTouchStart={() => {
+                    selectingSuggestion.current = true;
+                  }}
+                  onTouchEnd={() => {
+                    // Trigger action directly on TouchEnd
+                    onChange(suggestion);
+                    setInputFocused(false); // Hide suggestions after selection
+                    selectingSuggestion.current = false; // Reset flag after action
+                  }}
+                  accessibilityLabel={`Select suggestion ${suggestion}`}
+                >
+                  <ThemedText style={styles.customItem}>{suggestion}</ThemedText>
+                </Pressable>
+              </ScrollView>
             );
           })}
         </ScrollView>
@@ -68,8 +76,18 @@ export default function AutoCompleteInput({
         onChange={onChange}
         placeholder={placeholder || ""}
         labelHint={labelHint}
-        onFocus={() => setInputFocused(true)}
-        onBlur={() => setTimeout(() => setInputFocused(false), 100)}
+        onFocus={() => {
+          selectingSuggestion.current = false;
+          setInputFocused(true);
+        }}
+        // Delay blur check and respect the flag
+        onBlur={() => {
+          setTimeout(() => {
+            if (!selectingSuggestion.current) {
+              setInputFocused(false);
+            }
+          }, 250); // Keep delay for now
+        }}
       />
     </ThemedView>
   );
