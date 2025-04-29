@@ -6,6 +6,12 @@ const styles = StyleSheet.create({
     paddingTop: theme.padding.small,
     marginBottom: theme.padding.small,
     width: "100%",
+    backgroundColor: "transparent",
+  },
+  labelContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "transparent",
   },
   label: {
     position: "absolute",

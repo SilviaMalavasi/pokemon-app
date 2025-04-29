@@ -1,33 +1,19 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "@/style/base/Colors";
+import { theme } from "@/style/ui/Theme";
 
-const AutoCompleteInputStyle = StyleSheet.create({
-  label: {
-    marginBottom: 4,
-    fontSize: 16,
-    color: Colors.text,
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    backgroundColor: "transparent",
   },
-  inputContainer: {
-    borderRadius: 4,
-    backgroundColor: Colors.inputBackground,
-    paddingHorizontal: 0,
-    paddingVertical: 4,
-    marginBottom: 12,
-    color: Colors.placeholder,
-  },
-  suggestionsListContainer: {
-    borderRadius: 4,
-    backgroundColor: Colors.inputBackground,
-  },
-  suggestionsListText: {
-    color: Colors.placeholder,
-  },
+  suggestionsListContainer: {},
   customItem: {
-    color: Colors.placeholder,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    fontSize: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.lightGrey,
+    backgroundColor: theme.colors.background,
   },
 });
 
-export default AutoCompleteInputStyle;
+export default styles;

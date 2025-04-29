@@ -15,6 +15,8 @@ interface TextInputProps {
   placeholder?: string;
   labelHint?: string;
   style?: any;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 export default function ThemedTextInput({
@@ -24,6 +26,8 @@ export default function ThemedTextInput({
   placeholder,
   labelHint,
   style,
+  onFocus,
+  onBlur,
 }: TextInputProps): JSX.Element {
   const [showHint, setShowHint] = useState(false);
 
@@ -37,7 +41,7 @@ export default function ThemedTextInput({
           end={{ x: 0, y: 1 }}
           style={styles.label}
         >
-          <ThemedView>
+          <ThemedView style={styles.labelContainer}>
             <ThemedText type="label">{label}</ThemedText>
             {labelHint && (
               <TouchableOpacity
@@ -77,6 +81,8 @@ export default function ThemedTextInput({
           onChangeText={onChange}
           placeholder={placeholder}
           placeholderTextColor={styles.placeholder.color}
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
         {value.length > 0 && (
           <TouchableOpacity
