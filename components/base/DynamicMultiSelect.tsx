@@ -50,7 +50,7 @@ export default function DynamicMultiSelect({
             end={{ x: 0, y: 1 }}
             style={styles.label}
           >
-            <ThemedView>
+            <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
               <ThemedText type="label">{label}</ThemedText>
               {labelHint && (
                 <TouchableOpacity
@@ -84,26 +84,30 @@ export default function DynamicMultiSelect({
           </LinearGradient>
         )}
         {/* Picker for multi-select */}
-        <Picker
-          selectedValue={pickerValue}
-          onValueChange={(itemValue) => {
-            if (itemValue) handleSelect(itemValue);
-          }}
-          style={styles.picker}
-        >
-          <Picker.Item
-            label="Select..."
-            value={undefined}
-          />
-          {options.map((option) => (
+        <ThemedView style={styles.pickerWrapper}>
+          <Picker
+            selectedValue={pickerValue}
+            onValueChange={(itemValue) => {
+              if (itemValue) handleSelect(itemValue);
+            }}
+            style={styles.picker}
+          >
             <Picker.Item
-              key={option.value}
-              label={value.includes(option.value) ? `✓ ${option.label}` : option.label}
-              value={option.value}
-              color={value.includes(option.value) ? "#888" : undefined}
+              label="Select..."
+              value={undefined}
+              style={styles.pickerItem}
             />
-          ))}
-        </Picker>
+            {options.map((option) => (
+              <Picker.Item
+                key={option.value}
+                label={value.includes(option.value) ? `✓ ${option.label}` : option.label}
+                value={option.value}
+                color={value.includes(option.value) ? theme.colors.textHilight : undefined}
+                style={styles.pickerItem}
+              />
+            ))}
+          </Picker>
+        </ThemedView>
       </ThemedView>
       <ThemedView style={styles.selectedAndHintWrapper}>
         {/* Show selected items */}
