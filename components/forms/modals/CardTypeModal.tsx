@@ -30,32 +30,13 @@ export default function CardTypeModal({
 
   const allSubtypes = Array.from(
     new Set([
-      ...(uniqueIdentifiers.cardSubtypePokémon || []),
-      ...(uniqueIdentifiers.cardSubtypeTrainer || []),
-      ...(uniqueIdentifiers.cardSubtypeEnergy || []),
+      ...(uniqueIdentifiers.cardSubtypePokémon ?? []),
+      ...(uniqueIdentifiers.cardSubtypeTrainer ?? []),
+      ...(uniqueIdentifiers.cardSubtypeEnergy ?? []),
     ])
   );
 
-  const getCardSubtypesOptions = (supertypes: string[]) => {
-    let subtypeSet = new Set<string>();
-
-    if (!supertypes || supertypes.length === 0) {
-      allSubtypes.forEach((v) => subtypeSet.add(v));
-    } else {
-      supertypes.forEach((supertype) => {
-        if (supertype === "Pokémon" && uniqueIdentifiers.cardSubtypePokémon) {
-          uniqueIdentifiers.cardSubtypePokémon.forEach((v: string) => subtypeSet.add(v));
-        } else if (supertype === "Trainer" && uniqueIdentifiers.cardSubtypeTrainer) {
-          uniqueIdentifiers.cardSubtypeTrainer.forEach((v: string) => subtypeSet.add(v));
-        } else if (supertype === "Energy" && uniqueIdentifiers.cardSubtypeEnergy) {
-          uniqueIdentifiers.cardSubtypeEnergy.forEach((v: string) => subtypeSet.add(v));
-        }
-      });
-    }
-    return Array.from(subtypeSet).map((v) => ({ value: v, label: v }));
-  };
-
-  const cardSubtypesOptions = getCardSubtypesOptions(cardSupertype);
+  const cardSubtypesOptions = allSubtypes.map((v) => ({ value: v, label: v }));
 
   const cardTypesOptions = uniqueIdentifiers.cardTypes.map((v: string) => ({ value: v, label: v }));
 
@@ -87,15 +68,13 @@ export default function CardTypeModal({
         onChange={setCardSubtypes}
         labelHint="Include cards that match ANY of the selected choices."
       />
-      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon") || cardSupertype.includes("Energy")) && (
-        <DynamicMultiSelect
-          label="Types"
-          value={cardTypes}
-          options={cardTypesOptions}
-          onChange={setCardTypes}
-          labelHint="Include cards that match ANY of the selected choices."
-        />
-      )}
+      <DynamicMultiSelect
+        label="Types"
+        value={cardTypes}
+        options={cardTypesOptions}
+        onChange={setCardTypes}
+        labelHint="Include cards that match ANY of the selected choices."
+      />
     </ThemedModal>
   );
 }
