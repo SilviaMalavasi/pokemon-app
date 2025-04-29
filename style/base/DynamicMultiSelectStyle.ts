@@ -8,29 +8,17 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   container: {
-    marginBottom: theme.padding.small,
+    paddingTop: theme.padding.small,
     borderRadius: theme.borderRadius.small,
     backgroundColor: "transparent",
   },
-  label: {
-    position: "absolute",
-    top: theme.padding.xsmall * -1,
-    left: 0,
-    zIndex: 2,
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: theme.padding.xsmall,
-    paddingHorizontal: theme.padding.xsmall,
-  },
-  labelHintIcon: {
-    height: theme.fontSizes.small,
-    width: theme.fontSizes.small,
-    marginLeft: theme.padding.xsmall,
-  },
   selectPressable: {
-    paddingVertical: theme.padding.small,
+    paddingTop: theme.padding.small * 1.25,
+    paddingBottom: theme.padding.small,
     paddingHorizontal: theme.padding.small,
     color: theme.colors.placeholder,
+    borderRadius: theme.borderRadius.small,
+    backgroundColor: theme.colors.background,
   },
   modalOverlay: {
     flex: 1,
@@ -72,7 +60,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: theme.padding.xsmall,
     backgroundColor: "transparent",
-    paddingBottom: theme.padding.small,
+    paddingTop: theme.padding.small,
   },
   labelHint: {
     paddingTop: theme.padding.xsmall,

@@ -8,31 +8,6 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "transparent",
   },
-  labelContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "transparent",
-  },
-  label: {
-    position: "absolute",
-    top: theme.padding.xsmall,
-    left: 0,
-    zIndex: 2,
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: theme.padding.xsmall,
-    paddingHorizontal: theme.padding.xsmall,
-  },
-  labelHintIcon: {
-    height: theme.fontSizes.small,
-    width: theme.fontSizes.small,
-    marginLeft: theme.padding.xsmall,
-  },
-  labelHint: {
-    paddingTop: theme.padding.small,
-    paddingLeft: theme.padding.small,
-    paddingRight: theme.padding.xsmall,
-  },
   input: {
     borderRadius: theme.borderRadius.small,
     paddingLeft: theme.padding.small,
@@ -58,6 +33,11 @@ const styles = StyleSheet.create({
     height: "100%",
     width: theme.fontSizes.medium,
     zIndex: 1,
+  },
+  labelHint: {
+    paddingTop: theme.padding.small,
+    paddingLeft: theme.padding.small,
+    paddingRight: theme.padding.xsmall,
   },
 });
 
