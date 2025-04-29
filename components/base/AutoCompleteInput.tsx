@@ -24,22 +24,22 @@ export default function AutoCompleteInput({
   labelHint,
 }: AutoCompleteInputProps): JSX.Element {
   const [inputFocused, setInputFocused] = useState(false);
-  const showSuggestions = inputFocused && suggestions.length > 0;
+  // Only show suggestions if input is focused and at least one suggestion starts with the input value (case-insensitive)
+  const filteredSuggestions =
+    inputFocused && value ? suggestions.filter((s) => s.toLowerCase().startsWith(value.toLowerCase())) : suggestions;
+  const showSuggestions = inputFocused && filteredSuggestions.length > 0;
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedTextInput
-        label={label}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder || ""}
-        labelHint={labelHint}
-        onFocus={() => setInputFocused(true)}
-        onBlur={() => setInputFocused(false)}
-      />
       {showSuggestions && (
         <View style={styles.suggestionsListContainer}>
-          {suggestions.map((suggestion) => (
+          <ThemedText
+            type="label"
+            style={styles.suggestionLabel}
+          >
+            Are you searchig for...
+          </ThemedText>
+          {filteredSuggestions.map((suggestion) => (
             <TouchableOpacity
               key={suggestion}
               onPress={() => {
@@ -53,6 +53,15 @@ export default function AutoCompleteInput({
           ))}
         </View>
       )}
+      <ThemedTextInput
+        label={label}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder || ""}
+        labelHint={labelHint}
+        onFocus={() => setInputFocused(true)}
+        onBlur={() => setInputFocused(false)}
+      />
     </ThemedView>
   );
 }
