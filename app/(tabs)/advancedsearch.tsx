@@ -9,6 +9,7 @@ import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import ThemedModal from "@/components/base/ThemedModal";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
+import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
 
 export default function FullFormScreen() {
   const [resetKey, setResetKey] = useState(0);
@@ -23,30 +24,16 @@ export default function FullFormScreen() {
   const handleSearchResults = async (ids: string[], query: string) => {
     let filteredIds = ids;
     if (removeDuplicates && ids.length > 0) {
+      console.log("Removing duplicates from", ids.length, "cards");
+
       // Fetch card details for duplicate removal
       const { data, error } = await supabase
         .from("Card")
-        .select("cardId, name, supertype, setId, rules")
+        .select("cardId, name, supertype, hp, rules")
         .in("cardId", ids);
       if (!error && data) {
-        const seen = new Set();
-        filteredIds = [];
-        for (const card of data) {
-          let key = "";
-          if (card.supertype === "Pokémon") {
-            key = `${card.name}|${card.setId}`;
-          } else if (card.supertype === "Trainer") {
-            key = `${card.name}|${card.rules}`;
-          } else {
-            key = card.cardId;
-          }
-          if (!seen.has(key)) {
-            seen.add(key);
-            filteredIds.push(card.cardId);
-          }
-        }
-        // Preserve original order
-        filteredIds = ids.filter((id) => filteredIds.includes(id));
+        const deduped = await removeCardDuplicates(data);
+        filteredIds = ids.filter((id) => deduped.some((c) => c.cardId === id));
       }
     }
     if (filteredIds.length === 0) {
