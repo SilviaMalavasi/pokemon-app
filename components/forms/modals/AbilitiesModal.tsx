@@ -5,7 +5,6 @@ import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedModal from "@/components/base/ThemedModal";
-import styles from "@/style/base/ThemedModalStyle";
 
 interface AbilitiesModalProps {
   visible: boolean;

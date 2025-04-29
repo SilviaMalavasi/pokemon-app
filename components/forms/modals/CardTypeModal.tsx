@@ -1,10 +1,7 @@
 import React from "react";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedModal from "@/components/base/ThemedModal";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
-
-import styles from "@/style/base/ThemedModalStyle";
 
 interface CardTypeModalProps {
   visible: boolean;

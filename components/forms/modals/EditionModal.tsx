@@ -1,10 +1,8 @@
 import React from "react";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedModal from "@/components/base/ThemedModal";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import NumberInput from "@/components/base/NumberInput";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
-import styles from "@/style/base/ThemedModalStyle";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 
 interface EditionModalProps {

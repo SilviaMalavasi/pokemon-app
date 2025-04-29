@@ -1,12 +1,9 @@
 import React from "react";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import NumberInput from "@/components/base/NumberInput";
 import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import ThemedModal from "@/components/base/ThemedModal";
-import styles from "@/style/base/ThemedModalStyle";
-import dynamicMultiSelectStyle from "@/style/base/DynamicMultiSelectStyle";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 
 interface AttacksModalProps {

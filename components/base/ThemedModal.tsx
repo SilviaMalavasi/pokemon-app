@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Pressable, View, SafeAreaView } from "react-native";
+import { Modal, Pressable, View, SafeAreaView, Platform } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import styles from "@/style/base/ThemedModalStyle";
@@ -33,15 +33,19 @@ export default function ThemedModal({
       presentationStyle="overFullScreen"
     >
       <SafeAreaView style={{ flex: 1 }}>
-        <Pressable
-          style={styles.overlay}
-          onPress={onClose}
-        >
+        <View style={styles.modalRoot}>
+          <Pressable
+            onPress={onClose}
+            style={[Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop, styles.backdrop]}
+          />
           <View
             style={styles.centeredView}
             pointerEvents="box-none"
           >
-            <ThemedView style={styles.modalView}>
+            <ThemedView
+              style={styles.modalView}
+              pointerEvents="auto"
+            >
               {children}
               <ThemedButton
                 title={buttonText}
@@ -52,7 +56,7 @@ export default function ThemedModal({
               />
             </ThemedView>
           </View>
-        </Pressable>
+        </View>
       </SafeAreaView>
     </Modal>
   );

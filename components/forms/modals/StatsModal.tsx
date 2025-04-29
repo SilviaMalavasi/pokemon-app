@@ -1,8 +1,6 @@
 import React from "react";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedModal from "@/components/base/ThemedModal";
 import NumberInput from "@/components/base/NumberInput";
-import styles from "@/style/base/ThemedModalStyle";
 
 interface StatsModalProps {
   visible: boolean;
