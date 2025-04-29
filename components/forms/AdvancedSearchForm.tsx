@@ -218,11 +218,6 @@ export default function AdvancedSearchForm({
     setHasAnyAbility(false);
   }, [resetKey]);
 
-  // Reset subtypes when supertype changes
-  useEffect(() => {
-    setCardSubtypes([]);
-  }, [cardSupertype]);
-
   useEffect(() => {
     if (
       attacksConvertedEnergyCostOperator === "=" &&
