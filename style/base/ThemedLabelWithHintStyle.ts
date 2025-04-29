@@ -2,11 +2,6 @@ import { StyleSheet } from "react-native";
 import { theme } from "@/style/ui/Theme";
 
 const styles = StyleSheet.create({
-  labelContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "transparent",
-  },
   label: {
     position: "absolute",
     top: theme.padding.xsmall,
@@ -14,8 +9,18 @@ const styles = StyleSheet.create({
     zIndex: 2,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "flex-start",
     marginLeft: theme.padding.xsmall,
     paddingHorizontal: theme.padding.xsmall,
+  },
+  touchableOpacity: {
+    alignSelf: "flex-start",
+  },
+  labelContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    backgroundColor: "transparent",
   },
   labelHintIcon: {
     height: theme.fontSizes.small,

@@ -53,6 +53,9 @@ const styles = StyleSheet.create({
     height: "100%",
     zIndex: 1,
   },
+  labelHint: {
+    paddingTop: theme.padding.small,
+  },
 });
 
 export default styles;

@@ -36,8 +36,6 @@ const styles = StyleSheet.create({
   },
   labelHint: {
     paddingTop: theme.padding.small,
-    paddingLeft: theme.padding.small,
-    paddingRight: theme.padding.xsmall,
   },
 });
 
