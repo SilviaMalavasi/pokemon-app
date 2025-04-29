@@ -2,9 +2,17 @@ import { StyleSheet } from "react-native";
 import { theme } from "@/style/ui/Theme";
 
 const styles = StyleSheet.create({
+  wrapper: {
+    paddingBottom: theme.padding.small,
+    width: "100%",
+    backgroundColor: "transparent",
+  },
   container: {
     marginBottom: theme.padding.small,
-    width: "100%",
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.borderRadius.small,
+    borderWidth: 1,
+    borderColor: theme.colors.text,
   },
   label: {
     position: "absolute",
@@ -16,34 +24,40 @@ const styles = StyleSheet.create({
     marginLeft: theme.padding.xsmall,
     paddingHorizontal: theme.padding.xsmall,
   },
+  labelHintIcon: {
+    height: theme.fontSizes.small,
+    width: theme.fontSizes.small,
+    marginLeft: theme.padding.xsmall,
+  },
   picker: {
     color: theme.colors.text,
-    backgroundColor: theme.colors.lightGrey,
-    borderRadius: 8,
-    marginBottom: 8,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.borderRadius.small,
+    marginBottom: theme.padding.xsmall,
     width: "100%",
-    fontSize: 16,
+    fontSize: theme.fontSizes.medium,
+    fontFamily: "Inter-Regular",
+    borderWidth: 0,
+    paddingLeft: theme.padding.small,
+    paddingRight: theme.padding.small,
+    paddingTop: theme.padding.small * 1.25,
+    paddingBottom: theme.padding.small,
   },
-  selectedStyle: {
+  selectedAndHintWrapper: {
+    backgroundColor: "transparent",
+    alignItems: "flex-start",
+  },
+  selectedWrapper: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 8,
-    marginBottom: 8,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: theme.colors.text,
-    padding: theme.padding.xsmall,
-    backgroundColor: theme.colors.background,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    gap: theme.padding.xsmall,
+    backgroundColor: "transparent",
+    paddingBottom: theme.padding.small,
   },
-  selectedItemText: {
-    color: theme.colors.text,
-    fontSize: 16,
-    backgroundColor: theme.colors.lightGrey,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    marginRight: 4,
-    marginBottom: 4,
+  labelHint: {
+    paddingTop: theme.padding.xsmall,
   },
 });
 

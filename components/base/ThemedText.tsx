@@ -11,7 +11,7 @@ export type ThemedTextProps = TextProps & {
     | "link"
     | "button"
     | "buttonSmall"
-    | "buttonAlternative"
+    | "chip"
     | "buttonDisabled"
     | "hintIcon"
     | "hintText"
@@ -44,8 +44,8 @@ export default function ThemedText({ style, type = "default", color, fontSize, f
     type === "link" ? styles.link : undefined,
     type === "button" ? styles.button : undefined,
     type === "buttonSmall" ? styles.buttonSmall : undefined,
-    type === "buttonAlternative" ? styles.buttonAlternative : undefined,
     type === "buttonDisabled" ? styles.buttonDisabled : undefined,
+    type === "chip" ? styles.chip : undefined,
     type === "hintIcon" ? styles.hintIcon : undefined,
     type === "hintText" ? styles.hintText : undefined,
     type === "label" ? styles.label : undefined,

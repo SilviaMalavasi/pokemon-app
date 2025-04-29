@@ -53,6 +53,7 @@ export const theme = {
     small: 4,
     medium: 8,
     large: 12,
+    xlarge: 16,
   },
   shadow: {
     shadowColor: lightGreen,

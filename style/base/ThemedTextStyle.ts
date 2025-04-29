@@ -47,19 +47,19 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     color: theme.colors.background,
   },
-  buttonAlternative: {
-    fontFamily: "Inter-Bold",
-    fontSize: theme.fontSizes.medium,
-    lineHeight: theme.fontSizes.medium * 1.15,
-    textTransform: "uppercase",
-    color: theme.colors.background,
-  },
   buttonDisabled: {
     fontFamily: "Inter-Bold",
     fontSize: theme.fontSizes.medium,
     lineHeight: theme.fontSizes.medium * 1.15,
     textTransform: "uppercase",
     color: theme.colors.background,
+  },
+  chip: {
+    fontFamily: "Inter-Bold",
+    fontSize: theme.fontSizes.small,
+    lineHeight: theme.fontSizes.small * 2,
+    textTransform: "uppercase",
+    color: theme.colors.text,
   },
   hintIcon: {
     fontFamily: "Inter-Medium",
