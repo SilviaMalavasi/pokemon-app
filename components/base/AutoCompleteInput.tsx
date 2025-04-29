@@ -33,7 +33,7 @@ export default function AutoCompleteInput({
 
   return (
     // Apply padding conditionally here
-    <ThemedView style={[styles.container, showSuggestions && { paddingTop: 140 }]}>
+    <ThemedView style={styles.container}>
       {showSuggestions && (
         <ScrollView
           style={styles.suggestionsListContainer}
@@ -47,24 +47,22 @@ export default function AutoCompleteInput({
           </ThemedText>
           {filteredSuggestions.map((suggestion) => {
             return (
-              <ScrollView>
-                <Pressable
-                  key={suggestion}
-                  // Use touch events to set/reset the flag
-                  onTouchStart={() => {
-                    selectingSuggestion.current = true;
-                  }}
-                  onTouchEnd={() => {
-                    // Trigger action directly on TouchEnd
-                    onChange(suggestion);
-                    setInputFocused(false); // Hide suggestions after selection
-                    selectingSuggestion.current = false; // Reset flag after action
-                  }}
-                  accessibilityLabel={`Select suggestion ${suggestion}`}
-                >
-                  <ThemedText style={styles.customItem}>{suggestion}</ThemedText>
-                </Pressable>
-              </ScrollView>
+              <Pressable
+                key={suggestion}
+                // Use touch events to set/reset the flag
+                onTouchStart={() => {
+                  selectingSuggestion.current = true;
+                }}
+                onTouchEnd={() => {
+                  // Trigger action directly on TouchEnd
+                  onChange(suggestion);
+                  setInputFocused(false); // Hide suggestions after selection
+                  selectingSuggestion.current = false; // Reset flag after action
+                }}
+                accessibilityLabel={`Select suggestion ${suggestion}`}
+              >
+                <ThemedText style={styles.customItem}>{suggestion}</ThemedText>
+              </Pressable>
             );
           })}
         </ScrollView>

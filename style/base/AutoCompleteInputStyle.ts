@@ -8,17 +8,12 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   suggestionsListContainer: {
-    position: "absolute",
-    bottom: "100%",
-    right: 0,
     width: "100%",
-    height: 140,
     marginBottom: theme.padding.xsmall,
     backgroundColor: theme.colors.background,
     borderRadius: theme.borderRadius.medium,
     borderWidth: 1,
     borderColor: theme.colors.grey,
-    zIndex: 1,
   },
   suggestionLabel: {
     padding: theme.padding.small,
