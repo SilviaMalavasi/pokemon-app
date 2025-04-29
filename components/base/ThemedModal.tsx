@@ -48,17 +48,18 @@ export default function ThemedModal({
             >
               <ScrollView
                 contentContainerStyle={{ alignItems: "center" }}
-                style={{ width: "100%" }}
+                style={styles.scrollView}
+                persistentScrollbar={true}
               >
                 {children}
+                <ThemedButton
+                  title={buttonText}
+                  type={buttonType}
+                  size={buttonSize}
+                  style={[styles.button, buttonStyle]}
+                  onPress={onClose}
+                />
               </ScrollView>
-              <ThemedButton
-                title={buttonText}
-                type={buttonType}
-                size={buttonSize}
-                style={[{ marginTop: 16 }, buttonStyle]}
-                onPress={onClose}
-              />
             </ThemedView>
           </View>
         </View>

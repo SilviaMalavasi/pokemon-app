@@ -33,11 +33,19 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: theme.colors.lightGreen,
-    padding: theme.padding.medium,
+    paddingVertical: theme.padding.medium,
+    paddingHorizontal: theme.padding.xsmall,
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     width: "92%",
     ...theme.shadow,
+  },
+  scrollView: {
+    width: "100%",
+    paddingHorizontal: theme.padding.small,
+  },
+  button: {
+    marginTop: theme.padding.medium,
   },
 });
 
