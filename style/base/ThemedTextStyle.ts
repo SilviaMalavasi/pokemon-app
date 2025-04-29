@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     color: theme.colors.background,
   },
   buttonSmall: {
-    fontFamily: "Inter-Bold",
+    fontFamily: "Inter-ExtraBold",
     fontSize: theme.fontSizes.medium,
     lineHeight: theme.fontSizes.medium * 1.15,
     textTransform: "uppercase",

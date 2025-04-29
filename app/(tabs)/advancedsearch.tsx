@@ -10,6 +10,8 @@ import { useSearchResultContext } from "@/components/context/SearchResultContext
 import ThemedModal from "@/components/base/ThemedModal";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
+import ThemedText from "@/components/base/ThemedText";
+import { theme } from "@/style/ui/Theme";
 
 export default function FullFormScreen() {
   const [resetKey, setResetKey] = useState(0);
@@ -80,11 +82,21 @@ export default function FullFormScreen() {
             itemsPerPage={ITEMS_PER_PAGE}
           />
         </ThemedView>
+
         <ThemedModal
           visible={modalVisible}
+          buttonType="main"
+          buttonSize="small"
           onClose={() => setModalVisible(false)}
-          message="No cards found"
-        />
+          contentStyle={{ width: "85%" }}
+        >
+          <ThemedText
+            type="defaultSemiBold"
+            style={{ paddingTop: theme.padding.small, paddingBottom: theme.padding.xsmall }}
+          >
+            No cards found
+          </ThemedText>
+        </ThemedModal>
       </ParallaxScrollView>
     </AutocompleteDropdownContextProvider>
   );

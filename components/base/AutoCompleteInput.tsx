@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import { TouchableOpacity, View } from "react-native";
+import React, { useState, useRef } from "react";
+import { Pressable, ScrollView, TextInput } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
@@ -24,7 +24,8 @@ export default function AutoCompleteInput({
   labelHint,
 }: AutoCompleteInputProps): JSX.Element {
   const [inputFocused, setInputFocused] = useState(false);
-  // Only show suggestions if input is focused and at least one suggestion starts with the input value (case-insensitive)
+  const inputRef = useRef<TextInput>(null);
+
   const filteredSuggestions =
     inputFocused && value ? suggestions.filter((s) => s.toLowerCase().startsWith(value.toLowerCase())) : suggestions;
   const showSuggestions = inputFocused && filteredSuggestions.length > 0;
@@ -32,35 +33,43 @@ export default function AutoCompleteInput({
   return (
     <ThemedView style={styles.container}>
       {showSuggestions && (
-        <View style={styles.suggestionsListContainer}>
+        <ScrollView
+          style={styles.suggestionsListContainer}
+          keyboardShouldPersistTaps="handled"
+        >
           <ThemedText
             type="label"
             style={styles.suggestionLabel}
           >
             Are you searchig for...
           </ThemedText>
-          {filteredSuggestions.map((suggestion) => (
-            <TouchableOpacity
-              key={suggestion}
-              onPress={() => {
-                onChange(suggestion);
-                setInputFocused(false);
-              }}
-              accessibilityLabel={`Select suggestion ${suggestion}`}
-            >
-              <ThemedText style={styles.customItem}>{suggestion}</ThemedText>
-            </TouchableOpacity>
-          ))}
-        </View>
+          {filteredSuggestions.map((suggestion) => {
+            console.log("Rendering suggestion:", suggestion);
+            return (
+              <Pressable
+                key={suggestion}
+                onPress={() => {
+                  console.log("Selected suggestion (Pressable):", suggestion);
+                  onChange(suggestion);
+                  setInputFocused(false);
+                }}
+                accessibilityLabel={`Select suggestion ${suggestion}`}
+              >
+                <ThemedText style={styles.customItem}>{suggestion}</ThemedText>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
       )}
       <ThemedTextInput
+        ref={inputRef}
         label={label}
         value={value}
         onChange={onChange}
         placeholder={placeholder || ""}
         labelHint={labelHint}
         onFocus={() => setInputFocused(true)}
-        onBlur={() => setInputFocused(false)}
+        onBlur={() => setTimeout(() => setInputFocused(false), 100)}
       />
     </ThemedView>
   );

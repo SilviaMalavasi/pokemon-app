@@ -12,6 +12,7 @@ interface ThemedModalProps {
   buttonType?: import("@/style/base/ThemedButtonStyle").ButtonType;
   buttonSize?: "small" | "large";
   buttonStyle?: any;
+  contentStyle?: any;
 }
 
 export default function ThemedModal({
@@ -22,6 +23,7 @@ export default function ThemedModal({
   buttonType = "main",
   buttonSize = "large",
   buttonStyle,
+  contentStyle,
 }: ThemedModalProps) {
   return (
     <Modal
@@ -39,7 +41,7 @@ export default function ThemedModal({
             style={[Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop, styles.backdrop]}
           />
           <View
-            style={styles.centeredView}
+            style={[styles.centeredView, contentStyle]}
             pointerEvents="box-none"
           >
             <ThemedView
