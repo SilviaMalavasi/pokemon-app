@@ -1,26 +1,36 @@
 import React from "react";
-import { Modal, Pressable, View, StyleSheet, Platform, StatusBar, SafeAreaView } from "react-native";
+import { Modal, Pressable, View, SafeAreaView } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
-import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import styles from "@/style/base/ThemedModalStyle";
 
 interface ThemedModalProps {
   visible: boolean;
   onClose: () => void;
-  message: string;
+  children: React.ReactNode;
   buttonText?: string;
+  buttonType?: import("@/style/base/ThemedButtonStyle").ButtonType;
+  buttonSize?: "small" | "large";
+  buttonStyle?: any;
 }
 
-export default function ThemedModal({ visible, onClose, message, buttonText = "OK" }: ThemedModalProps) {
+export default function ThemedModal({
+  visible,
+  onClose,
+  children,
+  buttonText = "Close",
+  buttonType = "main",
+  buttonSize = "large",
+  buttonStyle,
+}: ThemedModalProps) {
   return (
     <Modal
       visible={visible}
       transparent
       animationType="fade"
       onRequestClose={onClose}
-      statusBarTranslucent={true} // <-- This is key for Android
-      presentationStyle="overFullScreen" // <-- Ensures overlay covers all
+      statusBarTranslucent={true}
+      presentationStyle="overFullScreen"
     >
       <SafeAreaView style={{ flex: 1 }}>
         <Pressable
@@ -32,9 +42,12 @@ export default function ThemedModal({ visible, onClose, message, buttonText = "O
             pointerEvents="box-none"
           >
             <ThemedView style={styles.modalView}>
-              <ThemedText type="default">{message}</ThemedText>
+              {children}
               <ThemedButton
                 title={buttonText}
+                type={buttonType}
+                size={buttonSize}
+                style={[{ marginTop: 16 }, buttonStyle]}
                 onPress={onClose}
               />
             </ThemedView>

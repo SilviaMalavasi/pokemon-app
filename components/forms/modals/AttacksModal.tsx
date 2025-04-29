@@ -1,12 +1,10 @@
 import React from "react";
-import { Modal, SafeAreaView, View, Pressable } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
-import ThemedButton from "@/components/base/ThemedButton";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import NumberInput from "@/components/base/NumberInput";
 import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
-import { Dropdown } from "react-native-element-dropdown";
+import ThemedModal from "@/components/base/ThemedModal";
 import styles from "@/style/base/ThemedModalStyle";
 import dynamicMultiSelectStyle from "@/style/base/DynamicMultiSelectStyle";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
@@ -54,104 +52,78 @@ export default function AttacksModal({
 }: AttacksModalProps) {
   const energyTypesOptions = uniqueIdentifiers.energyTypes.map((v: string) => ({ value: v, label: v }));
   return (
-    <Modal
+    <ThemedModal
       visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onClose}
-      statusBarTranslucent={true}
-      presentationStyle="overFullScreen"
+      onClose={onClose}
+      buttonText="set filters"
+      buttonType="alternative"
+      buttonSize="small"
     >
-      <SafeAreaView style={{ flex: 1 }}>
-        <Pressable
-          style={styles.overlay}
-          onPress={onClose}
-        >
-          <View
-            style={styles.centeredView}
-            pointerEvents="box-none"
-          >
-            <ThemedView style={styles.modalView}>
-              <ThemedTextInput
-                label="Attack Name"
-                value={attacksName}
-                onChange={setAttacksName}
-                placeholder="Attack name"
-              />
-              <NumberInput
-                label="Attack Damage"
-                value={attacksDamage}
-                onChange={(val, op) => {
-                  setAttacksDamage(val);
-                  setAttacksDamageOperator(op);
+      <ThemedTextInput
+        label="Attack Name"
+        value={attacksName}
+        onChange={setAttacksName}
+        placeholder="Attack name"
+      />
+      <NumberInput
+        label="Attack Damage"
+        value={attacksDamage}
+        onChange={(val, op) => {
+          setAttacksDamage(val);
+          setAttacksDamageOperator(op);
+        }}
+        placeholder="Attack damage"
+        showOperatorSelect={"advanced"}
+      />
+      <AutoCompleteInput
+        label="Attack Text"
+        value={attacksText}
+        onChange={setAttacksText}
+        suggestions={["search", "discard pile", "attach", "energy"]}
+        placeholder="Attack text"
+      />
+      <NumberInput
+        label="Attacks Converted Energy Cost"
+        value={attacksConvertedEnergyCost}
+        onChange={(val, op) => {
+          setAttacksConvertedEnergyCost(val);
+          setAttacksConvertedEnergyCostOperator(op);
+        }}
+        placeholder="Converted energy cost"
+        showOperatorSelect={"basic"}
+      />
+      {(!attacksConvertedEnergyCostOperator ||
+        !attacksConvertedEnergyCost ||
+        attacksConvertedEnergyCostOperator !== "=") && (
+        <DynamicMultiSelect
+          label="Attack Cost"
+          value={attacksCost}
+          options={energyTypesOptions}
+          onChange={setAttacksCost}
+          labelHint="Include cards that match ANY of the selected choices."
+        />
+      )}
+      {attacksConvertedEnergyCostOperator === "=" &&
+        attacksConvertedEnergyCost &&
+        Number(attacksConvertedEnergyCost) > 0 && (
+          <>
+            {Array.from({ length: Number(attacksConvertedEnergyCost) }).map((_, idx) => (
+              <DynamicMultiSelect
+                key={idx}
+                label={`Attack Cost Slot ${idx + 1}`}
+                value={attacksCostSlots[idx] ? [attacksCostSlots[idx]] : []}
+                options={energyTypesOptions}
+                onChange={(items) => {
+                  const newSlots = [...attacksCostSlots];
+                  newSlots[idx] = items[0] || "";
+                  setAttacksCostSlots(newSlots);
                 }}
-                placeholder="Attack damage"
-                showOperatorSelect={"advanced"}
+                labelHint="Select energy type for this slot."
               />
-              <AutoCompleteInput
-                label="Attack Text"
-                value={attacksText}
-                onChange={setAttacksText}
-                suggestions={["search", "discard pile", "attach", "energy"]}
-                placeholder="Attack text"
-              />
-              <NumberInput
-                label="Attacks Converted Energy Cost"
-                value={attacksConvertedEnergyCost}
-                onChange={(val, op) => {
-                  setAttacksConvertedEnergyCost(val);
-                  setAttacksConvertedEnergyCostOperator(op);
-                }}
-                placeholder="Converted energy cost"
-                showOperatorSelect={"basic"}
-              />
-              {(!attacksConvertedEnergyCostOperator ||
-                !attacksConvertedEnergyCost ||
-                attacksConvertedEnergyCostOperator !== "=") && (
-                <DynamicMultiSelect
-                  label="Attack Cost"
-                  value={attacksCost}
-                  options={energyTypesOptions}
-                  onChange={setAttacksCost}
-                  labelHint="Include cards that match ANY of the selected choices."
-                />
-              )}
-              {attacksConvertedEnergyCostOperator === "=" &&
-                attacksConvertedEnergyCost &&
-                Number(attacksConvertedEnergyCost) > 0 && (
-                  <>
-                    {Array.from({ length: Number(attacksConvertedEnergyCost) }).map((_, idx) => (
-                      <Dropdown
-                        key={idx}
-                        style={{ marginVertical: 8 }}
-                        data={energyTypesOptions}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Select type"
-                        containerStyle={dynamicMultiSelectStyle.listContainer}
-                        itemTextStyle={dynamicMultiSelectStyle.listItem}
-                        selectedTextStyle={dynamicMultiSelectStyle.selectedItemText}
-                        placeholderStyle={dynamicMultiSelectStyle.label}
-                        value={attacksCostSlots[idx] || ""}
-                        onChange={(item) => {
-                          const newSlots = [...attacksCostSlots];
-                          newSlots[idx] = item.value;
-                          setAttacksCostSlots(newSlots);
-                        }}
-                      />
-                    ))}
-                  </>
-                )}
-              <ThemedButton
-                title="Close"
-                onPress={onClose}
-                style={{ marginTop: 16 }}
-              />
-            </ThemedView>
-          </View>
-        </Pressable>
-      </SafeAreaView>
-    </Modal>
+            ))}
+          </>
+        )}
+    </ThemedModal>
   );
 }
 

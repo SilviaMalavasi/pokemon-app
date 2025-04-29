@@ -1,7 +1,6 @@
 import React from "react";
-import { Modal, SafeAreaView, View, Pressable } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
-import ThemedButton from "@/components/base/ThemedButton";
+import ThemedModal from "@/components/base/ThemedModal";
 import NumberInput from "@/components/base/NumberInput";
 import styles from "@/style/base/ThemedModalStyle";
 
@@ -31,54 +30,34 @@ export default function StatsModal({
   setCardConvertedRetreatCostOperator,
 }: StatsModalProps) {
   return (
-    <Modal
+    <ThemedModal
       visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onClose}
-      statusBarTranslucent={true}
-      presentationStyle="overFullScreen"
+      onClose={onClose}
+      buttonText="set filters"
+      buttonType="alternative"
+      buttonSize="small"
     >
-      <SafeAreaView style={{ flex: 1 }}>
-        <Pressable
-          style={styles.overlay}
-          onPress={onClose}
-        >
-          <View
-            style={styles.centeredView}
-            pointerEvents="box-none"
-          >
-            <ThemedView style={styles.modalView}>
-              <NumberInput
-                label="HP"
-                value={cardHp}
-                onChange={(val, op) => {
-                  setCardHp(val);
-                  setCardHpOperator(op);
-                }}
-                placeholder="Card HP"
-                showOperatorSelect={"basic"}
-              />
-              <NumberInput
-                label="Card Converted Retreat Cost"
-                value={cardConvertedRetreatCost}
-                onChange={(val, op) => {
-                  setCardConvertedRetreatCost(val);
-                  setCardConvertedRetreatCostOperator(op);
-                }}
-                placeholder="Retreat cost"
-                showOperatorSelect={"basic"}
-              />
-              <ThemedButton
-                title="Close"
-                onPress={onClose}
-                style={{ marginTop: 16 }}
-              />
-            </ThemedView>
-          </View>
-        </Pressable>
-      </SafeAreaView>
-    </Modal>
+      <NumberInput
+        label="HP"
+        value={cardHp}
+        onChange={(val, op) => {
+          setCardHp(val);
+          setCardHpOperator(op);
+        }}
+        placeholder="Card HP"
+        showOperatorSelect={"basic"}
+      />
+      <NumberInput
+        label="Card Converted Retreat Cost"
+        value={cardConvertedRetreatCost}
+        onChange={(val, op) => {
+          setCardConvertedRetreatCost(val);
+          setCardConvertedRetreatCostOperator(op);
+        }}
+        placeholder="Retreat cost"
+        showOperatorSelect={"basic"}
+      />
+    </ThemedModal>
   );
 }
 

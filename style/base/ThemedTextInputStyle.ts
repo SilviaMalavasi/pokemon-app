@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: theme.padding.small,
     marginBottom: theme.padding.small,
+    width: "100%",
   },
   label: {
     position: "absolute",

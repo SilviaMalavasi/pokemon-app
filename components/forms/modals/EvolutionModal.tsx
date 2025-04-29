@@ -1,11 +1,8 @@
 import React from "react";
-import { Modal, SafeAreaView, View, Pressable } from "react-native";
-import ThemedView from "@/components/base/ThemedView";
-import ThemedButton from "@/components/base/ThemedButton";
+import ThemedModal from "@/components/base/ThemedModal";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
-import styles from "@/style/base/ThemedModalStyle";
 
 interface EvolutionModalProps {
   visible: boolean;
@@ -30,53 +27,33 @@ export default function EvolutionModal({
 }: EvolutionModalProps) {
   const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => ({ value: v, label: v }));
   return (
-    <Modal
+    <ThemedModal
       visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onClose}
-      statusBarTranslucent={true}
-      presentationStyle="overFullScreen"
+      onClose={onClose}
+      buttonText="set filters"
+      buttonType="alternative"
+      buttonSize="small"
     >
-      <SafeAreaView style={{ flex: 1 }}>
-        <Pressable
-          style={styles.overlay}
-          onPress={onClose}
-        >
-          <View
-            style={styles.centeredView}
-            pointerEvents="box-none"
-          >
-            <ThemedView style={styles.modalView}>
-              <DynamicMultiSelect
-                label="Stage"
-                value={cardStage}
-                options={cardStageOptions}
-                onChange={setCardStage}
-                labelHint="Include cards that match ANY of the selected choices."
-              />
-              <ThemedTextInput
-                label="Evolves From"
-                value={cardEvolvesFrom}
-                onChange={setCardEvolvesFrom}
-                placeholder="Evolves from"
-              />
-              <ThemedTextInput
-                label="Evolves To"
-                value={cardEvolvesTo}
-                onChange={setCardEvolvesTo}
-                placeholder="Evolves to"
-              />
-              <ThemedButton
-                title="Close"
-                onPress={onClose}
-                style={{ marginTop: 16 }}
-              />
-            </ThemedView>
-          </View>
-        </Pressable>
-      </SafeAreaView>
-    </Modal>
+      <DynamicMultiSelect
+        label="Stage"
+        value={cardStage}
+        options={cardStageOptions}
+        onChange={setCardStage}
+        labelHint="Include cards that match ANY of the selected choices."
+      />
+      <ThemedTextInput
+        label="Evolves From"
+        value={cardEvolvesFrom}
+        onChange={setCardEvolvesFrom}
+        placeholder="Evolves from"
+      />
+      <ThemedTextInput
+        label="Evolves To"
+        value={cardEvolvesTo}
+        onChange={setCardEvolvesTo}
+        placeholder="Evolves to"
+      />
+    </ThemedModal>
   );
 }
 

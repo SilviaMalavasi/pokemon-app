@@ -1,9 +1,6 @@
 import React from "react";
-import { Modal, SafeAreaView, View, Pressable } from "react-native";
-import ThemedView from "@/components/base/ThemedView";
-import ThemedButton from "@/components/base/ThemedButton";
 import AutoCompleteInput from "@/components/base/AutoCompleteInput";
-import styles from "@/style/base/ThemedModalStyle";
+import ThemedModal from "@/components/base/ThemedModal";
 
 interface RulesModalProps {
   visible: boolean;
@@ -14,40 +11,20 @@ interface RulesModalProps {
 
 export default function RulesModal({ visible, onClose, cardRules, setCardRules }: RulesModalProps) {
   return (
-    <Modal
+    <ThemedModal
       visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onClose}
-      statusBarTranslucent={true}
-      presentationStyle="overFullScreen"
+      onClose={onClose}
+      buttonText="set filters"
+      buttonType="alternative"
+      buttonSize="small"
     >
-      <SafeAreaView style={{ flex: 1 }}>
-        <Pressable
-          style={styles.overlay}
-          onPress={onClose}
-        >
-          <View
-            style={styles.centeredView}
-            pointerEvents="box-none"
-          >
-            <ThemedView style={styles.modalView}>
-              <AutoCompleteInput
-                label="Rules"
-                value={cardRules}
-                onChange={setCardRules}
-                suggestions={["search", "discard pile", "attach", "energy"]}
-                placeholder="Card rules"
-              />
-              <ThemedButton
-                title="Close"
-                onPress={onClose}
-                style={{ marginTop: 16 }}
-              />
-            </ThemedView>
-          </View>
-        </Pressable>
-      </SafeAreaView>
-    </Modal>
+      <AutoCompleteInput
+        label="Rules"
+        value={cardRules}
+        onChange={setCardRules}
+        suggestions={["search", "discard pile", "attach", "energy"]}
+        placeholder="Card rules"
+      />
+    </ThemedModal>
   );
 }

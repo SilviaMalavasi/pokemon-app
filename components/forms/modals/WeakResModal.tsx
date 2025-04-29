@@ -1,9 +1,6 @@
 import React from "react";
-import { Modal, SafeAreaView, View, Pressable } from "react-native";
-import ThemedView from "@/components/base/ThemedView";
-import ThemedButton from "@/components/base/ThemedButton";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
-import styles from "@/style/base/ThemedModalStyle";
+import ThemedModal from "@/components/base/ThemedModal";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 
 interface WeakResModalProps {
@@ -26,48 +23,28 @@ export default function WeakResModal({
   const cardWeaknessesTypeOptions = uniqueIdentifiers.cardWeaknessTypes.map((v: string) => ({ value: v, label: v }));
   const cardResistancesTypeOptions = uniqueIdentifiers.cardResistanceTypes.map((v: string) => ({ value: v, label: v }));
   return (
-    <Modal
+    <ThemedModal
       visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onClose}
-      statusBarTranslucent={true}
-      presentationStyle="overFullScreen"
+      onClose={onClose}
+      buttonText="set filters"
+      buttonType="alternative"
+      buttonSize="small"
     >
-      <SafeAreaView style={{ flex: 1 }}>
-        <Pressable
-          style={styles.overlay}
-          onPress={onClose}
-        >
-          <View
-            style={styles.centeredView}
-            pointerEvents="box-none"
-          >
-            <ThemedView style={styles.modalView}>
-              <DynamicMultiSelect
-                label="Weaknesses Type"
-                value={cardWeaknessesType}
-                options={cardWeaknessesTypeOptions}
-                onChange={setCardWeaknessesType}
-                labelHint="Include cards that match ANY of the selected choices."
-              />
-              <DynamicMultiSelect
-                label="Resistances Type"
-                value={cardResistancesType}
-                options={cardResistancesTypeOptions}
-                onChange={setCardResistancesType}
-                labelHint="Include cards that match ANY of the selected choices."
-              />
-              <ThemedButton
-                title="Close"
-                onPress={onClose}
-                style={{ marginTop: 16 }}
-              />
-            </ThemedView>
-          </View>
-        </Pressable>
-      </SafeAreaView>
-    </Modal>
+      <DynamicMultiSelect
+        label="Weaknesses Type"
+        value={cardWeaknessesType}
+        options={cardWeaknessesTypeOptions}
+        onChange={setCardWeaknessesType}
+        labelHint="Include cards that match ANY of the selected choices."
+      />
+      <DynamicMultiSelect
+        label="Resistances Type"
+        value={cardResistancesType}
+        options={cardResistancesTypeOptions}
+        onChange={setCardResistancesType}
+        labelHint="Include cards that match ANY of the selected choices."
+      />
+    </ThemedModal>
   );
 }
 

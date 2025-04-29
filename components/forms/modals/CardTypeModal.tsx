@@ -1,7 +1,6 @@
 import React from "react";
-import { Modal, SafeAreaView, View, Pressable } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
-import ThemedButton from "@/components/base/ThemedButton";
+import ThemedModal from "@/components/base/ThemedModal";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 
@@ -62,59 +61,37 @@ export default function CardTypeModal({
   const cardTypesOptions = uniqueIdentifiers.cardTypes.map((v: string) => ({ value: v, label: v }));
 
   return (
-    <Modal
+    <ThemedModal
       visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onClose}
-      statusBarTranslucent={true}
-      presentationStyle="overFullScreen"
+      onClose={onClose}
+      buttonText="set filters"
+      buttonType="alternative"
+      buttonSize="small"
     >
-      <SafeAreaView style={{ flex: 1 }}>
-        <Pressable
-          style={styles.overlay}
-          onPress={onClose}
-        >
-          <View
-            style={styles.centeredView}
-            pointerEvents="box-none"
-          >
-            <ThemedView style={styles.modalView}>
-              <DynamicMultiSelect
-                label="Supertype"
-                value={cardSupertype}
-                options={cardSupertypeOptions}
-                onChange={setCardSupertype}
-                labelHint="Include cards that match ANY of the selected choices."
-              />
-              <DynamicMultiSelect
-                label="Subtypes"
-                value={cardSubtypes}
-                options={cardSubtypesOptions}
-                onChange={setCardSubtypes}
-                labelHint="Include cards that match ANY of the selected choices."
-              />
-              {(cardSupertype.length === 0 ||
-                cardSupertype.includes("Pokémon") ||
-                cardSupertype.includes("Energy")) && (
-                <DynamicMultiSelect
-                  label="Types"
-                  value={cardTypes}
-                  options={cardTypesOptions}
-                  onChange={setCardTypes}
-                  labelHint="Include cards that match ANY of the selected choices."
-                />
-              )}
-              <ThemedButton
-                title="Close"
-                onPress={onClose}
-                style={{ marginTop: 16 }}
-              />
-            </ThemedView>
-          </View>
-        </Pressable>
-      </SafeAreaView>
-    </Modal>
+      <DynamicMultiSelect
+        label="Supertype"
+        value={cardSupertype}
+        options={cardSupertypeOptions}
+        onChange={setCardSupertype}
+        labelHint="Include cards that match ANY of the selected choices."
+      />
+      <DynamicMultiSelect
+        label="Subtypes"
+        value={cardSubtypes}
+        options={cardSubtypesOptions}
+        onChange={setCardSubtypes}
+        labelHint="Include cards that match ANY of the selected choices."
+      />
+      {(cardSupertype.length === 0 || cardSupertype.includes("Pokémon") || cardSupertype.includes("Energy")) && (
+        <DynamicMultiSelect
+          label="Types"
+          value={cardTypes}
+          options={cardTypesOptions}
+          onChange={setCardTypes}
+          labelHint="Include cards that match ANY of the selected choices."
+        />
+      )}
+    </ThemedModal>
   );
 }
 
