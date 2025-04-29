@@ -32,16 +32,10 @@ export default function ThemedModal({ visible, onClose, message, buttonText = "O
             pointerEvents="box-none"
           >
             <ThemedView style={styles.modalView}>
-              <ThemedText
-                type="default"
-                style={styles.message}
-              >
-                {message}
-              </ThemedText>
+              <ThemedText type="default">{message}</ThemedText>
               <ThemedButton
                 title={buttonText}
                 onPress={onClose}
-                style={styles.button}
               />
             </ThemedView>
           </View>

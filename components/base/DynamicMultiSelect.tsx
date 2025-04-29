@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
-import { TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { TouchableOpacity, View } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
-import { MultiSelect } from "react-native-element-dropdown";
 import styles from "@/style/base/DynamicMultiSelectStyle";
 
 interface DynamicMultiSelectProps {
@@ -20,12 +20,19 @@ export default function DynamicMultiSelect({
   onChange,
   labelHint,
 }: DynamicMultiSelectProps): JSX.Element {
-  const dropdownRef = useRef<any>(null);
   const [showHint, setShowHint] = useState(false);
+  const [pickerValue, setPickerValue] = useState<string | undefined>(undefined);
 
-  const handleChange = (selected: string[]) => {
-    onChange(selected);
-    dropdownRef.current?.close();
+  // Toggle selection for multi-select
+  const handleSelect = (selectedValue: string) => {
+    let newValue: string[];
+    if (value.includes(selectedValue)) {
+      newValue = value.filter((v) => v !== selectedValue);
+    } else {
+      newValue = [...value, selectedValue];
+    }
+    onChange(newValue);
+    setPickerValue(undefined); // Reset picker to placeholder
   };
 
   return (
@@ -43,27 +50,44 @@ export default function DynamicMultiSelect({
           )}
         </ThemedView>
       )}
-      {showHint && labelHint && <ThemedText type="hintText">{labelHint}</ThemedText>}
-      <MultiSelect
-        ref={dropdownRef}
-        placeholderStyle={styles.picker}
+      {/* Show selected items */}
+      {value.length > 0 && (
+        <View style={styles.selectedStyle}>
+          {value.map((val) => {
+            const opt = options.find((o) => o.value === val);
+            return (
+              <ThemedText
+                key={val}
+                style={styles.selectedItemText}
+              >
+                {opt ? opt.label : val}
+              </ThemedText>
+            );
+          })}
+        </View>
+      )}
+      {/* Picker for multi-select */}
+      <Picker
+        selectedValue={pickerValue}
+        onValueChange={(itemValue) => {
+          if (itemValue) handleSelect(itemValue);
+        }}
         style={styles.picker}
-        containerStyle={styles.listContainer}
-        itemContainerStyle={styles.listContainer}
-        itemTextStyle={styles.listItem}
-        selectedStyle={styles.selectedStyle}
-        selectedTextStyle={styles.selectedItemText}
-        renderItem={(item, selected) => (
-          <ThemedText style={[styles.listItem, selected ? styles.listItemActive : null]}>{item.label}</ThemedText>
-        )}
-        data={options}
-        labelField="label"
-        valueField="value"
-        placeholder="Select..."
-        value={value}
-        onChange={handleChange}
-        dropdownPosition="auto"
-      />
+      >
+        <Picker.Item
+          label="Select..."
+          value={undefined}
+        />
+        {options.map((option) => (
+          <Picker.Item
+            key={option.value}
+            label={value.includes(option.value) ? `✓ ${option.label}` : option.label}
+            value={option.value}
+            color={value.includes(option.value) ? "#888" : undefined}
+          />
+        ))}
+      </Picker>
+      {showHint && labelHint && <ThemedText type="hintText">{labelHint}</ThemedText>}
     </ThemedView>
   );
 }

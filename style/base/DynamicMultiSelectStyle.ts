@@ -17,40 +17,33 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.padding.xsmall,
   },
   picker: {
-    color: theme.colors.placeholder,
+    color: theme.colors.text,
+    backgroundColor: theme.colors.lightGrey,
+    borderRadius: 8,
     marginBottom: 8,
     width: "100%",
-  },
-  listContainer: {
-    backgroundColor: theme.colors.lightGrey,
-    borderWidth: 0,
-    marginTop: 3,
-    marginBottom: -1,
-    borderRadius: 4,
-    zIndex: 1000, // Ensure dropdown is above other elements
-    elevation: 10, // For Android
-  },
-  listItem: {
-    color: theme.colors.placeholder,
-    backgroundColor: theme.colors.lightGrey,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.text,
-    paddingTop: 6,
-    paddingBottom: 8,
-    paddingHorizontal: 12,
-    margin: 0,
-  },
-  listItemActive: {
-    color: theme.colors.textHilight,
-    backgroundColor: theme.colors.lightGrey,
+    fontSize: 16,
   },
   selectedStyle: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 8,
     borderRadius: 12,
+    borderWidth: 1,
     borderColor: theme.colors.text,
+    padding: theme.padding.xsmall,
+    backgroundColor: theme.colors.background,
   },
   selectedItemText: {
     color: theme.colors.text,
     fontSize: 16,
+    backgroundColor: theme.colors.lightGrey,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    marginRight: 4,
+    marginBottom: 4,
   },
 });
 
