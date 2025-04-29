@@ -7,6 +7,7 @@ export const black = "#000000";
 export const darkGrey = "#111218";
 export const mediumGrey = "#171926";
 export const lightGrey = "#4D4E70";
+export const lightPurple = "#8249F2";
 
 export const green = "#30F51B";
 export const lightGreen = "#41F8A3";
@@ -32,6 +33,7 @@ export const theme = {
     green: green,
     lightGreen: lightGreen,
     purple: purple,
+    lightPurple: lightPurple,
   },
   padding: {
     none: 0,
@@ -60,6 +62,13 @@ export const theme = {
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 32,
-    elevation: 8, // For Android
+    elevation: 8,
+  },
+  shadowAlternative: {
+    shadowColor: lightPurple,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 32,
+    elevation: 8,
   },
 };

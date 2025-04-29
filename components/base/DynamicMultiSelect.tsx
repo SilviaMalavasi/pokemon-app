@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedChip from "@/components/base/ThemedChip";
 import ThemedView from "@/components/base/ThemedView";
+import ThemedCheckbox from "@/components/base/ThemedCheckbox";
 import { theme } from "@/style/ui/Theme";
 import styles from "@/style/base/DynamicMultiSelectStyle";
 
@@ -99,7 +100,7 @@ export default function DynamicMultiSelect({
           onPress={() => setModalVisible(true)}
           style={styles.pickerWrapper}
         >
-          <ThemedText>Select...</ThemedText>
+          <ThemedText style={styles.selectPressable}>Select...</ThemedText>
         </Pressable>
         <Modal
           visible={modalVisible}
@@ -109,33 +110,27 @@ export default function DynamicMultiSelect({
         >
           <View style={styles.modalOverlay}>
             <View style={styles.modalContainer}>
-              <ScrollView style={styles.modalScroll}>
+              <ScrollView>
                 {options.map((option) => (
-                  <Pressable
+                  <ThemedCheckbox
                     key={option.value}
-                    style={styles.modalItem}
+                    checked={tempSelected.includes(option.value)}
+                    label={option.label}
                     onPress={() => handleSelect(option.value)}
-                  >
-                    <View
-                      style={[styles.modalCheckbox, tempSelected.includes(option.value) && styles.modalCheckboxChecked]}
-                    >
-                      {tempSelected.includes(option.value) && <View style={styles.modalCheckboxInner} />}
-                    </View>
-                    <ThemedText style={{ color: theme.colors.text }}>{option.label}</ThemedText>
-                  </Pressable>
+                  />
                 ))}
+                <View style={styles.modalActions}>
+                  <Pressable
+                    onPress={cancelSelection}
+                    style={styles.modalActionCancel}
+                  >
+                    <ThemedText style={{ color: theme.colors.placeholder }}>Cancel</ThemedText>
+                  </Pressable>
+                  <Pressable onPress={confirmSelection}>
+                    <ThemedText type="defaultSemiBold">OK</ThemedText>
+                  </Pressable>
+                </View>
               </ScrollView>
-              <View style={styles.modalActions}>
-                <Pressable
-                  onPress={cancelSelection}
-                  style={styles.modalActionCancel}
-                >
-                  <ThemedText style={{ color: theme.colors.placeholder }}>Cancel</ThemedText>
-                </Pressable>
-                <Pressable onPress={confirmSelection}>
-                  <ThemedText style={{ color: theme.colors.text, fontWeight: "bold" }}>OK</ThemedText>
-                </Pressable>
-              </View>
             </View>
           </View>
         </Modal>

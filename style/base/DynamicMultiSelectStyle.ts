@@ -27,27 +27,39 @@ const styles = StyleSheet.create({
     width: theme.fontSizes.small,
     marginLeft: theme.padding.xsmall,
   },
+  selectPressable: {
+    paddingVertical: theme.padding.small,
+    paddingHorizontal: theme.padding.small,
+    color: theme.colors.placeholder,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "center",
+  },
+  modalContainer: {
+    marginHorizontal: theme.padding.large,
+    backgroundColor: theme.colors.lightBackground,
+    borderRadius: theme.borderRadius.medium,
+    borderWidth: 1,
+    borderColor: theme.colors.purple,
+    paddingHorizontal: theme.padding.medium,
+    paddingVertical: theme.padding.large,
+    ...theme.shadowAlternative,
+  },
   pickerWrapper: {
     borderRadius: theme.borderRadius.small,
     borderWidth: 1,
     borderColor: theme.colors.text,
     width: "100%",
   },
-  picker: {
-    color: theme.colors.placeholder,
-    backgroundColor: "transparent",
+  modalActions: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop: theme.padding.small,
   },
-  pickerListContainer: {
-    backgroundColor: theme.colors.background,
-  },
-  pickerItem: {
-    backgroundColor: theme.colors.background,
-    color: theme.colors.text,
-    fontSize: theme.fontSizes.medium,
-    paddingVertical: theme.padding.xsmall,
-    paddingHorizontal: theme.padding.small,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.text,
+  modalActionCancel: {
+    marginRight: 16,
   },
   selectedAndHintWrapper: {
     backgroundColor: "transparent",
@@ -64,54 +76,6 @@ const styles = StyleSheet.create({
   },
   labelHint: {
     paddingTop: theme.padding.xsmall,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.4)",
-    justifyContent: "center",
-  },
-  modalContainer: {
-    margin: 24,
-    backgroundColor: theme.colors.background,
-    borderRadius: theme.borderRadius.small,
-    borderWidth: 1,
-    borderColor: theme.colors.text,
-    padding: theme.padding.small,
-  },
-  modalScroll: {
-    maxHeight: 300,
-  },
-  modalItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 12,
-  },
-  modalCheckbox: {
-    height: 20,
-    width: 20,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: theme.colors.text,
-    marginRight: 12,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalCheckboxChecked: {
-    backgroundColor: theme.colors.text,
-  },
-  modalCheckboxInner: {
-    width: 12,
-    height: 12,
-    backgroundColor: theme.colors.background,
-    borderRadius: 2,
-  },
-  modalActions: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    marginTop: 12,
-  },
-  modalActionCancel: {
-    marginRight: 16,
   },
 });
 
