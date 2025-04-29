@@ -44,8 +44,8 @@ const ThemedLabelWithHint: React.FC<ThemedLabelWithHintProps> = ({
           >
             <ThemedText type="label">{label}</ThemedText>
             <Svg
-              width="100%"
-              height="100%"
+              width={theme.fontSizes.small}
+              height={theme.fontSizes.small}
               viewBox="0 0 17 17"
               fill="none"
               style={styles.labelHintIcon}
