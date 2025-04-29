@@ -1,27 +1,28 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "@/style/base/Colors";
+import { theme } from "@/style/ui/Theme";
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 12,
+    marginBottom: theme.padding.small,
+    width: "100%",
   },
   label: {
-    marginBottom: 6,
-    fontSize: 16,
-    color: Colors.text,
+    position: "absolute",
+    top: theme.padding.xsmall,
+    left: 0,
+    zIndex: 2,
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: theme.padding.xsmall,
+    paddingHorizontal: theme.padding.xsmall,
   },
   picker: {
-    borderRadius: 4,
-    paddingTop: 6,
-    paddingBottom: 2,
-    paddingHorizontal: 8,
-    fontSize: 16,
-    backgroundColor: Colors.inputBackground,
-    color: Colors.placeholder,
+    color: theme.colors.placeholder,
     marginBottom: 8,
+    width: "100%",
   },
   listContainer: {
-    backgroundColor: Colors.inputBackground,
+    backgroundColor: theme.colors.lightGrey,
     borderWidth: 0,
     marginTop: 3,
     marginBottom: -1,
@@ -30,25 +31,25 @@ const styles = StyleSheet.create({
     elevation: 10, // For Android
   },
   listItem: {
-    color: Colors.placeholder,
-    backgroundColor: Colors.inputBackground,
+    color: theme.colors.placeholder,
+    backgroundColor: theme.colors.lightGrey,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.mediumDarkmediumGrey,
+    borderBottomColor: theme.colors.text,
     paddingTop: 6,
     paddingBottom: 8,
     paddingHorizontal: 12,
     margin: 0,
   },
   listItemActive: {
-    color: Colors.highlight,
-    backgroundColor: Colors.inputBackground,
+    color: theme.colors.textHilight,
+    backgroundColor: theme.colors.lightGrey,
   },
   selectedStyle: {
     borderRadius: 12,
-    borderColor: Colors.highlight,
+    borderColor: theme.colors.text,
   },
   selectedItemText: {
-    color: Colors.highlight,
+    color: theme.colors.text,
     fontSize: 16,
   },
 });
