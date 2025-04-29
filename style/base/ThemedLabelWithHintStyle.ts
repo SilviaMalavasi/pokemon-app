@@ -14,13 +14,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.padding.xsmall,
   },
   touchableOpacity: {
-    alignSelf: "flex-start",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    zIndex: 2,
+    marginLeft: theme.padding.xsmall,
+    paddingHorizontal: theme.padding.xsmall,
   },
-  labelContainer: {
+  touchableOpacityLabel: {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    backgroundColor: "transparent",
   },
   labelHintIcon: {
     height: theme.fontSizes.small,
