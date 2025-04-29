@@ -4,6 +4,7 @@ import { TextInput as RNTextInput } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
+import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
 import styles from "@/style/base/NumberInputStyle";
 
 interface NumberInputProps {
@@ -51,17 +52,12 @@ export default function NumberInput({
   return (
     <ThemedView style={styles.container}>
       {label && (
-        <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
-          <ThemedText style={styles.label}>{label}</ThemedText>
-          {labelHint && (
-            <TouchableOpacity
-              onPress={() => setShowHint((v) => !v)}
-              accessibilityLabel={`Hint for ${label}`}
-            >
-              <ThemedText type="hintIcon">?</ThemedText>
-            </TouchableOpacity>
-          )}
-        </ThemedView>
+        <ThemedLabelWithHint
+          label={label}
+          labelHint={labelHint}
+          showHint={showHint}
+          setShowHint={setShowHint}
+        />
       )}
       {showHint && labelHint && <ThemedText type="hintText">{labelHint}</ThemedText>}
       <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>

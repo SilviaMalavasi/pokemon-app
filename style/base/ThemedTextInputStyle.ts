@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
     paddingBottom: theme.padding.small,
     fontSize: theme.fontSizes.medium,
     lineHeight: theme.fontSizes.medium * 1.25,
-    fontFamily: "Inter-Regular",
     color: theme.colors.textHilight,
     borderWidth: 1,
     borderColor: theme.colors.text,
