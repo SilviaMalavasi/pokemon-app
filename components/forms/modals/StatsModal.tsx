@@ -1,6 +1,6 @@
 import React from "react";
 import ThemedModal from "@/components/base/ThemedModal";
-import NumberInput from "@/components/base/NumberInput";
+import ThemedNumberInput from "@/components/base/ThemedNumberInput";
 import ThemedText from "@/components/base/ThemedText";
 
 import { theme } from "@/style/ui/Theme";
@@ -44,7 +44,7 @@ export default function StatsModal({
       >
         Stats
       </ThemedText>
-      <NumberInput
+      <ThemedNumberInput
         label="HP"
         value={cardHp}
         onChange={(val, op) => {
@@ -54,7 +54,7 @@ export default function StatsModal({
         placeholder="Card HP"
         showOperatorSelect={"basic"}
       />
-      <NumberInput
+      <ThemedNumberInput
         label="Card Converted Retreat Cost"
         value={cardConvertedRetreatCost}
         onChange={(val, op) => {

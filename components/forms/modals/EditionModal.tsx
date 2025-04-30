@@ -1,7 +1,7 @@
 import React from "react";
 import ThemedModal from "@/components/base/ThemedModal";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
-import NumberInput from "@/components/base/NumberInput";
+import ThemedNumberInput from "@/components/base/ThemedNumberInput";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import ThemedText from "@/components/base/ThemedText";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
@@ -63,7 +63,7 @@ export default function EditionModal({
         onChange={setCardSetName}
         labelHint="Include cards that match ANY of the selected choices."
       />
-      <NumberInput
+      <ThemedNumberInput
         label="Card Number"
         value={cardNumber}
         onChange={setCardNumber}

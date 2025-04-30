@@ -33,7 +33,7 @@ const ThemedLabelWithHint: React.FC<ThemedLabelWithHintProps> = ({
           onPress={() => actualSetShowHint(!actualShowHint)}
           accessibilityLabel={`Hint for ${label}`}
           style={styles.touchableOpacity}
-          activeOpacity={0.7}
+          activeOpacity={1}
         >
           <LinearGradient
             colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}

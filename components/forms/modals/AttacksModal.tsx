@@ -1,6 +1,6 @@
 import React from "react";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
-import NumberInput from "@/components/base/NumberInput";
+import ThemedNumberInput from "@/components/base/ThemedNumberInput";
 import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
 import ThemedModal from "@/components/base/ThemedModal";
@@ -70,7 +70,7 @@ export default function AttacksModal({
         onChange={setAttacksName}
         placeholder="Attack name"
       />
-      <NumberInput
+      <ThemedNumberInput
         label="Attack Damage"
         value={attacksDamage}
         onChange={(val, op) => {
@@ -87,7 +87,7 @@ export default function AttacksModal({
         suggestions={["search", "discard pile", "attach", "energy"]}
         placeholder="Attack text"
       />
-      <NumberInput
+      <ThemedNumberInput
         label="Attacks Converted Energy Cost"
         value={attacksConvertedEnergyCost}
         onChange={(val, op) => {
