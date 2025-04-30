@@ -83,7 +83,7 @@ export default function AttacksModal({
         label="Attack Name"
         value={attacksName}
         onChange={setAttacksName}
-        placeholder="Attack name"
+        placeholder="Attack Name"
       />
       <ThemedNumberInput
         label="Attack Damage"
@@ -92,7 +92,7 @@ export default function AttacksModal({
           setAttacksDamage(val);
           setAttacksDamageOperator(op);
         }}
-        placeholder="Attack damage"
+        placeholder="Attack Damage"
         showOperatorSelect={"advanced"}
       />
       <AutoCompleteInput
@@ -100,16 +100,16 @@ export default function AttacksModal({
         value={attacksText}
         onChange={setAttacksText}
         suggestions={["search", "discard pile", "attach", "energy"]}
-        placeholder="Attack text"
+        placeholder="Attack Text"
       />
       <ThemedNumberInput
-        label="Attacks Converted Energy Cost"
+        label="Attacks Cost"
         value={attacksConvertedEnergyCost}
         onChange={(val, op) => {
           setAttacksConvertedEnergyCost(val);
           setAttacksConvertedEnergyCostOperator(op);
         }}
-        placeholder="Converted energy cost"
+        placeholder="Attacks Cost"
         showOperatorSelect={"basic"}
       />
       {(!attacksConvertedEnergyCostOperator ||
@@ -120,7 +120,6 @@ export default function AttacksModal({
           value={attacksCost}
           options={energyTypesOptions}
           onChange={setAttacksCost}
-          labelHint="Include cards that match ANY of the selected choices."
         />
       )}
       {attacksConvertedEnergyCostOperator === "=" &&
@@ -130,7 +129,7 @@ export default function AttacksModal({
             {Array.from({ length: Number(attacksConvertedEnergyCost) }).map((_, idx) => (
               <ThemedSelect
                 key={idx}
-                label={`Attack Cost Slot ${idx + 1}`}
+                label={`Attack Cost ${idx + 1}`}
                 value={attacksCostSlots[idx] || ""}
                 options={energyTypesOptions}
                 onChange={(selected) => {

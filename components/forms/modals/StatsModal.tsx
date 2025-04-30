@@ -53,17 +53,17 @@ export default function StatsModal({
         Stats
       </ThemedText>
       <ThemedNumberInput
-        label="HP"
+        label="Pokèmon HP"
         value={cardHp}
         onChange={(val, op) => {
           setCardHp(val);
           setCardHpOperator(op);
         }}
-        placeholder="Card HP"
+        placeholder="Pokèmon HP"
         showOperatorSelect={"basic"}
       />
       <ThemedNumberInput
-        label="Card Converted Retreat Cost"
+        label="Retreat Cost"
         value={cardConvertedRetreatCost}
         onChange={(val, op) => {
           setCardConvertedRetreatCost(val);

@@ -487,39 +487,12 @@ export default function FreeSearchForm({
             ))}
         </ThemedView>
       </Collapsible>
-
-      <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
-        <ThemedSwitch
-          value={removeDuplicates}
-          onValueChange={onRemoveDuplicatesChange}
-        />
-        <ThemedText
-          type="default"
-          style={{ paddingLeft: 8 }}
-        >
-          Remove duplicates
-        </ThemedText>
-        <TouchableOpacity
-          onPress={() => setShowHint((v) => !v)}
-          accessibilityLabel="Hint for Remove duplicates"
-        >
-          <ThemedText
-            type="hintIcon"
-            style={{ marginLeft: 8, marginTop: 4 }}
-          >
-            ?
-          </ThemedText>
-        </TouchableOpacity>
-      </ThemedView>
-      {showHint && (
-        <ThemedText
-          type="hintText"
-          style={{ marginTop: 4, marginLeft: 16 }}
-        >
-          If enabled, cards with same stats but different images or sets will be displayed only once.
-        </ThemedText>
-      )}
-
+      <ThemedSwitch
+        value={removeDuplicates}
+        label="Hide duplicates"
+        onValueChange={onRemoveDuplicatesChange}
+        hint="If enabled, cards with same stats but different images or sets will be displayed only once."
+      />
       <ThemedButton
         title={buttonLoading ? "Searching..." : "Search"}
         onPress={handleSubmit}

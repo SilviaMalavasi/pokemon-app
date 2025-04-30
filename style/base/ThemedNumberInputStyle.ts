@@ -56,11 +56,12 @@ const styles = StyleSheet.create({
     paddingTop: theme.padding.small,
   },
   pickerWrapper: {
-    width: 60,
+    width: 45,
     height: 55,
     borderRadius: theme.borderRadius.small,
     borderWidth: 1,
     borderColor: theme.colors.text,
+    borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
     borderRightWidth: 0,
     justifyContent: "center",

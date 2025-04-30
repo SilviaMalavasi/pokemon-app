@@ -63,25 +63,22 @@ export default function CardTypeModal({
         Card Type
       </ThemedText>
       <ThemedMultiSelect
-        label="Supertype"
+        label="Type"
         value={cardSupertype}
         options={cardSupertypeOptions}
         onChange={setCardSupertype}
-        labelHint="Include cards that match ANY of the selected choices."
       />
       <ThemedMultiSelect
-        label="Subtypes"
+        label="Label"
         value={cardSubtypes}
         options={cardSubtypesOptions}
         onChange={setCardSubtypes}
-        labelHint="Include cards that match ANY of the selected choices."
       />
       <ThemedMultiSelect
-        label="Types"
+        label="Energy Type"
         value={cardTypes}
         options={cardTypesOptions}
         onChange={setCardTypes}
-        labelHint="Include cards that match ANY of the selected choices."
       />
     </ThemedModal>
   );

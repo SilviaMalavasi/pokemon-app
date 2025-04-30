@@ -322,30 +322,6 @@ export default function AdvancedSearchForm({
     { label: "Card Number", value: cardNumber },
     { label: "Card/Set Number", value: cardSetNumber },
   ];
-  const summaryItems = summaryFields
-    .filter((f) => f.value && f.value !== "")
-    .map((f) => (
-      <ThemedView
-        key={f.label}
-        style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", marginBottom: 2 }}
-      >
-        <Svg
-          height={6}
-          width={8}
-          style={{ marginRight: theme.padding.xsmall }}
-        >
-          <Circle
-            cx={3}
-            cy={3}
-            r={3}
-            fill={theme.colors.green}
-          />
-        </Svg>
-        <ThemedText type="defaultSemiBold">{f.label}:</ThemedText>
-        <ThemedText type="default"> {f.value}</ThemedText>
-      </ThemedView>
-    ));
-
   return (
     <ThemedView>
       <ThemedTextInput
@@ -430,7 +406,7 @@ export default function AdvancedSearchForm({
           style={styles.halfButton}
         />
       </ThemedView>
-      <ThemedView style={{ ...styles.buttonRow, marginBottom: theme.padding.medium }}>
+      <ThemedView style={{ ...styles.buttonRow, marginBottom: theme.padding.small }}>
         <ThemedButton
           type="outline"
           size="small"
@@ -544,38 +520,39 @@ export default function AdvancedSearchForm({
         cardSetNumber={cardSetNumber}
         setCardSetNumber={setCardSetNumber}
       />
-      <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
-        <ThemedSwitch
-          value={removeDuplicates}
-          onValueChange={onRemoveDuplicatesChange}
-        />
-        <ThemedText
-          type="default"
-          style={{ paddingLeft: 8 }}
-        >
-          Hide duplicates
-        </ThemedText>
-        <TouchableOpacity
-          onPress={() => setShowHint((v) => !v)}
-          accessibilityLabel="Hint for Remove duplicates"
-        >
-          <ThemedText
-            type="hintIcon"
-            style={{ marginLeft: 8, marginTop: 4 }}
-          >
-            ?
-          </ThemedText>
-        </TouchableOpacity>
-      </ThemedView>
-      {showHint && (
-        <ThemedText
-          type="hintText"
-          style={{ marginTop: 4, marginLeft: 16 }}
-        >
-          If enabled, cards with same stats but different images or sets will be displayed only once.
-        </ThemedText>
+      <ThemedSwitch
+        value={removeDuplicates}
+        label="Hide duplicates"
+        onValueChange={onRemoveDuplicatesChange}
+        hint="If enabled, cards with same stats but different images or sets will be displayed only once."
+      />
+      {summaryFields.filter((f) => f.value && f.value !== "").length > 0 && (
+        <ThemedView style={styles.summaryContainer}>
+          {summaryFields
+            .filter((f) => f.value && f.value !== "")
+            .map((f) => (
+              <ThemedView
+                key={f.label}
+                style={styles.summaryItemContainer}
+              >
+                <Svg
+                  height={6}
+                  width={8}
+                  style={{ marginRight: theme.padding.xsmall }}
+                >
+                  <Circle
+                    cx={3}
+                    cy={3}
+                    r={3}
+                    fill={theme.colors.green}
+                  />
+                </Svg>
+                <ThemedText type="defaultSemiBold">{f.label}:</ThemedText>
+                <ThemedText type="default"> {f.value}</ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
       )}
-      {summaryItems.length > 0 && <ThemedView style={{ marginBottom: 8 }}>{summaryItems}</ThemedView>}
       <ThemedView style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <ThemedButton
           title="Reset"

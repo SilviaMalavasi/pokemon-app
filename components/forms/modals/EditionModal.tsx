@@ -64,14 +64,12 @@ export default function EditionModal({
         value={cardRegulationMark}
         options={cardRegulationMarkOptions}
         onChange={setCardRegulationMark}
-        labelHint="Include cards that match ANY of the selected choices."
       />
       <ThemedMultiSelect
         label="Set Name"
         value={cardSetName}
         options={cardSetNamesOptions}
         onChange={setCardSetName}
-        labelHint="Include cards that match ANY of the selected choices."
       />
       <ThemedNumberInput
         label="Card Number"
@@ -80,10 +78,11 @@ export default function EditionModal({
         placeholder="Card number"
       />
       <ThemedTextInput
-        label="Card/Set Number"
+        label="SetId-Number"
         value={cardSetNumber}
         onChange={setCardSetNumber}
-        placeholder="Card/Set Number"
+        placeholder="SetId-Number"
+        labelHint="Use the tournament format SetId-Number (e.g. SV3-27)"
       />
     </ThemedModal>
   );

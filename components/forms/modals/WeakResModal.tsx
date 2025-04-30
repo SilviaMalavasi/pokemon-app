@@ -52,14 +52,12 @@ export default function WeakResModal({
         value={cardWeaknessesType}
         options={cardWeaknessesTypeOptions}
         onChange={setCardWeaknessesType}
-        labelHint="Include cards that match ANY of the selected choices."
       />
       <ThemedMultiSelect
         label="Resistances Type"
         value={cardResistancesType}
         options={cardResistancesTypeOptions}
         onChange={setCardResistancesType}
-        labelHint="Include cards that match ANY of the selected choices."
       />
     </ThemedModal>
   );

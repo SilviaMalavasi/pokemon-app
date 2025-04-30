@@ -51,30 +51,23 @@ export default function AbilitiesModal({
         Abilities
       </ThemedText>
       <ThemedTextInput
-        label="Abilities Name"
+        label="Ability Name"
         value={abilitiesName}
         onChange={setAbilitiesName}
-        placeholder="Ability name"
+        placeholder="Ability Name"
       />
       <AutoCompleteInput
-        label="Abilities Text"
+        label="Abilitiy Text"
         value={abilitiesText}
         onChange={setAbilitiesText}
         suggestions={["search", "discard pile", "attach", "energy"]}
-        placeholder="Ability text"
+        placeholder="Ability Text"
       />
-      <ThemedView style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
-        <ThemedSwitch
-          value={hasAnyAbility}
-          onValueChange={setHasAnyAbility}
-        />
-        <ThemedText
-          type="default"
-          style={{ paddingLeft: 8 }}
-        >
-          Has any ability
-        </ThemedText>
-      </ThemedView>
+      <ThemedSwitch
+        value={hasAnyAbility}
+        label="Has any ability"
+        onValueChange={setHasAnyAbility}
+      />
     </ThemedModal>
   );
 }

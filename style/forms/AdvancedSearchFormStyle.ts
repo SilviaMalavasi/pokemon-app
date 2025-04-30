@@ -14,6 +14,13 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     flexShrink: 1,
   },
+  summaryContainer: {
+    borderWidth: 1,
+    borderColor: theme.colors.green,
+    borderRadius: theme.borderRadius.small,
+    padding: theme.padding.xsmall,
+  },
+  summaryItemContainer: { flexDirection: "row", flexWrap: "wrap", alignItems: "center", marginBottom: 2 },
 });
 
 export default styles;

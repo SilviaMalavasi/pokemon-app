@@ -56,7 +56,7 @@ export default function ThemedSelect({ label, value, options, onChange, labelHin
             style={styles.pickerWrapper}
           >
             <ThemedText style={styles.selectPressable}>
-              {options.find((o) => o.value === value)?.label || "Select..."}
+              {options.find((o) => o.value === value)?.label || "Select"}
             </ThemedText>
           </Pressable>
           <Modal

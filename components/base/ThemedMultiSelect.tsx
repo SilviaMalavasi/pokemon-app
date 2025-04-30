@@ -66,7 +66,7 @@ export default function ThemedMultiSelect({
           onPress={() => setModalVisible(true)}
           style={styles.pickerWrapper}
         >
-          <ThemedText style={styles.selectPressable}>Select...</ThemedText>
+          <ThemedText style={styles.selectPressable}>Select</ThemedText>
         </Pressable>
         <Modal
           visible={modalVisible}

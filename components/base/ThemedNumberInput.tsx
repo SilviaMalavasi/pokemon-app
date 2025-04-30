@@ -130,7 +130,9 @@ export default function NumberInput({
         <RNTextInput
           style={[
             styles.input,
-            showOperatorSelect !== "none" ? { borderLeftWidth: 0, borderBottomLeftRadius: 0 } : undefined,
+            showOperatorSelect !== "none"
+              ? { borderLeftWidth: 0, borderBottomLeftRadius: 0, borderTopLeftRadius: 0 }
+              : undefined,
           ]}
           value={value === "" ? "" : String(value)}
           onChangeText={(text) => {

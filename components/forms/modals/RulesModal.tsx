@@ -33,12 +33,12 @@ export default function RulesModal({ visible, onClose, cardRules, setCardRules }
         Rules
       </ThemedText>
       <AutoCompleteInput
-        label="Rules"
+        label="Card Rules"
         value={cardRules}
         labelHint="Rules are card effect for Trainers, card special rules for Pokèmon - Tera, Ex..."
         onChange={setCardRules}
         suggestions={["search", "discard pile", "attach", "energy"]}
-        placeholder="Card rules"
+        placeholder="Card Rules"
       />
     </ThemedModal>
   );

@@ -55,7 +55,6 @@ export default function EvolutionModal({
         value={cardStage}
         options={cardStageOptions}
         onChange={setCardStage}
-        labelHint="Include cards that match ANY of the selected choices."
       />
       <ThemedTextInput
         label="Evolves From"
