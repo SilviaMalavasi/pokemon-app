@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { theme } from "@/style/ui/Theme";
+import { vw } from "@/helpers/viewport";
 
 const styles = StyleSheet.create({
   container: {
@@ -40,8 +41,8 @@ const styles = StyleSheet.create({
     paddingTop: theme.padding.small,
   },
   pickerWrapper: {
-    width: 45,
-    height: 55,
+    width: vw(12),
+    height: vw(15.2),
     borderRadius: theme.borderRadius.small,
     borderWidth: 1,
     borderColor: theme.colors.text,
