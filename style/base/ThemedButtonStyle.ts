@@ -35,11 +35,8 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
           : status === "disabled"
           ? theme.colors.lightGrey
           : theme.colors.purple,
-      opacity: status === "disabled" ? 0.6 : 1,
+      opacity: status === "disabled" ? 1 : 1,
     };
-  } else {
-    // Main/alternative: only opacity for disabled
-    if (status === "disabled") container.opacity = 0.6;
   }
 
   // Text color

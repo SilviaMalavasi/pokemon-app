@@ -26,12 +26,13 @@ const styles = StyleSheet.create({
   clearIcon: {
     position: "absolute",
     right: theme.padding.small,
-    top: 0,
+    top: 2,
     bottom: 0,
     justifyContent: "center",
     height: "100%",
-    width: theme.fontSizes.medium,
-    zIndex: 1,
+    width: theme.fontSizes.large,
+    padding: 4,
+    zIndex: 2,
   },
   labelHint: {
     paddingTop: theme.padding.small,

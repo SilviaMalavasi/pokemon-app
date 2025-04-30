@@ -14,7 +14,7 @@ import { vw } from "@/helpers/viewport";
 
 export default function FreeSearchForm({
   onSearchResults,
-  setLoading,
+  setLoading: setLoadingProp,
   resetKey,
   removeDuplicates,
   onRemoveDuplicatesChange,
@@ -69,6 +69,7 @@ export default function FreeSearchForm({
 
   const [showHint, setShowHint] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Card Exclusion lists
   const cardExclusions = ["id", "nationalPokedexNumbers", "imagesSmall", "imagesLarge", "setId", "rarity", "number"];
@@ -536,8 +537,8 @@ export default function FreeSearchForm({
           width={vw(55)}
           icon="search"
           onPress={handleSubmit}
-          status={buttonLoading ? "disabled" : "default"}
-          disabled={buttonLoading}
+          status={loading || cardSearch.trim() === "" ? "disabled" : "default"}
+          disabled={loading || cardSearch.trim() === ""}
         />
       </ThemedView>
     </ThemedView>

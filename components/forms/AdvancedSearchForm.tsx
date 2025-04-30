@@ -90,7 +90,6 @@ export default function AdvancedSearchForm({
 
   // Local state
   const [loading, setLoading] = useState(false);
-  const [buttonLoading, setButtonLoading] = useState(false);
   const [cardIds, setCardIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -232,10 +231,39 @@ export default function AdvancedSearchForm({
     }
   }, [attacksConvertedEnergyCost, attacksConvertedEnergyCostOperator]);
 
+  // Check if any filter is set
+  const isAnyFilterSet =
+    cardName.trim() !== "" ||
+    cardSupertype.length > 0 ||
+    cardSubtypes.length > 0 ||
+    cardTypes.length > 0 ||
+    cardRules.trim() !== "" ||
+    attacksName.trim() !== "" ||
+    attacksDamage !== "" ||
+    attacksText.trim() !== "" ||
+    attacksCost.length > 0 ||
+    attacksConvertedEnergyCost !== "" ||
+    (attacksCostSlots && attacksCostSlots.some((v) => v)) ||
+    abilitiesName.trim() !== "" ||
+    abilitiesText.trim() !== "" ||
+    hasAnyAbility ||
+    cardHp !== "" ||
+    cardConvertedRetreatCost !== "" ||
+    cardStage.length > 0 ||
+    cardEvolvesFrom.trim() !== "" ||
+    cardEvolvesTo.trim() !== "" ||
+    cardWeaknessesType.length > 0 ||
+    cardResistancesType.length > 0 ||
+    cardArtist.trim() !== "" ||
+    cardFlavor.trim() !== "" ||
+    cardRegulationMark.length > 0 ||
+    cardSetName.length > 0 ||
+    cardNumber !== "" ||
+    cardSetNumber.trim() !== "";
+
   const handleSubmit = async (): Promise<void> => {
     if (setLoadingProp) setLoadingProp(true);
     setLoading(true);
-    setButtonLoading(true);
     setError(null);
     saveFormToContext();
 
@@ -282,7 +310,6 @@ export default function AdvancedSearchForm({
       setError(err.message || "Search failed");
     } finally {
       setLoading(false);
-      setButtonLoading(false);
       if (setLoadingProp) setLoadingProp(false);
     }
   };
@@ -608,8 +635,8 @@ export default function AdvancedSearchForm({
           width={vw(55)}
           icon="search"
           onPress={handleSubmit}
-          status={loading ? "disabled" : "default"}
-          disabled={buttonLoading}
+          status={!isAnyFilterSet || loading ? "disabled" : "default"}
+          disabled={!isAnyFilterSet || loading}
         />
       </ThemedView>
     </ThemedView>

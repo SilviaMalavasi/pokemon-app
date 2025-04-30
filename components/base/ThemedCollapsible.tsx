@@ -46,7 +46,7 @@ export default function ThemedCollapsible({
           color={theme.colors.textAlternative}
           style={{ transform: [{ rotate: actualOpen ? "90deg" : "0deg" }] }}
         />
-        <ThemedText type="subtitle">{title}</ThemedText>
+        <ThemedText type="buttonSmall">{title}</ThemedText>
       </TouchableOpacity>
       {actualOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
     </ThemedView>

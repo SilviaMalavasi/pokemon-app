@@ -80,9 +80,11 @@ export default function ThemedButton({
   const iconContainerStyle = [buttonStyle.icon].filter(Boolean);
   const iconFill = getIconFill(status);
 
-  // Select background image based on type
+  // Select background image based on status/type
   let backgroundImage = null;
-  if (type === "main") {
+  if (disabled || status === "disabled") {
+    backgroundImage = require("@/assets/button-disabled-background.webp");
+  } else if (type === "main") {
     backgroundImage = require("@/assets/button-main-background.webp");
   } else if (type === "alternative") {
     backgroundImage = require("@/assets/button-alt-background.webp");
@@ -90,6 +92,7 @@ export default function ThemedButton({
 
   return (
     <TouchableOpacity
+      activeOpacity={1}
       style={[containerStyle, width ? { width: width } : {}]}
       disabled={disabled || status === "disabled"}
       {...rest}
