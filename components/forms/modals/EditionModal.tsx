@@ -71,12 +71,6 @@ export default function EditionModal({
         options={cardSetNamesOptions}
         onChange={setCardSetName}
       />
-      <ThemedNumberInput
-        label="Card Number"
-        value={cardNumber}
-        onChange={setCardNumber}
-        placeholder="Card number"
-      />
       <ThemedTextInput
         label="Pokédex number"
         value={cardSetNumber}
@@ -102,11 +96,6 @@ export function getEditionFilters(
     cardSetName.length > 0 && {
       config: { key: "setName", type: "multiselect", table: "CardSet", column: "name" },
       value: cardSetName,
-    },
-    cardNumber !== "" && {
-      config: { key: "number", type: "number", table: "Card", column: "number", valueType: "text" },
-      value: cardNumber,
-      operator: "=",
     },
     cardSetNumber && {
       config: { key: "cardSetNumber", type: "text", table: "Card", column: "cardId" },
