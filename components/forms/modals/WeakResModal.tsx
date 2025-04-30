@@ -25,6 +25,13 @@ export default function WeakResModal({
 }: WeakResModalProps) {
   const cardWeaknessesTypeOptions = uniqueIdentifiers.cardWeaknessTypes.map((v: string) => ({ value: v, label: v }));
   const cardResistancesTypeOptions = uniqueIdentifiers.cardResistanceTypes.map((v: string) => ({ value: v, label: v }));
+
+  // Reset all values to their initial state
+  const handleCancel = () => {
+    setCardWeaknessesType([]);
+    setCardResistancesType([]);
+  };
+
   return (
     <ThemedModal
       visible={visible}
@@ -32,6 +39,7 @@ export default function WeakResModal({
       buttonText="set filters"
       buttonType="alternative"
       buttonSize="small"
+      onCancel={handleCancel}
     >
       <ThemedText
         type="subtitle"

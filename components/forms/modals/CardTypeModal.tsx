@@ -40,6 +40,13 @@ export default function CardTypeModal({
 
   const cardTypesOptions = uniqueIdentifiers.cardTypes.map((v: string) => ({ value: v, label: v }));
 
+  // Reset all values to their initial state
+  const handleCancel = () => {
+    setCardSupertype([]);
+    setCardSubtypes([]);
+    setCardTypes([]);
+  };
+
   return (
     <ThemedModal
       visible={visible}
@@ -47,6 +54,7 @@ export default function CardTypeModal({
       buttonText="set filters"
       buttonType="alternative"
       buttonSize="small"
+      onCancel={handleCancel}
     >
       <ThemedText
         type="subtitle"

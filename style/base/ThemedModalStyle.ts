@@ -44,8 +44,18 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: theme.padding.small,
   },
+  buttonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: theme.padding.medium,
+    backgroundColor: "transparent",
+  },
   button: {
     marginTop: theme.padding.medium,
+  },
+  modalCancel: {
+    marginTop: theme.padding.small,
+    alignItems: "center",
   },
 });
 

@@ -28,6 +28,13 @@ export default function AbilitiesModal({
   hasAnyAbility,
   setHasAnyAbility,
 }: AbilitiesModalProps) {
+  // Reset all values to their initial state
+  const handleCancel = () => {
+    setAbilitiesName("");
+    setAbilitiesText("");
+    setHasAnyAbility(false);
+  };
+
   return (
     <ThemedModal
       visible={visible}
@@ -35,6 +42,7 @@ export default function AbilitiesModal({
       buttonText="set filters"
       buttonType="alternative"
       buttonSize="small"
+      onCancel={handleCancel}
     >
       <ThemedText
         type="subtitle"

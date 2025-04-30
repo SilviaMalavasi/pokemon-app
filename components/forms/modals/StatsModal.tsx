@@ -30,6 +30,13 @@ export default function StatsModal({
   cardConvertedRetreatCostOperator,
   setCardConvertedRetreatCostOperator,
 }: StatsModalProps) {
+  // Reset all values to their initial state
+  const handleCancel = () => {
+    setCardHp("");
+    setCardHpOperator("");
+    setCardConvertedRetreatCost("");
+    setCardConvertedRetreatCostOperator("");
+  };
   return (
     <ThemedModal
       visible={visible}
@@ -37,6 +44,7 @@ export default function StatsModal({
       buttonText="set filters"
       buttonType="alternative"
       buttonSize="small"
+      onCancel={handleCancel}
     >
       <ThemedText
         type="subtitle"

@@ -13,6 +13,10 @@ interface RulesModalProps {
 }
 
 export default function RulesModal({ visible, onClose, cardRules, setCardRules }: RulesModalProps) {
+  // Reset all values to their initial state
+  const handleCancel = () => {
+    setCardRules("");
+  };
   return (
     <ThemedModal
       visible={visible}
@@ -20,6 +24,7 @@ export default function RulesModal({ visible, onClose, cardRules, setCardRules }
       buttonText="set filters"
       buttonType="alternative"
       buttonSize="small"
+      onCancel={handleCancel}
     >
       <ThemedText
         type="subtitle"

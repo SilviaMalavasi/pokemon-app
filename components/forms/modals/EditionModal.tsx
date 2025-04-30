@@ -35,6 +35,15 @@ export default function EditionModal({
 }: EditionModalProps) {
   const cardRegulationMarkOptions = uniqueIdentifiers.cardRegulationMark.map((v: string) => ({ value: v, label: v }));
   const cardSetNamesOptions = uniqueIdentifiers.cardSetNames.map((v: string) => ({ value: v, label: v }));
+
+  // Reset all values to their initial state
+  const handleCancel = () => {
+    setCardRegulationMark([]);
+    setCardSetName([]);
+    setCardNumber("");
+    setCardSetNumber("");
+  };
+
   return (
     <ThemedModal
       visible={visible}
@@ -42,6 +51,7 @@ export default function EditionModal({
       buttonText="set filters"
       buttonType="alternative"
       buttonSize="small"
+      onCancel={handleCancel}
     >
       <ThemedText
         type="subtitle"

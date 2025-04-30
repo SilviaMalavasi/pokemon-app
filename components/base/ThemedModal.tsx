@@ -2,6 +2,8 @@ import React from "react";
 import { Modal, Pressable, View, SafeAreaView, Platform, ScrollView } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
+import ThemedText from "@/components/base/ThemedText";
+import { theme } from "@/style/ui/Theme";
 import styles from "@/style/base/ThemedModalStyle";
 
 interface ThemedModalProps {
@@ -13,6 +15,7 @@ interface ThemedModalProps {
   buttonSize?: "small" | "large";
   buttonStyle?: any;
   contentStyle?: any;
+  onCancel?: () => void;
 }
 
 export default function ThemedModal({
@@ -24,6 +27,7 @@ export default function ThemedModal({
   buttonSize = "large",
   buttonStyle,
   contentStyle,
+  onCancel,
 }: ThemedModalProps) {
   return (
     <Modal
@@ -54,13 +58,24 @@ export default function ThemedModal({
                 persistentScrollbar={true}
               >
                 {children}
-                <ThemedButton
-                  title={buttonText}
-                  type={buttonType}
-                  size={buttonSize}
-                  style={[styles.button, buttonStyle]}
-                  onPress={onClose}
-                />
+                <ThemedView style={styles.buttonContainer}>
+                  <Pressable
+                    onPress={() => {
+                      if (onCancel) onCancel();
+                      onClose();
+                    }}
+                    style={styles.modalCancel}
+                  >
+                    <ThemedText style={{ color: theme.colors.placeholder }}>Cancel</ThemedText>
+                  </Pressable>
+                  <ThemedButton
+                    title={buttonText}
+                    type={buttonType}
+                    size={buttonSize}
+                    style={[styles.button, buttonStyle]}
+                    onPress={onClose}
+                  />
+                </ThemedView>
               </ScrollView>
             </ThemedView>
           </View>

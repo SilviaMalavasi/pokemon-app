@@ -50,6 +50,19 @@ export default function AttacksModal({
   setAttacksCostSlots,
 }: AttacksModalProps) {
   const energyTypesOptions = uniqueIdentifiers.energyTypes.map((v: string) => ({ value: v, label: v }));
+
+  // Reset all values to their initial state
+  const handleCancel = () => {
+    setAttacksName("");
+    setAttacksDamage("");
+    setAttacksDamageOperator("");
+    setAttacksText("");
+    setAttacksCost([]);
+    setAttacksConvertedEnergyCost("");
+    setAttacksConvertedEnergyCostOperator("");
+    setAttacksCostSlots([]);
+  };
+
   return (
     <ThemedModal
       visible={visible}
@@ -57,6 +70,7 @@ export default function AttacksModal({
       buttonText="set filters"
       buttonType="alternative"
       buttonSize="small"
+      onCancel={handleCancel}
     >
       <ThemedText
         type="subtitle"

@@ -29,6 +29,12 @@ export default function EvolutionModal({
   setCardEvolvesTo,
 }: EvolutionModalProps) {
   const cardStageOptions = uniqueIdentifiers.cardStagePokémon.map((v: string) => ({ value: v, label: v }));
+  // Reset all values to their initial state
+  const handleCancel = () => {
+    setCardStage([]);
+    setCardEvolvesFrom("");
+    setCardEvolvesTo("");
+  };
   return (
     <ThemedModal
       visible={visible}
@@ -36,6 +42,7 @@ export default function EvolutionModal({
       buttonText="set filters"
       buttonType="alternative"
       buttonSize="small"
+      onCancel={handleCancel}
     >
       <ThemedText
         type="subtitle"
