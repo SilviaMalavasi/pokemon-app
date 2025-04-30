@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import ThemedView from "@/components/base/ThemedView";
@@ -285,23 +286,50 @@ export default function AdvancedSearchForm({
     }
   };
 
+  // Helper to interleave a separator component between array items
+  const interleaveWithOr = (arr: string[]) => {
+    const filtered = arr.filter(Boolean);
+    if (filtered.length === 0) return null;
+    return (
+      <Text style={{ flexWrap: "wrap", flexDirection: "row", flexShrink: 1 }}>
+        {filtered.map((item, idx) => (
+          <React.Fragment key={item + idx}>
+            <ThemedText type="default">{item}</ThemedText>
+            {idx < filtered.length - 1 && (
+              <ThemedText
+                type="label"
+                fontSize="3"
+                style={{ color: theme.colors.textHilight }}
+              >
+                {" OR "}
+              </ThemedText>
+            )}
+          </React.Fragment>
+        ))}
+      </Text>
+    );
+  };
+
   // Summary fields for flat summary
   const summaryFields = [
     { label: "Card Name", value: cardName },
-    { label: "Supertype", value: cardSupertype.join(", ") },
-    { label: "Subtypes", value: cardSubtypes.join(", ") },
-    { label: "Types", value: cardTypes.join(", ") },
+    { label: "Supertype", value: cardSupertype.length ? interleaveWithOr(cardSupertype) : "" },
+    { label: "Subtypes", value: cardSubtypes.length ? interleaveWithOr(cardSubtypes) : "" },
+    { label: "Types", value: cardTypes.length ? interleaveWithOr(cardTypes) : "" },
     { label: "Rules", value: cardRules },
     { label: "Attack Name", value: attacksName },
     { label: "Attack Damage", value: attacksDamage !== "" ? `${attacksDamageOperator} ${attacksDamage}` : "" },
     { label: "Attack Text", value: attacksText },
-    { label: "Attack Cost", value: attacksCost.join(", ") },
+    { label: "Attack Cost", value: attacksCost.length ? interleaveWithOr(attacksCost) : "" },
     {
       label: "Converted Energy Cost",
       value:
         attacksConvertedEnergyCost !== "" ? `${attacksConvertedEnergyCostOperator} ${attacksConvertedEnergyCost}` : "",
     },
-    { label: "Cost Slots", value: attacksCostSlots.filter(Boolean).join(", ") },
+    {
+      label: "Cost Slots",
+      value: attacksCostSlots.filter(Boolean).length ? interleaveWithOr(attacksCostSlots.filter(Boolean)) : "",
+    },
     { label: "Ability Name", value: abilitiesName },
     { label: "Ability Text", value: abilitiesText },
     { label: "Has any ability", value: hasAnyAbility ? "Yes" : "" },
@@ -310,15 +338,15 @@ export default function AdvancedSearchForm({
       label: "Retreat Cost",
       value: cardConvertedRetreatCost !== "" ? `${cardConvertedRetreatCostOperator} ${cardConvertedRetreatCost}` : "",
     },
-    { label: "Stage", value: cardStage.join(", ") },
+    { label: "Stage", value: cardStage.length ? interleaveWithOr(cardStage) : "" },
     { label: "Evolves From", value: cardEvolvesFrom },
     { label: "Evolves To", value: cardEvolvesTo },
-    { label: "Weaknesses", value: cardWeaknessesType.join(", ") },
-    { label: "Resistances", value: cardResistancesType.join(", ") },
+    { label: "Weaknesses", value: cardWeaknessesType.length ? interleaveWithOr(cardWeaknessesType) : "" },
+    { label: "Resistances", value: cardResistancesType.length ? interleaveWithOr(cardResistancesType) : "" },
     { label: "Artist", value: cardArtist },
     { label: "Flavor", value: cardFlavor },
-    { label: "Regulation Mark", value: cardRegulationMark.join(", ") },
-    { label: "Set Name", value: cardSetName.join(", ") },
+    { label: "Regulation Mark", value: cardRegulationMark.length ? interleaveWithOr(cardRegulationMark) : "" },
+    { label: "Set Name", value: cardSetName.length ? interleaveWithOr(cardSetName) : "" },
     { label: "Card Number", value: cardNumber },
     { label: "Card/Set Number", value: cardSetNumber },
   ];
@@ -528,29 +556,41 @@ export default function AdvancedSearchForm({
       />
       {summaryFields.filter((f) => f.value && f.value !== "").length > 0 && (
         <ThemedView style={styles.summaryContainer}>
-          {summaryFields
-            .filter((f) => f.value && f.value !== "")
-            .map((f) => (
-              <ThemedView
-                key={f.label}
-                style={styles.summaryItemContainer}
-              >
-                <Svg
-                  height={6}
-                  width={8}
-                  style={{ marginRight: theme.padding.xsmall }}
+          <LinearGradient
+            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+            locations={[0, 0.4, 0.4, 1]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={styles.summaryLabel}
+          >
+            <ThemedText type="label">You are searching for</ThemedText>
+          </LinearGradient>
+          <ThemedView>
+            {summaryFields
+              .filter((f) => f.value && f.value !== "")
+              .map((f) => (
+                <ThemedView
+                  key={f.label}
+                  style={styles.summaryItemContainer}
                 >
-                  <Circle
-                    cx={3}
-                    cy={3}
-                    r={3}
-                    fill={theme.colors.green}
-                  />
-                </Svg>
-                <ThemedText type="defaultSemiBold">{f.label}:</ThemedText>
-                <ThemedText type="default"> {f.value}</ThemedText>
-              </ThemedView>
-            ))}
+                  <Svg
+                    height={6}
+                    width={8}
+                    style={{ marginRight: theme.padding.xsmall }}
+                  >
+                    <Circle
+                      cx={3}
+                      cy={3}
+                      r={3}
+                      fill={theme.colors.green}
+                    />
+                  </Svg>
+                  <ThemedView>
+                    <ThemedText type="defaultSemiBold">{f.label}:</ThemedText> {f.value}
+                  </ThemedViews>
+                </ThemedView>
+              ))}
+          </ThemedView>
         </ThemedView>
       )}
       <ThemedView style={{ flexDirection: "row", justifyContent: "space-between" }}>

@@ -15,12 +15,32 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   summaryContainer: {
+    position: "relative",
+    flexDirection: "row",
     borderWidth: 1,
     borderColor: theme.colors.green,
     borderRadius: theme.borderRadius.small,
-    padding: theme.padding.xsmall,
+    padding: theme.padding.small,
+    paddingTop: theme.padding.medium,
+    marginBottom: theme.padding.medium,
   },
-  summaryItemContainer: { flexDirection: "row", flexWrap: "wrap", alignItems: "center", marginBottom: 2 },
+  summaryLabel: {
+    position: "absolute",
+    top: theme.padding.xsmall * -1,
+    left: 0,
+    zIndex: 2,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginLeft: theme.padding.xsmall,
+    paddingHorizontal: theme.padding.xsmall,
+  },
+  summaryItemContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    marginBottom: 2,
+  },
 });
 
 export default styles;

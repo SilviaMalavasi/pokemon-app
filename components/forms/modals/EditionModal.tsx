@@ -78,10 +78,10 @@ export default function EditionModal({
         placeholder="Card number"
       />
       <ThemedTextInput
-        label="SetId-Number"
+        label="Pokédex number"
         value={cardSetNumber}
         onChange={setCardSetNumber}
-        placeholder="SetId-Number"
+        placeholder="Pokédex number"
         labelHint="Use the tournament format SetId-Number (e.g. SV3-27)"
       />
     </ThemedModal>
