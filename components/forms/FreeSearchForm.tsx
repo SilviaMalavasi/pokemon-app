@@ -5,6 +5,7 @@ import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import ThemedCollapsible from "@/components/base/ThemedCollapsible";
+import ThemedCheckbox from "@/components/base/ThemedCheckbox";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import { freeQueryBuilder } from "@/helpers/freeQueryBuilder";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
@@ -243,17 +244,11 @@ export default function FreeSearchForm({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <ThemedSwitch
-                  value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
+                <ThemedCheckbox
+                  checked={includedColumns[col.key]}
+                  onPress={() => handleToggleColumn(col.key)}
+                  label={col.label}
                 />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
               </ThemedView>
             ))}
         </ThemedView>
@@ -273,17 +268,11 @@ export default function FreeSearchForm({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <ThemedSwitch
-                  value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
+                <ThemedCheckbox
+                  checked={includedColumns[col.key]}
+                  onPress={() => handleToggleColumn(col.key)}
+                  label={col.label}
                 />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
               </ThemedView>
             ))}
         </ThemedView>
@@ -303,17 +292,11 @@ export default function FreeSearchForm({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <ThemedSwitch
-                  value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
+                <ThemedCheckbox
+                  checked={includedColumns[col.key]}
+                  onPress={() => handleToggleColumn(col.key)}
+                  label={col.label}
                 />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
               </ThemedView>
             ))}
           {allCardColumns
@@ -323,17 +306,11 @@ export default function FreeSearchForm({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <ThemedSwitch
-                  value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
+                <ThemedCheckbox
+                  checked={includedColumns[col.key]}
+                  onPress={() => handleToggleColumn(col.key)}
+                  label={col.label}
                 />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
               </ThemedView>
             ))}
         </ThemedView>
@@ -353,17 +330,11 @@ export default function FreeSearchForm({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <ThemedSwitch
-                  value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
+                <ThemedCheckbox
+                  checked={includedColumns[col.key]}
+                  onPress={() => handleToggleColumn(col.key)}
+                  label={col.label}
                 />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
               </ThemedView>
             ))}
         </ThemedView>
@@ -383,17 +354,11 @@ export default function FreeSearchForm({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <ThemedSwitch
-                  value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
+                <ThemedCheckbox
+                  checked={includedColumns[col.key]}
+                  onPress={() => handleToggleColumn(col.key)}
+                  label={col.label}
                 />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
               </ThemedView>
             ))}
         </ThemedView>
@@ -413,17 +378,11 @@ export default function FreeSearchForm({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <ThemedSwitch
-                  value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
+                <ThemedCheckbox
+                  checked={includedColumns[col.key]}
+                  onPress={() => handleToggleColumn(col.key)}
+                  label={col.label}
                 />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
               </ThemedView>
             ))}
         </ThemedView>
@@ -443,17 +402,11 @@ export default function FreeSearchForm({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <ThemedSwitch
-                  value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
+                <ThemedCheckbox
+                  checked={includedColumns[col.key]}
+                  onPress={() => handleToggleColumn(col.key)}
+                  label={col.label}
                 />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
               </ThemedView>
             ))}
         </ThemedView>
@@ -473,17 +426,11 @@ export default function FreeSearchForm({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <ThemedSwitch
-                  value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
+                <ThemedCheckbox
+                  checked={includedColumns[col.key]}
+                  onPress={() => handleToggleColumn(col.key)}
+                  label={col.label}
                 />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
               </ThemedView>
             ))}
         </ThemedView>
@@ -503,17 +450,11 @@ export default function FreeSearchForm({
                 key={`${col.table}-${col.key}`}
                 style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
               >
-                <ThemedSwitch
-                  value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
+                <ThemedCheckbox
+                  checked={includedColumns[col.key]}
+                  onPress={() => handleToggleColumn(col.key)}
+                  label={col.label}
                 />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
               </ThemedView>
             ))}
         </ThemedView>
@@ -522,7 +463,6 @@ export default function FreeSearchForm({
         value={removeDuplicates}
         label="Hide duplicates"
         onValueChange={onRemoveDuplicatesChange}
-        hint="If enabled, cards with same stats but different images or sets will be displayed only once."
       />
       <ThemedView style={styles.mainButtonsRow}>
         <ThemedButton

@@ -1,16 +1,16 @@
 import { StyleSheet } from "react-native";
+import { theme } from "@/style/ui/Theme";
 
 const styles = StyleSheet.create({
   heading: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
-    paddingVertical: 4,
+    gap: theme.padding.small,
+    paddingVertical: theme.padding.xsmall,
   },
   content: {
-    marginTop: 6,
-    marginLeft: 24,
-    marginBottom: 12,
+    marginTop: theme.padding.small,
+    marginLeft: theme.padding.large + theme.padding.xsmall,
   },
 });
 
