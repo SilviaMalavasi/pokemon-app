@@ -291,6 +291,8 @@ export default function AdvancedSearchForm({
       ...getEditionFilters(cardRegulationMark, cardSetName, cardNumber, cardSetNumber),
       ...getRulesFilters(cardRules),
     ].filter(Boolean) as QueryBuilderFilter[];
+    console.log("[AdvancedSearchForm] Filters for queryBuilder:", filters);
+
     try {
       const { cardIds, query } = await queryBuilder(filters);
       setCardIds(cardIds);
