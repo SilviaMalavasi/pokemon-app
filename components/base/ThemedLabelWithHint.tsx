@@ -15,13 +15,13 @@ export interface ThemedLabelWithHintProps {
   style?: any;
 }
 
-const ThemedLabelWithHint: React.FC<ThemedLabelWithHintProps> = ({
+export default function ThemedLabelWithHint({
   label,
   labelHint,
   style,
   showHint: showHintProp,
   setShowHint: setShowHintProp,
-}) => {
+}: ThemedLabelWithHintProps) {
   const [showHint, setShowHint] = useState(false);
   const actualShowHint = showHintProp !== undefined ? showHintProp : showHint;
   const actualSetShowHint = setShowHintProp || setShowHint;
@@ -79,6 +79,4 @@ const ThemedLabelWithHint: React.FC<ThemedLabelWithHintProps> = ({
       )}
     </>
   );
-};
-
-export default ThemedLabelWithHint;
+}

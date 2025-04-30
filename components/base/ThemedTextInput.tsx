@@ -19,79 +19,78 @@ export interface TextInputProps {
   onBlur?: () => void;
 }
 
-const ThemedTextInput = forwardRef<RNTextInput, TextInputProps>(
-  ({ label, value, onChange, placeholder, labelHint, style, onFocus, onBlur }, ref) => {
-    const [showHint, setShowHint] = useState(false);
+export default forwardRef<RNTextInput, TextInputProps>(function ThemedTextInput(
+  { label, value, onChange, placeholder, labelHint, style, onFocus, onBlur },
+  ref
+) {
+  const [showHint, setShowHint] = useState(false);
 
-    return (
-      <ThemedView style={[styles.container, style]}>
-        {label && (
-          <ThemedLabelWithHint
-            label={label}
-            labelHint={labelHint}
-            showHint={showHint}
-            setShowHint={setShowHint}
-          />
-        )}
-        <ThemedView>
-          <RNTextInput
-            ref={ref}
-            style={[styles.input, { flex: 1 }]}
-            value={value}
-            onChangeText={onChange}
-            placeholder={placeholder}
-            placeholderTextColor={styles.placeholder.color}
-            onFocus={onFocus}
-            onBlur={onBlur}
-          />
-          {value.length > 0 && (
-            <TouchableOpacity
-              onPress={() => onChange("")}
-              accessibilityLabel={`Clear ${label || "input"}`}
-              style={styles.clearIcon}
-            >
-              <Svg
-                width="100%"
-                height="100%"
-                viewBox="0 0 17 18"
-                fill="none"
-              >
-                <Rect
-                  x={0.75}
-                  y={1.25}
-                  width={15.5}
-                  height={15.5}
-                  rx={7.75}
-                  stroke={theme.colors.textHilight}
-                  strokeWidth={1.5}
-                />
-                <Path
-                  d="M5 5.5L12 12.5"
-                  stroke={theme.colors.textHilight}
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                />
-                <Path
-                  d="M12 5.5L5 12.5"
-                  stroke={theme.colors.textHilight}
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                />
-              </Svg>
-            </TouchableOpacity>
-          )}
-        </ThemedView>
-        {showHint && labelHint && (
-          <ThemedText
-            type="hintText"
-            style={styles.labelHint}
+  return (
+    <ThemedView style={[styles.container, style]}>
+      {label && (
+        <ThemedLabelWithHint
+          label={label}
+          labelHint={labelHint}
+          showHint={showHint}
+          setShowHint={setShowHint}
+        />
+      )}
+      <ThemedView>
+        <RNTextInput
+          ref={ref}
+          style={[styles.input, { flex: 1 }]}
+          value={value}
+          onChangeText={onChange}
+          placeholder={placeholder}
+          placeholderTextColor={styles.placeholder.color}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
+        {value.length > 0 && (
+          <TouchableOpacity
+            onPress={() => onChange("")}
+            accessibilityLabel={`Clear ${label || "input"}`}
+            style={styles.clearIcon}
           >
-            {labelHint}
-          </ThemedText>
+            <Svg
+              width="100%"
+              height="100%"
+              viewBox="0 0 17 18"
+              fill="none"
+            >
+              <Rect
+                x={0.75}
+                y={1.25}
+                width={15.5}
+                height={15.5}
+                rx={7.75}
+                stroke={theme.colors.textHilight}
+                strokeWidth={1.5}
+              />
+              <Path
+                d="M5 5.5L12 12.5"
+                stroke={theme.colors.textHilight}
+                strokeWidth={1.5}
+                strokeLinecap="round"
+              />
+              <Path
+                d="M12 5.5L5 12.5"
+                stroke={theme.colors.textHilight}
+                strokeWidth={1.5}
+                strokeLinecap="round"
+              />
+            </Svg>
+          </TouchableOpacity>
         )}
       </ThemedView>
-    );
-  }
-);
-
-export default ThemedTextInput;
+      {showHint && labelHint && (
+        <ThemedText
+          type="hintText"
+          style={styles.labelHint}
+        >
+          {labelHint}
+        </ThemedText>
+      )}
+    </ThemedView>
+  );
+});

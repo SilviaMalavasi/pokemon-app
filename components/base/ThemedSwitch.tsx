@@ -8,7 +8,7 @@ interface ThemedSwitchProps extends SwitchProps {
   disabled?: boolean;
 }
 
-const ThemedSwitch: React.FC<ThemedSwitchProps> = ({ value, onValueChange, disabled = false, ...rest }) => {
+export default function ThemedSwitch({ value, onValueChange, disabled = false, ...rest }: ThemedSwitchProps) {
   return (
     <Switch
       value={value}
@@ -19,6 +19,4 @@ const ThemedSwitch: React.FC<ThemedSwitchProps> = ({ value, onValueChange, disab
       {...rest}
     />
   );
-};
-
-export default ThemedSwitch;
+}

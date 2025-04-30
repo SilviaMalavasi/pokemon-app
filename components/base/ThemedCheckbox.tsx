@@ -11,18 +11,18 @@ interface ThemedCheckboxProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const ThemedCheckbox: React.FC<ThemedCheckboxProps> = ({ checked, label, onPress, style }) => (
-  <Pressable
-    style={[styles.container, style]}
-    onPress={onPress}
-    accessibilityRole="checkbox"
-    accessibilityState={{ checked }}
-  >
-    <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
-      {checked && <View style={styles.checkboxInner} />}
-    </View>
-    <ThemedText style={styles.label}>{label}</ThemedText>
-  </Pressable>
-);
-
-export default ThemedCheckbox;
+export default function ThemedCheckbox({ checked, label, onPress, style }: ThemedCheckboxProps) {
+  return (
+    <Pressable
+      style={[styles.container, style]}
+      onPress={onPress}
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked }}
+    >
+      <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
+        {checked && <View style={styles.checkboxInner} />}
+      </View>
+      <ThemedText style={styles.label}>{label}</ThemedText>
+    </Pressable>
+  );
+}
