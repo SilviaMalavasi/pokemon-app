@@ -22,9 +22,7 @@ const ThemedSwitchStyle = StyleSheet.create({
   label: {
     paddingLeft: theme.padding.small,
   },
-  hintIcon: {
-    marginLeft: theme.padding.small,
-  },
+
   hintText: {
     flex: "100%",
   },

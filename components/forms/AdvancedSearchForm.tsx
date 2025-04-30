@@ -446,7 +446,7 @@ export default function AdvancedSearchForm({
           style={styles.halfButton}
         />
       </ThemedView>
-      <ThemedView style={{ ...styles.buttonRow, marginBottom: theme.padding.small }}>
+      <ThemedView style={styles.buttonRow}>
         <ThemedButton
           type="outline"
           size="small"
@@ -565,6 +565,7 @@ export default function AdvancedSearchForm({
         label="Hide duplicates"
         onValueChange={onRemoveDuplicatesChange}
         hint="If enabled, cards with same stats but different images or sets will be displayed only once."
+        style={{ marginTop: theme.padding.xsmall, marginBottom: theme.padding.medium }}
       />
       {summaryFields.filter((f) => f.value && f.value !== "").length > 0 && (
         <ThemedView style={styles.summaryContainer}>
@@ -612,7 +613,7 @@ export default function AdvancedSearchForm({
           </ThemedView>
         </ThemedView>
       )}
-      <ThemedView style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <ThemedView style={styles.mainButtonsRow}>
         <ThemedButton
           title="Reset"
           size="small"

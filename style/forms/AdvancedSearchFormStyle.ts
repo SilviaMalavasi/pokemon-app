@@ -20,9 +20,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.green,
     borderRadius: theme.borderRadius.small,
-    padding: theme.padding.small,
-    paddingVertical: theme.padding.large,
-    marginBottom: theme.padding.medium,
+    paddingHorizontal: theme.padding.small,
+    paddingTop: theme.padding.large,
+    paddingBottom: theme.padding.xlarge * 1.2,
+    marginBottom: theme.padding.medium * -1,
   },
   summaryLabel: {
     position: "absolute",
@@ -57,6 +58,12 @@ const styles = StyleSheet.create({
   summaryArrayTextSeparator: {
     color: theme.colors.green,
     fontSize: theme.fontSizes.xsmall,
+  },
+  mainButtonsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
+    paddingHorizontal: theme.padding.small,
   },
 });
 
