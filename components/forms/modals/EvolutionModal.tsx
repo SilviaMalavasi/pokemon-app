@@ -1,6 +1,6 @@
 import React from "react";
 import ThemedModal from "@/components/base/ThemedModal";
-import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
+import ThemedMultiSelect from "@/components/base/ThemedMultiSelect";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import ThemedText from "@/components/base/ThemedText";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
@@ -50,7 +50,7 @@ export default function EvolutionModal({
       >
         Evolution
       </ThemedText>
-      <DynamicMultiSelect
+      <ThemedMultiSelect
         label="Stage"
         value={cardStage}
         options={cardStageOptions}

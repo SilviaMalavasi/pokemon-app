@@ -59,15 +59,17 @@ export default function ThemedModal({
               >
                 {children}
                 <ThemedView style={styles.buttonContainer}>
-                  <Pressable
-                    onPress={() => {
-                      if (onCancel) onCancel();
-                      onClose();
-                    }}
-                    style={styles.modalCancel}
-                  >
-                    <ThemedText style={{ color: theme.colors.placeholder }}>Cancel</ThemedText>
-                  </Pressable>
+                  {onCancel && (
+                    <Pressable
+                      onPress={() => {
+                        onCancel();
+                        onClose();
+                      }}
+                      style={styles.modalCancel}
+                    >
+                      <ThemedText style={{ color: theme.colors.placeholder }}>Reset</ThemedText>
+                    </Pressable>
+                  )}
                   <ThemedButton
                     title={buttonText}
                     type={buttonType}

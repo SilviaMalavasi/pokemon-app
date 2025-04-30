@@ -2,7 +2,7 @@ import React from "react";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import ThemedNumberInput from "@/components/base/ThemedNumberInput";
 import AutoCompleteInput from "@/components/base/AutoCompleteInput";
-import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
+import ThemedMultiSelect from "@/components/base/ThemedMultiSelect";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedText from "@/components/base/ThemedText";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
@@ -114,7 +114,7 @@ export default function AttacksModal({
       {(!attacksConvertedEnergyCostOperator ||
         !attacksConvertedEnergyCost ||
         attacksConvertedEnergyCostOperator !== "=") && (
-        <DynamicMultiSelect
+        <ThemedMultiSelect
           label="Attack Cost"
           value={attacksCost}
           options={energyTypesOptions}
@@ -127,7 +127,7 @@ export default function AttacksModal({
         Number(attacksConvertedEnergyCost) > 0 && (
           <>
             {Array.from({ length: Number(attacksConvertedEnergyCost) }).map((_, idx) => (
-              <DynamicMultiSelect
+              <ThemedMultiSelect
                 key={idx}
                 label={`Attack Cost Slot ${idx + 1}`}
                 value={attacksCostSlots[idx] ? [attacksCostSlots[idx]] : []}

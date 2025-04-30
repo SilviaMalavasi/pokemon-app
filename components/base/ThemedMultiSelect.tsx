@@ -6,9 +6,9 @@ import ThemedView from "@/components/base/ThemedView";
 import ThemedCheckbox from "@/components/base/ThemedCheckbox";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
 import { theme } from "@/style/ui/Theme";
-import styles from "@/style/base/DynamicMultiSelectStyle";
+import styles from "@/style/base/ThemedMultiSelectStyle";
 
-interface DynamicMultiSelectProps {
+interface ThemedMultiSelectProps {
   label?: string;
   value: string[];
   options: { value: string; label: string }[];
@@ -16,13 +16,13 @@ interface DynamicMultiSelectProps {
   labelHint?: string;
 }
 
-export default function DynamicMultiSelect({
+export default function ThemedMultiSelect({
   label,
   value,
   options,
   onChange,
   labelHint,
-}: DynamicMultiSelectProps): JSX.Element {
+}: ThemedMultiSelectProps): JSX.Element {
   const [showHint, setShowHint] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [tempSelected, setTempSelected] = useState<string[]>(value);

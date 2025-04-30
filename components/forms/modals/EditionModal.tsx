@@ -1,6 +1,6 @@
 import React from "react";
 import ThemedModal from "@/components/base/ThemedModal";
-import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
+import ThemedMultiSelect from "@/components/base/ThemedMultiSelect";
 import ThemedNumberInput from "@/components/base/ThemedNumberInput";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import ThemedText from "@/components/base/ThemedText";
@@ -59,14 +59,14 @@ export default function EditionModal({
       >
         Edition
       </ThemedText>
-      <DynamicMultiSelect
+      <ThemedMultiSelect
         label="Regulation Mark"
         value={cardRegulationMark}
         options={cardRegulationMarkOptions}
         onChange={setCardRegulationMark}
         labelHint="Include cards that match ANY of the selected choices."
       />
-      <DynamicMultiSelect
+      <ThemedMultiSelect
         label="Set Name"
         value={cardSetName}
         options={cardSetNamesOptions}

@@ -1,5 +1,5 @@
 import React from "react";
-import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
+import ThemedMultiSelect from "@/components/base/ThemedMultiSelect";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedText from "@/components/base/ThemedText";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
@@ -47,14 +47,14 @@ export default function WeakResModal({
       >
         Weaknesses & Resistances
       </ThemedText>
-      <DynamicMultiSelect
+      <ThemedMultiSelect
         label="Weaknesses Type"
         value={cardWeaknessesType}
         options={cardWeaknessesTypeOptions}
         onChange={setCardWeaknessesType}
         labelHint="Include cards that match ANY of the selected choices."
       />
-      <DynamicMultiSelect
+      <ThemedMultiSelect
         label="Resistances Type"
         value={cardResistancesType}
         options={cardResistancesTypeOptions}

@@ -1,6 +1,6 @@
 import React from "react";
 import ThemedModal from "@/components/base/ThemedModal";
-import DynamicMultiSelect from "@/components/base/DynamicMultiSelect";
+import ThemedMultiSelect from "@/components/base/ThemedMultiSelect";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
@@ -62,21 +62,21 @@ export default function CardTypeModal({
       >
         Card Type
       </ThemedText>
-      <DynamicMultiSelect
+      <ThemedMultiSelect
         label="Supertype"
         value={cardSupertype}
         options={cardSupertypeOptions}
         onChange={setCardSupertype}
         labelHint="Include cards that match ANY of the selected choices."
       />
-      <DynamicMultiSelect
+      <ThemedMultiSelect
         label="Subtypes"
         value={cardSubtypes}
         options={cardSubtypesOptions}
         onChange={setCardSubtypes}
         labelHint="Include cards that match ANY of the selected choices."
       />
-      <DynamicMultiSelect
+      <ThemedMultiSelect
         label="Types"
         value={cardTypes}
         options={cardTypesOptions}
