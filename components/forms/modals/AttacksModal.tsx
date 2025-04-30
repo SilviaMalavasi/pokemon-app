@@ -3,6 +3,7 @@ import ThemedTextInput from "@/components/base/ThemedTextInput";
 import ThemedNumberInput from "@/components/base/ThemedNumberInput";
 import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 import ThemedMultiSelect from "@/components/base/ThemedMultiSelect";
+import ThemedSelect from "@/components/base/ThemedSelect";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedText from "@/components/base/ThemedText";
 import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
@@ -127,14 +128,14 @@ export default function AttacksModal({
         Number(attacksConvertedEnergyCost) > 0 && (
           <>
             {Array.from({ length: Number(attacksConvertedEnergyCost) }).map((_, idx) => (
-              <ThemedMultiSelect
+              <ThemedSelect
                 key={idx}
                 label={`Attack Cost Slot ${idx + 1}`}
-                value={attacksCostSlots[idx] ? [attacksCostSlots[idx]] : []}
+                value={attacksCostSlots[idx] || ""}
                 options={energyTypesOptions}
-                onChange={(items) => {
+                onChange={(selected) => {
                   const newSlots = [...attacksCostSlots];
-                  newSlots[idx] = items[0] || "";
+                  newSlots[idx] = selected || "";
                   setAttacksCostSlots(newSlots);
                 }}
                 labelHint="Select energy type for this slot."

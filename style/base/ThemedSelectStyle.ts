@@ -41,17 +41,37 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.text,
     width: "100%",
   },
+  operator: {
+    color: theme.colors.text,
+    marginHorizontal: theme.padding.xsmall,
+    paddingVertical: theme.padding.xsmall,
+  },
   modalActions: {
     flexDirection: "row",
     justifyContent: "flex-end",
     marginTop: theme.padding.small,
   },
   modalActionCancel: {
-    marginRight: 16,
+    marginRight: theme.padding.small,
   },
   selectedAndHintWrapper: {
     backgroundColor: "transparent",
     alignItems: "flex-start",
+  },
+  touchableOpacity: {
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  touchableOpacityLabel: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: theme.padding.xsmall,
+  },
+  labelHintIcon: {
+    height: theme.fontSizes.small,
+    width: theme.fontSizes.small,
+    marginLeft: theme.padding.xsmall,
   },
   selectedWrapper: {
     flexDirection: "row",
@@ -60,7 +80,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: theme.padding.xsmall,
     backgroundColor: "transparent",
-    paddingTop: theme.padding.small,
+    paddingTop: theme.padding.xsmall,
   },
   labelHint: {
     paddingTop: theme.padding.xsmall,

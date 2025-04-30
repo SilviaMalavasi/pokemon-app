@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     marginTop: theme.padding.small,
   },
   modalActionCancel: {
-    marginRight: 16,
+    marginRight: theme.padding.small,
   },
   selectedAndHintWrapper: {
     backgroundColor: "transparent",
