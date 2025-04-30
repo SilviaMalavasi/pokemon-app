@@ -116,7 +116,7 @@ export default function AttacksModal({
         !attacksConvertedEnergyCost ||
         attacksConvertedEnergyCostOperator !== "=") && (
         <ThemedMultiSelect
-          label="Attack Cost"
+          label="Attack Cost Energy Type"
           value={attacksCost}
           options={energyTypesOptions}
           onChange={setAttacksCost}

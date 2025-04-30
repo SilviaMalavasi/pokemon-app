@@ -90,10 +90,22 @@ export default function ThemedMultiSelect({
                     onPress={cancelSelection}
                     style={styles.modalActionCancel}
                   >
-                    <ThemedText style={{ color: theme.colors.placeholder }}>Cancel</ThemedText>
+                    <ThemedText
+                      style={{
+                        color: theme.colors.placeholder,
+                        paddingVertical: theme.padding.medium,
+                      }}
+                    >
+                      Cancel
+                    </ThemedText>
                   </Pressable>
                   <Pressable onPress={confirmSelection}>
-                    <ThemedText type="defaultSemiBold">OK</ThemedText>
+                    <ThemedText
+                      type="defaultSemiBold"
+                      style={{ paddingVertical: theme.padding.medium, paddingHorizontal: theme.padding.small }}
+                    >
+                      OK
+                    </ThemedText>
                   </Pressable>
                 </View>
               </ScrollView>

@@ -67,7 +67,9 @@ export default function ThemedModal({
                       }}
                       style={styles.modalCancel}
                     >
-                      <ThemedText style={{ color: theme.colors.placeholder }}>Reset</ThemedText>
+                      <ThemedText style={{ color: theme.colors.placeholder, padding: theme.padding.medium }}>
+                        Reset
+                      </ThemedText>
                     </Pressable>
                   )}
                   <ThemedButton

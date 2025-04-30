@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: theme.padding.large,
+    gap: theme.padding.medium,
     backgroundColor: "transparent",
   },
   button: {

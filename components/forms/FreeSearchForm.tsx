@@ -215,6 +215,29 @@ export default function FreeSearchForm({
     onRemoveDuplicatesChange(false);
   };
 
+  const columnLabels = {
+    name: "Card Name",
+    supertype: "Tyle",
+    subtypes: "Label",
+    types: "Energy Type",
+    rules: "Rules/Rule Box",
+    text: "Attack Text",
+    cost: "Attack Cost",
+    convertedEnergyCost: "Attack Cost Energy Type",
+    damage: "Attack Damage",
+    evolvesFrom: "Evolves From",
+    evolvesTo: "Evolves To",
+    hp: "Pokémon HP",
+    convertedRetreatCost: "Retreat Cost",
+    weaknesses: "Weaknesses",
+    resistances: "Resistances",
+    name: "Set Name",
+    regulationMark: "Regulation Mark",
+    cardId: "Pokédex Number",
+    flavorText: "Flavor Text",
+    artist: "Artist",
+  };
+
   return (
     <ThemedView>
       <ThemedTextInput
@@ -238,7 +261,10 @@ export default function FreeSearchForm({
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
-            .filter((col) => ["supertype", "subtypes", "types"].includes(col.key))
+            .filter(
+              (col) =>
+                ["supertype", "subtypes", "types"].includes(col.key) || (col.key === "name" && col.table === "Card")
+            )
             .map((col) => (
               <ThemedView
                 key={`${col.table}-${col.key}`}
@@ -247,7 +273,7 @@ export default function FreeSearchForm({
                 <ThemedCheckbox
                   checked={includedColumns[col.key]}
                   onPress={() => handleToggleColumn(col.key)}
-                  label={col.label}
+                  label={columnLabels[col.key] || col.label}
                 />
               </ThemedView>
             ))}
@@ -271,7 +297,7 @@ export default function FreeSearchForm({
                 <ThemedCheckbox
                   checked={includedColumns[col.key]}
                   onPress={() => handleToggleColumn(col.key)}
-                  label={col.label}
+                  label={columnLabels[col.key] || col.label}
                 />
               </ThemedView>
             ))}
@@ -295,7 +321,7 @@ export default function FreeSearchForm({
                 <ThemedCheckbox
                   checked={includedColumns[col.key]}
                   onPress={() => handleToggleColumn(col.key)}
-                  label={col.label}
+                  label={columnLabels[col.key] || col.label}
                 />
               </ThemedView>
             ))}
@@ -309,7 +335,7 @@ export default function FreeSearchForm({
                 <ThemedCheckbox
                   checked={includedColumns[col.key]}
                   onPress={() => handleToggleColumn(col.key)}
-                  label={col.label}
+                  label={columnLabels[col.key] || col.label}
                 />
               </ThemedView>
             ))}
@@ -333,7 +359,7 @@ export default function FreeSearchForm({
                 <ThemedCheckbox
                   checked={includedColumns[col.key]}
                   onPress={() => handleToggleColumn(col.key)}
-                  label={col.label}
+                  label={columnLabels[col.key] || col.label}
                 />
               </ThemedView>
             ))}
@@ -357,7 +383,7 @@ export default function FreeSearchForm({
                 <ThemedCheckbox
                   checked={includedColumns[col.key]}
                   onPress={() => handleToggleColumn(col.key)}
-                  label={col.label}
+                  label={columnLabels[col.key] || col.label}
                 />
               </ThemedView>
             ))}
@@ -381,7 +407,7 @@ export default function FreeSearchForm({
                 <ThemedCheckbox
                   checked={includedColumns[col.key]}
                   onPress={() => handleToggleColumn(col.key)}
-                  label={col.label}
+                  label={columnLabels[col.key] || col.label}
                 />
               </ThemedView>
             ))}
@@ -405,7 +431,7 @@ export default function FreeSearchForm({
                 <ThemedCheckbox
                   checked={includedColumns[col.key]}
                   onPress={() => handleToggleColumn(col.key)}
-                  label={col.label}
+                  label={columnLabels[col.key] || col.label}
                 />
               </ThemedView>
             ))}
@@ -429,7 +455,7 @@ export default function FreeSearchForm({
                 <ThemedCheckbox
                   checked={includedColumns[col.key]}
                   onPress={() => handleToggleColumn(col.key)}
-                  label={col.label}
+                  label={columnLabels[col.key] || col.label}
                 />
               </ThemedView>
             ))}
@@ -453,7 +479,7 @@ export default function FreeSearchForm({
                 <ThemedCheckbox
                   checked={includedColumns[col.key]}
                   onPress={() => handleToggleColumn(col.key)}
-                  label={col.label}
+                  label={columnLabels[col.key] || col.label}
                 />
               </ThemedView>
             ))}
