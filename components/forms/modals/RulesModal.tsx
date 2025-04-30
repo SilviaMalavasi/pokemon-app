@@ -43,3 +43,17 @@ export default function RulesModal({ visible, onClose, cardRules, setCardRules }
     </ThemedModal>
   );
 }
+
+export function getRulesFilters(cardRules: string) {
+  return [
+    cardRules !== "" && {
+      config: {
+        key: "cardRules",
+        type: "text",
+        table: "Card",
+        column: "rules",
+      },
+      value: cardRules,
+    },
+  ].filter(Boolean);
+}
