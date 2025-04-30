@@ -59,6 +59,8 @@ export default function StatsModal({
           setCardHp(val);
           setCardHpOperator(op);
         }}
+        operator={cardHpOperator}
+        onOperatorChange={setCardHpOperator}
         placeholder="Pokèmon HP"
         showOperatorSelect={"basic"}
       />
@@ -69,6 +71,8 @@ export default function StatsModal({
           setCardConvertedRetreatCost(val);
           setCardConvertedRetreatCostOperator(op);
         }}
+        operator={cardConvertedRetreatCostOperator}
+        onOperatorChange={setCardConvertedRetreatCostOperator}
         placeholder="Retreat cost"
         showOperatorSelect={"basic"}
       />

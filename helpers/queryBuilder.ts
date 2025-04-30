@@ -21,7 +21,6 @@ function intersectArrays(arrays: string[][]): string[] {
 }
 
 export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ cardIds: string[]; query: string }> {
-  console.log("[DEBUG 1] queryBuilder called with filters:", filters);
   // Normalize all variants of 'pokemon', 'pokèmon', 'pokémon' (any case) to 'Pokémon' (capital P, é)
   const normalizedFilters = filters.map((f) => {
     if (f.config.type === "text" && typeof f.value === "string") {
@@ -121,18 +120,15 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   // 1. Card table filters
   let cardTableIds: string[] = [];
   if (grouped["Card"]) {
-    console.log("[DEBUG 2] Card filters found:", grouped["Card"]);
     const cardQuery = buildQuery("Card", "cardId", grouped["Card"]).order("name");
     const { data, error } = await cardQuery;
     if (error) return { cardIds: [], query: error.message };
     cardTableIds = data?.map((row: any) => row.cardId) || [];
-    console.log("[DEBUG 3] Card table IDs:", cardTableIds);
   }
 
   // 2. CardSet filters (Card.setId -> CardSet.id)
   let cardSetIds: string[] = [];
   if (grouped["CardSet"]) {
-    console.log("[DEBUG 4] CardSet filters found:", grouped["CardSet"]);
     const setQuery = buildQuery("CardSet", "id", grouped["CardSet"]);
     const { data, error } = await setQuery;
     if (error) return { cardIds: [], query: error.message };
@@ -145,7 +141,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         .order("name");
       if (cardError) return { cardIds: [], query: cardError.message };
       cardSetIds = cardData?.map((row: any) => row.cardId) || [];
-      console.log("[DEBUG 5] CardSet table IDs:", cardSetIds);
     }
   }
 
@@ -168,7 +163,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       f.value.some((v) => v)
   );
   if (costOpFilter && costSlotsFilter) {
-    console.log("[DEBUG 6] Unified attack cost filter:", costOpFilter, costSlotsFilter);
     // Use only non-empty types
     const slotTypes = costSlotsFilter.value.filter((v: string) => v);
     const emptySlots = costSlotsFilter.value.filter((v: string) => !v).length;
@@ -178,10 +172,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     });
     let query = supabase
       .from("CardAttacks")
-      .select("cardId, attackId, damage, cost, convertedEnergyCost, Attacks!inner(name, text)")
-      .eq("convertedEnergyCost", costOpFilter.value);
-
-    // Do not filter by type or array length in SQL, filter in JS for correct count
+      .select("cardId, attackId, damage, cost, convertedEnergyCost, Attacks!inner(name, text)");
     const { data, error } = await query;
     if (error) return { cardIds: [], query: error.message };
     // JS filter: for each attack, check cost array matches the slot requirements
@@ -191,7 +182,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       try {
         costArr = Array.isArray(row.cost) ? row.cost : JSON.parse(row.cost);
       } catch {
-        return false;
+        costArr = [];
       }
       if (costArr.length !== slots.length) {
         return false;
@@ -214,9 +205,54 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
           costArrCopy.splice(0, 1);
         }
       }
-      return match;
+      if (!match) return false;
+      // --- Apply ALL other attack-related filters (AND) ---
+      return attackRelatedFilters.every(({ config, value, operator }) => {
+        if (config.key === costOpFilter.config.key || config.key === costSlotsFilter.config.key) return true;
+        // Handle Attacks table fields (joined as row.Attacks)
+        const isAttacksTable = config.table === "Attacks";
+        const attackValue = isAttacksTable
+          ? row.Attacks
+            ? row.Attacks[config.column]
+            : undefined
+          : row[config.column];
+        if (config.type === "number" && config.valueType === "text") {
+          const op = operator || "=";
+          const raw = attackValue;
+          const num = raw && typeof raw === "string" ? parseInt((raw as string).replace(/[^0-9]/g, ""), 10) : null;
+          const result =
+            num !== null && !isNaN(num) && (op === ">=" ? num >= value : op === "<=" ? num <= value : num === value);
+          if (num === null || isNaN(num)) return false;
+          if (op === ">=") return num >= value;
+          if (op === "<=") return num <= value;
+          return num === value;
+        } else if (config.type === "number" && config.valueType === "int") {
+          const op = operator || "=";
+          const num = attackValue;
+          if (num === null || isNaN(num)) return false;
+          if (op === ">=") return num >= value;
+          if (op === "<=") return num <= value;
+          return num === value;
+        } else if (config.type === "text") {
+          const str = String(attackValue || "");
+          return str.toLowerCase().includes(String(value).toLowerCase());
+        } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
+          let arr: string[] = [];
+          if (Array.isArray(attackValue)) {
+            arr = attackValue;
+          } else if (typeof attackValue === "string") {
+            try {
+              arr = JSON.parse(attackValue);
+              if (!Array.isArray(arr)) arr = [attackValue];
+            } catch {
+              arr = [attackValue];
+            }
+          }
+          return value.every((v: string) => arr.includes(v));
+        }
+        return true;
+      });
     });
-    console.log("[DEBUG 7] Unified attack filtered rows:", filtered);
     const cardIdInts = filtered.map((row: any) => row.cardId) || [];
     if (cardIdInts.length > 0) {
       const { data: cardData, error: cardError } = await supabase
@@ -228,123 +264,81 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       unifiedAttackCardIds = cardData?.map((row: any) => row.cardId) || [];
     }
   } else if (attackRelatedFilters.length > 0) {
-    console.log("[DEBUG 8] Attack related filters:", attackRelatedFilters);
-    // Fetch all CardAttacks rows and filter in JS for valueType 'text' (damage as string)
-    const needsTextNumberFilter = attackRelatedFilters.some(
-      (f) => f.config.type === "number" && f.config.valueType === "text"
-    );
-    if (needsTextNumberFilter) {
-      const { data: caData, error: caError } = await supabase
-        .from("CardAttacks")
-        .select("cardId, attackId, damage, cost, convertedEnergyCost");
-      if (caError) return { cardIds: [], query: caError.message };
-      console.log("[DEBUG 8.2] Raw CardAttacks rows for JS filtering:", caData);
-      let filteredRows = caData || [];
-      attackRelatedFilters.forEach(({ config, value, operator }) => {
-        if (config.type === "number" && config.valueType === "text") {
-          const col = config.column;
-          const op = operator || "=";
-          if (["=", ">=", "<="].includes(op)) {
-            filteredRows = filteredRows.filter((row) => {
-              const num =
-                row[col as keyof typeof row] && typeof row[col as keyof typeof row] === "string"
-                  ? parseInt((row[col as keyof typeof row] as string).replace(/[^0-9]/g, ""), 10)
-                  : null;
+    // Fetch all CardAttacks rows and filter in JS for AND logic across all filters
+    const { data: caData, error: caError } = await supabase
+      .from("CardAttacks")
+      .select("cardId, attackId, damage, cost, convertedEnergyCost");
+    if (caError) return { cardIds: [], query: caError.message };
+    // Group attacks by cardId
+    const attacksByCard: Record<string, any[]> = {};
+    (caData || []).forEach((row) => {
+      if (!attacksByCard[row.cardId]) attacksByCard[row.cardId] = [];
+      attacksByCard[row.cardId].push(row);
+    });
+    // For each card, keep if at least one attack matches ALL filters
+    const matchingCardIds = Object.entries(attacksByCard)
+      .filter(([cardId, attacks]) => {
+        return attacks.some((attack) => {
+          return attackRelatedFilters.every(({ config, value, operator }) => {
+            if (config.type === "number" && config.valueType === "text") {
+              const col = config.column;
+              const op = operator || "=";
+              const raw = attack[col];
+              const num = raw && typeof raw === "string" ? parseInt((raw as string).replace(/[^0-9]/g, ""), 10) : null;
+              const result =
+                num !== null &&
+                !isNaN(num) &&
+                (op === ">=" ? num >= value : op === "<=" ? num <= value : num === value);
               if (num === null || isNaN(num)) return false;
               if (op === ">=") return num >= value;
               if (op === "<=") return num <= value;
               return num === value;
-            });
-          } else if (op === "+" || op === "×") {
-            const matchStrings = [`${value}x`, `${value}×`, `${value}+`];
-            filteredRows = filteredRows.filter((row) => {
-              if (!row[col as keyof typeof row]) return false;
-              const str = String(row[col as keyof typeof row]);
-              if (op === "+") return str.includes(matchStrings[2]);
-              // For x/×, match either
-              return str.includes(matchStrings[0]) || str.includes(matchStrings[1]);
-            });
-          }
-        }
-      });
-      console.log("[DEBUG 8.3] Filtered CardAttacks rows (JS):", filteredRows);
-      const cardIdInts = filteredRows.map((row) => row.cardId) || [];
-      console.log("[DEBUG 9] Attack related cardIdInts:", cardIdInts);
-      if (cardIdInts.length > 0) {
-        const { data: cardData, error: cardError } = await supabase
-          .from("Card")
-          .select("cardId, id")
-          .in("id", cardIdInts)
-          .order("name");
-        if (cardError) return { cardIds: [], query: cardError.message };
-        unifiedAttackCardIds = cardData?.map((row: any) => row.cardId) || [];
-      }
-    } else {
-      let query = supabase
-        .from("CardAttacks")
-        .select("cardId, attackId, damage, cost, convertedEnergyCost, Attacks!inner(name, text)");
-      attackRelatedFilters.forEach(({ config, value, operator }) => {
-        if (value === null || value === undefined) return;
-        let col = config.column;
-        // If the filter is for Attacks, prefix with Attacks.
-        if (config.table === "Attacks") col = `Attacks.${col}`;
-        if (config.type === "text") {
-          const trimmed = String(value).trim();
-          const words = trimmed.split(/\s+/).filter(Boolean);
-          if (words.length > 1) {
-            words.forEach((word) => {
-              query = query.ilike(col, `%${word}%`);
-            });
-          } else {
-            query = query.ilike(col, `%${trimmed}%`);
-          }
-        } else if (config.type === "number") {
-          if (config.valueType === "int") {
-            const op = operator || "=";
-            query = query.not(col, "is", null);
-            if (op === ">=") query = query.gte(col, value);
-            else if (op === "<=") query = query.lte(col, value);
-            else query = query.eq(col, value);
-          } else if (config.valueType === "text") {
-            const op = operator || "=";
-            if (op === ">=" || op === "<=") {
-              // FIX: Use 'gte' and 'lte' for Supabase, not '>=' or '<='
-              const sqlOp = op === ">=" ? "gte" : "lte";
-              query = query.filter(`CAST(regexp_replace(${col}, '[^0-9].*', '', 'g') AS INTEGER)`, sqlOp, value);
-            } else {
-              let matchString = String(value);
-              if (op === "+" || op === "x") {
-                matchString = matchString + op;
+            } else if (config.type === "number" && config.valueType === "int") {
+              const col = config.column;
+              const op = operator || "=";
+              const num = attack[col];
+              if (num === null || isNaN(num)) return false;
+              if (op === ">=") return num >= value;
+              if (op === "<=") return num <= value;
+              return num === value;
+            } else if (config.type === "text") {
+              const col = config.column;
+              const str = String(attack[col] || "");
+              return str.toLowerCase().includes(String(value).toLowerCase());
+            } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
+              const col = config.column;
+              let arr: string[] = [];
+              if (Array.isArray(attack[col])) {
+                arr = attack[col];
+              } else if (typeof attack[col] === "string") {
+                try {
+                  arr = JSON.parse(attack[col]);
+                  if (!Array.isArray(arr)) arr = [attack[col]];
+                } catch {
+                  arr = [attack[col]];
+                }
               }
-              query = query.eq(col, matchString);
+              return value.every((v: string) => arr.includes(v));
             }
-          }
-        } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
-          const orString = value.map((v: string) => `${col}.ilike.%${v}%`).join(",");
-          query = query.or(orString);
-        }
-      });
-      const { data, error } = await query;
-      console.log("[DEBUG 8.1] Attack related query result:", { error, data });
-      if (error) return { cardIds: [], query: error.message };
-      const cardIdInts = data?.map((row: any) => row.cardId) || [];
-      console.log("[DEBUG 9] Attack related cardIdInts:", cardIdInts);
-      if (cardIdInts.length > 0) {
-        const { data: cardData, error: cardError } = await supabase
-          .from("Card")
-          .select("cardId, id")
-          .in("id", cardIdInts)
-          .order("name");
-        if (cardError) return { cardIds: [], query: cardError.message };
-        unifiedAttackCardIds = cardData?.map((row: any) => row.cardId) || [];
-      }
+            return true;
+          });
+        });
+      })
+      .map(([cardId]) => cardId);
+    if (matchingCardIds.length > 0) {
+      const { data: cardData, error: cardError } = await supabase
+        .from("Card")
+        .select("cardId, id")
+        .in("id", matchingCardIds)
+        .order("name");
+      if (cardError) return { cardIds: [], query: cardError.message };
+      unifiedAttackCardIds = cardData?.map((row: any) => row.cardId) || [];
     }
   }
 
   // 4. CardAttacks filters (directly on CardAttacks)
   let cardAttacksCardIds: string[] = [];
   if (grouped["CardAttacks"]) {
-    console.log("[DEBUG 10] CardAttacks filters found:", grouped["CardAttacks"]);
     const numberTextFilters = grouped["CardAttacks"].filter(
       (f) => f.config.type === "number" && f.config.valueType === "text"
     );
@@ -352,7 +346,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       // Fetch all CardAttacks rows with the relevant column
       const { data: caData, error: caError } = await supabase.from("CardAttacks").select("cardId, id, damage");
       if (caError) return { cardIds: [], query: caError.message };
-      console.log("[DEBUG 11] Raw CardAttacks rows:", caData);
       let filteredRows = caData || [];
       numberTextFilters.forEach(({ config, value, operator }) => {
         const col = config.column;
@@ -379,7 +372,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
           });
         }
       });
-      console.log("[DEBUG 12] Filtered CardAttacks rows:", filteredRows);
       const cardIdInts = filteredRows.map((row) => row.cardId) || [];
       if (cardIdInts.length > 0) {
         const { data: cardData, error: cardError } = await supabase
@@ -389,7 +381,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
           .order("name");
         if (cardError) return { cardIds: [], query: cardError.message };
         cardAttacksCardIds = cardData?.map((row: any) => row.cardId) || [];
-        console.log("[DEBUG 13] CardAttacks card IDs:", cardAttacksCardIds);
       }
     } else {
       const caQuery = buildQuery("CardAttacks", "cardId", grouped["CardAttacks"]);
@@ -404,7 +395,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
           .order("name");
         if (cardError) return { cardIds: [], query: cardError.message };
         cardAttacksCardIds = cardData?.map((row: any) => row.cardId) || [];
-        console.log("[DEBUG 14] CardAttacks card IDs (non-numberText):", cardAttacksCardIds);
       }
     }
   }
@@ -472,10 +462,8 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   if (allArrays.length > 0) {
     if (hasOrLogic) {
       finalCardIds = Array.from(new Set(allArrays.flat()));
-      console.log("[DEBUG 15] Final card IDs (union):", finalCardIds);
     } else {
       finalCardIds = intersectArrays(allArrays);
-      console.log("[DEBUG 16] Final card IDs (intersection):", finalCardIds);
     }
   }
   return { cardIds: finalCardIds, query: JSON.stringify(filters) };
