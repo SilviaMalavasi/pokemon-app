@@ -291,19 +291,11 @@ export default function AdvancedSearchForm({
     const filtered = arr.filter(Boolean);
     if (filtered.length === 0) return null;
     return (
-      <Text style={{ flexWrap: "wrap", flexDirection: "row", flexShrink: 1 }}>
+      <Text style={styles.summaryArrayText}>
         {filtered.map((item, idx) => (
           <React.Fragment key={item + idx}>
-            <ThemedText type="default">{item}</ThemedText>
-            {idx < filtered.length - 1 && (
-              <ThemedText
-                type="label"
-                fontSize="3"
-                style={{ color: theme.colors.textHilight }}
-              >
-                {" OR "}
-              </ThemedText>
-            )}
+            {idx > 0 && <Text style={styles.summaryArrayTextSeparator}>{"  OR  "}</Text>}
+            <Text>{item}</Text>
           </React.Fragment>
         ))}
       </Text>
@@ -350,6 +342,26 @@ export default function AdvancedSearchForm({
     { label: "Card Number", value: cardNumber },
     { label: "Card/Set Number", value: cardSetNumber },
   ];
+
+  // TEMPORARY: Set default values for testing
+  useEffect(() => {
+    setCardSupertype(["test", "test2", "test3", "test4", "test5", "test6"]);
+    setCardSubtypes([
+      "test",
+      "test2",
+      "test3",
+      "test4",
+      "test5",
+      "test6",
+      "test",
+      "test2",
+      "test3",
+      "test4",
+      "test5",
+      "test6",
+    ]);
+  }, [localResetKey]);
+
   return (
     <ThemedView>
       <ThemedTextInput
@@ -570,24 +582,31 @@ export default function AdvancedSearchForm({
               .filter((f) => f.value && f.value !== "")
               .map((f) => (
                 <ThemedView
-                  key={f.label}
                   style={styles.summaryItemContainer}
+                  key={f.label}
                 >
-                  <Svg
-                    height={6}
-                    width={8}
-                    style={{ marginRight: theme.padding.xsmall }}
-                  >
-                    <Circle
-                      cx={3}
-                      cy={3}
-                      r={3}
-                      fill={theme.colors.green}
-                    />
-                  </Svg>
-                  <ThemedView>
-                    <ThemedText type="defaultSemiBold">{f.label}:</ThemedText> {f.value}
-                  </ThemedViews>
+                  <ThemedView style={styles.summaryDotCol}>
+                    <Svg
+                      height={6}
+                      width={8}
+                    >
+                      <Circle
+                        cx={3}
+                        cy={3}
+                        r={3}
+                        fill={theme.colors.green}
+                      />
+                    </Svg>
+                  </ThemedView>
+                  <ThemedView style={styles.summaryTextCol}>
+                    <ThemedText>
+                      <Text style={{ fontWeight: "bold" }}>
+                        {f.label}
+                        {": "}
+                      </Text>
+                      {f.value}
+                    </ThemedText>
+                  </ThemedView>
                 </ThemedView>
               ))}
           </ThemedView>

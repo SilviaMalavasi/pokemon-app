@@ -30,12 +30,12 @@ export default function RulesModal({ visible, onClose, cardRules, setCardRules }
         type="subtitle"
         style={{ width: "100%", paddingBottom: theme.padding.medium }}
       >
-        Rules
+        Rules/Rule Box
       </ThemedText>
       <AutoCompleteInput
-        label="Card Rules"
+        label="Rules/Rule Box"
         value={cardRules}
-        labelHint="Rules are card effect for Trainers, card special rules for Pokèmon - Tera, Ex..."
+        labelHint="Search for card Text in Trainer cards and Rule Box in Pokèmon cards"
         onChange={setCardRules}
         suggestions={["search", "discard pile", "attach", "energy"]}
         placeholder="Card Rules"

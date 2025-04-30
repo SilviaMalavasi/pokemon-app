@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.green,
     borderRadius: theme.borderRadius.small,
     padding: theme.padding.small,
-    paddingTop: theme.padding.medium,
+    paddingVertical: theme.padding.large,
     marginBottom: theme.padding.medium,
   },
   summaryLabel: {
@@ -37,9 +37,26 @@ const styles = StyleSheet.create({
   },
   summaryItemContainer: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
+    alignItems: "flex-start",
     marginBottom: 2,
+  },
+  summaryDotCol: {
+    width: 8,
+    marginRight: theme.padding.xsmall,
+    marginTop: 4,
+  },
+  summaryTextCol: {
+    flex: vw(100) - 8 - theme.padding.xlarge * 2,
+    minWidth: vw(100) - 8 - theme.padding.xlarge * 2,
+  },
+  summaryArrayText: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+  },
+  summaryArrayTextSeparator: {
+    color: theme.colors.green,
+    fontSize: theme.fontSizes.xsmall,
   },
 });
 
