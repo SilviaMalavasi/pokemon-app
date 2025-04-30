@@ -15,6 +15,8 @@ interface NumberInputProps {
   placeholder?: string;
   labelHint?: string;
   showOperatorSelect?: "none" | "basic" | "advanced";
+  operator?: string;
+  onOperatorChange?: (operator: string) => void;
 }
 
 export default function NumberInput({
@@ -24,16 +26,34 @@ export default function NumberInput({
   placeholder,
   labelHint,
   showOperatorSelect = "none",
+  operator = "=",
+  onOperatorChange,
 }: NumberInputProps): JSX.Element {
   const [showHint, setShowHint] = useState(false);
-  const [currentOperator, setCurrentOperator] = useState("=");
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleOperatorSelect = (op: { label: string; value: string }) => {
-    setCurrentOperator(op.value);
+    if (onOperatorChange) onOperatorChange(op.value);
     onChange(value, op.value);
     setModalVisible(false);
   };
+
+  // Define operator rows once for use in both picker and modal
+  const operatorRows = [
+    [
+      { label: "=", value: "=" },
+      { label: "≥", value: ">=" },
+      { label: "≤", value: "<=" },
+    ],
+    ...(showOperatorSelect === "advanced"
+      ? [
+          [
+            { label: "+", value: "+" },
+            { label: "×", value: "×" },
+          ],
+        ]
+      : []),
+  ];
 
   return (
     <ThemedView style={styles.container}>
@@ -54,20 +74,10 @@ export default function NumberInput({
               style={styles.pickerWrapper}
             >
               <ThemedText style={styles.selectPressable}>
-                {/* Show current operator label */}
+                {/* Show current operator label using operatorRows */}
                 {(() => {
-                  const allOps = [
-                    { label: "=", value: "=" },
-                    { label: "≥", value: ">=" },
-                    { label: "≤", value: "<=" },
-                    ...(showOperatorSelect === "advanced"
-                      ? [
-                          { label: "+", value: "+" },
-                          { label: "x", value: "x" },
-                        ]
-                      : []),
-                  ];
-                  return allOps.find((o) => o.value === currentOperator)?.label || "=";
+                  const flatOps = operatorRows.flat();
+                  return flatOps.find((o) => o.value === operator)?.label || "=";
                 })()}
               </ThemedText>
             </Pressable>
@@ -77,53 +87,41 @@ export default function NumberInput({
               transparent={true}
               onRequestClose={() => setModalVisible(false)}
             >
-              <View style={styles.modalOverlay}>
-                <View style={styles.modalContainer}>
-                  {/* First row: =, ≥, ≤ */}
-                  <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 8 }}>
-                    {[
-                      { label: "=", value: "=" },
-                      { label: "≥", value: ">=" },
-                      { label: "≤", value: "<=" },
-                    ].map((op) => (
-                      <Pressable
-                        key={op.value}
-                        onPress={() => handleOperatorSelect(op)}
-                        style={[styles.modalOption, { marginHorizontal: 8 }]}
-                      >
-                        <ThemedText style={currentOperator === op.value ? styles.selectedOperator : styles.operator}>
-                          {op.label}
-                        </ThemedText>
-                      </Pressable>
-                    ))}
-                  </View>
-                  {/* Second row: +, × (only for advanced) */}
-                  {showOperatorSelect === "advanced" && (
-                    <View style={{ flexDirection: "row", justifyContent: "center", marginBottom: 8 }}>
-                      {[
-                        { label: "+", value: "+" },
-                        { label: "×", value: "×" },
-                      ].map((op) => (
+              <Pressable
+                style={styles.modalOverlay}
+                onPress={() => setModalVisible(false)}
+              >
+                <Pressable
+                  style={styles.modalContainer}
+                  onPress={(e) => e.stopPropagation()}
+                >
+                  {/* Render operator rows */}
+                  {operatorRows.map((row, rowIdx) => (
+                    <View
+                      key={rowIdx}
+                      style={{ flexDirection: "row", justifyContent: "center" }}
+                    >
+                      {row.map((op) => (
                         <Pressable
                           key={op.value}
                           onPress={() => handleOperatorSelect(op)}
-                          style={[styles.modalOption, { marginHorizontal: 8 }]}
+                          style={[styles.modalOption]}
                         >
-                          <ThemedText style={currentOperator === op.value ? styles.selectedOperator : styles.operator}>
+                          <ThemedText style={operator === op.value ? styles.selectedOperator : styles.operator}>
                             {op.label}
                           </ThemedText>
                         </Pressable>
                       ))}
                     </View>
-                  )}
+                  ))}
                   <Pressable
                     onPress={() => setModalVisible(false)}
                     style={styles.modalCancel}
                   >
                     <ThemedText style={{ color: theme.colors.placeholder }}>Cancel</ThemedText>
                   </Pressable>
-                </View>
-              </View>
+                </Pressable>
+              </Pressable>
             </Modal>
           </>
         )}
@@ -137,19 +135,19 @@ export default function NumberInput({
           value={value === "" ? "" : String(value)}
           onChangeText={(text) => {
             if (text === "") {
-              onChange("", currentOperator);
+              onChange("", operator);
             } else {
               const cleaned = text.replace(/[^0-9]/g, "");
               const num = Number(cleaned);
               if (!isNaN(num) && num >= 0) {
-                onChange(num, currentOperator);
+                onChange(num, operator);
               } else if (cleaned === "") {
-                onChange("", currentOperator);
+                onChange("", operator);
               }
             }
           }}
           placeholder={placeholder}
-          placeholderTextColor={styles.placeholder.color}
+          placeholderTextColor={theme.colors.placeholder}
           keyboardType="numeric"
           inputMode="numeric"
           returnKeyType="done"

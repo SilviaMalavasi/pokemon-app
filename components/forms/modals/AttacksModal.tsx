@@ -92,6 +92,8 @@ export default function AttacksModal({
           setAttacksDamage(val);
           setAttacksDamageOperator(op);
         }}
+        operator={attacksDamageOperator}
+        onOperatorChange={setAttacksDamageOperator}
         placeholder="Attack Damage"
         showOperatorSelect={"advanced"}
       />
@@ -109,6 +111,8 @@ export default function AttacksModal({
           setAttacksConvertedEnergyCost(val);
           setAttacksConvertedEnergyCostOperator(op);
         }}
+        operator={attacksConvertedEnergyCostOperator}
+        onOperatorChange={setAttacksConvertedEnergyCostOperator}
         placeholder="Attacks Cost"
         showOperatorSelect={"basic"}
       />

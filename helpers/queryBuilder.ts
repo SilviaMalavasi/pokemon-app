@@ -304,7 +304,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
             if (op === "<=") return num <= value;
             return num === value;
           });
-        } else if (op === "+" || op === "x" || op === "×") {
+        } else if (op === "+" || op === "×") {
           const matchStrings = [`${value}x`, `${value}×`, `${value}+`];
           filteredRows = filteredRows.filter((row) => {
             if (!row[col as keyof typeof row]) return false;

@@ -12,20 +12,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  picker: {
-    borderRadius: theme.borderRadius.small,
-    paddingLeft: theme.padding.small,
-    paddingRight: theme.padding.small,
-    paddingTop: theme.padding.small * 1.25,
-    paddingBottom: theme.padding.small,
-    width: 46,
-    height: 46,
-    fontSize: 16,
-    backgroundColor: theme.colors.background,
-    color: theme.colors.placeholder,
-    marginBottom: 0,
-    marginRight: 4,
-  },
   input: {
     flex: 1,
     borderRadius: theme.borderRadius.small,
@@ -38,9 +24,6 @@ const styles = StyleSheet.create({
     color: theme.colors.textHilight,
     borderWidth: 1,
     borderColor: theme.colors.text,
-  },
-  placeholder: {
-    color: theme.colors.placeholder,
   },
   clearIcon: {
     position: "absolute",
@@ -94,6 +77,7 @@ const styles = StyleSheet.create({
   },
   modalOption: {
     paddingVertical: theme.padding.small,
+    paddingHorizontal: theme.padding.small,
     alignItems: "center",
   },
   modalCancel: {
