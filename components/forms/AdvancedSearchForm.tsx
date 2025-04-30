@@ -333,6 +333,22 @@ export default function AdvancedSearchForm({
     );
   };
 
+  // Helper to interleave with AND (for attack cost slots)
+  const interleaveWithAnd = (arr: string[]) => {
+    const filtered = arr.filter(Boolean);
+    if (filtered.length === 0) return null;
+    return (
+      <Text style={styles.summaryArrayText}>
+        {filtered.map((item, idx) => (
+          <React.Fragment key={item + idx}>
+            {idx > 0 && <Text style={styles.summaryArrayTextSeparator}>{"  AND  "}</Text>}
+            <Text>{item}</Text>
+          </React.Fragment>
+        ))}
+      </Text>
+    );
+  };
+
   // Summary fields for flat summary
   const summaryFields = [
     { label: "Name", value: cardName },
@@ -351,7 +367,7 @@ export default function AdvancedSearchForm({
     },
     {
       label: "Attack Cost Slots",
-      value: attacksCostSlots.filter(Boolean).length ? interleaveWithOr(attacksCostSlots.filter(Boolean)) : "",
+      value: attacksCostSlots.filter(Boolean).length ? interleaveWithAnd(attacksCostSlots.filter(Boolean)) : "",
     },
     { label: "Ability Name", value: abilitiesName },
     { label: "Ability Text", value: abilitiesText },
@@ -593,35 +609,44 @@ export default function AdvancedSearchForm({
           <ThemedView>
             {summaryFields
               .filter((f) => f.value && f.value !== "")
-              .map((f) => (
-                <ThemedView
-                  style={styles.summaryItemContainer}
-                  key={f.label}
-                >
-                  <ThemedView style={styles.summaryDotCol}>
-                    <Svg
-                      height={6}
-                      width={8}
-                    >
-                      <Circle
-                        cx={3}
-                        cy={3}
-                        r={3}
-                        fill={theme.colors.green}
-                      />
-                    </Svg>
+              .map((f) => {
+                let valueStr = typeof f.value === "string" ? f.value.trim() : null;
+                // Replace ">=" with "≥" and "<=" with "≤" for display
+                if (valueStr && valueStr.startsWith(">=")) valueStr = valueStr.replace(/^>=/, "≥");
+                if (valueStr && valueStr.startsWith("<=")) valueStr = valueStr.replace(/^<=/, "≤");
+                const operatorMatch = valueStr ? valueStr.match(/^(=|≥|≤|>|<|\+|×)\s?.*/) : null;
+                return (
+                  <ThemedView
+                    style={styles.summaryItemContainer}
+                    key={f.label}
+                  >
+                    <ThemedView style={styles.summaryDotCol}>
+                      <Svg
+                        height={6}
+                        width={8}
+                      >
+                        <Circle
+                          cx={3}
+                          cy={3}
+                          r={3}
+                          fill={theme.colors.green}
+                        />
+                      </Svg>
+                    </ThemedView>
+                    <ThemedView style={styles.summaryTextCol}>
+                      <ThemedText>
+                        <Text style={{ fontWeight: "bold" }}>
+                          {f.label}
+                          {/* Only hide ':' if value is a string and starts with an operator */}
+                          {typeof f.value === "string" && operatorMatch ? " " : ": "}
+                        </Text>
+                        {/* Show the correct value, string or React element */}
+                        {valueStr !== null ? valueStr : f.value}
+                      </ThemedText>
+                    </ThemedView>
                   </ThemedView>
-                  <ThemedView style={styles.summaryTextCol}>
-                    <ThemedText>
-                      <Text style={{ fontWeight: "bold" }}>
-                        {f.label}
-                        {": "}
-                      </Text>
-                      {f.value}
-                    </ThemedText>
-                  </ThemedView>
-                </ThemedView>
-              ))}
+                );
+              })}
           </ThemedView>
         </ThemedView>
       )}
