@@ -33,7 +33,7 @@ export default function RulesModal({ visible, onClose, cardRules, setCardRules }
         Rules/Rule Box
       </ThemedText>
       <AutoCompleteInput
-        label="Rules/Rule Box"
+        label="Rule/Rule Box"
         value={cardRules}
         labelHint="Search for card TextEffect in Trainer cards and Rule Box in Pokèmon cards"
         onChange={setCardRules}

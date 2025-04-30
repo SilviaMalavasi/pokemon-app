@@ -335,28 +335,28 @@ export default function AdvancedSearchForm({
 
   // Summary fields for flat summary
   const summaryFields = [
-    { label: "Card Name", value: cardName },
-    { label: "Supertype", value: cardSupertype.length ? interleaveWithOr(cardSupertype) : "" },
-    { label: "Subtypes", value: cardSubtypes.length ? interleaveWithOr(cardSubtypes) : "" },
-    { label: "Types", value: cardTypes.length ? interleaveWithOr(cardTypes) : "" },
-    { label: "Rules", value: cardRules },
+    { label: "Name", value: cardName },
+    { label: "Type", value: cardSupertype.length ? interleaveWithOr(cardSupertype) : "" },
+    { label: "Label", value: cardSubtypes.length ? interleaveWithOr(cardSubtypes) : "" },
+    { label: "Energy Type", value: cardTypes.length ? interleaveWithOr(cardTypes) : "" },
+    { label: "Rule/Rule Box", value: cardRules },
     { label: "Attack Name", value: attacksName },
     { label: "Attack Damage", value: attacksDamage !== "" ? `${attacksDamageOperator} ${attacksDamage}` : "" },
     { label: "Attack Text", value: attacksText },
     { label: "Attack Cost", value: attacksCost.length ? interleaveWithOr(attacksCost) : "" },
     {
-      label: "Converted Energy Cost",
+      label: "Attack Cost Energy Type",
       value:
         attacksConvertedEnergyCost !== "" ? `${attacksConvertedEnergyCostOperator} ${attacksConvertedEnergyCost}` : "",
     },
     {
-      label: "Cost Slots",
+      label: "Attack Cost Slots",
       value: attacksCostSlots.filter(Boolean).length ? interleaveWithOr(attacksCostSlots.filter(Boolean)) : "",
     },
     { label: "Ability Name", value: abilitiesName },
     { label: "Ability Text", value: abilitiesText },
     { label: "Has any ability", value: hasAnyAbility ? "Yes" : "" },
-    { label: "HP", value: cardHp !== "" ? `${cardHpOperator} ${cardHp}` : "" },
+    { label: "Pokémon HP", value: cardHp !== "" ? `${cardHpOperator} ${cardHp}` : "" },
     {
       label: "Retreat Cost",
       value: cardConvertedRetreatCost !== "" ? `${cardConvertedRetreatCostOperator} ${cardConvertedRetreatCost}` : "",
@@ -371,7 +371,7 @@ export default function AdvancedSearchForm({
     { label: "Regulation Mark", value: cardRegulationMark.length ? interleaveWithOr(cardRegulationMark) : "" },
     { label: "Set Name", value: cardSetName.length ? interleaveWithOr(cardSetName) : "" },
     { label: "Card Number", value: cardNumber },
-    { label: "Card/Set Number", value: cardSetNumber },
+    { label: "Pokédex Number", value: cardSetNumber },
   ];
 
   return (
