@@ -12,6 +12,7 @@ export type ThemedButtonProps = ButtonProps & {
   type?: ButtonType;
   size?: ButtonSize;
   status?: ButtonStatus;
+  width?: number | string;
   icon?: string | "void";
   style?: any;
 };
@@ -66,6 +67,7 @@ export default function ThemedButton({
   disabled = false,
   icon = "void",
   status = "default",
+  width,
   title,
   style,
   ...rest
@@ -88,7 +90,7 @@ export default function ThemedButton({
 
   return (
     <TouchableOpacity
-      style={containerStyle}
+      style={[containerStyle, width ? { width: width } : {}]}
       disabled={disabled || status === "disabled"}
       {...rest}
     >
@@ -101,7 +103,7 @@ export default function ThemedButton({
             left: 0,
             right: 0,
             bottom: 0,
-            borderRadius: 8, // match button border radius
+            borderRadius: 8,
             zIndex: 0,
           }}
           contentFit="cover"

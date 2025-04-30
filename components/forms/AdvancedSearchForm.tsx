@@ -24,6 +24,7 @@ import EditionModal, { getEditionFilters } from "@/components/forms/modals/Editi
 
 import styles from "@/style/forms/AdvancedSearchFormStyle";
 import { theme } from "@/style/ui/Theme";
+import { vw } from "@/helpers/viewport";
 import { Svg, Circle } from "react-native-svg";
 
 export default function AdvancedSearchForm({
@@ -343,25 +344,6 @@ export default function AdvancedSearchForm({
     { label: "Card/Set Number", value: cardSetNumber },
   ];
 
-  // TEMPORARY: Set default values for testing
-  useEffect(() => {
-    setCardSupertype(["test", "test2", "test3", "test4", "test5", "test6"]);
-    setCardSubtypes([
-      "test",
-      "test2",
-      "test3",
-      "test4",
-      "test5",
-      "test6",
-      "test",
-      "test2",
-      "test3",
-      "test4",
-      "test5",
-      "test6",
-    ]);
-  }, [localResetKey]);
-
   return (
     <ThemedView>
       <ThemedTextInput
@@ -617,11 +599,14 @@ export default function AdvancedSearchForm({
         <ThemedButton
           title="Reset"
           size="small"
+          width={vw(25)}
+          type="alternative"
           onPress={handleReset}
-          style={{ marginBottom: 16 }}
         />
         <ThemedButton
           title={"Search"}
+          width={vw(55)}
+          icon="search"
           onPress={handleSubmit}
           status={loading ? "disabled" : "default"}
           disabled={buttonLoading}

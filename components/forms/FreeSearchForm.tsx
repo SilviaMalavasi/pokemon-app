@@ -8,7 +8,9 @@ import Collapsible from "@/components/base/Collapsible";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import { freeQueryBuilder } from "@/helpers/freeQueryBuilder";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
+import styles from "@/style/forms/AdvancedSearchFormStyle";
 import { theme } from "@/style/ui/Theme";
+import { vw } from "@/helpers/viewport";
 
 export default function FreeSearchForm({
   onSearchResults,
@@ -180,11 +182,6 @@ export default function FreeSearchForm({
 
   return (
     <ThemedView>
-      <ThemedButton
-        title="Reset"
-        onPress={handleReset}
-        style={{ marginBottom: 16 }}
-      />
       <ThemedTextInput
         label="Free Search"
         value={cardSearch}
@@ -195,7 +192,7 @@ export default function FreeSearchForm({
         style={{ paddingTop: 8, paddingBottom: 24 }}
         type="default"
       >
-        You can include database fields in the search by toggling them on.
+        You can exclude database fields in the search by toggling them on.
       </ThemedText>
       {/* Card Type */}
       <Collapsible
@@ -493,12 +490,23 @@ export default function FreeSearchForm({
         onValueChange={onRemoveDuplicatesChange}
         hint="If enabled, cards with same stats but different images or sets will be displayed only once."
       />
-      <ThemedButton
-        title={buttonLoading ? "Searching..." : "Search"}
-        onPress={handleSubmit}
-        disabled={buttonLoading}
-        style={{ position: "relative" }}
-      />
+      <ThemedView style={styles.mainButtonsRow}>
+        <ThemedButton
+          title="Reset"
+          size="small"
+          width={vw(25)}
+          type="alternative"
+          onPress={handleReset}
+        />
+        <ThemedButton
+          title={"Search"}
+          width={vw(55)}
+          icon="search"
+          onPress={handleSubmit}
+          status={buttonLoading ? "disabled" : "default"}
+          disabled={buttonLoading}
+        />
+      </ThemedView>
     </ThemedView>
   );
 }

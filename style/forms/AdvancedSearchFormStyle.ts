@@ -7,12 +7,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    gap: theme.padding.xsmall,
+    gap: theme.padding.small,
   },
   halfButton: {
     flexBasis: "48%",
     flexGrow: 1,
     flexShrink: 1,
+    marginBottom: theme.padding.small,
   },
   summaryContainer: {
     position: "relative",
@@ -61,9 +62,11 @@ const styles = StyleSheet.create({
   },
   mainButtonsRow: {
     flexDirection: "row",
+    alignItems: "flex-start",
     justifyContent: "space-between",
     backgroundColor: "transparent",
     paddingHorizontal: theme.padding.small,
+    marginBottom: theme.padding.medium,
   },
 });
 
