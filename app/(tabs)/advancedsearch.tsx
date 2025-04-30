@@ -26,8 +26,6 @@ export default function FullFormScreen() {
   const handleSearchResults = async (ids: string[], query: string) => {
     let filteredIds = ids;
     if (removeDuplicates && ids.length > 0) {
-      console.log("Removing duplicates from", ids.length, "cards");
-
       // Fetch card details for duplicate removal
       const { data, error } = await supabase
         .from("Card")

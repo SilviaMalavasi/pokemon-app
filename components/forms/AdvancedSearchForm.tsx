@@ -302,9 +302,6 @@ export default function AdvancedSearchForm({
       const paginatedIds = cardIds.slice(startIdx, endIdx);
       if (paginatedIds.length > 0) {
         const { data, error } = await supabase.from("Card").select("cardId, name").in("cardId", paginatedIds);
-        if (error) {
-          console.error("Error fetching card names:", error.message);
-        }
       }
     } catch (err: any) {
       setError(err.message || "Search failed");
