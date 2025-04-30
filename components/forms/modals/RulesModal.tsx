@@ -35,7 +35,7 @@ export default function RulesModal({ visible, onClose, cardRules, setCardRules }
       <AutoCompleteInput
         label="Rules/Rule Box"
         value={cardRules}
-        labelHint="Search for card Text in Trainer cards and Rule Box in Pokèmon cards"
+        labelHint="Search for card TextEffect in Trainer cards and Rule Box in Pokèmon cards"
         onChange={setCardRules}
         suggestions={["search", "discard pile", "attach", "energy"]}
         placeholder="Card Rules"

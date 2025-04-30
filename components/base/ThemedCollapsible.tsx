@@ -5,9 +5,9 @@ import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { theme } from "@/style/ui/Theme";
-import styles from "@/style/base/CollapsibleStyle";
+import styles from "@/style/base/ThemedCollapsibleStyle";
 
-export default function Collapsible({
+export default function ThemedCollapsible({
   children,
   title,
   resetKey,

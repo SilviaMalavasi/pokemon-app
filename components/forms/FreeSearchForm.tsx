@@ -4,7 +4,7 @@ import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
-import Collapsible from "@/components/base/Collapsible";
+import ThemedCollapsible from "@/components/base/ThemedCollapsible";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import { freeQueryBuilder } from "@/helpers/freeQueryBuilder";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
@@ -163,6 +163,39 @@ export default function FreeSearchForm({
   // Add a local resetKey to force reset
   const [localResetKey, setLocalResetKey] = useState(0);
 
+  // Collapsible open state
+  const collapsibleSections = [
+    "CardType",
+    "Evolution",
+    "CardRules",
+    "Attacks",
+    "Abilities",
+    "Stats",
+    "WeaknessesResistances",
+    "Edition",
+    "ArtistFlavor",
+  ];
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    collapsibleSections.forEach((key) => {
+      initial[key] = false;
+    });
+    return initial;
+  });
+  // Reset open sections on resetKey
+  useEffect(() => {
+    setOpenSections(() => {
+      const initial: Record<string, boolean> = {};
+      collapsibleSections.forEach((key) => {
+        initial[key] = false;
+      });
+      return initial;
+    });
+  }, [resetKey]);
+  const handleToggleSection = (key: string) => {
+    setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
   // Reset handler
   const handleReset = () => {
     setCardSearch("");
@@ -195,11 +228,11 @@ export default function FreeSearchForm({
         You can exclude database fields in the search by toggling them on.
       </ThemedText>
       {/* Card Type */}
-      <Collapsible
+      <ThemedCollapsible
         title="Include: Card Type"
         resetKey={resetKey}
-        open={false}
-        onToggle={() => {}}
+        open={openSections.CardType}
+        onToggle={() => handleToggleSection("CardType")}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -223,13 +256,13 @@ export default function FreeSearchForm({
               </ThemedView>
             ))}
         </ThemedView>
-      </Collapsible>
+      </ThemedCollapsible>
       {/* Evolution */}
-      <Collapsible
+      <ThemedCollapsible
         title="Include: Evolution"
         resetKey={resetKey}
-        open={false}
-        onToggle={() => {}}
+        open={openSections.Evolution}
+        onToggle={() => handleToggleSection("Evolution")}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -253,13 +286,13 @@ export default function FreeSearchForm({
               </ThemedView>
             ))}
         </ThemedView>
-      </Collapsible>
+      </ThemedCollapsible>
       {/* Card Rules */}
-      <Collapsible
+      <ThemedCollapsible
         title="Include: Card Rules"
         resetKey={resetKey}
-        open={false}
-        onToggle={() => {}}
+        open={openSections.CardRules}
+        onToggle={() => handleToggleSection("CardRules")}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -283,13 +316,13 @@ export default function FreeSearchForm({
               </ThemedView>
             ))}
         </ThemedView>
-      </Collapsible>
+      </ThemedCollapsible>
       {/* Attacks */}
-      <Collapsible
+      <ThemedCollapsible
         title="Include: Attacks"
         resetKey={resetKey}
-        open={false}
-        onToggle={() => {}}
+        open={openSections.Attacks}
+        onToggle={() => handleToggleSection("Attacks")}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -333,13 +366,13 @@ export default function FreeSearchForm({
               </ThemedView>
             ))}
         </ThemedView>
-      </Collapsible>
+      </ThemedCollapsible>
       {/* Abilities */}
-      <Collapsible
+      <ThemedCollapsible
         title="Include: Abilities"
         resetKey={resetKey}
-        open={false}
-        onToggle={() => {}}
+        open={openSections.Abilities}
+        onToggle={() => handleToggleSection("Abilities")}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -363,13 +396,13 @@ export default function FreeSearchForm({
               </ThemedView>
             ))}
         </ThemedView>
-      </Collapsible>
+      </ThemedCollapsible>
       {/* Stats */}
-      <Collapsible
+      <ThemedCollapsible
         title="Include: Stats"
         resetKey={resetKey}
-        open={false}
-        onToggle={() => {}}
+        open={openSections.Stats}
+        onToggle={() => handleToggleSection("Stats")}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -393,13 +426,13 @@ export default function FreeSearchForm({
               </ThemedView>
             ))}
         </ThemedView>
-      </Collapsible>
+      </ThemedCollapsible>
       {/* Weaknesses/Resistances */}
-      <Collapsible
+      <ThemedCollapsible
         title="Include: Weaknesses/Resistances"
         resetKey={resetKey}
-        open={false}
-        onToggle={() => {}}
+        open={openSections.WeaknessesResistances}
+        onToggle={() => handleToggleSection("WeaknessesResistances")}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -423,13 +456,13 @@ export default function FreeSearchForm({
               </ThemedView>
             ))}
         </ThemedView>
-      </Collapsible>
+      </ThemedCollapsible>
       {/* Edition */}
-      <Collapsible
+      <ThemedCollapsible
         title="Include: Edition"
         resetKey={resetKey}
-        open={false}
-        onToggle={() => {}}
+        open={openSections.Edition}
+        onToggle={() => handleToggleSection("Edition")}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -453,13 +486,13 @@ export default function FreeSearchForm({
               </ThemedView>
             ))}
         </ThemedView>
-      </Collapsible>
+      </ThemedCollapsible>
       {/* Artist/Flavor */}
-      <Collapsible
+      <ThemedCollapsible
         title="Include: Artist/Flavor"
         resetKey={resetKey}
-        open={false}
-        onToggle={() => {}}
+        open={openSections.ArtistFlavor}
+        onToggle={() => handleToggleSection("ArtistFlavor")}
       >
         <ThemedView style={{ marginBottom: 12 }}>
           {allCardColumns
@@ -483,7 +516,7 @@ export default function FreeSearchForm({
               </ThemedView>
             ))}
         </ThemedView>
-      </Collapsible>
+      </ThemedCollapsible>
       <ThemedSwitch
         value={removeDuplicates}
         label="Hide duplicates"
