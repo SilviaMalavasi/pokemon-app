@@ -230,7 +230,7 @@ export default function FreeSearchForm({
       </ThemedText>
       {/* Card Type */}
       <ThemedCollapsible
-        title="Include: Card Type"
+        title="Card Type"
         resetKey={resetKey}
         open={openSections.CardType}
         onToggle={() => handleToggleSection("CardType")}
@@ -258,39 +258,9 @@ export default function FreeSearchForm({
             ))}
         </ThemedView>
       </ThemedCollapsible>
-      {/* Evolution */}
-      <ThemedCollapsible
-        title="Include: Evolution"
-        resetKey={resetKey}
-        open={openSections.Evolution}
-        onToggle={() => handleToggleSection("Evolution")}
-      >
-        <ThemedView style={{ marginBottom: 12 }}>
-          {allCardColumns
-            .filter((col) => ["evolvesFrom", "evolvesTo"].includes(col.key))
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedSwitch
-                  value={includedColumns[col.key]}
-                  onValueChange={() => handleToggleColumn(col.key)}
-                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
-                />
-                <ThemedText
-                  type="default"
-                  style={{ paddingLeft: 8 }}
-                >
-                  {col.label}
-                </ThemedText>
-              </ThemedView>
-            ))}
-        </ThemedView>
-      </ThemedCollapsible>
       {/* Card Rules */}
       <ThemedCollapsible
-        title="Include: Card Rules"
+        title="Rules/Rule Box"
         resetKey={resetKey}
         open={openSections.CardRules}
         onToggle={() => handleToggleSection("CardRules")}
@@ -320,7 +290,7 @@ export default function FreeSearchForm({
       </ThemedCollapsible>
       {/* Attacks */}
       <ThemedCollapsible
-        title="Include: Attacks"
+        title="Attacks"
         resetKey={resetKey}
         open={openSections.Attacks}
         onToggle={() => handleToggleSection("Attacks")}
@@ -370,7 +340,7 @@ export default function FreeSearchForm({
       </ThemedCollapsible>
       {/* Abilities */}
       <ThemedCollapsible
-        title="Include: Abilities"
+        title="Abilities"
         resetKey={resetKey}
         open={openSections.Abilities}
         onToggle={() => handleToggleSection("Abilities")}
@@ -400,7 +370,7 @@ export default function FreeSearchForm({
       </ThemedCollapsible>
       {/* Stats */}
       <ThemedCollapsible
-        title="Include: Stats"
+        title="Stats"
         resetKey={resetKey}
         open={openSections.Stats}
         onToggle={() => handleToggleSection("Stats")}
@@ -428,9 +398,39 @@ export default function FreeSearchForm({
             ))}
         </ThemedView>
       </ThemedCollapsible>
+      {/* Evolution */}
+      <ThemedCollapsible
+        title="Evolution"
+        resetKey={resetKey}
+        open={openSections.Evolution}
+        onToggle={() => handleToggleSection("Evolution")}
+      >
+        <ThemedView style={{ marginBottom: 12 }}>
+          {allCardColumns
+            .filter((col) => ["evolvesFrom", "evolvesTo"].includes(col.key))
+            .map((col) => (
+              <ThemedView
+                key={`${col.table}-${col.key}`}
+                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+              >
+                <ThemedSwitch
+                  value={includedColumns[col.key]}
+                  onValueChange={() => handleToggleColumn(col.key)}
+                  thumbColor={includedColumns[col.key] ? theme.colors.green : theme.colors.purple}
+                />
+                <ThemedText
+                  type="default"
+                  style={{ paddingLeft: 8 }}
+                >
+                  {col.label}
+                </ThemedText>
+              </ThemedView>
+            ))}
+        </ThemedView>
+      </ThemedCollapsible>
       {/* Weaknesses/Resistances */}
       <ThemedCollapsible
-        title="Include: Weaknesses/Resistances"
+        title="Weaknesses & Resistances"
         resetKey={resetKey}
         open={openSections.WeaknessesResistances}
         onToggle={() => handleToggleSection("WeaknessesResistances")}
@@ -460,7 +460,7 @@ export default function FreeSearchForm({
       </ThemedCollapsible>
       {/* Edition */}
       <ThemedCollapsible
-        title="Include: Edition"
+        title="Edition"
         resetKey={resetKey}
         open={openSections.Edition}
         onToggle={() => handleToggleSection("Edition")}
@@ -490,7 +490,7 @@ export default function FreeSearchForm({
       </ThemedCollapsible>
       {/* Artist/Flavor */}
       <ThemedCollapsible
-        title="Include: Artist/Flavor"
+        title="Artist/Flavor"
         resetKey={resetKey}
         open={openSections.ArtistFlavor}
         onToggle={() => handleToggleSection("ArtistFlavor")}

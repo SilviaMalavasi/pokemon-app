@@ -41,12 +41,17 @@ export default function ThemedCollapsible({
       >
         <IconSymbol
           name="chevron.right"
-          size={18}
+          size={theme.padding.medium}
           weight="medium"
           color={theme.colors.textAlternative}
           style={{ transform: [{ rotate: actualOpen ? "90deg" : "0deg" }] }}
         />
-        <ThemedText type="buttonSmall">{title}</ThemedText>
+        <ThemedText
+          type="buttonSmall"
+          color={theme.colors.text}
+        >
+          {title}
+        </ThemedText>
       </TouchableOpacity>
       {actualOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
     </ThemedView>
