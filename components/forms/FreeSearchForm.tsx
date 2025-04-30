@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
@@ -9,7 +9,7 @@ import ThemedCheckbox from "@/components/base/ThemedCheckbox";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import { freeQueryBuilder } from "@/helpers/freeQueryBuilder";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
-import styles from "@/style/forms/AdvancedSearchFormStyle";
+import styles from "@/style/forms/FreeSearchFormStyle";
 import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
 
@@ -247,248 +247,243 @@ export default function FreeSearchForm({
         placeholder="Free text"
       />
       <ThemedText
-        style={{ paddingTop: 8, paddingBottom: 24 }}
+        style={styles.instructions}
         type="default"
+        color={theme.colors.textAlternative}
       >
         You can exclude database fields in the search by toggling them on.
       </ThemedText>
-      {/* Card Type */}
-      <ThemedCollapsible
-        title="Card Type"
-        resetKey={resetKey}
-        open={openSections.CardType}
-        onToggle={() => handleToggleSection("CardType")}
-      >
-        <ThemedView style={{ marginBottom: 12 }}>
-          {allCardColumns
-            .filter(
-              (col) =>
-                ["supertype", "subtypes", "types"].includes(col.key) || (col.key === "name" && col.table === "Card")
-            )
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedCheckbox
-                  checked={includedColumns[col.key]}
-                  onPress={() => handleToggleColumn(col.key)}
-                  label={columnLabels[col.key] || col.label}
-                />
-              </ThemedView>
-            ))}
-        </ThemedView>
-      </ThemedCollapsible>
-      {/* Card Rules */}
-      <ThemedCollapsible
-        title="Rules/Rule Box"
-        resetKey={resetKey}
-        open={openSections.CardRules}
-        onToggle={() => handleToggleSection("CardRules")}
-      >
-        <ThemedView style={{ marginBottom: 12 }}>
-          {allCardColumns
-            .filter((col) => col.key === "rules")
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedCheckbox
-                  checked={includedColumns[col.key]}
-                  onPress={() => handleToggleColumn(col.key)}
-                  label={columnLabels[col.key] || col.label}
-                />
-              </ThemedView>
-            ))}
-        </ThemedView>
-      </ThemedCollapsible>
-      {/* Attacks */}
-      <ThemedCollapsible
-        title="Attacks"
-        resetKey={resetKey}
-        open={openSections.Attacks}
-        onToggle={() => handleToggleSection("Attacks")}
-      >
-        <ThemedView style={{ marginBottom: 12 }}>
-          {allCardColumns
-            .filter((col) => col.table === "Attacks")
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedCheckbox
-                  checked={includedColumns[col.key]}
-                  onPress={() => handleToggleColumn(col.key)}
-                  label={columnLabels[col.key] || col.label}
-                />
-              </ThemedView>
-            ))}
-          {allCardColumns
-            .filter((col) => col.table === "CardAttacks")
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedCheckbox
-                  checked={includedColumns[col.key]}
-                  onPress={() => handleToggleColumn(col.key)}
-                  label={columnLabels[col.key] || col.label}
-                />
-              </ThemedView>
-            ))}
-        </ThemedView>
-      </ThemedCollapsible>
-      {/* Abilities */}
-      <ThemedCollapsible
-        title="Abilities"
-        resetKey={resetKey}
-        open={openSections.Abilities}
-        onToggle={() => handleToggleSection("Abilities")}
-      >
-        <ThemedView style={{ marginBottom: 12 }}>
-          {allCardColumns
-            .filter((col) => col.table === "Abilities")
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedCheckbox
-                  checked={includedColumns[col.key]}
-                  onPress={() => handleToggleColumn(col.key)}
-                  label={columnLabels[col.key] || col.label}
-                />
-              </ThemedView>
-            ))}
-        </ThemedView>
-      </ThemedCollapsible>
-      {/* Stats */}
-      <ThemedCollapsible
-        title="Stats"
-        resetKey={resetKey}
-        open={openSections.Stats}
-        onToggle={() => handleToggleSection("Stats")}
-      >
-        <ThemedView style={{ marginBottom: 12 }}>
-          {allCardColumns
-            .filter((col) => ["hp", "convertedRetreatCost"].includes(col.key))
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedCheckbox
-                  checked={includedColumns[col.key]}
-                  onPress={() => handleToggleColumn(col.key)}
-                  label={columnLabels[col.key] || col.label}
-                />
-              </ThemedView>
-            ))}
-        </ThemedView>
-      </ThemedCollapsible>
-      {/* Evolution */}
-      <ThemedCollapsible
-        title="Evolution"
-        resetKey={resetKey}
-        open={openSections.Evolution}
-        onToggle={() => handleToggleSection("Evolution")}
-      >
-        <ThemedView style={{ marginBottom: 12 }}>
-          {allCardColumns
-            .filter((col) => ["evolvesFrom", "evolvesTo"].includes(col.key))
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedCheckbox
-                  checked={includedColumns[col.key]}
-                  onPress={() => handleToggleColumn(col.key)}
-                  label={columnLabels[col.key] || col.label}
-                />
-              </ThemedView>
-            ))}
-        </ThemedView>
-      </ThemedCollapsible>
-      {/* Weaknesses/Resistances */}
-      <ThemedCollapsible
-        title="Weaknesses & Resistances"
-        resetKey={resetKey}
-        open={openSections.WeaknessesResistances}
-        onToggle={() => handleToggleSection("WeaknessesResistances")}
-      >
-        <ThemedView style={{ marginBottom: 12 }}>
-          {allCardColumns
-            .filter((col) => ["weaknesses", "resistances"].includes(col.key))
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedCheckbox
-                  checked={includedColumns[col.key]}
-                  onPress={() => handleToggleColumn(col.key)}
-                  label={columnLabels[col.key] || col.label}
-                />
-              </ThemedView>
-            ))}
-        </ThemedView>
-      </ThemedCollapsible>
-      {/* Edition */}
-      <ThemedCollapsible
-        title="Edition"
-        resetKey={resetKey}
-        open={openSections.Edition}
-        onToggle={() => handleToggleSection("Edition")}
-      >
-        <ThemedView style={{ marginBottom: 12 }}>
-          {allCardColumns
-            .filter((col) => ["regulationMark", "name"].includes(col.key) && col.table === "CardSet")
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedCheckbox
-                  checked={includedColumns[col.key]}
-                  onPress={() => handleToggleColumn(col.key)}
-                  label={columnLabels[col.key] || col.label}
-                />
-              </ThemedView>
-            ))}
-        </ThemedView>
-      </ThemedCollapsible>
-      {/* Artist/Flavor */}
-      <ThemedCollapsible
-        title="Artist/Flavor"
-        resetKey={resetKey}
-        open={openSections.ArtistFlavor}
-        onToggle={() => handleToggleSection("ArtistFlavor")}
-      >
-        <ThemedView style={{ marginBottom: 12 }}>
-          {allCardColumns
-            .filter((col) => ["artist", "flavorText"].includes(col.key))
-            .map((col) => (
-              <ThemedView
-                key={`${col.table}-${col.key}`}
-                style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
-              >
-                <ThemedCheckbox
-                  checked={includedColumns[col.key]}
-                  onPress={() => handleToggleColumn(col.key)}
-                  label={columnLabels[col.key] || col.label}
-                />
-              </ThemedView>
-            ))}
-        </ThemedView>
-      </ThemedCollapsible>
+      {/* Collapsibles in two columns */}
+      <ThemedView style={styles.collapsibleContainer}>
+        {/* Card Type */}
+        <View style={styles.collapsibleItem}>
+          <ThemedCollapsible
+            title="Card Type"
+            resetKey={resetKey}
+            open={openSections.CardType}
+            onToggle={() => handleToggleSection("CardType")}
+          >
+            <ThemedView style={{ marginBottom: 12 }}>
+              {allCardColumns
+                .filter(
+                  (col) =>
+                    ["supertype", "subtypes", "types"].includes(col.key) || (col.key === "name" && col.table === "Card")
+                )
+                .map((col) => (
+                  <ThemedView key={`${col.table}-${col.key}`}>
+                    <ThemedCheckbox
+                      checked={includedColumns[col.key]}
+                      onPress={() => handleToggleColumn(col.key)}
+                      label={columnLabels[col.key] || col.label}
+                    />
+                  </ThemedView>
+                ))}
+            </ThemedView>
+          </ThemedCollapsible>
+        </View>
+        {/* Card Rules */}
+        <View style={styles.collapsibleItem}>
+          <ThemedCollapsible
+            title="Rules/Rule Box"
+            resetKey={resetKey}
+            open={openSections.CardRules}
+            onToggle={() => handleToggleSection("CardRules")}
+          >
+            <ThemedView style={{ marginBottom: 12 }}>
+              {allCardColumns
+                .filter((col) => col.key === "rules")
+                .map((col) => (
+                  <ThemedView key={`${col.table}-${col.key}`}>
+                    <ThemedCheckbox
+                      checked={includedColumns[col.key]}
+                      onPress={() => handleToggleColumn(col.key)}
+                      label={columnLabels[col.key] || col.label}
+                    />
+                  </ThemedView>
+                ))}
+            </ThemedView>
+          </ThemedCollapsible>
+        </View>
+        {/* Attacks */}
+        <View style={styles.collapsibleItem}>
+          <ThemedCollapsible
+            title="Attacks"
+            resetKey={resetKey}
+            open={openSections.Attacks}
+            onToggle={() => handleToggleSection("Attacks")}
+          >
+            <ThemedView style={{ marginBottom: 12 }}>
+              {allCardColumns
+                .filter((col) => col.table === "Attacks")
+                .map((col) => (
+                  <ThemedView key={`${col.table}-${col.key}`}>
+                    <ThemedCheckbox
+                      checked={includedColumns[col.key]}
+                      onPress={() => handleToggleColumn(col.key)}
+                      label={columnLabels[col.key] || col.label}
+                    />
+                  </ThemedView>
+                ))}
+              {allCardColumns
+                .filter((col) => col.table === "CardAttacks")
+                .map((col) => (
+                  <ThemedView key={`${col.table}-${col.key}`}>
+                    <ThemedCheckbox
+                      checked={includedColumns[col.key]}
+                      onPress={() => handleToggleColumn(col.key)}
+                      label={columnLabels[col.key] || col.label}
+                    />
+                  </ThemedView>
+                ))}
+            </ThemedView>
+          </ThemedCollapsible>
+        </View>
+        {/* Abilities */}
+        <View style={styles.collapsibleItem}>
+          <ThemedCollapsible
+            title="Abilities"
+            resetKey={resetKey}
+            open={openSections.Abilities}
+            onToggle={() => handleToggleSection("Abilities")}
+          >
+            <ThemedView style={{ marginBottom: 12 }}>
+              {allCardColumns
+                .filter((col) => col.table === "Abilities")
+                .map((col) => (
+                  <ThemedView key={`${col.table}-${col.key}`}>
+                    <ThemedCheckbox
+                      checked={includedColumns[col.key]}
+                      onPress={() => handleToggleColumn(col.key)}
+                      label={columnLabels[col.key] || col.label}
+                    />
+                  </ThemedView>
+                ))}
+            </ThemedView>
+          </ThemedCollapsible>
+        </View>
+        {/* Stats */}
+        <View style={styles.collapsibleItem}>
+          <ThemedCollapsible
+            title="Stats"
+            resetKey={resetKey}
+            open={openSections.Stats}
+            onToggle={() => handleToggleSection("Stats")}
+          >
+            <ThemedView style={{ marginBottom: 12 }}>
+              {allCardColumns
+                .filter((col) => ["hp", "convertedRetreatCost"].includes(col.key))
+                .map((col) => (
+                  <ThemedView key={`${col.table}-${col.key}`}>
+                    <ThemedCheckbox
+                      checked={includedColumns[col.key]}
+                      onPress={() => handleToggleColumn(col.key)}
+                      label={columnLabels[col.key] || col.label}
+                    />
+                  </ThemedView>
+                ))}
+            </ThemedView>
+          </ThemedCollapsible>
+        </View>
+        {/* Evolution */}
+        <View style={styles.collapsibleItem}>
+          <ThemedCollapsible
+            title="Evolution"
+            resetKey={resetKey}
+            open={openSections.Evolution}
+            onToggle={() => handleToggleSection("Evolution")}
+          >
+            <ThemedView style={{ marginBottom: 12 }}>
+              {allCardColumns
+                .filter((col) => ["evolvesFrom", "evolvesTo"].includes(col.key))
+                .map((col) => (
+                  <ThemedView key={`${col.table}-${col.key}`}>
+                    <ThemedCheckbox
+                      checked={includedColumns[col.key]}
+                      onPress={() => handleToggleColumn(col.key)}
+                      label={columnLabels[col.key] || col.label}
+                    />
+                  </ThemedView>
+                ))}
+            </ThemedView>
+          </ThemedCollapsible>
+        </View>
+        {/* Weaknesses/Resistances */}
+        <View style={styles.collapsibleItem}>
+          <ThemedCollapsible
+            title="Weak/Res"
+            resetKey={resetKey}
+            open={openSections.WeaknessesResistances}
+            onToggle={() => handleToggleSection("WeaknessesResistances")}
+          >
+            <ThemedView style={{ marginBottom: 12 }}>
+              {allCardColumns
+                .filter((col) => ["weaknesses", "resistances"].includes(col.key))
+                .map((col) => (
+                  <ThemedView key={`${col.table}-${col.key}`}>
+                    <ThemedCheckbox
+                      checked={includedColumns[col.key]}
+                      onPress={() => handleToggleColumn(col.key)}
+                      label={columnLabels[col.key] || col.label}
+                    />
+                  </ThemedView>
+                ))}
+            </ThemedView>
+          </ThemedCollapsible>
+        </View>
+        {/* Edition */}
+        <View style={styles.collapsibleItem}>
+          <ThemedCollapsible
+            title="Edition"
+            resetKey={resetKey}
+            open={openSections.Edition}
+            onToggle={() => handleToggleSection("Edition")}
+          >
+            <ThemedView style={{ marginBottom: 12 }}>
+              {allCardColumns
+                .filter((col) => ["regulationMark", "name"].includes(col.key) && col.table === "CardSet")
+                .map((col) => (
+                  <ThemedView key={`${col.table}-${col.key}`}>
+                    <ThemedCheckbox
+                      checked={includedColumns[col.key]}
+                      onPress={() => handleToggleColumn(col.key)}
+                      label={columnLabels[col.key] || col.label}
+                    />
+                  </ThemedView>
+                ))}
+            </ThemedView>
+          </ThemedCollapsible>
+        </View>
+        {/* Artist/Flavor */}
+        <View style={styles.collapsibleItem}>
+          <ThemedCollapsible
+            title="Artist/Flavor"
+            resetKey={resetKey}
+            open={openSections.ArtistFlavor}
+            onToggle={() => handleToggleSection("ArtistFlavor")}
+          >
+            <ThemedView style={{ marginBottom: 12 }}>
+              {allCardColumns
+                .filter((col) => ["artist", "flavorText"].includes(col.key))
+                .map((col) => (
+                  <ThemedView key={`${col.table}-${col.key}`}>
+                    <ThemedCheckbox
+                      checked={includedColumns[col.key]}
+                      onPress={() => handleToggleColumn(col.key)}
+                      label={columnLabels[col.key] || col.label}
+                    />
+                  </ThemedView>
+                ))}
+            </ThemedView>
+          </ThemedCollapsible>
+        </View>
+      </ThemedView>
+      {/* End collapsibles row */}
       <ThemedSwitch
         value={removeDuplicates}
         label="Hide duplicates"
         onValueChange={onRemoveDuplicatesChange}
+        hint="If enabled, cards with same stats but different images or sets will be displayed only once."
+        style={{ marginTop: theme.padding.xsmall, marginBottom: theme.padding.medium }}
       />
       <ThemedView style={styles.mainButtonsRow}>
         <ThemedButton

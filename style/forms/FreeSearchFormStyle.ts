@@ -3,6 +3,10 @@ import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
 
 const styles = StyleSheet.create({
+  instructions: {
+    paddingTop: theme.padding.xsmall,
+    paddingBottom: theme.padding.large,
+  },
   mainButtonsRow: {
     flexDirection: "row",
     alignItems: "flex-start",
@@ -10,6 +14,17 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     paddingHorizontal: theme.padding.small,
     marginBottom: theme.padding.medium,
+  },
+  collapsibleContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    paddingBottom: theme.padding.small,
+  },
+  collapsibleItem: {
+    flex: "50%",
+    width: "50%",
+    minWidth: "50%",
   },
 });
 

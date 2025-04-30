@@ -5,12 +5,12 @@ const styles = StyleSheet.create({
   heading: {
     flexDirection: "row",
     alignItems: "center",
-    gap: theme.padding.small,
+    gap: theme.padding.xsmall,
     paddingVertical: theme.padding.xsmall,
   },
   content: {
     marginTop: theme.padding.small,
-    marginLeft: theme.padding.large + theme.padding.xsmall,
+    marginLeft: theme.padding.large,
   },
 });
 
