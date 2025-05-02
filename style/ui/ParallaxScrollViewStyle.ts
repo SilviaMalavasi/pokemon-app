@@ -56,6 +56,8 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     paddingTop: 42,
+    lineHeight: theme.fontSizes.xlarge,
+    paddingRight: theme.padding.small,
     paddingBottom: 0,
   },
   content: {

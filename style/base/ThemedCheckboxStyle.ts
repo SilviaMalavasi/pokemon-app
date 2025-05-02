@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: theme.colors.text,
-    marginRight: theme.padding.small,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "transparent",
@@ -32,6 +31,7 @@ const styles = StyleSheet.create({
   label: {
     color: theme.colors.text,
     fontSize: theme.fontSizes.medium,
+    paddingHorizontal: theme.padding.small,
   },
 });
 

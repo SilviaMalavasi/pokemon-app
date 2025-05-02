@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { View, Image, ActivityIndicator, ScrollView } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
-import { CardType } from "@/types/PokemonCardType";
-import styles from "@/style/FullCardStyle";
+import { Ability, Attack, CardSet } from "@/types/PokemonCardType";
+import { LinearGradient } from "expo-linear-gradient";
 import cardImages from "@/db/cardImages";
+import styles from "@/style/FullCardStyle";
+import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
 
 function getCardImage(imagePath: string) {
@@ -14,12 +16,86 @@ function getCardImage(imagePath: string) {
 }
 
 interface FullCardProps {
-  card: CardType;
+  id: number;
+  cardId: string;
+  name: string;
+  supertype: string;
+  subtypes: string[];
+  types: string[];
+  rules: string[] | null;
+  hp: number;
+  evolvesFrom: string | null;
+  evolvesTo: string[] | null;
+  attacks?: Attack[];
+  abilities?: Ability[];
+  weaknesses: { type: string; value: string }[] | null;
+  resistances: { type: string; value: string }[] | null;
+  retreatCost: string[] | null;
+  convertedRetreatCost: number | null;
+  cardSet?: CardSet;
+  setId: number;
+  number: string;
+  artist: string | null;
+  rarity: string | null;
+  flavorText: string | null;
+  nationalPokedexNumbers: number[] | null;
+  regulationMark: string | null;
+  imagesLarge: string;
 }
 
-export default function FullCard({ card }: FullCardProps) {
+export default function FullCard(props: FullCardProps) {
   const [loading, setLoading] = useState(true);
-  const imageSource = getCardImage(card.imagesLarge || card.imagesSmall);
+  const imageSource = getCardImage(props.imagesLarge);
+
+  console.log("Card weak:", props.weaknesses);
+
+  // Stage and Subtypes extraction
+  let stage = "-";
+  let subtypes: string[] = [];
+  let raw = props.subtypes;
+  if (Array.isArray(raw)) {
+    subtypes = raw;
+  } else if (typeof raw === "string") {
+    try {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) subtypes = arr;
+    } catch {
+      subtypes = raw ? [raw] : [];
+    }
+  }
+  const stageTypes = ["Basic", "Stage 1", "Stage 2"];
+  const foundStage = subtypes.find((s) => stageTypes.includes(s));
+  if (foundStage) stage = foundStage;
+  const filteredSubtypes = subtypes.filter((s) => !stageTypes.includes(s));
+
+  const renderCardTypes = () => {
+    if (!props.types) return null;
+
+    const types = Array.isArray(props.types)
+      ? props.types.filter((t) => t && t !== "…" && t !== "...")
+      : typeof props.types === "string"
+      ? props.types
+          .replace(/[\[\]"]+/g, "")
+          .replace(/,/g, ", ")
+          .replace(/\u2026|\.\.\./g, "")
+          .trim()
+          .split(", ")
+      : [];
+
+    if (types.length === 0) return null;
+
+    return (
+      <ThemedText style={{ paddingBottom: 4 }}>
+        <ThemedText
+          type="defaultSemiBold"
+          color={theme.colors.textAlternative}
+        >
+          Energy Type:{" "}
+        </ThemedText>
+        {types.join(", ")}
+      </ThemedText>
+    );
+  };
 
   return (
     <ScrollView>
@@ -35,130 +111,476 @@ export default function FullCard({ card }: FullCardProps) {
             />
           </View>
         ) : null}
-        <ThemedText type="title">{card.name}</ThemedText>
-        <ThemedView>
-          <ThemedText>Supertype: {card.supertype}</ThemedText>
-          {/* Stage and Subtypes separation */}
-          {(() => {
-            let stage = "-";
-            let subtypes = [];
-            let raw = card.subtypes;
-            if (Array.isArray(raw)) {
-              subtypes = raw;
-            } else if (typeof raw === "string") {
-              try {
-                const arr = JSON.parse(raw);
-                if (Array.isArray(arr)) subtypes = arr;
-              } catch {
-                subtypes = raw ? [raw] : [];
-              }
-            }
-            const stageTypes = ["Basic", "Stage 1", "Stage 2"];
-            const foundStage = subtypes.find((s) => stageTypes.includes(s));
-            if (foundStage) stage = foundStage;
-            const filteredSubtypes = subtypes.filter((s) => !stageTypes.includes(s));
-            return (
-              <>
-                <ThemedText>Stage: {stage}</ThemedText>
-                <ThemedText>Subtypes: {filteredSubtypes.length > 0 ? filteredSubtypes.join(", ") : "-"}</ThemedText>
-              </>
-            );
-          })()}
-          <ThemedText>Types: {Array.isArray(card.types) ? card.types.join(", ") : card.types || "-"}</ThemedText>
+        <ThemedText
+          type="title"
+          style={{ paddingBottom: theme.padding.large, paddingTop: theme.padding.xsmall }}
+        >
+          {props.name}
+        </ThemedText>
+
+        {/* Card Types */}
+        <ThemedView style={styles.cardDetailsContainer}>
+          <LinearGradient
+            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+            locations={[0, 0.4, 0.4, 1]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={styles.cardDetailsLabel}
+          >
+            <ThemedText type="label">Card Type</ThemedText>
+          </LinearGradient>
+          <ThemedText style={{ paddingBottom: 4 }}>
+            <ThemedText
+              type="defaultSemiBold"
+              color={theme.colors.textAlternative}
+            >
+              Type:{" "}
+            </ThemedText>
+            {props.supertype}
+          </ThemedText>
+          {filteredSubtypes.length > 0 && (
+            <ThemedText style={{ paddingBottom: 4 }}>
+              <ThemedText
+                type="defaultSemiBold"
+                color={theme.colors.textAlternative}
+              >
+                Label:{" "}
+              </ThemedText>
+              {filteredSubtypes.join(", ")}
+            </ThemedText>
+          )}
+
+          {renderCardTypes()}
         </ThemedView>
-        <ThemedText>HP: {card.hp}</ThemedText>
-        {card.evolvesFrom && <ThemedText>Evolves from: {card.evolvesFrom}</ThemedText>}
-        {Array.isArray(card.evolvesTo) && card.evolvesTo.length > 0 && (
-          <ThemedText>Evolves to: {card.evolvesTo.join(", ")}</ThemedText>
-        )}
-        {Array.isArray(card.rules) && card.rules.length > 0 && (
-          <View>
-            <ThemedText>Rules:</ThemedText>
-            {card.rules.map((rule, idx) => (
-              <ThemedText key={`rule-${idx}`}>- {rule}</ThemedText>
-            ))}
-          </View>
-        )}
-        {Array.isArray(card.abilities) && card.abilities.length > 0 && (
-          <View>
-            <ThemedText>Abilities:</ThemedText>
-            {card.abilities.map((ab, idx) => (
-              <View
-                key={`ability-${ab.id || ab.name || idx}`}
-                style={{ marginBottom: 4 }}
+
+        {/* Rules */}
+        {props.rules &&
+          ((Array.isArray(props.rules) && props.rules.length > 0) ||
+            (typeof props.rules === "string" && props.rules.trim() !== "")) && (
+            <ThemedView style={styles.cardDetailsContainer}>
+              <LinearGradient
+                colors={[
+                  "rgba(255,255,255,0)",
+                  "rgba(255,255,255,0)",
+                  theme.colors.background,
+                  theme.colors.background,
+                ]}
+                locations={[0, 0.4, 0.4, 1]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+                style={styles.cardDetailsLabel}
               >
-                <ThemedText>- {ab.name}</ThemedText>
-                <ThemedText>{ab.text}</ThemedText>
-              </View>
-            ))}
-          </View>
-        )}
-        {Array.isArray(card.attacks) && card.attacks.length > 0 && (
-          <View>
-            <ThemedText>Attacks:</ThemedText>
-            {card.attacks.map((atk, idx) => (
-              <View
-                key={`attack-${atk.id || atk.name}-${idx}`}
-                style={{ marginBottom: 4 }}
-              >
-                <ThemedText>
-                  - {atk.name} ({atk.damage})
+                <ThemedText type="label">{props.supertype === "Pokémon" ? "Rule Box" : "Rules"}</ThemedText>
+              </LinearGradient>
+
+              {/* Display each rule in its own block if there are multiple rules */}
+              {Array.isArray(props.rules) && props.rules.length > 0 ? (
+                props.rules.map((rule, index) => (
+                  <ThemedText
+                    key={`rule-${index}`}
+                    style={{ paddingBottom: 4 }}
+                  >
+                    {rule.replace(/[\[\]"]+/g, "").trim()}
+                  </ThemedText>
+                ))
+              ) : (
+                <ThemedText style={{ paddingBottom: 4 }}>
+                  {typeof props.rules === "string" ? props.rules.replace(/[\[\]"]+/g, "").trim() : "-"}
                 </ThemedText>
-                <ThemedText>{atk.text}</ThemedText>
-                {Array.isArray(atk.cost) && atk.cost.length > 0 && <ThemedText>Cost: {atk.cost.join(", ")}</ThemedText>}
+              )}
+            </ThemedView>
+          )}
+
+        {/* Attacks */}
+        {props.attacks && props.attacks.length > 0 && (
+          <ThemedView style={styles.cardDetailsContainer}>
+            <LinearGradient
+              colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+              locations={[0, 0.4, 0.4, 1]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={styles.cardDetailsLabel}
+            >
+              <ThemedText type="label">Attacks</ThemedText>
+            </LinearGradient>
+            {props.attacks.map((atk, index) => (
+              <View
+                key={`attack-${atk.name}-${atk.id}`}
+                style={{
+                  marginBottom: index === props.attacks.length - 1 ? 0 : theme.padding.medium,
+                }}
+              >
+                <ThemedText
+                  style={{ paddingBottom: 4 }}
+                  color={theme.colors.textHilight}
+                >
+                  <ThemedText
+                    type="defaultSemiBold"
+                    color={theme.colors.textHilight}
+                  >
+                    Name:{" "}
+                  </ThemedText>
+                  {atk.name}
+                </ThemedText>
+
+                {atk.damage && (
+                  <ThemedText style={{ paddingBottom: 4 }}>
+                    <ThemedText
+                      type="defaultSemiBold"
+                      color={theme.colors.textAlternative}
+                    >
+                      Damage:{" "}
+                    </ThemedText>
+                    {atk.damage}
+                  </ThemedText>
+                )}
+
+                {atk.text && (
+                  <ThemedText style={{ paddingBottom: 4 }}>
+                    <ThemedText
+                      type="defaultSemiBold"
+                      color={theme.colors.textAlternative}
+                    >
+                      Text:{" "}
+                    </ThemedText>
+                    {atk.text}
+                  </ThemedText>
+                )}
+
                 {atk.convertedEnergyCost !== undefined && (
-                  <ThemedText>Converted Energy Cost: {atk.convertedEnergyCost}</ThemedText>
+                  <ThemedText style={{ paddingBottom: 4 }}>
+                    <ThemedText
+                      type="defaultSemiBold"
+                      color={theme.colors.textAlternative}
+                    >
+                      Cost:{" "}
+                    </ThemedText>
+                    {atk.convertedEnergyCost}
+                  </ThemedText>
+                )}
+
+                {Array.isArray(atk.cost) && atk.cost.length > 0 && (
+                  <ThemedText style={{ paddingBottom: 4 }}>
+                    <ThemedText
+                      type="defaultSemiBold"
+                      color={theme.colors.textAlternative}
+                    >
+                      Energy Cost:{" "}
+                    </ThemedText>
+                    {atk.cost.join(", ")}
+                  </ThemedText>
                 )}
               </View>
             ))}
-          </View>
+          </ThemedView>
         )}
-        {Array.isArray(card.weaknesses) && card.weaknesses.length > 0 && (
-          <View>
-            <ThemedText>Weaknesses:</ThemedText>
-            {card.weaknesses.map((w, idx) => (
-              <ThemedText key={`weakness-${w.type}-${w.value}-${idx}`}>
-                {w.type}: {w.value}
-              </ThemedText>
+
+        {/* Abilities */}
+        {props.abilities && props.abilities.length > 0 && (
+          <ThemedView style={styles.cardDetailsContainer}>
+            <LinearGradient
+              colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+              locations={[0, 0.4, 0.4, 1]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={styles.cardDetailsLabel}
+            >
+              <ThemedText type="label">Abilities</ThemedText>
+            </LinearGradient>
+            {props.abilities.map((ability, index) => (
+              <View
+                key={`ability-${ability.name}`}
+                style={{
+                  marginBottom: index === props.abilities.length - 1 ? 0 : theme.padding.medium,
+                }}
+              >
+                <ThemedText
+                  style={{ paddingBottom: 4 }}
+                  color={theme.colors.textHilight}
+                >
+                  <ThemedText
+                    type="defaultSemiBold"
+                    color={theme.colors.textHilight}
+                  >
+                    Name:{" "}
+                  </ThemedText>
+                  {ability.name}
+                </ThemedText>
+                <ThemedText style={{ paddingBottom: 4 }}>
+                  <ThemedText
+                    type="defaultSemiBold"
+                    color={theme.colors.textAlternative}
+                  >
+                    Text:{" "}
+                  </ThemedText>
+                  {ability.text}
+                </ThemedText>
+              </View>
             ))}
-          </View>
+          </ThemedView>
         )}
-        {Array.isArray(card.resistances) && card.resistances.length > 0 && (
-          <View>
-            <ThemedText>Resistances:</ThemedText>
-            {card.resistances.map((r, idx) => (
-              <ThemedText key={`resistance-${r.type}-${r.value}-${idx}`}>
-                {r.type}: {r.value}
+
+        {/* Only shown for Pokémon cards */}
+        {props.supertype === "Pokémon" && (
+          <>
+            <ThemedView style={styles.cardDetailsContainer}>
+              <LinearGradient
+                colors={[
+                  "rgba(255,255,255,0)",
+                  "rgba(255,255,255,0)",
+                  theme.colors.background,
+                  theme.colors.background,
+                ]}
+                locations={[0, 0.4, 0.4, 1]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+                style={styles.cardDetailsLabel}
+              >
+                <ThemedText type="label">Stats</ThemedText>
+              </LinearGradient>
+
+              <ThemedText style={{ paddingBottom: 4 }}>
+                <ThemedText
+                  type="defaultSemiBold"
+                  color={theme.colors.textAlternative}
+                >
+                  Pokémon HP:
+                </ThemedText>{" "}
+                {props.hp || "-"}
               </ThemedText>
-            ))}
-          </View>
+
+              {props.convertedRetreatCost && (
+                <ThemedText style={{ paddingBottom: 4 }}>
+                  <ThemedText
+                    type="defaultSemiBold"
+                    color={theme.colors.textAlternative}
+                  >
+                    Retreat Cost:
+                  </ThemedText>{" "}
+                  {props.convertedRetreatCost}
+                </ThemedText>
+              )}
+            </ThemedView>
+
+            <ThemedView style={styles.cardDetailsContainer}>
+              <LinearGradient
+                colors={[
+                  "rgba(255,255,255,0)",
+                  "rgba(255,255,255,0)",
+                  theme.colors.background,
+                  theme.colors.background,
+                ]}
+                locations={[0, 0.4, 0.4, 1]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+                style={styles.cardDetailsLabel}
+              >
+                <ThemedText type="label">Evolution</ThemedText>
+              </LinearGradient>
+              <ThemedText style={{ paddingBottom: 4 }}>
+                <ThemedText
+                  type="defaultSemiBold"
+                  color={theme.colors.textAlternative}
+                >
+                  Stage:
+                </ThemedText>{" "}
+                {stage || "-"}
+              </ThemedText>
+              {props.evolvesFrom && (
+                <ThemedText style={{ paddingBottom: 4 }}>
+                  <ThemedText
+                    type="defaultSemiBold"
+                    color={theme.colors.textAlternative}
+                  >
+                    Evolves From:
+                  </ThemedText>{" "}
+                  {props.evolvesFrom || "-"}
+                </ThemedText>
+              )}
+              {props.evolvesTo && props.evolvesTo.length > 0 && (
+                <ThemedText style={{ paddingBottom: 4 }}>
+                  <ThemedText
+                    type="defaultSemiBold"
+                    color={theme.colors.textAlternative}
+                  >
+                    Evolves To:
+                  </ThemedText>{" "}
+                  {props.evolvesTo.join(", ")}
+                </ThemedText>
+              )}
+            </ThemedView>
+
+            <ThemedView style={styles.cardDetailsContainer}>
+              <LinearGradient
+                colors={[
+                  "rgba(255,255,255,0)",
+                  "rgba(255,255,255,0)",
+                  theme.colors.background,
+                  theme.colors.background,
+                ]}
+                locations={[0, 0.4, 0.4, 1]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+                style={styles.cardDetailsLabel}
+              >
+                <ThemedText type="label">Weaknesses & Resistances</ThemedText>
+              </LinearGradient>
+              {(() => {
+                let weaknesses = props.weaknesses;
+                if (typeof weaknesses === "string") {
+                  try {
+                    weaknesses = JSON.parse(weaknesses);
+                  } catch {
+                    weaknesses = weaknesses ? [weaknesses] : [];
+                  }
+                }
+                if (Array.isArray(weaknesses) && weaknesses.length > 0) {
+                  return (
+                    <ThemedText style={{ paddingBottom: 4 }}>
+                      <ThemedText
+                        type="defaultSemiBold"
+                        color={theme.colors.textAlternative}
+                      >
+                        Weakness:
+                      </ThemedText>{" "}
+                      {weaknesses.join(", ")}
+                    </ThemedText>
+                  );
+                }
+                return null;
+              })()}
+              {(() => {
+                let resistances = props.resistances;
+                if (typeof resistances === "string") {
+                  try {
+                    resistances = JSON.parse(resistances);
+                  } catch {
+                    resistances = resistances ? [resistances] : [];
+                  }
+                }
+                if (Array.isArray(resistances) && resistances.length > 0) {
+                  return (
+                    <ThemedText style={{ paddingBottom: 4 }}>
+                      <ThemedText
+                        type="defaultSemiBold"
+                        color={theme.colors.textAlternative}
+                      >
+                        Resistance:
+                      </ThemedText>{" "}
+                      {resistances.join(", ")}
+                    </ThemedText>
+                  );
+                }
+                return null;
+              })()}
+            </ThemedView>
+          </>
         )}
-        {Array.isArray(card.retreatCost) && card.retreatCost.length > 0 && (
-          <ThemedText>Retreat Cost: {card.retreatCost.join(", ")}</ThemedText>
-        )}
-        {card.convertedRetreatCost !== null && card.convertedRetreatCost !== undefined && (
-          <ThemedText>Converted Retreat Cost: {card.convertedRetreatCost}</ThemedText>
-        )}
-        {card.flavorText && <ThemedText>Flavor: {card.flavorText}</ThemedText>}
-        {card.artist && <ThemedText>Artist: {card.artist}</ThemedText>}
-        {card.rarity && <ThemedText>Rarity: {card.rarity}</ThemedText>}
-        {Array.isArray(card.nationalPokedexNumbers) && card.nationalPokedexNumbers.length > 0 && (
-          <ThemedText>National Pokedex Numbers: {card.nationalPokedexNumbers.join(", ")}</ThemedText>
-        )}
-        {card.regulationMark && <ThemedText>Regulation Mark: {card.regulationMark}</ThemedText>}
-        <ThemedText>Number: {card.number}</ThemedText>
-        {card.cardSet && (
-          <View>
-            <ThemedText>
-              Set: {card.cardSet.name} ({card.cardSet.series})
+
+        {/* Card Set */}
+
+        <ThemedView style={styles.cardDetailsContainer}>
+          <LinearGradient
+            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+            locations={[0, 0.4, 0.4, 1]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={styles.cardDetailsLabel}
+          >
+            <ThemedText type="label">Card Set</ThemedText>
+          </LinearGradient>
+          {props.cardId && (
+            <ThemedText style={{ paddingBottom: 4 }}>
+              <ThemedText
+                type="defaultSemiBold"
+                color={theme.colors.textAlternative}
+              >
+                Pokédex Number:
+              </ThemedText>{" "}
+              {props.cardId}
             </ThemedText>
-            <ThemedText>Set Code: {card.cardSet.setId}</ThemedText>
-            <ThemedText>Printed Total: {card.cardSet.printedTotal}</ThemedText>
-            <ThemedText>Total: {card.cardSet.total}</ThemedText>
-            <ThemedText>Release Date: {card.cardSet.releaseDate}</ThemedText>
-            <ThemedText>PTCGO Code: {card.cardSet.ptcgoCode}</ThemedText>
-          </View>
-        )}
+          )}
+          {props.regulationMark && (
+            <ThemedText style={{ paddingBottom: 4 }}>
+              <ThemedText
+                type="defaultSemiBold"
+                color={theme.colors.textAlternative}
+              >
+                Regulation Mark:
+              </ThemedText>{" "}
+              {props.regulationMark}
+            </ThemedText>
+          )}
+          {props.cardSet.name && (
+            <ThemedText style={{ paddingBottom: 4 }}>
+              <ThemedText
+                type="defaultSemiBold"
+                color={theme.colors.textAlternative}
+              >
+                Name:
+              </ThemedText>{" "}
+              {props.cardSet.name}
+            </ThemedText>
+          )}
+          {props.cardSet.series && (
+            <ThemedText style={{ paddingBottom: 4 }}>
+              <ThemedText
+                type="defaultSemiBold"
+                color={theme.colors.textAlternative}
+              >
+                Series:
+              </ThemedText>{" "}
+              {props.cardSet.series}
+            </ThemedText>
+          )}
+        </ThemedView>
+        {/* Other Details */}
+        {props.rarity || props.artist || props.flavorText ? (
+          <ThemedView style={styles.cardDetailsContainer}>
+            <LinearGradient
+              colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+              locations={[0, 0.4, 0.4, 1]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={styles.cardDetailsLabel}
+            >
+              <ThemedText type="label">Other Details</ThemedText>
+            </LinearGradient>
+            {props.rarity && (
+              <ThemedText style={{ paddingBottom: 4 }}>
+                <ThemedText
+                  type="defaultSemiBold"
+                  color={theme.colors.textAlternative}
+                >
+                  Rarity:
+                </ThemedText>{" "}
+                {props.rarity}
+              </ThemedText>
+            )}
+            {props.artist && (
+              <ThemedText style={{ paddingBottom: 4 }}>
+                <ThemedText
+                  type="defaultSemiBold"
+                  color={theme.colors.textAlternative}
+                >
+                  Artist:
+                </ThemedText>{" "}
+                {props.artist}
+              </ThemedText>
+            )}
+            {props.flavorText && (
+              <ThemedText style={{ paddingBottom: 4 }}>
+                <ThemedText
+                  type="defaultSemiBold"
+                  color={theme.colors.textAlternative}
+                >
+                  Flavor Text:
+                </ThemedText>{" "}
+                {props.flavorText}
+              </ThemedText>
+            )}
+          </ThemedView>
+        ) : null}
       </ThemedView>
     </ScrollView>
   );

@@ -64,15 +64,30 @@ export default function FullCardScreen() {
       if (cardAttacks && cardAttacks.length > 0) {
         const attackIds = cardAttacks.map((a: any) => a.attackId);
         const { data: attacksData } = await supabase.from("Attacks").select("*").in("id", attackIds);
-        attacks = cardAttacks.map((ca: any) => {
-          const attack = attacksData?.find((a: any) => a.id === ca.attackId);
-          return {
-            ...attack,
-            cost: ca.cost ? JSON.parse(ca.cost) : [],
-            convertedEnergyCost: ca.convertedEnergyCost,
-            damage: ca.damage,
-          };
-        });
+
+        // Create a map to track processed attack IDs to avoid duplicates
+        const processedAttackMap = new Map();
+
+        attacks = cardAttacks
+          .map((ca: any) => {
+            const attack = attacksData?.find((a: any) => a.id === ca.attackId);
+            return {
+              ...attack,
+              cost: ca.cost ? JSON.parse(ca.cost) : [],
+              convertedEnergyCost: ca.convertedEnergyCost,
+              damage: ca.damage,
+            };
+          })
+          .filter((attack) => {
+            // Only keep unique attacks based on ID
+            if (processedAttackMap.has(attack.id)) {
+              return false;
+            }
+            processedAttackMap.set(attack.id, true);
+            return true;
+          });
+
+        console.log(`Filtered attacks from ${cardAttacks.length} to ${attacks.length} unique entries`);
       }
       // 5. Assemble the full card object
       setCard({
@@ -105,7 +120,34 @@ export default function FullCardScreen() {
               style={{ marginTop: 200 }}
             />
           ) : card ? (
-            <FullCard card={card} />
+            <FullCard
+              id={card.id}
+              cardId={card.cardId}
+              name={card.name}
+              supertype={card.supertype}
+              subtypes={card.subtypes}
+              types={card.types}
+              rules={card.rules}
+              hp={card.hp}
+              evolvesFrom={card.evolvesFrom}
+              evolvesTo={card.evolvesTo}
+              attacks={card.attacks}
+              abilities={card.abilities}
+              weaknesses={card.weaknesses}
+              resistances={card.resistances}
+              retreatCost={card.retreatCost}
+              convertedRetreatCost={card.convertedRetreatCost}
+              cardSet={card.cardSet}
+              setId={card.setId}
+              number={card.number}
+              artist={card.artist}
+              rarity={card.rarity}
+              flavorText={card.flavorText}
+              nationalPokedexNumbers={card.nationalPokedexNumbers}
+              regulationMark={card.regulationMark}
+              imagesSmall={card.imagesSmall}
+              imagesLarge={card.imagesLarge}
+            />
           ) : null}
         </ThemedView>
       </ParallaxScrollView>

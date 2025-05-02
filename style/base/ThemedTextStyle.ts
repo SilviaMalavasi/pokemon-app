@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Inter-Black",
     fontSize: theme.fontSizes.xlarge,
-    lineHeight: theme.fontSizes.xlarge * 1,
+    lineHeight: theme.fontSizes.xlarge * 1.15,
     color: theme.colors.text,
   },
   subtitle: {
