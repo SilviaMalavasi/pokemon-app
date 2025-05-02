@@ -11,6 +11,7 @@
       "supportsTablet": true
     },
     "android": {
+      "edgeToEdgeEnabled": true,
       "package": "com.silviamalavasi.pokedeckbuilder",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
