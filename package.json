@@ -9,7 +9,9 @@
     "ios": "set NODE_ENV=development && expo run:ios",
     "web": "set NODE_ENV=development && expo start --web",
     "test": "jest --watchAll",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "build-local-no-chache": "NODE_ENV=production eas build --platform android --local --clear-cache",
+    "build-local": "NODE_ENV=production eas build --platform android --local"
   },
   "jest": {
     "preset": "jest-expo"
