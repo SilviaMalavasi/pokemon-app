@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   pickerWrapper: {
     width: vw(12),
-    height: vw(13.9),
+    height: vw(13.75),
     borderRadius: theme.borderRadius.small,
     borderWidth: 1,
     borderColor: theme.colors.text,
