@@ -36,6 +36,7 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
           ? theme.colors.lightGrey
           : theme.colors.purple,
       opacity: status === "disabled" ? 1 : 1,
+      paddingHorizontal: theme.padding.small,
     };
     iconSize = theme.padding.small;
   }

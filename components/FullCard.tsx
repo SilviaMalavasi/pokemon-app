@@ -3,8 +3,9 @@ import { View, Image, ActivityIndicator, ScrollView } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { CardType } from "@/types/PokemonCardType";
-import FullCardStyle from "@/style/FullCardStyle";
+import styles from "@/style/FullCardStyle";
 import cardImages from "@/db/cardImages";
+import { vw } from "@/helpers/viewport";
 
 function getCardImage(imagePath: string) {
   if (!imagePath) return undefined;
@@ -22,22 +23,16 @@ export default function FullCard({ card }: FullCardProps) {
 
   return (
     <ScrollView>
-      <ThemedView style={FullCardStyle.container}>
+      <ThemedView style={styles.container}>
         {imageSource ? (
-          <View style={FullCardStyle.imageContainer}>
+          <View style={styles.imageContainer}>
             <Image
               source={imageSource}
-              style={FullCardStyle.image}
+              style={styles.image}
               resizeMode="contain"
               onLoadStart={() => setLoading(true)}
               onLoadEnd={() => setLoading(false)}
             />
-            {loading && (
-              <ActivityIndicator
-                size="large"
-                color="#6A1DFF"
-              />
-            )}
           </View>
         ) : null}
         <ThemedText type="title">{card.name}</ThemedText>

@@ -102,6 +102,7 @@ export default function FullCardScreen() {
             <ActivityIndicator
               size="large"
               color={theme.colors.textAlternative}
+              style={{ marginTop: 200 }}
             />
           ) : card ? (
             <FullCard card={card} />

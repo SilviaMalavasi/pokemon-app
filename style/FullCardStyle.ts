@@ -1,16 +1,20 @@
 import { StyleSheet } from "react-native";
 import { vw } from "@/helpers/viewport";
+import { theme } from "@/style/ui/Theme";
 
 const containersPadding = 16;
 const cardWidth = vw(100) - containersPadding;
 
-const FullCardStyle = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
+    position: "relative",
     flexDirection: "column",
-    minHeight: 900,
   },
   imageContainer: {
-    width: "100%",
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+    width: vw(100) - theme.padding.small * 2,
     height: cardWidth / 0.71,
     marginBottom: 32,
   },
@@ -20,4 +24,4 @@ const FullCardStyle = StyleSheet.create({
   },
 });
 
-export default FullCardStyle;
+export default styles;
