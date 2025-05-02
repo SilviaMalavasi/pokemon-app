@@ -1,5 +1,5 @@
 import { PropsWithChildren, useState, useEffect } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Svg, Path } from "react-native-svg";
 
 import ThemedText from "@/components/base/ThemedText";
@@ -59,11 +59,9 @@ export default function ThemedCollapsible({
         onPress={handleToggle}
         activeOpacity={0.8}
       >
-        <ChevronRightIcon
-          color={theme.colors.textAlternative}
-          // @ts-ignore: React Native transform for rotation
-          style={{ transform: [{ rotate: actualOpen ? "90deg" : "0deg" }] }}
-        />
+        <View style={{ transform: [{ rotate: actualOpen ? "90deg" : "0deg" }] }}>
+          <ChevronRightIcon color={theme.colors.textAlternative} />
+        </View>
         <ThemedText
           type="buttonSmall"
           color={theme.colors.text}
