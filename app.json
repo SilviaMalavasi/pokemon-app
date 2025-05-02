@@ -7,7 +7,6 @@
     "icon": "./assets/icon.png",
     "scheme": "com.silviamalavasi.pokedeckbuilder",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
