@@ -3,9 +3,10 @@ import { ActivityIndicator } from "react-native";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import FullCard from "@/components/FullCard";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { supabase } from "@/lib/supabase";
 import { CardType, Ability, Attack } from "@/types/PokemonCardType";
+import FloatingButton from "@/components/ui/FloatingButton";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
@@ -16,6 +17,10 @@ export default function FullCardScreen() {
   const [card, setCard] = useState<CardType | null>(null);
   const [loading, setLoading] = useState(true);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const router = useRouter();
+  const handleBack = () => {
+    router.back();
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -82,21 +87,27 @@ export default function FullCardScreen() {
   }, [cardId]);
 
   return (
-    <ParallaxScrollView
-      headerImage="advanced-search.webp"
-      headerTitle="Card Details"
-      scrollRef={scrollRef}
-    >
-      <ThemedView>
-        {loading ? (
-          <ActivityIndicator
-            size="large"
-            color={theme.colors.textAlternative}
-          />
-        ) : card ? (
-          <FullCard card={card} />
-        ) : null}
-      </ThemedView>
-    </ParallaxScrollView>
+    <>
+      <FloatingButton
+        title="Back to search"
+        onPress={handleBack}
+      />
+      <ParallaxScrollView
+        headerImage="advanced-search.webp"
+        headerTitle="Card Details"
+        scrollRef={scrollRef}
+      >
+        <ThemedView>
+          {loading ? (
+            <ActivityIndicator
+              size="large"
+              color={theme.colors.textAlternative}
+            />
+          ) : card ? (
+            <FullCard card={card} />
+          ) : null}
+        </ThemedView>
+      </ParallaxScrollView>
+    </>
   );
 }

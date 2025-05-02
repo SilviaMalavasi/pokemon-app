@@ -80,30 +80,30 @@ export default function SearchResultScreen() {
   };
 
   return (
-    <ParallaxScrollView
-      headerImage="advanced-search.webp"
-      headerTitle="Search Results"
-      scrollRef={scrollRef}
-    >
-      <ThemedView>
-        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
-          {/* FloatingButton replaces the old ThemedButton */}
-        </View>
-        <SearchResult
-          cardIds={cardIds}
-          cards={cards}
-          query={query}
-          loading={loading}
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
-          onPageChange={handlePageChange}
-          onAllImagesLoaded={handleAllImagesLoaded}
-        />
-        <FloatingButton
-          title="Back to search"
-          onPress={handleBack}
-        />
-      </ThemedView>
-    </ParallaxScrollView>
+    <>
+      <FloatingButton
+        title="Back to search"
+        onPress={handleBack}
+      />
+      <ParallaxScrollView
+        headerImage="advanced-search.webp"
+        headerTitle="Search Results"
+        scrollRef={scrollRef}
+      >
+        <ThemedView>
+          <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}></View>
+          <SearchResult
+            cardIds={cardIds}
+            cards={cards}
+            query={query}
+            loading={loading}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            onAllImagesLoaded={handleAllImagesLoaded}
+          />
+        </ThemedView>
+      </ParallaxScrollView>
+    </>
   );
 }

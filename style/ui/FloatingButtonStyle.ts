@@ -5,8 +5,8 @@ import { vw, vh } from "@/helpers/viewport";
 const styles = StyleSheet.create({
   fab: {
     position: "absolute",
-    right: 0,
-    top: vh(75) - 100 - vw(20) / 2,
+    right: theme.padding.xsmall,
+    top: vh(100) - 140 - vw(8),
     width: vw(16),
     height: vw(16),
     backgroundColor: theme.colors.background,
