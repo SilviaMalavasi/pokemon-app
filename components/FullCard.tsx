@@ -34,9 +34,8 @@ export default function FullCard({ card }: FullCardProps) {
             />
             {loading && (
               <ActivityIndicator
-                style={{ position: "absolute" }}
                 size="large"
-                color="#888"
+                color="#6A1DFF"
               />
             )}
           </View>

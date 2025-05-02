@@ -6,6 +6,7 @@ import { CardType } from "@/types/PokemonCardType";
 import CompactCardStyle from "@/style/CompactCardStyle";
 import cardImages from "@/db/cardImages";
 import { Link } from "expo-router";
+import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
 
 function getCardImage(imagePath: string) {
@@ -17,11 +18,25 @@ function getCardImage(imagePath: string) {
 interface CompactCardProps {
   card: Pick<CardType, "cardId" | "name" | "imagesSmall">;
   onImageLoad?: () => void;
+  loading?: boolean;
 }
 
-export default function CompactCard({ card, onImageLoad }: CompactCardProps) {
-  const [loading, setLoading] = useState(true);
+export default function CompactCard({ card, onImageLoad, loading }: CompactCardProps) {
+  const [imageLoading, setImageLoading] = useState(true);
   const imageSource = getCardImage(card.imagesSmall);
+
+  if (loading) {
+    return (
+      <ThemedView
+        style={[CompactCardStyle.container, { justifyContent: "center", alignItems: "center", minHeight: vw(68) }]}
+      >
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.textAlternative}
+        />
+      </ThemedView>
+    );
+  }
 
   return (
     <Link href={{ pathname: "/cards/[cardId]", params: { cardId: card.cardId } }}>
@@ -33,13 +48,13 @@ export default function CompactCard({ card, onImageLoad }: CompactCardProps) {
                 source={imageSource}
                 style={CompactCardStyle.image}
                 resizeMode="contain"
-                onLoadStart={() => setLoading(true)}
+                onLoadStart={() => setImageLoading(true)}
                 onLoadEnd={() => {
-                  setLoading(false);
+                  setImageLoading(false);
                   if (onImageLoad) onImageLoad();
                 }}
               />
-              {loading && (
+              {imageLoading && (
                 <ActivityIndicator
                   style={{ position: "absolute" }}
                   size="small"

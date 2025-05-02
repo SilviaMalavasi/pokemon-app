@@ -5,6 +5,7 @@ import ThemedButton from "@/components/base/ThemedButton";
 import CompactCard from "@/components/CompactCard";
 import { CardType } from "@/types/PokemonCardType";
 import SearchResultStyle from "@/style/SearchResultStyle";
+import { ActivityIndicator } from "react-native";
 
 interface SearchResultProps {
   cardIds: string[];
@@ -49,14 +50,11 @@ export default function SearchResult({
       <ThemedView style={SearchResultStyle.cardList}>
         {paginatedIds.map((item, idx) => (
           <ThemedView key={item + idx}>
-            {cards ? (
-              <CompactCard
-                card={cards.find((c) => c.cardId === item) || { cardId: item, name: item, imagesSmall: "" }}
-                onImageLoad={() => setImagesLoaded((n) => n + 1)}
-              />
-            ) : (
-              <ThemedText type="default">{item}</ThemedText>
-            )}
+            <CompactCard
+              card={cards?.find((c) => c.cardId === item) || { cardId: item, name: item, imagesSmall: "" }}
+              onImageLoad={() => setImagesLoaded((n) => n + 1)}
+              loading={loading}
+            />
           </ThemedView>
         ))}
       </ThemedView>
