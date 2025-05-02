@@ -1,0 +1,26 @@
+import { StyleSheet } from "react-native";
+import { theme } from "@/style/ui/Theme";
+
+const styles = StyleSheet.create({
+  tabBarContainer: {
+    height: 64,
+  },
+  icon: {
+    size: 25,
+  },
+  iconContainer: {
+    width: 100,
+    height: 60,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingTop: theme.padding.small,
+  },
+  label: {
+    fontSize: theme.fontSizes.xxsmall,
+    lineHeight: theme.fontSizes.xxsmall,
+    paddingTop: 4,
+    textAlign: "center",
+  },
+});
+
+export default styles;

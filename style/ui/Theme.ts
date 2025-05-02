@@ -44,6 +44,7 @@ export const theme = {
     xlarge: vw(10),
   },
   fontSizes: {
+    xxsmall: vw(2.7),
     xsmall: vw(3),
     small: vw(3.8),
     medium: vw(4.5),
