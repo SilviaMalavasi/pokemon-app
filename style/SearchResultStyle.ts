@@ -9,7 +9,6 @@ const SearchResultStyle = StyleSheet.create({
     justifyContent: "space-between",
     padding: 0,
     gap: 0,
-    marginTop: theme.padding.xsmall,
   },
   paginationContainer: {
     flexDirection: "row",
