@@ -5,4 +5,8 @@ const config = getDefaultConfig(__dirname);
 
 config.resolver.unstable_enablePackageExports = false;
 
+config.resolver.alias = {
+  "@": __dirname,
+};
+
 module.exports = config;
