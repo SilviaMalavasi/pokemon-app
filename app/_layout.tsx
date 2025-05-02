@@ -6,6 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
+import SplashScreenComponent from "@/components/ui/SplashScreen";
 
 import "react-native-reanimated";
 
@@ -30,9 +31,8 @@ export default function RootLayout() {
   }, [loaded]);
 
   if (!loaded) {
-    return null;
+    return <SplashScreenComponent />;
   }
-
   return (
     <SearchResultProvider>
       <ThemedView style={{ flex: 1 }}>
