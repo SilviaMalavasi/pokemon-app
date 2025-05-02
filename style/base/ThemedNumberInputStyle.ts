@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.small,
     paddingLeft: theme.padding.small,
     paddingRight: theme.padding.small,
-    paddingTop: theme.padding.small * 1.25,
-    paddingBottom: theme.padding.small,
+    paddingTop: theme.padding.small,
+    paddingBottom: theme.padding.small * 0.9,
     fontSize: theme.fontSizes.medium,
     lineHeight: theme.fontSizes.medium * 1.25,
     color: theme.colors.textHilight,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   pickerWrapper: {
     width: vw(12),
-    height: vw(15.2),
+    height: vw(13.9),
     borderRadius: theme.borderRadius.small,
     borderWidth: 1,
     borderColor: theme.colors.text,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   selectPressable: {
     fontSize: theme.fontSizes.large,
-    paddingTop: theme.padding.small * 1.5,
+    paddingTop: theme.padding.small,
     paddingBottom: theme.padding.small * 0.9,
     paddingHorizontal: theme.padding.small,
     color: theme.colors.placeholder,

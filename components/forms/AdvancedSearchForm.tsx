@@ -653,13 +653,13 @@ export default function AdvancedSearchForm({
         <ThemedButton
           title="Reset"
           size="small"
-          width={vw(25)}
+          width={vw(30)}
           type="alternative"
           onPress={handleReset}
         />
         <ThemedButton
           title={"Search"}
-          width={vw(55)}
+          width={vw(50)}
           icon="search"
           onPress={handleSubmit}
           status={!isAnyFilterSet || loading ? "disabled" : "default"}

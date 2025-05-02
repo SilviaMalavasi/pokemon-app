@@ -284,7 +284,7 @@ export default function FreeSearchForm({
         type="default"
         color={theme.colors.textAlternative}
       >
-        You can exclude database fields in the search by toggling them on.
+        You can exclude database fields in the search by toggling them off.
       </ThemedText>
       {/* Collapsibles in two columns */}
       <ThemedView style={styles.collapsibleContainer}>
@@ -522,13 +522,13 @@ export default function FreeSearchForm({
         <ThemedButton
           title="Reset"
           size="small"
-          width={vw(25)}
+          width={vw(30)}
           type="alternative"
           onPress={handleReset}
         />
         <ThemedButton
           title={"Search"}
-          width={vw(55)}
+          width={vw(50)}
           icon="search"
           onPress={handleSubmit}
           status={loading || cardSearch.trim() === "" ? "disabled" : "default"}

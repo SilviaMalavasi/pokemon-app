@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   selectPressable: {
-    paddingTop: theme.padding.small * 1.25,
-    paddingBottom: theme.padding.small,
+    paddingTop: theme.padding.small,
+    paddingBottom: theme.padding.small * 0.9,
     paddingHorizontal: theme.padding.small,
     color: theme.colors.placeholder,
     borderRadius: theme.borderRadius.small,

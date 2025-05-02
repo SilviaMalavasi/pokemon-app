@@ -19,9 +19,6 @@ const ThemedSwitchStyle = StyleSheet.create({
     backgroundColor: "transparent",
     gap: theme.padding.xsmall,
   },
-  label: {
-    paddingLeft: theme.padding.small,
-  },
   labelHintTouchable: {
     flexDirection: "row",
     alignItems: "center",
@@ -33,6 +30,7 @@ const ThemedSwitchStyle = StyleSheet.create({
     marginLeft: theme.padding.xsmall,
   },
   hintText: {
+    marginTop: theme.padding.small,
     flex: "100%",
   },
 });
