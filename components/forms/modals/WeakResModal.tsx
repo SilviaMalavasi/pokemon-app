@@ -38,7 +38,7 @@ export default function WeakResModal({
       onClose={onClose}
       buttonText="set filters"
       buttonType="alternative"
-      buttonSize="small"
+      buttonSize="large"
       onCancel={handleCancel}
     >
       <ThemedText
