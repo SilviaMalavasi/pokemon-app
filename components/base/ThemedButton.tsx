@@ -120,7 +120,7 @@ export default function ThemedButton({
       ) : null}
       <ThemedText
         style={[textStyle]}
-        type={type === "outline" ? "buttonSmall" : size === "large" ? "button" : "buttonSmall"}
+        type={size === "large" ? "button" : "buttonSmall"}
       >
         {title}
       </ThemedText>

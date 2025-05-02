@@ -7,7 +7,7 @@ import { useSearchResultContext } from "@/components/context/SearchResultContext
 import { useRouter } from "expo-router";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { View } from "react-native";
-import ThemedButton from "@/components/base/ThemedButton";
+import FloatingButton from "@/components/ui/FloatingButton";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -87,11 +87,7 @@ export default function SearchResultScreen() {
     >
       <ThemedView>
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
-          <ThemedButton
-            title="Back to search"
-            onPress={handleBack}
-            style={{ marginBottom: 16 }}
-          />
+          {/* FloatingButton replaces the old ThemedButton */}
         </View>
         <SearchResult
           cardIds={cardIds}
@@ -102,6 +98,10 @@ export default function SearchResultScreen() {
           itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
           onAllImagesLoaded={handleAllImagesLoaded}
+        />
+        <FloatingButton
+          title="Back to search"
+          onPress={handleBack}
         />
       </ThemedView>
     </ParallaxScrollView>
