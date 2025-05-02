@@ -4,6 +4,7 @@ import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import CompactCard from "@/components/CompactCard";
 import { CardType } from "@/types/PokemonCardType";
+import SearchResultStyle from "@/style/SearchResultStyle";
 
 interface SearchResultProps {
   cardIds: string[];
@@ -44,15 +45,10 @@ export default function SearchResult({
   }, [imagesLoaded, paginatedIds.length, onAllImagesLoaded]);
 
   return (
-    <ThemedView style={{ padding: 16 }}>
-      <ThemedView
-        style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", padding: 0, marginTop: 16 }}
-      >
+    <ThemedView>
+      <ThemedView style={SearchResultStyle.cardList}>
         {paginatedIds.map((item, idx) => (
-          <ThemedView
-            key={item + idx}
-            style={{ width: "48%", marginTop: 8 }}
-          >
+          <ThemedView key={item + idx}>
             {cards ? (
               <CompactCard
                 card={cards.find((c) => c.cardId === item) || { cardId: item, name: item, imagesSmall: "" }}
@@ -65,24 +61,17 @@ export default function SearchResult({
         ))}
       </ThemedView>
       {totalPages > 1 && (
-        <ThemedView
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: 16,
-            paddingVertical: 8,
-          }}
-        >
+        <ThemedView style={SearchResultStyle.paginationContainer}>
           <ThemedButton
             type="alternative"
             title="Prev"
             size="small"
+            status={currentPage <= 1 ? "disabled" : undefined}
             onPress={() => onPageChange && currentPage > 1 && onPageChange(currentPage - 1)}
           />
           <ThemedText
             type="default"
-            style={{ marginHorizontal: 4, paddingTop: 16 }}
+            style={SearchResultStyle.paginationText}
           >
             Page {currentPage} of {totalPages}
           </ThemedText>
@@ -90,6 +79,7 @@ export default function SearchResult({
             type="alternative"
             title="Next"
             size="small"
+            status={currentPage >= totalPages ? "disabled" : undefined}
             onPress={() => onPageChange && currentPage < totalPages && onPageChange(currentPage + 1)}
           />
         </ThemedView>

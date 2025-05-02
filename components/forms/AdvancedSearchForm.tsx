@@ -592,7 +592,7 @@ export default function AdvancedSearchForm({
         label="Hide duplicates"
         onValueChange={onRemoveDuplicatesChange}
         hint="If enabled, cards with same stats but different images or sets will be displayed only once."
-        style={{ marginTop: theme.padding.small, marginBottom: theme.padding.xlarge }}
+        style={styles.switchContainer}
       />
       {summaryFields.filter((f) => f.value && f.value !== "").length > 0 && (
         <ThemedView style={styles.summaryContainer}>

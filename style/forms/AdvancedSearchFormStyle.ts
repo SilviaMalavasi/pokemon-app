@@ -10,10 +10,14 @@ const styles = StyleSheet.create({
     gap: theme.padding.small,
   },
   halfButton: {
-    flexBasis: "48%",
+    flexBasis: vw(50) - theme.padding.xsmall * 2,
     flexGrow: 1,
     flexShrink: 1,
     marginBottom: theme.padding.small,
+  },
+  switchContainer: {
+    marginTop: theme.padding.medium,
+    marginBottom: theme.padding.xlarge,
   },
   summaryContainer: {
     position: "relative",
@@ -24,7 +28,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.padding.small,
     paddingTop: theme.padding.large,
     paddingBottom: theme.padding.xlarge * 1.2,
-    marginBottom: theme.padding.small * -1,
+    marginBottom: theme.padding.medium * -1,
   },
   summaryLabel: {
     position: "absolute",
@@ -66,6 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "transparent",
     paddingHorizontal: theme.padding.small,
+    marginTop: theme.padding.xsmall,
     marginBottom: theme.padding.medium,
   },
 });
