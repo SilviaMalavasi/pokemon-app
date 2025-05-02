@@ -10,7 +10,7 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
   const borderRadius = theme.borderRadius.medium;
   const paddingVertical = size === "large" ? theme.padding.small : theme.padding.xsmall;
   const paddingHorizontal = size === "large" ? theme.padding.medium : theme.padding.small;
-  let iconSize = size === "large" ? theme.padding.large * 0.8 : theme.padding.small;
+  let iconSize = size === "large" ? theme.padding.medium : theme.padding.small;
   const textWithIconMargin = size === "large" ? theme.padding.small : theme.padding.xsmall;
 
   // Base container

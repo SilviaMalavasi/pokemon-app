@@ -516,7 +516,7 @@ export default function FreeSearchForm({
         label="Hide duplicates"
         onValueChange={onRemoveDuplicatesChange}
         hint="If enabled, cards with same stats but different images or sets will be displayed only once."
-        style={{ marginTop: theme.padding.xsmall, marginBottom: theme.padding.medium }}
+        style={{ marginTop: theme.padding.small, marginBottom: theme.padding.xlarge }}
       />
       <ThemedView style={styles.mainButtonsRow}>
         <ThemedButton

@@ -592,7 +592,7 @@ export default function AdvancedSearchForm({
         label="Hide duplicates"
         onValueChange={onRemoveDuplicatesChange}
         hint="If enabled, cards with same stats but different images or sets will be displayed only once."
-        style={{ marginTop: theme.padding.xsmall, marginBottom: theme.padding.medium }}
+        style={{ marginTop: theme.padding.small, marginBottom: theme.padding.xlarge }}
       />
       {summaryFields.filter((f) => f.value && f.value !== "").length > 0 && (
         <ThemedView style={styles.summaryContainer}>
@@ -621,8 +621,8 @@ export default function AdvancedSearchForm({
                   >
                     <ThemedView style={styles.summaryDotCol}>
                       <Svg
-                        height={6}
-                        width={8}
+                        height={theme.padding.xsmall}
+                        width={theme.padding.xsmall}
                       >
                         <Circle
                           cx={3}

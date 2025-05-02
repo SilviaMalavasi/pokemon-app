@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.padding.small,
     paddingTop: theme.padding.large,
     paddingBottom: theme.padding.xlarge * 1.2,
-    marginBottom: theme.padding.medium * -1,
+    marginBottom: theme.padding.small * -1,
   },
   summaryLabel: {
     position: "absolute",
@@ -43,9 +43,9 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   summaryDotCol: {
-    width: 8,
+    width: theme.padding.xsmall,
     marginRight: theme.padding.xsmall,
-    marginTop: 4,
+    marginTop: theme.padding.xsmall,
   },
   summaryTextCol: {
     flex: vw(100) - 8 - theme.padding.xlarge * 2,
