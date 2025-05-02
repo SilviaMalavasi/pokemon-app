@@ -14,7 +14,7 @@
     "android": {
       "package": "com.silviamalavasi.pokedeckbuilder",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#6A1DFF"
       }
     },
@@ -28,7 +28,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/splash-icon.png",
+          "image": "./assets/icon.png",
           "imageWidth": "100%",
           "resizeMode": "cover",
           "backgroundColor": "#6a1dff"
@@ -51,11 +51,6 @@
     },
     "updates": {
       "url": "https://u.expo.dev/5c5ced7b-0261-4a0a-808d-3477e4c6af0e"
-    },
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#6a1dff"
     }
   }
 }
