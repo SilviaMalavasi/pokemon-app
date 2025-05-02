@@ -11,6 +11,7 @@ import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
+import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 export default function FreeSearchScreen() {
   const [resetKey, setResetKey] = useState(0);
@@ -20,6 +21,7 @@ export default function FreeSearchScreen() {
   const router = useRouter();
   const { setCardIds, setQuery, setCurrentPage, setItemsPerPage, setCards, setLoading } = useSearchResultContext();
   const { setLastSearchPage, lastSearchPage, clearFreeForm } = useSearchFormContext();
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
   // Handler to receive card IDs from FreeSearch
   const handleSearchResults = async (ids: string[], query: string) => {
@@ -53,6 +55,10 @@ export default function FreeSearchScreen() {
   // Reset the search form when the screen is focused
   useFocusEffect(
     React.useCallback(() => {
+      if (scrollRef.current) {
+        // @ts-ignore
+        scrollRef.current.scrollTo({ y: 0, animated: true });
+      }
       if (lastSearchPage !== "free") {
         setResetKey((k) => k + 1);
         clearFreeForm();
@@ -62,10 +68,18 @@ export default function FreeSearchScreen() {
     }, [lastSearchPage])
   );
 
+  React.useEffect(() => {
+    if (scrollRef.current) {
+      // @ts-ignore
+      scrollRef.current.scrollTo({ y: 0, animated: true });
+    }
+  }, [resetKey]);
+
   return (
     <ParallaxScrollView
       headerImage="advanced-search.webp"
       headerTitle="Free Search"
+      scrollRef={scrollRef}
     >
       <ThemedView>
         <FreeSearchForm

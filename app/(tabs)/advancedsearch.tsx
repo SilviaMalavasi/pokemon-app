@@ -12,6 +12,7 @@ import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
+import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 export default function FullFormScreen() {
   const [resetKey, setResetKey] = useState(0);
@@ -21,6 +22,7 @@ export default function FullFormScreen() {
   const router = useRouter();
   const { setCardIds, setQuery, setCurrentPage, setItemsPerPage, setCards, setLoading } = useSearchResultContext();
   const { setAdvancedForm, setLastSearchPage, clearAdvancedForm, lastSearchPage } = useSearchFormContext();
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
   // Handler to receive card IDs from AdvancedSearch
   const handleSearchResults = async (ids: string[], query: string) => {
@@ -54,6 +56,10 @@ export default function FullFormScreen() {
   // Reset the search form when the screen is focused, but only if not coming from searchresult
   useFocusEffect(
     React.useCallback(() => {
+      if (scrollRef.current) {
+        // @ts-ignore
+        scrollRef.current.scrollTo({ y: 0, animated: true });
+      }
       if (lastSearchPage !== "advanced") {
         setResetKey((k) => k + 1);
         clearAdvancedForm();
@@ -63,11 +69,19 @@ export default function FullFormScreen() {
     }, [lastSearchPage])
   );
 
+  React.useEffect(() => {
+    if (scrollRef.current) {
+      // @ts-ignore
+      scrollRef.current.scrollTo({ y: 0, animated: true });
+    }
+  }, [resetKey]);
+
   return (
     <AutocompleteDropdownContextProvider>
       <ParallaxScrollView
         headerImage="advanced-search.webp"
         headerTitle="Advanced Search"
+        scrollRef={scrollRef}
       >
         <ThemedView>
           <AdvancedSearchForm

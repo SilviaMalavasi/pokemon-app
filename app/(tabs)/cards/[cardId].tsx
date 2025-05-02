@@ -7,11 +7,24 @@ import { useLocalSearchParams } from "expo-router";
 import { supabase } from "@/lib/supabase";
 import { CardType, Ability, Attack } from "@/types/PokemonCardType";
 import { theme } from "@/style/ui/Theme";
+import Animated, { useAnimatedRef } from "react-native-reanimated";
+import { useFocusEffect } from "@react-navigation/native";
+import React from "react";
 
 export default function FullCardScreen() {
   const { cardId } = useLocalSearchParams<{ cardId: string }>();
   const [card, setCard] = useState<CardType | null>(null);
   const [loading, setLoading] = useState(true);
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (scrollRef.current) {
+        // @ts-ignore
+        scrollRef.current.scrollTo({ y: 0, animated: true });
+      }
+    }, [cardId])
+  );
 
   useEffect(() => {
     if (!cardId) return;
@@ -72,6 +85,7 @@ export default function FullCardScreen() {
     <ParallaxScrollView
       headerImage="advanced-search.webp"
       headerTitle="Card Details"
+      scrollRef={scrollRef}
     >
       <ThemedView>
         {loading ? (

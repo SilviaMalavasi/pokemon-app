@@ -3,12 +3,25 @@ import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import ExternalLink from "@/components/base/ExternalLink";
 import ThemedButton from "@/components/base/ThemedButton";
+import Animated, { useAnimatedRef } from "react-native-reanimated";
+import { useFocusEffect } from "@react-navigation/native";
+import React from "react";
 
 export default function HomeScreen() {
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  useFocusEffect(
+    React.useCallback(() => {
+      if (scrollRef.current) {
+        // @ts-ignore
+        scrollRef.current.scrollTo({ y: 0, animated: true });
+      }
+    }, [])
+  );
   return (
     <ParallaxScrollView
       headerImage="advanced-search.webp"
       headerTitle="Pokémon Deck Builder"
+      scrollRef={scrollRef}
     >
       <ThemedView>
         <ThemedText

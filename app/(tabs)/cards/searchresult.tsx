@@ -8,12 +8,24 @@ import { useRouter } from "expo-router";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { View } from "react-native";
 import ThemedButton from "@/components/base/ThemedButton";
+import Animated, { useAnimatedRef } from "react-native-reanimated";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function SearchResultScreen() {
   const { cardIds, query, currentPage, itemsPerPage, cards, loading, setCards, setLoading, setCurrentPage } =
     useSearchResultContext();
   const router = useRouter();
   const { lastSearchPage, clearAdvancedForm } = useSearchFormContext();
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (scrollRef.current) {
+        // @ts-ignore
+        scrollRef.current.scrollTo({ y: 0, animated: true });
+      }
+    }, [cardIds, currentPage])
+  );
 
   // Fetch paginated card data when cardIds or currentPage changes
   useEffect(() => {
@@ -71,6 +83,7 @@ export default function SearchResultScreen() {
     <ParallaxScrollView
       headerImage="advanced-search.webp"
       headerTitle="Search Results"
+      scrollRef={scrollRef}
     >
       <ThemedView>
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
