@@ -5,6 +5,7 @@ import { Svg, Path } from "react-native-svg";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
+import { vw } from "@/helpers/viewport";
 import styles from "@/style/base/ThemedCollapsibleStyle";
 
 // ChevronRightIcon component, defined like in ThemedButton
@@ -18,7 +19,7 @@ function ChevronRightIcon({ color }: { color: string }) {
       <Path
         d="M9 6l6 6-6 6"
         stroke={color}
-        strokeWidth={2}
+        strokeWidth={vw(0.5)}
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="none"
