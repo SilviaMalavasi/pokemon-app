@@ -4,7 +4,6 @@ import { Svg, Rect, Path } from "react-native-svg";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedChip from "@/components/base/ThemedChip";
 import ThemedView from "@/components/base/ThemedView";
-import ThemedCheckbox from "@/components/base/ThemedCheckbox";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
 
 import { theme } from "@/style/ui/Theme";
@@ -21,20 +20,13 @@ interface ThemedSelectProps {
 export default function ThemedSelect({ label, value, options, onChange, labelHint }: ThemedSelectProps): JSX.Element {
   const [showHint, setShowHint] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [tempSelected, setTempSelected] = useState<string>(value);
-
-  useEffect(() => {
-    setTempSelected(value);
-  }, [value]);
 
   const handleSelect = (selectedValue: string) => {
-    setTempSelected(selectedValue);
     onChange(selectedValue);
     setModalVisible(false);
   };
 
   const cancelSelection = () => {
-    setTempSelected(value);
     setModalVisible(false);
   };
 
