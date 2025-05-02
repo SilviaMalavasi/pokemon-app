@@ -401,7 +401,7 @@ export default function AdvancedSearchForm({
       <ThemedView style={styles.buttonRow}>
         <ThemedButton
           type="outline"
-          size="small"
+          size="large"
           disabled={false}
           icon="arrow"
           status={cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 ? "active" : "default"}
@@ -411,7 +411,7 @@ export default function AdvancedSearchForm({
         />
         <ThemedButton
           type="outline"
-          size="small"
+          size="large"
           disabled={false}
           icon="arrow"
           status={cardRules ? "active" : "default"}
@@ -423,7 +423,7 @@ export default function AdvancedSearchForm({
       <ThemedView style={styles.buttonRow}>
         <ThemedButton
           type="outline"
-          size="small"
+          size="large"
           disabled={false}
           icon="arrow"
           status={
@@ -442,7 +442,7 @@ export default function AdvancedSearchForm({
         />
         <ThemedButton
           type="outline"
-          size="small"
+          size="large"
           disabled={false}
           icon="arrow"
           status={abilitiesName || abilitiesText || hasAnyAbility ? "active" : "default"}
@@ -454,7 +454,7 @@ export default function AdvancedSearchForm({
       <ThemedView style={styles.buttonRow}>
         <ThemedButton
           type="outline"
-          size="small"
+          size="large"
           disabled={false}
           icon="arrow"
           status={cardHp !== "" || cardConvertedRetreatCost !== "" ? "active" : "default"}
@@ -464,7 +464,7 @@ export default function AdvancedSearchForm({
         />
         <ThemedButton
           type="outline"
-          size="small"
+          size="large"
           disabled={false}
           icon="arrow"
           status={cardStage.length > 0 || cardEvolvesFrom || cardEvolvesTo ? "active" : "default"}
@@ -476,7 +476,7 @@ export default function AdvancedSearchForm({
       <ThemedView style={styles.buttonRow}>
         <ThemedButton
           type="outline"
-          size="small"
+          size="large"
           disabled={false}
           icon="arrow"
           status={cardWeaknessesType.length > 0 || cardResistancesType.length > 0 ? "active" : "default"}
@@ -486,7 +486,7 @@ export default function AdvancedSearchForm({
         />
         <ThemedButton
           type="outline"
-          size="small"
+          size="large"
           disabled={false}
           icon="arrow"
           status={
