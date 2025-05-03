@@ -38,7 +38,7 @@ export default function SplashScreen() {
       <ThemedView style={styles.overlay}>
         <View style={styles.centerContent}>
           <Image
-            source={require("@/assets/icon.png")}
+            source={require("@/assets/images/icon.png")}
             style={styles.icon}
           />
           <View style={styles.textContainer}>
