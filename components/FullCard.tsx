@@ -386,28 +386,122 @@ export default function FullCard(props: FullCardProps) {
                 </ThemedText>{" "}
                 {stage || "-"}
               </ThemedText>
-              {props.evolvesFrom && (
-                <ThemedText style={{ paddingBottom: 4 }}>
-                  <ThemedText
-                    type="defaultSemiBold"
-                    color={theme.colors.textAlternative}
-                  >
-                    Evolves From:
-                  </ThemedText>{" "}
-                  {props.evolvesFrom || "-"}
-                </ThemedText>
-              )}
-              {props.evolvesTo && props.evolvesTo.length > 0 && (
-                <ThemedText style={{ paddingBottom: 4 }}>
-                  <ThemedText
-                    type="defaultSemiBold"
-                    color={theme.colors.textAlternative}
-                  >
-                    Evolves To:
-                  </ThemedText>{" "}
-                  {props.evolvesTo.join(", ")}
-                </ThemedText>
-              )}
+              {(() => {
+                let value = props.evolvesFrom;
+                if (Array.isArray(value) && value.length > 0) {
+                  return (
+                    <ThemedText style={{ paddingBottom: 4 }}>
+                      <ThemedText
+                        type="defaultSemiBold"
+                        color={theme.colors.textAlternative}
+                      >
+                        Evolves From:
+                      </ThemedText>{" "}
+                      {value.join(", ")}
+                    </ThemedText>
+                  );
+                }
+                if (typeof value === "string" && value.trim() !== "") {
+                  try {
+                    const parsed = JSON.parse(value);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                      return (
+                        <ThemedText style={{ paddingBottom: 4 }}>
+                          <ThemedText
+                            type="defaultSemiBold"
+                            color={theme.colors.textAlternative}
+                          >
+                            Evolves From:
+                          </ThemedText>{" "}
+                          {parsed.join(", ")}
+                        </ThemedText>
+                      );
+                    }
+                    return (
+                      <ThemedText style={{ paddingBottom: 4 }}>
+                        <ThemedText
+                          type="defaultSemiBold"
+                          color={theme.colors.textAlternative}
+                        >
+                          Evolves From:
+                        </ThemedText>{" "}
+                        {value}
+                      </ThemedText>
+                    );
+                  } catch {
+                    return (
+                      <ThemedText style={{ paddingBottom: 4 }}>
+                        <ThemedText
+                          type="defaultSemiBold"
+                          color={theme.colors.textAlternative}
+                        >
+                          Evolves From:
+                        </ThemedText>{" "}
+                        {value}
+                      </ThemedText>
+                    );
+                  }
+                }
+                return null;
+              })()}
+              {(() => {
+                let value = props.evolvesTo;
+                if (Array.isArray(value) && value.length > 0) {
+                  return (
+                    <ThemedText style={{ paddingBottom: 4 }}>
+                      <ThemedText
+                        type="defaultSemiBold"
+                        color={theme.colors.textAlternative}
+                      >
+                        Evolves To:
+                      </ThemedText>{" "}
+                      {value.join(", ")}
+                    </ThemedText>
+                  );
+                }
+                if (typeof value === "string" && value.trim() !== "") {
+                  try {
+                    const parsed = JSON.parse(value);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                      return (
+                        <ThemedText style={{ paddingBottom: 4 }}>
+                          <ThemedText
+                            type="defaultSemiBold"
+                            color={theme.colors.textAlternative}
+                          >
+                            Evolves To:
+                          </ThemedText>{" "}
+                          {parsed.join(", ")}
+                        </ThemedText>
+                      );
+                    }
+                    return (
+                      <ThemedText style={{ paddingBottom: 4 }}>
+                        <ThemedText
+                          type="defaultSemiBold"
+                          color={theme.colors.textAlternative}
+                        >
+                          Evolves To:
+                        </ThemedText>{" "}
+                        {value}
+                      </ThemedText>
+                    );
+                  } catch {
+                    return (
+                      <ThemedText style={{ paddingBottom: 4 }}>
+                        <ThemedText
+                          type="defaultSemiBold"
+                          color={theme.colors.textAlternative}
+                        >
+                          Evolves To:
+                        </ThemedText>{" "}
+                        {value}
+                      </ThemedText>
+                    );
+                  }
+                }
+                return null;
+              })()}
             </ThemedView>
 
             <ThemedView style={styles.cardDetailsContainer}>
