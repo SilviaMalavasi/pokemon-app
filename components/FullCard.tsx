@@ -572,7 +572,7 @@ export default function FullCard(props: FullCardProps) {
               >
                 Pokédex Number:
               </ThemedText>{" "}
-              {props.cardId}
+              {props.cardId.toUpperCase()}
             </ThemedText>
           )}
           {props.regulationMark && (
