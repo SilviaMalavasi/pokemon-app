@@ -450,48 +450,38 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
 
   // Intersect or union all non-empty arrays
   let finalCardIds: string[] = [];
-  const allArrays = [
+  // Only include arrays for active filter groups
+  const filterGroupKeys = ["Card", "CardSet", "Attacks", "CardAttacks", "Abilities", "CardAbilities"];
+  const correspondingArrays = [
     cardTableIds,
     cardSetIds,
-    unifiedAttackCardIds, // use unified attack filter result
+    unifiedAttackCardIds,
+    cardAttacksCardIds,
     abilityCardIds,
     hasAnyAbilityCardIds,
   ];
+  // Build a list of arrays for only the active filter groups
+  const activeArrays = filterGroupKeys
+    .map((key, idx) => (grouped[key] ? correspondingArrays[idx] : null))
+    .filter((arr): arr is string[] => Array.isArray(arr));
+
   // If any filter group uses logic: 'or', use union, else use intersection
   const hasOrLogic = Object.values(grouped).some((filters) => filters.some((f) => f.config.logic === "or"));
 
   // --- FIX: For AND logic, if any active filter group returns an empty array, return no cards ---
   if (!hasOrLogic) {
-    // Only consider groups that have filters set
-    const activeGroups = [
-      grouped["Card"],
-      grouped["CardSet"],
-      grouped["Attacks"],
-      grouped["CardAttacks"],
-      grouped["Abilities"],
-      grouped["CardAbilities"],
-    ].filter(Boolean);
-    const correspondingArrays = [
-      cardTableIds,
-      cardSetIds,
-      unifiedAttackCardIds,
-      cardAttacksCardIds,
-      abilityCardIds,
-      hasAnyAbilityCardIds,
-    ];
-    for (let i = 0; i < activeGroups.length; i++) {
-      if (activeGroups[i] && correspondingArrays[i] && correspondingArrays[i].length === 0) {
+    for (let arr of activeArrays) {
+      if (arr.length === 0) {
         return { cardIds: [], query: JSON.stringify(filters) };
       }
     }
   }
 
-  const nonEmptyArrays = allArrays.filter((arr) => arr.length > 0);
-  if (nonEmptyArrays.length > 0) {
+  if (activeArrays.length > 0) {
     if (hasOrLogic) {
-      finalCardIds = Array.from(new Set(nonEmptyArrays.flat()));
+      finalCardIds = Array.from(new Set(activeArrays.flat()));
     } else {
-      finalCardIds = intersectArrays(nonEmptyArrays);
+      finalCardIds = intersectArrays(activeArrays);
     }
   }
   return { cardIds: finalCardIds, query: JSON.stringify(filters) };
