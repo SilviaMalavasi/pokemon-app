@@ -32,7 +32,7 @@ export default function FloatingButton({ title, onPress }: FloatingButtonProps) 
     >
       <View style={styles.button}>
         <Image
-          source={require("@/assets/button-alt-background.webp")}
+          source={require("@/assets/images/button-alt-background.webp")}
           style={styles.backgroundImage}
           contentFit="cover"
           pointerEvents="none"

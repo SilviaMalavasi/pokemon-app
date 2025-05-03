@@ -30,7 +30,7 @@ export default function SplashScreen() {
   return (
     <View style={{ flex: 1 }}>
       <Image
-        source={require("@/assets/splash-background.webp")}
+        source={require("@/assets/images/splash-background.webp")}
         style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
         resizeMode="cover"
         pointerEvents="none"

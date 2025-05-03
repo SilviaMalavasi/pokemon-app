@@ -17,8 +17,8 @@ const headerHeight = 160;
 
 // Mapping of header image filenames to require statements
 const headerImages: Record<string, any> = {
-  "advanced-search.webp": require("@/assets/header-images/advanced-search.webp"),
-  "fondo.webp": require("@/assets/header-images/fondo.webp"),
+  "advanced-search.webp": require("@/assets/images/advanced-search.webp"),
+  "fondo.webp": require("@/assets/images/fondo.webp"),
 };
 
 type Props = PropsWithChildren<{
@@ -70,7 +70,7 @@ export default function ParallaxScrollView({ children, headerImage, headerTitle,
           <View style={styles.headerImageContainer}>
             <Image
               style={styles.headerImageContainerImage}
-              source={require("@/assets/header-images/header-logo.webp")}
+              source={require("@/assets/images/header-logo.webp")}
               contentFit="contain"
             />
           </View>

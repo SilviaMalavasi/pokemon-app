@@ -83,11 +83,11 @@ export default function ThemedButton({
   // Select background image based on status/type
   let backgroundImage = null;
   if (disabled || status === "disabled") {
-    backgroundImage = require("@/assets/button-disabled-background.webp");
+    backgroundImage = require("@/assets/images/button-disabled-background.webp");
   } else if (type === "main") {
-    backgroundImage = require("@/assets/button-main-background.webp");
+    backgroundImage = require("@/assets/images/button-main-background.webp");
   } else if (type === "alternative") {
-    backgroundImage = require("@/assets/button-alt-background.webp");
+    backgroundImage = require("@/assets/images/button-alt-background.webp");
   }
 
   return (
