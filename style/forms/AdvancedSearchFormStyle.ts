@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.padding.small,
     paddingTop: theme.padding.large,
     paddingBottom: theme.padding.xlarge * 1.2,
+    marginTop: theme.padding.small,
     marginBottom: theme.padding.medium * -1,
   },
   summaryLabel: {
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     paddingHorizontal: theme.padding.small,
     marginTop: theme.padding.xsmall,
-    marginBottom: theme.padding.medium,
+    marginBottom: theme.padding.xsmall,
   },
 });
 

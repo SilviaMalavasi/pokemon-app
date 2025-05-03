@@ -391,6 +391,78 @@ export default function AdvancedSearchForm({
 
   return (
     <ThemedView>
+      {summaryFields.filter((f) => f.value && f.value !== "").length > 0 && (
+        <ThemedView style={styles.summaryContainer}>
+          <LinearGradient
+            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+            locations={[0, 0.4, 0.4, 1]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={styles.summaryLabel}
+          >
+            <ThemedText type="label">You are searching for</ThemedText>
+          </LinearGradient>
+          <ThemedView>
+            {summaryFields
+              .filter((f) => f.value && f.value !== "")
+              .map((f) => {
+                let valueStr = typeof f.value === "string" ? f.value.trim() : null;
+                // Replace ">=" with "≥" and "<=" with "≤" for display
+                if (valueStr && valueStr.startsWith(">=")) valueStr = valueStr.replace(/^>=/, "≥");
+                if (valueStr && valueStr.startsWith("<=")) valueStr = valueStr.replace(/^<=/, "≤");
+                const operatorMatch = valueStr ? valueStr.match(/^(=|≥|≤|>|<|\+|×)\s?.*/) : null;
+                return (
+                  <ThemedView
+                    style={styles.summaryItemContainer}
+                    key={f.label}
+                  >
+                    <ThemedView style={styles.summaryDotCol}>
+                      <Svg
+                        height={theme.padding.xsmall}
+                        width={theme.padding.xsmall}
+                      >
+                        <Circle
+                          cx={3}
+                          cy={3}
+                          r={3}
+                          fill={theme.colors.green}
+                        />
+                      </Svg>
+                    </ThemedView>
+                    <ThemedView style={styles.summaryTextCol}>
+                      <ThemedText>
+                        <Text style={{ fontWeight: "bold" }}>
+                          {f.label}
+                          {/* Only hide ':' if value is a string and starts with an operator */}
+                          {typeof f.value === "string" && operatorMatch ? " " : ": "}
+                        </Text>
+                        {/* Show the correct value, string or React element */}
+                        {valueStr !== null ? valueStr : f.value}
+                      </ThemedText>
+                    </ThemedView>
+                  </ThemedView>
+                );
+              })}
+          </ThemedView>
+        </ThemedView>
+      )}
+      <ThemedView style={styles.mainButtonsRow}>
+        <ThemedButton
+          title="Reset"
+          size="small"
+          width={vw(30)}
+          type="alternative"
+          onPress={handleReset}
+        />
+        <ThemedButton
+          title={"Search"}
+          width={vw(50)}
+          icon="search"
+          onPress={handleSubmit}
+          status={!isAnyFilterSet || loading ? "disabled" : "default"}
+          disabled={!isAnyFilterSet || loading}
+        />
+      </ThemedView>
       <ThemedTextInput
         label="Name"
         value={cardName}
@@ -594,78 +666,6 @@ export default function AdvancedSearchForm({
         hint="If enabled, cards with same stats but different images or sets will be displayed only once."
         style={styles.switchContainer}
       />
-      {summaryFields.filter((f) => f.value && f.value !== "").length > 0 && (
-        <ThemedView style={styles.summaryContainer}>
-          <LinearGradient
-            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
-            locations={[0, 0.4, 0.4, 1]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={styles.summaryLabel}
-          >
-            <ThemedText type="label">You are searching for</ThemedText>
-          </LinearGradient>
-          <ThemedView>
-            {summaryFields
-              .filter((f) => f.value && f.value !== "")
-              .map((f) => {
-                let valueStr = typeof f.value === "string" ? f.value.trim() : null;
-                // Replace ">=" with "≥" and "<=" with "≤" for display
-                if (valueStr && valueStr.startsWith(">=")) valueStr = valueStr.replace(/^>=/, "≥");
-                if (valueStr && valueStr.startsWith("<=")) valueStr = valueStr.replace(/^<=/, "≤");
-                const operatorMatch = valueStr ? valueStr.match(/^(=|≥|≤|>|<|\+|×)\s?.*/) : null;
-                return (
-                  <ThemedView
-                    style={styles.summaryItemContainer}
-                    key={f.label}
-                  >
-                    <ThemedView style={styles.summaryDotCol}>
-                      <Svg
-                        height={theme.padding.xsmall}
-                        width={theme.padding.xsmall}
-                      >
-                        <Circle
-                          cx={3}
-                          cy={3}
-                          r={3}
-                          fill={theme.colors.green}
-                        />
-                      </Svg>
-                    </ThemedView>
-                    <ThemedView style={styles.summaryTextCol}>
-                      <ThemedText>
-                        <Text style={{ fontWeight: "bold" }}>
-                          {f.label}
-                          {/* Only hide ':' if value is a string and starts with an operator */}
-                          {typeof f.value === "string" && operatorMatch ? " " : ": "}
-                        </Text>
-                        {/* Show the correct value, string or React element */}
-                        {valueStr !== null ? valueStr : f.value}
-                      </ThemedText>
-                    </ThemedView>
-                  </ThemedView>
-                );
-              })}
-          </ThemedView>
-        </ThemedView>
-      )}
-      <ThemedView style={styles.mainButtonsRow}>
-        <ThemedButton
-          title="Reset"
-          size="small"
-          width={vw(30)}
-          type="alternative"
-          onPress={handleReset}
-        />
-        <ThemedButton
-          title={"Search"}
-          width={vw(50)}
-          icon="search"
-          onPress={handleSubmit}
-          status={!isAnyFilterSet || loading ? "disabled" : "default"}
-          disabled={!isAnyFilterSet || loading}
-        />
-      </ThemedView>
     </ThemedView>
   );
 }

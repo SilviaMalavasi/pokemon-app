@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     paddingHorizontal: theme.padding.small,
     marginTop: theme.padding.xsmall,
-    marginBottom: theme.padding.medium,
+    marginBottom: theme.padding.xsmall,
   },
   collapsibleContainer: {
     flexDirection: "row",

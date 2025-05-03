@@ -286,6 +286,23 @@ export default function FreeSearchForm({
 
   return (
     <ThemedView>
+      <ThemedView style={styles.mainButtonsRow}>
+        <ThemedButton
+          title="Reset"
+          size="small"
+          width={vw(30)}
+          type="alternative"
+          onPress={handleReset}
+        />
+        <ThemedButton
+          title={"Search"}
+          width={vw(50)}
+          icon="search"
+          onPress={handleSubmit}
+          status={loading || cardSearch.trim() === "" ? "disabled" : "default"}
+          disabled={loading || cardSearch.trim() === ""}
+        />
+      </ThemedView>
       <ThemedTextInput
         label="Free Search"
         value={cardSearch}
@@ -531,23 +548,6 @@ export default function FreeSearchForm({
         hint="If enabled, cards with same stats but different images or sets will be displayed only once."
         style={styles.switchContainer}
       />
-      <ThemedView style={styles.mainButtonsRow}>
-        <ThemedButton
-          title="Reset"
-          size="small"
-          width={vw(30)}
-          type="alternative"
-          onPress={handleReset}
-        />
-        <ThemedButton
-          title={"Search"}
-          width={vw(50)}
-          icon="search"
-          onPress={handleSubmit}
-          status={loading || cardSearch.trim() === "" ? "disabled" : "default"}
-          disabled={loading || cardSearch.trim() === ""}
-        />
-      </ThemedView>
     </ThemedView>
   );
 }
