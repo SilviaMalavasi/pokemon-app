@@ -62,7 +62,12 @@ export default function FreeSearchForm({
   const [includedColumns, setIncludedColumns] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     allCardColumns.forEach((col) => {
-      initial[col.key] = true;
+      // Start with 'artist' and 'flavorText' unchecked, all others checked
+      if (col.key === "artist" || col.key === "flavorText") {
+        initial[col.key] = false;
+      } else {
+        initial[col.key] = true;
+      }
     });
     return initial;
   });
@@ -115,7 +120,11 @@ export default function FreeSearchForm({
     setIncludedColumns(() => {
       const initial: Record<string, boolean> = {};
       allCardColumns.forEach((col) => {
-        initial[col.key] = true;
+        if (col.key === "artist" || col.key === "flavorText") {
+          initial[col.key] = false;
+        } else {
+          initial[col.key] = true;
+        }
       });
       return initial;
     });
@@ -206,7 +215,11 @@ export default function FreeSearchForm({
     setIncludedColumns(() => {
       const initial: Record<string, boolean> = {};
       allCardColumns.forEach((col) => {
-        initial[col.key] = true;
+        if (col.key === "artist" || col.key === "flavorText") {
+          initial[col.key] = false;
+        } else {
+          initial[col.key] = true;
+        }
       });
       return initial;
     });
