@@ -254,8 +254,8 @@ export default function FreeSearchForm({
       text: "Attack Text",
     },
     CardAttacks: {
-      cost: "Attack Cost",
-      convertedEnergyCost: "Attack Cost Energy Type",
+      cost: "Attack Cost Energy Type",
+      convertedEnergyCost: "Attack Cost",
       damage: "Attack Damage",
     },
     Abilities: {
