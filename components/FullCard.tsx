@@ -15,6 +15,21 @@ function getCardImage(imagePath: string) {
   return cardImages[filename];
 }
 
+// Utility to handle json-string-array fields
+function parseJsonStringArray(value: any): string[] {
+  if (Array.isArray(value)) return value;
+  if (typeof value === "string") {
+    try {
+      const arr = JSON.parse(value);
+      if (Array.isArray(arr)) return arr;
+      if (arr) return [arr];
+    } catch {
+      if (value.trim() !== "") return [value];
+    }
+  }
+  return [];
+}
+
 interface FullCardProps {
   id: number;
   cardId: string;
@@ -47,43 +62,17 @@ export default function FullCard(props: FullCardProps) {
   const [loading, setLoading] = useState(true);
   const imageSource = getCardImage(props.imagesLarge);
 
-  console.log("Card weak:", props.weaknesses);
-
   // Stage and Subtypes extraction
   let stage = "-";
-  let subtypes: string[] = [];
-  let raw = props.subtypes;
-  if (Array.isArray(raw)) {
-    subtypes = raw;
-  } else if (typeof raw === "string") {
-    try {
-      const arr = JSON.parse(raw);
-      if (Array.isArray(arr)) subtypes = arr;
-    } catch {
-      subtypes = raw ? [raw] : [];
-    }
-  }
+  let subtypes = parseJsonStringArray(props.subtypes);
   const stageTypes = ["Basic", "Stage 1", "Stage 2"];
   const foundStage = subtypes.find((s) => stageTypes.includes(s));
   if (foundStage) stage = foundStage;
   const filteredSubtypes = subtypes.filter((s) => !stageTypes.includes(s));
 
   const renderCardTypes = () => {
-    if (!props.types) return null;
-
-    const types = Array.isArray(props.types)
-      ? props.types.filter((t) => t && t !== "…" && t !== "...")
-      : typeof props.types === "string"
-      ? props.types
-          .replace(/[\[\]"]+/g, "")
-          .replace(/,/g, ", ")
-          .replace(/\u2026|\.\.\./g, "")
-          .trim()
-          .split(", ")
-      : [];
-
+    const types = parseJsonStringArray(props.types).filter((t) => t && t !== "…" && t !== "...");
     if (types.length === 0) return null;
-
     return (
       <ThemedText style={{ paddingBottom: 4 }}>
         <ThemedText
@@ -259,17 +248,23 @@ export default function FullCard(props: FullCardProps) {
                   </ThemedText>
                 )}
 
-                {Array.isArray(atk.cost) && atk.cost.length > 0 && (
-                  <ThemedText style={{ paddingBottom: 4 }}>
-                    <ThemedText
-                      type="defaultSemiBold"
-                      color={theme.colors.textAlternative}
-                    >
-                      Energy Cost:{" "}
-                    </ThemedText>
-                    {atk.cost.join(", ")}
-                  </ThemedText>
-                )}
+                {(() => {
+                  const costArr = parseJsonStringArray(atk.cost);
+                  if (costArr.length > 0) {
+                    return (
+                      <ThemedText style={{ paddingBottom: 4 }}>
+                        <ThemedText
+                          type="defaultSemiBold"
+                          color={theme.colors.textAlternative}
+                        >
+                          Energy Cost:{" "}
+                        </ThemedText>
+                        {costArr.join(", ")}
+                      </ThemedText>
+                    );
+                  }
+                  return null;
+                })()}
               </View>
             ))}
           </ThemedView>
@@ -520,15 +515,8 @@ export default function FullCard(props: FullCardProps) {
                 <ThemedText type="label">Weaknesses & Resistances</ThemedText>
               </LinearGradient>
               {(() => {
-                let weaknesses = props.weaknesses;
-                if (typeof weaknesses === "string") {
-                  try {
-                    weaknesses = JSON.parse(weaknesses);
-                  } catch {
-                    weaknesses = weaknesses ? [weaknesses] : [];
-                  }
-                }
-                if (Array.isArray(weaknesses) && weaknesses.length > 0) {
+                let weaknesses = parseJsonStringArray(props.weaknesses);
+                if (weaknesses.length > 0) {
                   return (
                     <ThemedText style={{ paddingBottom: 4 }}>
                       <ThemedText
@@ -544,15 +532,8 @@ export default function FullCard(props: FullCardProps) {
                 return null;
               })()}
               {(() => {
-                let resistances = props.resistances;
-                if (typeof resistances === "string") {
-                  try {
-                    resistances = JSON.parse(resistances);
-                  } catch {
-                    resistances = resistances ? [resistances] : [];
-                  }
-                }
-                if (Array.isArray(resistances) && resistances.length > 0) {
+                let resistances = parseJsonStringArray(props.resistances);
+                if (resistances.length > 0) {
                   return (
                     <ThemedText style={{ paddingBottom: 4 }}>
                       <ThemedText
