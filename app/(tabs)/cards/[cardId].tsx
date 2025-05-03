@@ -86,8 +86,6 @@ export default function FullCardScreen() {
             processedAttackMap.set(attack.id, true);
             return true;
           });
-
-        console.log(`Filtered attacks from ${cardAttacks.length} to ${attacks.length} unique entries`);
       }
       // 5. Assemble the full card object
       setCard({

@@ -456,14 +456,42 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     unifiedAttackCardIds, // use unified attack filter result
     abilityCardIds,
     hasAnyAbilityCardIds,
-  ].filter((arr) => arr.length > 0);
+  ];
   // If any filter group uses logic: 'or', use union, else use intersection
   const hasOrLogic = Object.values(grouped).some((filters) => filters.some((f) => f.config.logic === "or"));
-  if (allArrays.length > 0) {
+
+  // --- FIX: For AND logic, if any active filter group returns an empty array, return no cards ---
+  if (!hasOrLogic) {
+    // Only consider groups that have filters set
+    const activeGroups = [
+      grouped["Card"],
+      grouped["CardSet"],
+      grouped["Attacks"],
+      grouped["CardAttacks"],
+      grouped["Abilities"],
+      grouped["CardAbilities"],
+    ].filter(Boolean);
+    const correspondingArrays = [
+      cardTableIds,
+      cardSetIds,
+      unifiedAttackCardIds,
+      cardAttacksCardIds,
+      abilityCardIds,
+      hasAnyAbilityCardIds,
+    ];
+    for (let i = 0; i < activeGroups.length; i++) {
+      if (activeGroups[i] && correspondingArrays[i] && correspondingArrays[i].length === 0) {
+        return { cardIds: [], query: JSON.stringify(filters) };
+      }
+    }
+  }
+
+  const nonEmptyArrays = allArrays.filter((arr) => arr.length > 0);
+  if (nonEmptyArrays.length > 0) {
     if (hasOrLogic) {
-      finalCardIds = Array.from(new Set(allArrays.flat()));
+      finalCardIds = Array.from(new Set(nonEmptyArrays.flat()));
     } else {
-      finalCardIds = intersectArrays(allArrays);
+      finalCardIds = intersectArrays(nonEmptyArrays);
     }
   }
   return { cardIds: finalCardIds, query: JSON.stringify(filters) };
