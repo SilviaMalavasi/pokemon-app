@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     right: theme.padding.xsmall,
-    top: vh(100) - 140 - vw(8),
+    bottom: theme.padding.small,
     width: vw(16),
     height: vw(16),
     backgroundColor: theme.colors.background,

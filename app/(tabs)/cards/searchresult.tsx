@@ -10,6 +10,7 @@ import { View } from "react-native";
 import FloatingButton from "@/components/ui/FloatingButton";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SearchResultScreen() {
   const { cardIds, query, currentPage, itemsPerPage, cards, loading, setCards, setLoading, setCurrentPage } =
@@ -81,10 +82,6 @@ export default function SearchResultScreen() {
 
   return (
     <>
-      <FloatingButton
-        title="Back to search"
-        onPress={handleBack}
-      />
       <ParallaxScrollView
         headerImage="advanced-search.webp"
         headerTitle="Search Results"
@@ -104,6 +101,23 @@ export default function SearchResultScreen() {
           />
         </ThemedView>
       </ParallaxScrollView>
+      <SafeAreaView
+        pointerEvents="box-none"
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          alignItems: "center",
+          paddingBottom: 16,
+          zIndex: 100,
+        }}
+      >
+        <FloatingButton
+          title="Back to search"
+          onPress={handleBack}
+        />
+      </SafeAreaView>
     </>
   );
 }

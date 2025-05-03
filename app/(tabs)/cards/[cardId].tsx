@@ -11,6 +11,7 @@ import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function FullCardScreen() {
   const { cardId } = useLocalSearchParams<{ cardId: string }>();
@@ -101,10 +102,6 @@ export default function FullCardScreen() {
 
   return (
     <>
-      <FloatingButton
-        title="Back to search"
-        onPress={handleBack}
-      />
       <ParallaxScrollView
         headerImage="advanced-search.webp"
         headerTitle="Card Details"
@@ -148,6 +145,23 @@ export default function FullCardScreen() {
           ) : null}
         </ThemedView>
       </ParallaxScrollView>
+      <SafeAreaView
+        pointerEvents="box-none"
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          alignItems: "center",
+          paddingBottom: 16,
+          zIndex: 100,
+        }}
+      >
+        <FloatingButton
+          title="Back to search"
+          onPress={handleBack}
+        />
+      </SafeAreaView>
     </>
   );
 }
