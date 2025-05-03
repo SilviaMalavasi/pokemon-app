@@ -143,7 +143,6 @@ export default function FullCardScreen() {
               flavorText={card.flavorText}
               nationalPokedexNumbers={card.nationalPokedexNumbers}
               regulationMark={card.regulationMark}
-              imagesSmall={card.imagesSmall}
               imagesLarge={card.imagesLarge}
             />
           ) : null}

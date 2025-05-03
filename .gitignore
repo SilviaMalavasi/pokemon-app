@@ -40,5 +40,5 @@ yarn-error.*
 
 # downloads
 
-assets/downloads
+db/downloads
 

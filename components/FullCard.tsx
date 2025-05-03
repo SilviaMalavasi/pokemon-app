@@ -4,7 +4,7 @@ import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { Ability, Attack, CardSet } from "@/types/PokemonCardType";
 import { LinearGradient } from "expo-linear-gradient";
-import cardImages from "@/db/cardImages";
+import cardImages from "@/helpers/cardImageMapping";
 import styles from "@/style/FullCardStyle";
 import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";

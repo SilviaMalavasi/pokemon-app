@@ -9,7 +9,7 @@ import { ActivityIndicator } from "react-native";
 
 interface SearchResultProps {
   cardIds: string[];
-  cards?: Pick<CardType, "cardId" | "name" | "imagesSmall">[];
+  cards?: Pick<CardType, "cardId" | "name" | "imagesLarge">[];
   query?: string;
   loading?: boolean;
   currentPage?: number;
@@ -51,7 +51,7 @@ export default function SearchResult({
         {paginatedIds.map((item, idx) => (
           <ThemedView key={item + idx}>
             <CompactCard
-              card={cards?.find((c) => c.cardId === item) || { cardId: item, name: item, imagesSmall: "" }}
+              card={cards?.find((c) => c.cardId === item) || { cardId: item, name: item, imagesLarge: "" }}
               onImageLoad={() => setImagesLoaded((n) => n + 1)}
               loading={loading}
             />

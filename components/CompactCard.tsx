@@ -4,7 +4,7 @@ import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { CardType } from "@/types/PokemonCardType";
 import CompactCardStyle from "@/style/CompactCardStyle";
-import cardImages from "@/db/cardImages";
+import cardImages from "@/helpers/cardImageMapping";
 import { Link } from "expo-router";
 import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
@@ -16,14 +16,14 @@ function getCardImage(imagePath: string) {
 }
 
 interface CompactCardProps {
-  card: Pick<CardType, "cardId" | "name" | "imagesSmall">;
+  card: Pick<CardType, "cardId" | "name" | "imagesLarge">;
   onImageLoad?: () => void;
   loading?: boolean;
 }
 
 export default function CompactCard({ card, onImageLoad, loading }: CompactCardProps) {
   const [imageLoading, setImageLoading] = useState(true);
-  const imageSource = getCardImage(card.imagesSmall);
+  const imageSource = getCardImage(card.imagesLarge);
 
   if (loading) {
     return (

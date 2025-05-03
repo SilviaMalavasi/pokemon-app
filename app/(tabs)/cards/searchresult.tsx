@@ -40,14 +40,14 @@ export default function SearchResultScreen() {
       const paginatedIds = cardIds.slice(startIdx, endIdx);
       const { data, error } = await supabase
         .from("Card")
-        .select("cardId, name, imagesSmall")
+        .select("cardId, name, imagesLarge")
         .in("cardId", paginatedIds);
       if (error) {
         setCards([]);
       } else {
         // Ensure order matches paginatedIds
         const cardsOrdered = paginatedIds.map(
-          (id) => data.find((c) => c.cardId === id) || { cardId: id, name: id, imagesSmall: "" }
+          (id) => data.find((c) => c.cardId === id) || { cardId: id, name: id, imagesLarge: "" }
         );
         setCards(cardsOrdered);
       }

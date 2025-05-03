@@ -6,13 +6,13 @@ interface SearchResultState {
   query: string;
   currentPage: number;
   itemsPerPage: number;
-  cards: Pick<CardType, "cardId" | "name" | "imagesSmall">[];
+  cards: Pick<CardType, "cardId" | "name" | "imagesLarge">[];
   loading: boolean;
   setCardIds: (ids: string[]) => void;
   setQuery: (q: string) => void;
   setCurrentPage: (page: number) => void;
   setItemsPerPage: (n: number) => void;
-  setCards: (cards: Pick<CardType, "cardId" | "name" | "imagesSmall">[]) => void;
+  setCards: (cards: Pick<CardType, "cardId" | "name" | "imagesLarge">[]) => void;
   setLoading: (loading: boolean) => void;
 }
 
@@ -29,7 +29,7 @@ export const SearchResultProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
-  const [cards, setCards] = useState<Pick<CardType, "cardId" | "name" | "imagesSmall">[]>([]);
+  const [cards, setCards] = useState<Pick<CardType, "cardId" | "name" | "imagesLarge">[]>([]);
   const [loading, setLoading] = useState(false);
 
   return (

@@ -75,7 +75,7 @@ export default function FreeSearchForm({
   const [loading, setLoading] = useState(false);
 
   // Card Exclusion lists
-  const cardExclusions = ["id", "nationalPokedexNumbers", "imagesSmall", "imagesLarge", "setId", "rarity", "number"];
+  const cardExclusions = ["id", "nationalPokedexNumbers", "imagesLarge", "setId", "rarity", "number"];
   const cardAttacksExclusions = ["id", "cardId", "attackId"];
   const attacksExclusions = ["id"];
   const abilitiesExclusions = ["id"];

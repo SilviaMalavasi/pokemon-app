@@ -17,7 +17,6 @@ export interface CardRow {
   rarity: string | null;
   nationalPokedexNumbers: string | null;
   regulationMark: string | null;
-  imagesSmall: string;
   imagesLarge: string;
   number: string;
   cardSetId: string;

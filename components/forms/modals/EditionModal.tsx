@@ -4,7 +4,7 @@ import ThemedMultiSelect from "@/components/base/ThemedMultiSelect";
 import ThemedNumberInput from "@/components/base/ThemedNumberInput";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import ThemedText from "@/components/base/ThemedText";
-import uniqueIdentifiers from "@/db/uniqueIdentifiers.json";
+import uniqueIdentifiers from "@/helpers/uniqueIdentifiers.json";
 
 import { theme } from "@/style/ui/Theme";
 

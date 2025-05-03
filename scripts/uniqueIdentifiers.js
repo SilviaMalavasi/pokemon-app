@@ -110,6 +110,6 @@ const uniqueIdentifiers = {
   energyTypes: getUniqueEnergyTypes(),
 };
 
-const outPath = path.resolve(__dirname, "../db/uniqueIdentifiers.json");
+const outPath = path.resolve(__dirname, "../helpers/uniqueIdentifiers.json");
 fs.writeFileSync(outPath, JSON.stringify(uniqueIdentifiers, null, 2), "utf-8");
-console.log("Unique identifiers written to db/uniqueIdentifiers.json");
+console.log("Unique identifiers written to helpers/uniqueIdentifiers.json");

@@ -52,6 +52,5 @@ export interface CardType {
   flavorText: string | null;
   nationalPokedexNumbers: number[] | null;
   regulationMark: string | null;
-  imagesSmall: string;
   imagesLarge: string;
 }

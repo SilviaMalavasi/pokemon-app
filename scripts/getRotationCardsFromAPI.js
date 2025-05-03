@@ -76,7 +76,7 @@ async function getrotationCardsFromAPI() {
     console.log(`Found ${specificCards.length} basic energy cards.`);
 
     // Directories for PNG downloads and WebP outputs
-    const downloadCardImageDir = path.resolve(rootDir, "assets/downloads/card-images");
+    const downloadCardImageDir = path.resolve(rootDir, "db/downloads/card-images");
     const webpCardImageDir = path.resolve(rootDir, "assets/card-images");
 
     // Ensure all directories exist
@@ -121,31 +121,7 @@ async function getrotationCardsFromAPI() {
 
     // Download and convert images to WebP format
     for (const card of allCards) {
-      if (card.images && card.images.small) {
-        const ext = path.extname(card.images.small) || ".png";
-        const pngSmall = `${card.id}_small${ext}`;
-        const pngSmallAbs = path.resolve(downloadCardImageDir, pngSmall);
-        const webpSmall = `${card.id}_small.webp`;
-        const webpSmallAbs = path.resolve(webpCardImageDir, webpSmall);
-        // If WebP already exists, skip download and conversion
-        if (fs.existsSync(webpSmallAbs)) {
-          card.images.small = `/card-images/${webpSmall}`;
-        } else {
-          if (!fs.existsSync(pngSmallAbs)) {
-            try {
-              await downloadImage(card.images.small, pngSmallAbs);
-              await sharp(pngSmallAbs).webp({ quality: 60 }).toFile(webpSmallAbs);
-              card.images.small = `/card-images/${webpSmall}`;
-            } catch (e) {
-              console.warn(`Failed to download/convert small image for ${card.id}`);
-              console.warn(e);
-            }
-          } else {
-            await sharp(pngSmallAbs).webp({ quality: 60 }).toFile(webpSmallAbs);
-            card.images.small = `/card-images/${webpSmall}`;
-          }
-        }
-      }
+      // Only process large images
       if (card.images && card.images.large) {
         const ext = path.extname(card.images.large) || ".png";
         const pngLarge = `${card.id}_large${ext}`;
@@ -159,17 +135,21 @@ async function getrotationCardsFromAPI() {
           if (!fs.existsSync(pngLargeAbs)) {
             try {
               await downloadImage(card.images.large, pngLargeAbs);
-              await sharp(pngLargeAbs).webp({ quality: 60 }).toFile(webpLargeAbs);
+              await sharp(pngLargeAbs).resize({ width: 400 }).webp({ quality: 60, effort: 6 }).toFile(webpLargeAbs);
               card.images.large = `/card-images/${webpLarge}`;
             } catch (e) {
               console.warn(`Failed to download/convert large image for ${card.id}`);
               console.warn(e);
             }
           } else {
-            await sharp(pngLargeAbs).webp({ quality: 60 }).toFile(webpLargeAbs);
+            await sharp(pngLargeAbs).resize({ width: 400 }).webp({ quality: 60, effort: 6 }).toFile(webpLargeAbs);
             card.images.large = `/card-images/${webpLarge}`;
           }
         }
+      }
+      // Remove small image reference
+      if (card.images && card.images.small) {
+        delete card.images.small;
       }
     }
 

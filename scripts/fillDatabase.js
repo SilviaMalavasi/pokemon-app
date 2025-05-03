@@ -51,7 +51,6 @@ const createTables = () => {
       rarity TEXT,
       nationalPokedexNumbers TEXT,
       regulationMark TEXT,
-      imagesSmall TEXT,
       imagesLarge TEXT,
       rules TEXT,
       number TEXT,
@@ -157,8 +156,8 @@ const insertCard = (card) => {
       INSERT OR IGNORE INTO Card (
         cardId, name, supertype, subtypes, hp, types, evolvesFrom, weaknesses, resistances, evolvesTo, retreatCost,
         convertedRetreatCost, flavorText, artist, rarity, nationalPokedexNumbers,
-        regulationMark, imagesSmall, imagesLarge, rules, number, setId
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        regulationMark, imagesLarge, rules, number, setId
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     stmt.run(
@@ -230,6 +229,7 @@ const fillDatabase = () => {
   updateCardSetCodes();
 };
 
+// Function to set convertedRetreatCost to 0 for Pokémon cards where it is null
 function fixNullConvertedRetreatCost() {
   const db = new Database(dbPath);
   const result = db
@@ -239,6 +239,7 @@ function fixNullConvertedRetreatCost() {
   console.log(`Set convertedRetreatCost = 0 for ${result.changes} Pokémon cards where it was null.`);
 }
 
+// Function to update CardSet table with ptcgoCode
 function updateCardSetCodes() {
   const nameToCode = [
     { name: "Journey Together", ptcgoCode: "JTG" },

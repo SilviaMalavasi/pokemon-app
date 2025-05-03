@@ -34,6 +34,9 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-# downloads
-assets/downloads
-db/rotationCards.json
+# DIFFERENCES WITH .GITIGNORE
+# Do not ignore .env, .env.local
+
+# app
+db/
+scripts/
