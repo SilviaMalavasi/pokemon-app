@@ -365,7 +365,7 @@ export default function AdvancedSearchForm({
     },
     { label: "Attack Cost Energy Type", value: attacksCost.length ? interleaveWithOr(attacksCost) : "" },
     {
-      label: "Attack Cost Slots",
+      label: "Attack Cost Energy Type",
       value: attacksCostSlots.filter(Boolean).length ? interleaveWithAnd(attacksCostSlots.filter(Boolean)) : "",
     },
     { label: "Ability Name", value: abilitiesName },
@@ -410,7 +410,19 @@ export default function AdvancedSearchForm({
                 // Replace ">=" with "≥" and "<=" with "≤" for display
                 if (valueStr && valueStr.startsWith(">=")) valueStr = valueStr.replace(/^>=/, "≥");
                 if (valueStr && valueStr.startsWith("<=")) valueStr = valueStr.replace(/^<=/, "≤");
-                const operatorMatch = valueStr ? valueStr.match(/^(=|≥|≤|>|<|\+|×)\s?.*/) : null;
+                const operatorMatch = valueStr ? valueStr.match(/^(=|≥|≤|>|<|\+|×)\s?/) : null;
+                let operator = "";
+                let restOfValue = valueStr;
+
+                if (operatorMatch && valueStr) {
+                  operator = operatorMatch[0]; // The operator and potential space
+                  restOfValue = valueStr.substring(operator.length);
+                }
+
+                // Special handling for Attack Damage with + or ×
+                const isAttackDamageSpecialCase =
+                  f.label === "Attack Damage" && (operator.trim() === "+" || operator.trim() === "×");
+
                 return (
                   <ThemedView
                     style={styles.summaryItemContainer}
@@ -433,11 +445,25 @@ export default function AdvancedSearchForm({
                       <ThemedText>
                         <Text style={{ fontWeight: "bold" }}>
                           {f.label}
-                          {/* Only hide ':' if value is a string and starts with an operator */}
-                          {typeof f.value === "string" && operatorMatch ? " " : ": "}
+                          {/* Adjust separator based on operator type and special case */}
+                          {isAttackDamageSpecialCase ? " = " : operator ? " " : ": "}
                         </Text>
                         {/* Show the correct value, string or React element */}
-                        {valueStr !== null ? valueStr : f.value}
+                        {isAttackDamageSpecialCase ? (
+                          <>
+                            <Text>{restOfValue}</Text>
+                            <Text style={{ color: theme.colors.textHilight }}>{operator.trim()}</Text>
+                          </>
+                        ) : operator ? (
+                          <>
+                            <Text style={{ color: theme.colors.textHilight }}>{operator}</Text>
+                            <Text>{restOfValue}</Text>
+                          </>
+                        ) : valueStr !== null ? (
+                          valueStr
+                        ) : (
+                          f.value
+                        )}
                       </ThemedText>
                     </ThemedView>
                   </ThemedView>

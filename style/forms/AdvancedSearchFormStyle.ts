@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.green,
     borderRadius: theme.borderRadius.small,
     paddingHorizontal: theme.padding.small,
-    paddingTop: theme.padding.large,
-    paddingBottom: theme.padding.xlarge * 1.2,
+    paddingTop: theme.padding.medium,
+    paddingBottom: theme.padding.xlarge,
     marginTop: theme.padding.small,
     marginBottom: theme.padding.medium * -1,
   },
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   summaryItemContainer: {
     flexDirection: "row",
     alignItems: "flex-start",
-    marginBottom: 2,
+    marginBottom: 4,
   },
   summaryDotCol: {
     width: theme.padding.xsmall,
