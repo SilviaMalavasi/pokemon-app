@@ -35,7 +35,7 @@ export default function FullFormScreen() {
         .in("cardId", ids);
       if (!error && data) {
         const deduped = await removeCardDuplicates(data);
-        filteredIds = ids.filter((id) => deduped.some((c) => c.cardId === id));
+        filteredIds = deduped.map((c) => c.cardId);
       }
     }
     if (filteredIds.length === 0) {

@@ -34,36 +34,41 @@ export default function FreeSearchForm({
   const [cardSearch, setCardSearch] = useState("");
   // All card columns that can be excluded from search
   const allCardColumns = [
-    { key: "name", table: "Card", label: "Name" },
-    { key: "supertype", table: "Card", label: "Supertype" },
-    { key: "subtypes", table: "Card", label: "Subtypes" },
-    { key: "types", table: "Card", label: "Types" },
-    { key: "rules", table: "Card", label: "Rules" },
-    { key: "name", table: "Attacks", label: "Attack Name" },
-    { key: "text", table: "Attacks", label: "Attack Text" },
-    { key: "cost", table: "CardAttacks", label: "Attack Cost" },
-    { key: "convertedEnergyCost", table: "CardAttacks", label: "Attack Converted Energy Cost" },
-    { key: "damage", table: "CardAttacks", label: "Attack Damage" },
-    { key: "name", table: "Abilities", label: "Abilities Name" },
-    { key: "text", table: "Abilities", label: "Abilities Text" },
-    { key: "evolvesFrom", table: "Card", label: "Evolves From" },
-    { key: "evolvesTo", table: "Card", label: "Evolves To" },
-    { key: "hp", table: "Card", label: "HP" },
-    { key: "convertedRetreatCost", table: "Card", label: "Converted Retreat Cost" },
-    { key: "weaknesses", table: "Card", label: "Weaknesses Type" },
-    { key: "resistances", table: "Card", label: "Resistances Type" },
-    { key: "name", table: "CardSet", label: "Set Name" },
-    { key: "regulationMark", table: "Card", label: "Regulation Mark" },
-    { key: "cardId", table: "Card", label: "Set/Number" },
-    { key: "flavorText", label: "Flavor Text" },
-    { key: "artist", label: "Artist" },
+    { key: "name_Card", table: "Card", column: "name", label: "Card Name" },
+    { key: "supertype_Card", table: "Card", column: "supertype", label: "Type" },
+    { key: "subtypes_Card", table: "Card", column: "subtypes", label: "Label" },
+    { key: "types_Card", table: "Card", column: "types", label: "Energy Type" },
+    { key: "rules_Card", table: "Card", column: "rules", label: "Rules/Rule Box" },
+    { key: "name_Attacks", table: "Attacks", column: "name", label: "Attack Name" },
+    { key: "text_Attacks", table: "Attacks", column: "text", label: "Attack Text" },
+    { key: "cost_CardAttacks", table: "CardAttacks", column: "cost", label: "Attack Cost Energy Type" },
+    {
+      key: "convertedEnergyCost_CardAttacks",
+      table: "CardAttacks",
+      column: "convertedEnergyCost",
+      label: "Attack Cost",
+    },
+    { key: "damage_CardAttacks", table: "CardAttacks", column: "damage", label: "Attack Damage" },
+    { key: "name_Abilities", table: "Abilities", column: "name", label: "Ability Name" },
+    { key: "text_Abilities", table: "Abilities", column: "text", label: "Ability Text" },
+    { key: "evolvesFrom_Card", table: "Card", column: "evolvesFrom", label: "Evolves From" },
+    { key: "evolvesTo_Card", table: "Card", column: "evolvesTo", label: "Evolves To" },
+    { key: "hp_Card", table: "Card", column: "hp", label: "Pokémon HP" },
+    { key: "convertedRetreatCost_Card", table: "Card", column: "convertedRetreatCost", label: "Retreat Cost" },
+    { key: "weaknesses_Card", table: "Card", column: "weaknesses", label: "Weaknesses" },
+    { key: "resistances_Card", table: "Card", column: "resistances", label: "Resistances" },
+    { key: "name_CardSet", table: "CardSet", column: "name", label: "Set Name" },
+    { key: "regulationMark_Card", table: "Card", column: "regulationMark", label: "Regulation Mark" },
+    { key: "cardId_Card", table: "Card", column: "cardId", label: "Pokédex Number" },
+    { key: "flavorText_Card", table: "Card", column: "flavorText", label: "Flavor Text" },
+    { key: "artist_Card", table: "Card", column: "artist", label: "Artist" },
   ];
   // By default, all fields are included (checked)
   const [includedColumns, setIncludedColumns] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     allCardColumns.forEach((col) => {
       // Start with 'artist' and 'flavorText' unchecked, all others checked
-      if (col.key === "artist" || col.key === "flavorText") {
+      if (col.column === "artist" || col.column === "flavorText") {
         initial[col.key] = false;
       } else {
         initial[col.key] = true;
@@ -88,31 +93,31 @@ export default function FreeSearchForm({
   // Card columns to search (only include checked fields)
   const cardColumnsToSearch = allCardColumns
     .filter((col) => col.table === "Card")
-    .map((col) => col.key)
+    .map((col) => col.column)
     .filter((key) => includedColumns[key]);
 
   // Attacks columns to search
   const attacksColumnsToSearch = allCardColumns
     .filter((col) => col.table === "Attacks")
-    .map((col) => col.key)
+    .map((col) => col.column)
     .filter((key) => includedColumns[key]);
 
   // Abilities columns to search
   const abilitiesColumnsToSearch = allCardColumns
     .filter((col) => col.table === "Abilities")
-    .map((col) => col.key)
+    .map((col) => col.column)
     .filter((key) => includedColumns[key]);
 
   // CardAttacks columns to search
   const cardAttacksColumnsToSearch = allCardColumns
     .filter((col) => col.table === "CardAttacks")
-    .map((col) => col.key)
+    .map((col) => col.column)
     .filter((key) => includedColumns[key]);
 
   // CardSet columns to search
   const cardSetColumnsToSearch = allCardColumns
     .filter((col) => col.table === "CardSet")
-    .map((col) => col.key)
+    .map((col) => col.column)
     .filter((key) => includedColumns[key]);
 
   useEffect(() => {
@@ -120,7 +125,7 @@ export default function FreeSearchForm({
     setIncludedColumns(() => {
       const initial: Record<string, boolean> = {};
       allCardColumns.forEach((col) => {
-        if (col.key === "artist" || col.key === "flavorText") {
+        if (col.column === "artist" || col.column === "flavorText") {
           initial[col.key] = false;
         } else {
           initial[col.key] = true;
@@ -147,10 +152,12 @@ export default function FreeSearchForm({
       return;
     }
     try {
-      // Collect all included (checked) columns
-      const includedKeys = Object.keys(includedColumns).filter((key) => includedColumns[key]);
-      // Use freeQueryBuilder for free search, passing includedKeys
-      const { cardIds, query } = await freeQueryBuilder(trimmedSearch, includedKeys);
+      // Collect all included (checked) columns as {table, column} pairs
+      const includedTablesAndColumns = allCardColumns
+        .filter((col) => includedColumns[col.key])
+        .map((col) => ({ table: col.table, column: col.column }));
+      // Use freeQueryBuilder for free search, passing includedTablesAndColumns
+      const { cardIds, query } = await freeQueryBuilder(trimmedSearch, includedTablesAndColumns);
       if (onSearchResults) onSearchResults(cardIds, query);
     } catch (err: any) {
       console.error("[FreeSearch] freeQueryBuilder error:", err);
@@ -215,7 +222,7 @@ export default function FreeSearchForm({
     setIncludedColumns(() => {
       const initial: Record<string, boolean> = {};
       allCardColumns.forEach((col) => {
-        if (col.key === "artist" || col.key === "flavorText") {
+        if (col.column === "artist" || col.column === "flavorText") {
           initial[col.key] = false;
         } else {
           initial[col.key] = true;
@@ -284,6 +291,43 @@ export default function FreeSearchForm({
     return key;
   }
 
+  // Helper: are all columns checked?
+  const allKeys = allCardColumns.map((col) => col.key);
+  const checkedCount = allKeys.filter((key) => includedColumns[key]).length;
+  // On first render, force the button to say 'Uncheck all' and uncheck all fields
+  const [toggleAllState, setToggleAllState] = useState<"uncheck" | "toggle">("uncheck");
+
+  useEffect(() => {
+    setToggleAllState("uncheck");
+  }, [resetKey]);
+
+  const allChecked = checkedCount === allKeys.length;
+  const someChecked = checkedCount > 0 && checkedCount < allKeys.length;
+
+  const handleToggleAll = () => {
+    if (toggleAllState === "uncheck") {
+      // Uncheck all fields
+      setIncludedColumns((prev) => {
+        const updated: Record<string, boolean> = {};
+        allKeys.forEach((key) => {
+          updated[key] = false;
+        });
+        return updated;
+      });
+      setToggleAllState("toggle");
+    } else {
+      // Normal toggle logic
+      const newValue = !allChecked;
+      setIncludedColumns((prev) => {
+        const updated: Record<string, boolean> = {};
+        allKeys.forEach((key) => {
+          updated[key] = newValue;
+        });
+        return updated;
+      });
+    }
+  };
+
   return (
     <ThemedView>
       <ThemedView style={styles.mainButtonsRow}>
@@ -330,14 +374,15 @@ export default function FreeSearchForm({
               {allCardColumns
                 .filter(
                   (col) =>
-                    ["supertype", "subtypes", "types"].includes(col.key) || (col.key === "name" && col.table === "Card")
+                    ["supertype_Card", "subtypes_Card", "types_Card"].includes(col.key) ||
+                    (col.key === "name_Card" && col.table === "Card")
                 )
                 .map((col) => (
                   <ThemedView key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
-                      label={getColumnLabel(col.table, col.key) || col.label}
+                      label={col.label}
                     />
                   </ThemedView>
                 ))}
@@ -354,13 +399,13 @@ export default function FreeSearchForm({
           >
             <ThemedView style={{ marginBottom: 12 }}>
               {allCardColumns
-                .filter((col) => col.key === "rules")
+                .filter((col) => col.key === "rules_Card")
                 .map((col) => (
                   <ThemedView key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
-                      label={getColumnLabel(col.table, col.key) || col.label}
+                      label={col.label}
                     />
                   </ThemedView>
                 ))}
@@ -383,7 +428,7 @@ export default function FreeSearchForm({
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
-                      label={getColumnLabel(col.table, col.key) || col.label}
+                      label={col.label}
                     />
                   </ThemedView>
                 ))}
@@ -394,7 +439,7 @@ export default function FreeSearchForm({
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
-                      label={getColumnLabel(col.table, col.key) || col.label}
+                      label={col.label}
                     />
                   </ThemedView>
                 ))}
@@ -417,7 +462,7 @@ export default function FreeSearchForm({
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
-                      label={getColumnLabel(col.table, col.key) || col.label}
+                      label={col.label}
                     />
                   </ThemedView>
                 ))}
@@ -434,13 +479,13 @@ export default function FreeSearchForm({
           >
             <ThemedView style={{ marginBottom: 12 }}>
               {allCardColumns
-                .filter((col) => ["hp", "convertedRetreatCost"].includes(col.key))
+                .filter((col) => ["hp_Card", "convertedRetreatCost_Card"].includes(col.key))
                 .map((col) => (
                   <ThemedView key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
-                      label={getColumnLabel(col.table, col.key) || col.label}
+                      label={col.label}
                     />
                   </ThemedView>
                 ))}
@@ -457,13 +502,13 @@ export default function FreeSearchForm({
           >
             <ThemedView style={{ marginBottom: 12 }}>
               {allCardColumns
-                .filter((col) => ["evolvesFrom", "evolvesTo"].includes(col.key))
+                .filter((col) => ["evolvesFrom_Card", "evolvesTo_Card"].includes(col.key))
                 .map((col) => (
                   <ThemedView key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
-                      label={getColumnLabel(col.table, col.key) || col.label}
+                      label={col.label}
                     />
                   </ThemedView>
                 ))}
@@ -480,13 +525,13 @@ export default function FreeSearchForm({
           >
             <ThemedView style={{ marginBottom: 12 }}>
               {allCardColumns
-                .filter((col) => ["weaknesses", "resistances"].includes(col.key))
+                .filter((col) => ["weaknesses_Card", "resistances_Card"].includes(col.key))
                 .map((col) => (
                   <ThemedView key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
-                      label={getColumnLabel(col.table, col.key) || col.label}
+                      label={col.label}
                     />
                   </ThemedView>
                 ))}
@@ -503,13 +548,13 @@ export default function FreeSearchForm({
           >
             <ThemedView style={{ marginBottom: 12 }}>
               {allCardColumns
-                .filter((col) => ["regulationMark", "name"].includes(col.key) && col.table === "CardSet")
+                .filter((col) => ["regulationMark_Card", "name_CardSet"].includes(col.key) && col.table === "CardSet")
                 .map((col) => (
                   <ThemedView key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
-                      label={getColumnLabel(col.table, col.key) || col.label}
+                      label={col.label}
                     />
                   </ThemedView>
                 ))}
@@ -526,13 +571,13 @@ export default function FreeSearchForm({
           >
             <ThemedView style={{ marginBottom: 12 }}>
               {allCardColumns
-                .filter((col) => ["artist", "flavorText"].includes(col.key))
+                .filter((col) => ["artist_Card", "flavorText_Card"].includes(col.key))
                 .map((col) => (
                   <ThemedView key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
-                      label={getColumnLabel(col.table, col.key) || col.label}
+                      label={col.label}
                     />
                   </ThemedView>
                 ))}
@@ -541,6 +586,14 @@ export default function FreeSearchForm({
         </View>
       </ThemedView>
       {/* End collapsibles row */}
+      <ThemedButton
+        title={toggleAllState === "uncheck" ? "Uncheck all" : allChecked ? "Uncheck all" : "Check all"}
+        size="small"
+        type="alternative"
+        width={vw(40)}
+        onPress={handleToggleAll}
+        style={{ marginTop: theme.padding.small, marginBottom: theme.padding.small }}
+      />
       <ThemedSwitch
         value={removeDuplicates}
         label="Hide duplicates"

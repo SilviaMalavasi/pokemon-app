@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { TouchableOpacity, Text } from "react-native";
+import { Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedSwitch from "@/components/base/ThemedSwitch";

@@ -3,8 +3,7 @@ import { supabase } from "@/lib/supabase";
 /**
  * Remove duplicate cards from a list of card objects according to Pokémon TCG rules.
  * - For Pokémon: duplicates have same name, hp, and set of attacks (name, damage, cost)
- * - For Trainer: duplicates have same name and rules
- * - For Energy: never deduplicate
+ * - For Trainer and Energy: duplicates have same name and rules (rules is a JSON array or string)
  * @param cards Array of card objects (must include cardId, name, supertype, hp, rules)
  * @returns Array of unique card objects
  */
@@ -12,6 +11,7 @@ export async function removeCardDuplicates(cards: any[]): Promise<any[]> {
   // Separate cards by supertype
   const pokemonCards = cards.filter((c) => c.supertype === "Pokémon");
   const trainerCards = cards.filter((c) => c.supertype === "Trainer");
+  const energyCards = cards.filter((c) => c.supertype === "Energy");
 
   // --- FIX: Map string cardId to integer id for Pokémon ---
   let cardIdToInt: Record<string, number> = {};
@@ -70,18 +70,19 @@ export async function removeCardDuplicates(cards: any[]): Promise<any[]> {
     }
   }
 
-  // Fetch all rules for Trainer cards
-  let trainerRulesMap: Record<string, string> = {};
-  if (trainerCards.length > 0) {
-    const { data: trainerRows, error: trainerRowsError } = await supabase
+  // Fetch all rules for Trainer and Energy cards
+  let rulesMap: Record<string, string> = {};
+  const allTrainerEnergy = [...trainerCards, ...energyCards];
+  if (allTrainerEnergy.length > 0) {
+    const { data: rows, error: rowsError } = await supabase
       .from("Card")
       .select("cardId, rules")
       .in(
         "cardId",
-        trainerCards.map((c) => c.cardId)
+        allTrainerEnergy.map((c) => c.cardId)
       );
-    if (!trainerRowsError && trainerRows) {
-      for (const row of trainerRows) {
+    if (!rowsError && rows) {
+      for (const row of rows) {
         let rule = row.rules || "";
         // If rules is a JSON array, use only the first string
         try {
@@ -92,7 +93,7 @@ export async function removeCardDuplicates(cards: any[]): Promise<any[]> {
         } catch {
           // Not JSON, use as is
         }
-        trainerRulesMap[row.cardId] = (rule || "").replace(/\s+/g, " ").trim();
+        rulesMap[row.cardId] = (rule || "").replace(/\s+/g, " ").trim();
       }
     }
   }
@@ -103,17 +104,36 @@ export async function removeCardDuplicates(cards: any[]): Promise<any[]> {
   for (const card of cards) {
     let key = "";
     if (card.supertype === "Pokémon") {
-      key = `${card.name}|${card.hp}|${attacksMap[card.cardId] || ""}`;
-    } else if (card.supertype === "Trainer") {
-      const rules = trainerRulesMap[card.cardId] || (card.rules ? card.rules.trim() : "");
-      key = `${card.name}|${rules}`;
+      const attacksKey = attacksMap[card.cardId] || "";
+      if (!attacksKey) {
+        key = `${card.name}|${card.hp}`;
+      } else {
+        key = `${card.name}|${card.hp}|${attacksKey}`;
+      }
+    } else if (card.supertype === "Trainer" || card.supertype === "Energy") {
+      let rules = rulesMap[card.cardId] || (card.rules ? card.rules.trim() : "");
+      if (!rules) {
+        key = `${card.name}`;
+      } else {
+        key = `${card.name}|${rules}`;
+      }
     } else {
-      key = card.cardId; // Energy: never deduplicate
+      key = card.cardId; // fallback
     }
     if (!seen.has(key)) {
       seen.add(key);
       result.push(card);
     }
   }
+  // Sort result alphabetically by name (and hp for Pokémon)
+  result.sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    if (a.supertype === "Pokémon" && b.supertype === "Pokémon") {
+      // If same name, sort by hp
+      return (parseInt(a.hp) || 0) - (parseInt(b.hp) || 0);
+    }
+    return 0;
+  });
   return result;
 }

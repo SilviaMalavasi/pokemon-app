@@ -29,7 +29,7 @@ const allFields: { table: string; column: string; type: "text" | "int" | "json-s
 
 export async function freeQueryBuilder(
   search: string,
-  includedKeys?: string[]
+  includedTablesAndColumns?: { table: string; column: string }[]
 ): Promise<{ cardIds: string[]; query: string }> {
   const trimmed = search.trim();
   if (!trimmed) return { cardIds: [], query: "" };
@@ -52,7 +52,12 @@ export async function freeQueryBuilder(
   }
 
   // Only search included fields if provided
-  const fieldsToSearch = includedKeys ? allFields.filter((f) => includedKeys.includes(f.column)) : allFields;
+  const fieldsToSearch =
+    includedTablesAndColumns && includedTablesAndColumns.length > 0
+      ? allFields.filter((f) =>
+          includedTablesAndColumns.some((inc) => inc.table === f.table && inc.column === f.column)
+        )
+      : allFields;
 
   for (const field of fieldsToSearch) {
     if (field.type === "text") {
