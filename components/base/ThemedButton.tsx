@@ -12,7 +12,7 @@ export type ThemedButtonProps = ButtonProps & {
   type?: ButtonType;
   size?: ButtonSize;
   status?: ButtonStatus;
-  width?: number | string;
+  width?: number;
   icon?: string | "void";
   style?: any;
 };
@@ -45,7 +45,7 @@ const IconArrow = ({ fill }: { fill: string }) => (
   </Svg>
 );
 
-const icons: Record<string, (props: { fill: string; style?: any }) => JSX.Element> = {
+const icons: Record<string, (props: { fill: string; style?: any }) => any> = {
   search: IconSearch,
   arrow: IconArrow,
 };
@@ -93,7 +93,7 @@ export default function ThemedButton({
   return (
     <TouchableOpacity
       activeOpacity={1}
-      style={[containerStyle, width ? { width: width } : {}]}
+      style={[containerStyle, typeof width === "number" ? { width } : {}]}
       disabled={disabled || status === "disabled"}
       {...rest}
     >

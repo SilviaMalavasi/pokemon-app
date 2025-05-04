@@ -16,13 +16,7 @@ interface ThemedMultiSelectProps {
   labelHint?: string;
 }
 
-export default function ThemedMultiSelect({
-  label,
-  value,
-  options,
-  onChange,
-  labelHint,
-}: ThemedMultiSelectProps): JSX.Element {
+export default function ThemedMultiSelect({ label, value, options, onChange, labelHint }: ThemedMultiSelectProps) {
   const [showHint, setShowHint] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [tempSelected, setTempSelected] = useState<string[]>(value);

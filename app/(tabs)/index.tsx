@@ -2,7 +2,6 @@ import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import ExternalLink from "@/components/base/ExternalLink";
-import ThemedButton from "@/components/base/ThemedButton";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
@@ -12,7 +11,6 @@ export default function HomeScreen() {
   useFocusEffect(
     React.useCallback(() => {
       if (scrollRef.current) {
-        // @ts-ignore
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
     }, [])

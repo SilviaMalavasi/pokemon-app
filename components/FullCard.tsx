@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Image, ActivityIndicator, ScrollView } from "react-native";
+import { View, Image, ScrollView } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { Ability, Attack, CardSet } from "@/types/PokemonCardType";
@@ -7,7 +7,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import cardImages from "@/helpers/cardImageMapping";
 import styles from "@/style/FullCardStyle";
 import { theme } from "@/style/ui/Theme";
-import { vw } from "@/helpers/viewport";
 
 function getCardImage(imagePath: string) {
   if (!imagePath) return undefined;
@@ -37,7 +36,7 @@ interface FullCardProps {
   supertype: string;
   subtypes: string[];
   types: string[];
-  rules: string[] | null;
+  rules: string[] | string | null;
   hp: number;
   evolvesFrom: string | null;
   evolvesTo: string[] | null;
@@ -145,7 +144,7 @@ export default function FullCard(props: FullCardProps) {
         {/* Rules */}
         {props.rules &&
           ((Array.isArray(props.rules) && props.rules.length > 0) ||
-            (typeof props.rules === "string" && props.rules.trim() !== "")) && (
+            (props.rules && typeof props.rules === "string" && (props.rules as string).trim() !== "")) && (
             <ThemedView style={styles.cardDetailsContainer}>
               <LinearGradient
                 colors={[
@@ -196,7 +195,7 @@ export default function FullCard(props: FullCardProps) {
               <View
                 key={`attack-${atk.name}-${atk.id}`}
                 style={{
-                  marginBottom: index === props.attacks.length - 1 ? 0 : theme.padding.medium,
+                  marginBottom: index === (props.attacks ?? []).length - 1 ? 0 : theme.padding.medium,
                 }}
               >
                 <ThemedText
@@ -286,7 +285,7 @@ export default function FullCard(props: FullCardProps) {
               <View
                 key={`ability-${ability.name}`}
                 style={{
-                  marginBottom: index === props.abilities.length - 1 ? 0 : theme.padding.medium,
+                  marginBottom: index === (props.abilities ?? []).length - 1 ? 0 : theme.padding.medium,
                 }}
               >
                 <ThemedText
@@ -396,7 +395,7 @@ export default function FullCard(props: FullCardProps) {
                     </ThemedText>
                   );
                 }
-                if (typeof value === "string" && value.trim() !== "") {
+                if (typeof value === "string" && (value as string).trim() !== "") {
                   try {
                     const parsed = JSON.parse(value);
                     if (Array.isArray(parsed) && parsed.length > 0) {
@@ -454,7 +453,7 @@ export default function FullCard(props: FullCardProps) {
                     </ThemedText>
                   );
                 }
-                if (typeof value === "string" && value.trim() !== "") {
+                if (typeof value === "string" && (value as string).trim() !== "") {
                   try {
                     const parsed = JSON.parse(value);
                     if (Array.isArray(parsed) && parsed.length > 0) {
@@ -586,7 +585,7 @@ export default function FullCard(props: FullCardProps) {
               {props.regulationMark}
             </ThemedText>
           )}
-          {props.cardSet.name && (
+          {props.cardSet && props.cardSet.name && (
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
                 type="defaultSemiBold"
@@ -597,7 +596,7 @@ export default function FullCard(props: FullCardProps) {
               {props.cardSet.name}
             </ThemedText>
           )}
-          {props.cardSet.series && (
+          {props.cardSet && props.cardSet.series && (
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
                 type="defaultSemiBold"

@@ -37,7 +37,7 @@ const IconClear = ({ stroke }: { stroke: string }) => (
   </Svg>
 );
 
-const icons: Record<string, (props: { stroke: string; style?: any }) => JSX.Element> = {
+const icons: Record<string, (props: { stroke: string; style?: any }) => any> = {
   clear: (props) => <IconClear {...props} />,
 };
 

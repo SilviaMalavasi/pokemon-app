@@ -29,7 +29,7 @@ export default function FreeSearchForm({
   onRemoveDuplicatesChange: (val: boolean) => void;
   currentPage: number;
   itemsPerPage: number;
-}): JSX.Element {
+}) {
   const { freeForm, setFreeForm, lastSearchPage, clearFreeForm } = useSearchFormContext();
   const [cardSearch, setCardSearch] = useState("");
   // All card columns that can be excluded from search

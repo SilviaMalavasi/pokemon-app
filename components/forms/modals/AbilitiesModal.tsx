@@ -1,5 +1,4 @@
 import React from "react";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 import ThemedSwitch from "@/components/base/ThemedSwitch";

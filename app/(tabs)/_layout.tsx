@@ -7,7 +7,6 @@ import { Platform, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HapticTab } from "@/components/ui/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
-import { ThemedText } from "@/components/base/ThemedText";
 import { usePathname } from "expo-router";
 import { Svg, Path } from "react-native-svg";
 
@@ -17,8 +16,8 @@ import styles from "@/style/ui/TabBarStyles";
 // Inline SVG icon components
 const HomeIcon = ({ color }: { color: string }) => (
   <Svg
-    width={styles.icon.size}
-    height={styles.icon.size}
+    width={styles.icon.width}
+    height={styles.icon.height}
     viewBox="0 0 520.81 520.81"
     fill="none"
   >
@@ -83,8 +82,8 @@ const HomeIcon = ({ color }: { color: string }) => (
 
 const FreeSearchIcon = ({ color }: { color: string }) => (
   <Svg
-    width={styles.icon.size}
-    height={styles.icon.size}
+    width={styles.icon.width}
+    height={styles.icon.height}
     viewBox="0 0 474.06 473.43"
     fill="none"
   >
@@ -109,8 +108,8 @@ const FreeSearchIcon = ({ color }: { color: string }) => (
 
 const AdvSearchIcon = ({ color }: { color: string }) => (
   <Svg
-    width={styles.icon.size}
-    height={styles.icon.size}
+    width={styles.icon.width}
+    height={styles.icon.height}
     viewBox="0 0 474.06 473.43"
     fill="none"
   >

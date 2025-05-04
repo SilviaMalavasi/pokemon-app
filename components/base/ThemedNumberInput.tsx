@@ -28,7 +28,7 @@ export default function NumberInput({
   showOperatorSelect = "none",
   operator = "=",
   onOperatorChange,
-}: NumberInputProps): JSX.Element {
+}: NumberInputProps) {
   const [showHint, setShowHint] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -154,7 +154,7 @@ export default function NumberInput({
         />
         {value !== "" && (
           <TouchableOpacity
-            onPress={() => onChange("")}
+            onPress={() => onChange("", operator)}
             accessibilityLabel={`Clear ${label || "input"}`}
             style={styles.clearIcon}
           >

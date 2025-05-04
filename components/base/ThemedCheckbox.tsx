@@ -2,7 +2,6 @@ import React from "react";
 import { Pressable, View, ViewStyle, StyleProp } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import styles from "@/style/base/ThemedCheckboxStyle";
-import { theme } from "@/style/ui/Theme";
 
 interface ThemedCheckboxProps {
   checked: boolean;

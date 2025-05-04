@@ -57,7 +57,6 @@ export default function FullFormScreen() {
   useFocusEffect(
     React.useCallback(() => {
       if (scrollRef.current) {
-        // @ts-ignore
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
       if (lastSearchPage !== "advanced") {
@@ -71,7 +70,6 @@ export default function FullFormScreen() {
 
   React.useEffect(() => {
     if (scrollRef.current) {
-      // @ts-ignore
       scrollRef.current.scrollTo({ y: 0, animated: true });
     }
   }, [resetKey]);

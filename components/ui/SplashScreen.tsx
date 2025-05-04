@@ -29,12 +29,16 @@ export default function SplashScreen() {
 
   return (
     <View style={{ flex: 1 }}>
-      <Image
-        source={require("@/assets/images/splash-background.webp")}
+      <View
         style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
-        resizeMode="cover"
         pointerEvents="none"
-      />
+      >
+        <Image
+          source={require("@/assets/images/splash-background.webp")}
+          style={{ width: "100%", height: "100%" }}
+          resizeMode="cover"
+        />
+      </View>
       <ThemedView style={styles.overlay}>
         <View style={styles.centerContent}>
           <Image

@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
     height: 64,
   },
   icon: {
-    size: 25,
+    width: 25,
+    height: 25,
   },
   iconContainer: {
     width: 100,

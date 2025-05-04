@@ -1,5 +1,4 @@
 import { supabase } from "@/lib/supabase";
-import { PostgrestFilterBuilder } from "@supabase/postgrest-js";
 
 export type InputConfig = {
   key: string;
@@ -215,7 +214,9 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     // Apply JS filters if any
     if (cardJsFilters.length > 0) {
       filteredData = filteredData.filter((row) => {
-        return cardJsFilters.every((f) => checkJsTextNumericFilter(row[f.config.column], f.value, f.operator!));
+        return cardJsFilters.every((f) =>
+          checkJsTextNumericFilter(row[f.config.column as keyof typeof row] as string, f.value, f.operator!)
+        );
       });
     }
 

@@ -3,7 +3,6 @@ import { TouchableOpacity } from "react-native";
 import { Svg, Rect, Path } from "react-native-svg";
 import { LinearGradient } from "expo-linear-gradient";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
 import styles from "@/style/base/ThemedLabelWithHintStyle";
 

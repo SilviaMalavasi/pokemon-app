@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
 export type AdvancedSearchFormState = {
-  // All fields from AdvancedSearchForm
   cardSupertype: string[];
   cardSubtypes: string[];
   cardName: string;
@@ -33,7 +32,6 @@ export type AdvancedSearchFormState = {
   cardSetNumber: string;
   hasAnyAbility: boolean;
   attacksCostSlots: string[];
-  // Remove duplicates
   removeDuplicates: boolean;
 };
 

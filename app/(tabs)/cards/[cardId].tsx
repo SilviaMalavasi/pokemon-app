@@ -26,7 +26,6 @@ export default function FullCardScreen() {
   useFocusEffect(
     React.useCallback(() => {
       if (scrollRef.current) {
-        // @ts-ignore
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
     }, [cardId])

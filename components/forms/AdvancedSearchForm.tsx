@@ -43,7 +43,7 @@ export default function AdvancedSearchForm({
   onRemoveDuplicatesChange: (val: boolean) => void;
   currentPage: number;
   itemsPerPage: number;
-}): JSX.Element {
+}) {
   // Context for form state
   const { advancedForm, setAdvancedForm, lastSearchPage, clearAdvancedForm } = useSearchFormContext();
 

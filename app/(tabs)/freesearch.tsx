@@ -48,7 +48,7 @@ export default function FreeSearchScreen() {
     setItemsPerPage(ITEMS_PER_PAGE);
     setCards([]);
     setLoading(false);
-    setLastSearchPage("free"); // Ensure context knows this was a free search
+    setLastSearchPage("free");
     router.push("/cards/searchresult");
   };
 
@@ -56,7 +56,6 @@ export default function FreeSearchScreen() {
   useFocusEffect(
     React.useCallback(() => {
       if (scrollRef.current) {
-        // @ts-ignore
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
       if (lastSearchPage !== "free") {
@@ -70,7 +69,6 @@ export default function FreeSearchScreen() {
 
   React.useEffect(() => {
     if (scrollRef.current) {
-      // @ts-ignore
       scrollRef.current.scrollTo({ y: 0, animated: true });
     }
   }, [resetKey]);

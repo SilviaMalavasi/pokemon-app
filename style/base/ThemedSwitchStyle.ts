@@ -35,7 +35,7 @@ const ThemedSwitchStyle = StyleSheet.create({
   },
   hintText: {
     marginTop: theme.padding.small,
-    flex: "100%",
+    flex: 1,
   },
 });
 

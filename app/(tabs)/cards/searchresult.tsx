@@ -22,7 +22,6 @@ export default function SearchResultScreen() {
   useFocusEffect(
     React.useCallback(() => {
       if (scrollRef.current) {
-        // @ts-ignore
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
     }, [cardIds, currentPage])

@@ -1,5 +1,5 @@
 import { PropsWithChildren, useState, useEffect } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Svg, Path } from "react-native-svg";
 
 import ThemedText from "@/components/base/ThemedText";

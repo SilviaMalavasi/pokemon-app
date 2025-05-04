@@ -22,7 +22,7 @@ export default function AutoCompleteInput({
   suggestions,
   placeholder,
   labelHint,
-}: AutoCompleteInputProps): JSX.Element {
+}: AutoCompleteInputProps) {
   const [inputFocused, setInputFocused] = useState(false);
   const selectingSuggestion = useRef(false); // Use ref to track if a suggestion is being selected
   const inputRef = useRef<TextInput>(null);

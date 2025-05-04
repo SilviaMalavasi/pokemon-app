@@ -27,7 +27,7 @@ export default function SearchResult({
   itemsPerPage = 20,
   onPageChange,
   onAllImagesLoaded,
-}: SearchResultProps): JSX.Element {
+}: SearchResultProps) {
   // Pagination logic
   const totalPages = Math.ceil((cardIds?.length || 0) / itemsPerPage);
   const startIdx = (currentPage - 1) * itemsPerPage;

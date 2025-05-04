@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Modal, ScrollView, Pressable, TouchableOpacity } from "react-native";
 import { Svg, Rect, Path } from "react-native-svg";
 import ThemedText from "@/components/base/ThemedText";
@@ -17,7 +17,7 @@ interface ThemedSelectProps {
   labelHint?: string;
 }
 
-export default function ThemedSelect({ label, value, options, onChange, labelHint }: ThemedSelectProps): JSX.Element {
+export default function ThemedSelect({ label, value, options, onChange, labelHint }: ThemedSelectProps) {
   const [showHint, setShowHint] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
