@@ -47,15 +47,18 @@ export default function SearchResult({
   return (
     <ThemedView>
       <ThemedView style={SearchResultStyle.cardList}>
-        {paginatedIds.map((item, idx) => (
-          <ThemedView key={item + idx}>
-            <CompactCard
-              card={cards?.find((c) => c.cardId === item) || { cardId: item, name: item, imagesLarge: "" }}
-              onImageLoad={() => setImagesLoaded((n) => n + 1)}
-              loading={loading}
-            />
-          </ThemedView>
-        ))}
+        {paginatedIds.map((item, idx) => {
+          const cardData = cards?.find((c) => c.cardId === item);
+          return (
+            <ThemedView key={item + idx}>
+              <CompactCard
+                card={cardData || { cardId: "", name: "", imagesLarge: "" }}
+                onImageLoad={() => setImagesLoaded((n) => n + 1)}
+                loading={loading || !cardData}
+              />
+            </ThemedView>
+          );
+        })}
       </ThemedView>
       {totalPages > 1 && (
         <ThemedView style={SearchResultStyle.paginationContainer}>
