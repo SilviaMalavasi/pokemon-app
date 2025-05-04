@@ -15,7 +15,6 @@ export type QueryBuilderFilter = {
   operator?: string;
 };
 
-// Type guard to check if a filter requires JS-based numeric comparison on text
 function requiresJsTextNumericFilter(filter: QueryBuilderFilter): boolean {
   const { config, operator } = filter;
   return config.type === "number" && config.valueType === "text" && (operator === ">=" || operator === "<=");
@@ -29,7 +28,7 @@ function checkJsTextNumericFilter(rowValue: string | null | undefined, filterVal
 
   if (operator === ">=") return numericPart >= filterValue;
   if (operator === "<=") return numericPart <= filterValue;
-  return false; // Should not happen if called correctly
+  return false;
 }
 
 function intersectArrays(arrays: string[][]): string[] {
@@ -37,10 +36,7 @@ function intersectArrays(arrays: string[][]): string[] {
   return arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 }
 
-// Helper function to apply a single filter to a Supabase query instance
-// Adapts logic from the original buildQuery but is designed to be called iteratively
-// Handles joined tables by checking config.table
-// Filters requiring JS text-numeric comparison are skipped here
+// Helper function to apply a number/text operators logic a Supabase query instance
 function applyFilterToQuery(query: any, filter: QueryBuilderFilter) {
   const { config, value, operator } = filter;
   if (value === null || value === undefined) return query;
@@ -51,7 +47,6 @@ function applyFilterToQuery(query: any, filter: QueryBuilderFilter) {
   }
 
   const col = config.table === "Attacks" ? `Attacks.${config.column}` : config.column;
-  const tablePrefix = config.table === "Attacks" ? "Attacks." : ""; // For OR clauses if needed
 
   if (config.type === "text") {
     const trimmed = String(value).trim();
@@ -62,24 +57,21 @@ function applyFilterToQuery(query: any, filter: QueryBuilderFilter) {
         query = query.ilike(col, `%${word}%`);
       });
     } else if (trimmed) {
-      // Ensure trimmed is not empty
       query = query.ilike(col, `%${trimmed}%`);
     }
   } else if (config.type === "number") {
     if (config.valueType === "int") {
       const op = operator || "=";
-      query = query.not(col, "is", null); // Ensure column is not null for comparison
+      query = query.not(col, "is", null);
       if (op === ">=") query = query.gte(col, value);
       else if (op === "<=") query = query.lte(col, value);
-      else query = query.eq(col, value); // Default to equals
+      else query = query.eq(col, value);
     } else if (config.valueType === "text") {
-      // Exact match for text like '100+' or '100x' (handled here, GTE/LTE handled in JS)
+      // Exact match for text like '100+' or '100x'
       const op = operator || "=";
       if (op !== ">=" && op !== "<=") {
-        // Only handle non-range operators here
         let matchString = String(value);
         if (operator === "+" || operator === "x" || operator === "×") {
-          // Allow matching 'x' or '×' if operator is 'x'
           const variations = operator === "x" ? [`${value}x`, `${value}×`] : [`${value}${operator}`];
           const orClause = variations.map((v) => `${col}.eq.${v}`).join(",");
           query = query.or(orClause);
@@ -87,25 +79,19 @@ function applyFilterToQuery(query: any, filter: QueryBuilderFilter) {
           query = query.eq(col, matchString); // Exact match for other cases
         }
       }
-      // GTE/LTE cases are handled post-fetch in JS
     }
   } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
-    // Assumes multiselect applies to columns storing arrays or requires OR logic
-    // This might need refinement based on actual schema (jsonb contains? text array overlap?)
     if (config.valueType === "json-string-array" || Array.isArray(value)) {
       // Using OR logic for multiselect items (match any of the selected values)
-      // Assuming ilike for text search within array elements or direct match
-      // This might need adjustment based on column type (e.g., `cs` for jsonb)
       const orString = value.map((v: string) => `${col}.ilike.%${v}%`).join(",");
       if (orString) query = query.or(orString);
     }
-    // Add other multiselect handling if needed (e.g., contains all using `cs` or `cd`)
   }
   return query;
 }
 
+// Helper Function to Normalize all variants of 'pokemon', 'pokèmon', 'pokémon' (any case) to 'Pokémon' (capital P, é)
 export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ cardIds: string[]; query: string }> {
-  // Normalize all variants of 'pokemon', 'pokèmon', 'pokémon' (any case) to 'Pokémon' (capital P, é)
   const normalizedFilters = filters.map((f) => {
     if (f.config.type === "text" && typeof f.value === "string") {
       return {
@@ -128,63 +114,56 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     }
   });
 
-  // Helper to build a Supabase query for a table and its filters (Original for non-joined tables)
+  // Helper to build a Supabase query for a table and its filters (for non-joined tables)
   const buildQuery = (table: string, selectCol: string, filters: QueryBuilderFilter[]) => {
     let query = supabase.from(table).select(selectCol);
     // Collect all OR groups for this table
-    // TODO: Refine OR logic if needed - currently assumes OR applies to sub-filters within a specific filter config
     const orGroups = filters.filter((f) => f.config.logic === "or" && Array.isArray(f.value));
     // Collect all AND filters for this table
     const andFilters = filters.filter((f) => !f.config.logic || f.config.logic === "and");
 
-    // Apply AND filters first using the helper (skips JS-handled ones)
+    // Apply AND filters first using the helper
     andFilters.forEach((f) => {
       query = applyFilterToQuery(query, f);
     });
 
     // Combine all OR sub-filters into a single .or() clause
-    // Note: This OR logic might need review based on exact requirements.
-    // It currently assumes sub-filters within an OR group are OR'd together.
     if (orGroups.length > 0) {
-      const allOrSubs = orGroups.flatMap((g) => g.value); // Assuming g.value is array of sub-filters
+      const allOrSubs = orGroups.flatMap((g) => g.value);
       const orFilterStrings = allOrSubs
         .map((sub: QueryBuilderFilter) => {
-          // Skip JS handled filters in OR clause generation as well
           if (requiresJsTextNumericFilter(sub)) return null;
 
           const { config, value } = sub;
           if (value === null || value === undefined || value === "") return null;
-          const col = config.column; // Assuming OR logic applies to columns in the primary table
+          const col = config.column;
 
           if (config.type === "text") {
             const trimmed = String(value).trim();
             return trimmed ? `${col}.ilike.%${trimmed}%` : null;
           } else if (config.type === "number" && config.valueType === "int") {
-            // Assuming OR uses equals for numbers unless specified otherwise
             return `${col}.eq.${value}`;
           } else if (config.type === "number" && config.valueType === "text") {
-            // Handle exact match text-numeric in OR
             const op = sub.operator || "=";
             if (op !== ">=" && op !== "<=") {
               let matchString = String(value);
               if (sub.operator === "+" || sub.operator === "x" || sub.operator === "×") {
                 const variations = sub.operator === "x" ? [`${value}x`, `${value}×`] : [`${value}${sub.operator}`];
-                return variations.map((v) => `${col}.eq.${v}`).join(","); // This creates nested ORs, might need flattening
+                return variations.map((v) => `${col}.eq.${v}`).join(",");
               } else {
                 return `${col}.eq.${matchString}`;
               }
             }
-            return null; // Skip GTE/LTE for OR clause generation
+            return null;
           } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
             // Handle multiselect within OR - assumes OR between items
             const orString = value.map((v: string) => `${col}.ilike.%${v}%`).join(",");
             return orString || null;
           }
-          // Add other types for OR if needed
           return null;
         })
         .filter(Boolean)
-        .join(","); // Combine all OR conditions
+        .join(",");
 
       if (orFilterStrings) query = query.or(orFilterStrings);
     }
@@ -211,7 +190,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     }
 
     let filteredData = data || [];
-    // Apply JS filters if any
     if (cardJsFilters.length > 0) {
       filteredData = filteredData.filter((row) => {
         return cardJsFilters.every((f) =>
@@ -226,7 +204,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   // 2. CardSet filters (Card.setId -> CardSet.id)
   let cardSetIds: string[] = [];
   if (grouped["CardSet"]) {
-    // CardSet table itself doesn't seem to have text-numeric columns needing JS filter in the example
     const setQuery = buildQuery("CardSet", "id", grouped["CardSet"]);
     const { data, error } = await setQuery;
     if (error) {
@@ -246,13 +223,11 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       }
       cardSetIds = cardData?.map((row: any) => row.cardId) || [];
     } else if (grouped["CardSet"].length > 0) {
-      // Check if filters were applied
-      // If set filters applied but found no sets, no cards can match
       cardSetIds = [];
     }
   }
 
-  // --- REFACTORED: Unified Attacks+CardAttacks filter logic ---
+  // 3. Attack filters  --- Unified Attacks+CardAttacks filter logic ---
   const attackRelatedFilters = [...(grouped["Attacks"] || []), ...(grouped["CardAttacks"] || [])];
   let unifiedAttackCardIds: string[] = [];
 
@@ -275,10 +250,9 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       (f) =>
         (f.config.key === "costSlots" || f.config.key === "attackCostSlots") &&
         Array.isArray(f.value) &&
-        f.value.some((v) => v !== null && v !== undefined && v !== "") // Ensure there's at least one slot defined
+        f.value.some((v) => v !== null && v !== undefined && v !== "")
     );
 
-    // Determine columns needed for JS filtering
     let selectCols = "cardId";
     if (attackJsFilters.length > 0) {
       const requiredCols = attackJsFilters.map((f) => f.config.column);
@@ -294,20 +268,18 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       if (requiredAttackCols.length > 0) {
         selectCols += `, Attacks!inner(id, ${Array.from(new Set(requiredAttackCols)).join(", ")})`;
       } else {
-        selectCols += `, Attacks!inner(id)`; // Always need join for filtering
+        selectCols += `, Attacks!inner(id)`;
       }
     } else {
-      // Base select for DB-only filtering
       selectCols = "cardId, Attacks!inner(id)";
     }
 
     if (costOpFilter && costSlotsFilter) {
       // --- Special Case: Exact Cost + Slots ---
-      const slots = costSlotsFilter.value.filter((v: string | null) => v !== null && v !== undefined && v !== ""); // Use only non-empty types
+      const slots = costSlotsFilter.value.filter((v: string | null) => v !== null && v !== undefined && v !== "");
       const requiredCost = costOpFilter.value;
 
-      // Select cost if needed for JS filtering later, otherwise just cardId
-      let specialSelect = `cardId, cost`; // Need cost for slot check
+      let specialSelect = `cardId, cost`;
       if (attackJsFilters.length > 0) {
         const requiredCols = attackJsFilters.map((f) => f.config.column);
         const requiredAttackCols = attackJsFilters
@@ -315,11 +287,11 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
           .map((f) => f.config.column);
         const requiredCardAttackCols = attackJsFilters
           .filter((f) => f.config.table === "CardAttacks" && f.config.column !== "cost")
-          .map((f) => f.config.column); // Exclude cost if already selected
+          .map((f) => f.config.column);
 
         specialSelect += `, ${Array.from(new Set(requiredCardAttackCols)).join(", ")}`;
         if (requiredAttackCols.length > 0) {
-          specialSelect += `, Attacks!inner(id, name, text, ${Array.from(new Set(requiredAttackCols)).join(", ")})`; // Add name/text for context if needed
+          specialSelect += `, Attacks!inner(id, name, text, ${Array.from(new Set(requiredAttackCols)).join(", ")})`;
         } else {
           specialSelect += `, Attacks!inner(id, name, text)`;
         }
@@ -328,12 +300,12 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       }
 
       // Build query, apply DB filters first
-      let query = supabase.from("CardAttacks").select(specialSelect).eq("convertedEnergyCost", requiredCost); // Apply exact cost filter
+      let query = supabase.from("CardAttacks").select(specialSelect).eq("convertedEnergyCost", requiredCost);
 
       // Apply other DB attack-related filters (non-cost/slot)
       attackDbFilters.forEach((f) => {
         if (f.config.key !== costOpFilter.config.key && f.config.key !== costSlotsFilter.config.key) {
-          query = applyFilterToQuery(query, f); // Use the helper (skips JS ones)
+          query = applyFilterToQuery(query, f); // Use the helper
         }
       });
 
@@ -371,11 +343,11 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       cardIdInts = Array.from(new Set(filteredData.map((row: any) => row.cardId)));
     } else {
       // --- General Case: Apply DB filters, then JS filters ---
-      let query = supabase.from("CardAttacks").select(selectCols); // Select columns needed for JS filters
+      let query = supabase.from("CardAttacks").select(selectCols);
 
       // Apply all DB attack-related filters
       attackDbFilters.forEach((f) => {
-        query = applyFilterToQuery(query, f); // Skips JS ones
+        query = applyFilterToQuery(query, f);
       });
 
       const { data, error } = await query;
@@ -387,7 +359,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       // Apply JS filters post-fetch
       const filteredData = (data || []).filter((row: any) => {
         return attackJsFilters.every((f) => {
-          // Access nested column if filter is for Attacks table
           const rowValue = f.config.table === "Attacks" ? row.Attacks?.[f.config.column] : row[f.config.column];
           return checkJsTextNumericFilter(rowValue, f.value, f.operator!);
         });
@@ -400,8 +371,8 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     if (cardIdInts.length > 0) {
       const { data: cardData, error: cardError } = await supabase
         .from("Card")
-        .select("cardId") // Select the string cardId
-        .in("id", cardIdInts) // Filter by the integer IDs
+        .select("cardId")
+        .in("id", cardIdInts)
         .order("name");
       if (cardError) {
         console.error("Card Query (Attack Join) Error:", cardError);
@@ -409,18 +380,13 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       }
       unifiedAttackCardIds = cardData?.map((row: any) => row.cardId) || [];
     } else if (attackRelatedFilters.length > 0) {
-      // Check if filters were applied
-      // If attack filters applied but found no matching attacks/cards
       unifiedAttackCardIds = [];
     }
   }
 
-  // --- SECTION 4 REMOVED ---
-
-  // 5. Abilities filters (Abilities -> CardAbilities -> Card)
+  // 4. Abilities filters (Abilities -> CardAbilities -> Card)
   let abilityCardIds: string[] = [];
   if (grouped["Abilities"]) {
-    // Abilities table itself doesn't seem to have text-numeric columns needing JS filter
     const abQuery = buildQuery("Abilities", "id", grouped["Abilities"]);
     const { data, error } = await abQuery;
     if (error) {
@@ -429,7 +395,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     }
     const abIds = data?.map((row: any) => row.id) || [];
     if (abIds.length > 0) {
-      // Get cardId (integer) from CardAbilities
       const { data: caData, error: caError } = await supabase
         .from("CardAbilities")
         .select("cardId")
@@ -438,10 +403,9 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         console.error("CardAbilities Query Error:", caError);
         return { cardIds: [], query: `CardAbilities Error: ${caError.message}` };
       }
-      const cardIdInts = Array.from(new Set(caData?.map((row: any) => row.cardId) || [])); // Unique integer IDs
+      const cardIdInts = Array.from(new Set(caData?.map((row: any) => row.cardId) || []));
 
       if (cardIdInts.length > 0) {
-        // Get cardId (string) from Card
         const { data: cardData, error: cardError } = await supabase
           .from("Card")
           .select("cardId")
@@ -456,31 +420,25 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         abilityCardIds = [];
       }
     } else if (grouped["Abilities"].length > 0) {
-      // Check if filters were applied
-      // If ability filters applied but found no abilities, no cards can match
       abilityCardIds = [];
     }
   }
 
-  // 6. CardAbilities exists filter (for 'has any ability')
+  // 4.1 CardAbilities exists filter (for 'has any ability')
   let hasAnyAbilityCardIds: string[] = [];
   if (grouped["CardAbilities"]) {
-    // Assuming CardAbilities doesn't have JS-handled filters itself
     const existsFilter = grouped["CardAbilities"].find(
       (f) => f.config.type === "exists" && f.config.table === "CardAbilities"
     );
     if (existsFilter) {
-      // Get all unique cardIds (integer) from CardAbilities
-      // Optimization: Select distinct cardId directly if performance is an issue
       const { data, error } = await supabase.from("CardAbilities").select("cardId");
       if (error) {
         console.error("CardAbilities Exists Query Error:", error);
         return { cardIds: [], query: `CardAbilities Exists Error: ${error.message}` };
       }
-      const cardIdInts = Array.from(new Set(data?.map((row: any) => row.cardId) || [])); // Unique integer IDs
+      const cardIdInts = Array.from(new Set(data?.map((row: any) => row.cardId) || []));
 
       if (cardIdInts.length > 0) {
-        // Get cardId (string) from Card
         const { data: cardData, error: cardError } = await supabase
           .from("Card")
           .select("cardId")
@@ -495,20 +453,13 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
         hasAnyAbilityCardIds = [];
       }
     }
-    // Handle other CardAbilities filters if they exist and need JS handling
   }
 
   // Intersect or union all non-empty arrays
   let finalCardIds: string[] = [];
   // Define the keys and corresponding result arrays IN THE CORRECT ORDER
-  const filterGroupKeys = ["Card", "CardSet", "AttacksOrCardAttacks", "Abilities", "CardAbilities"]; // Use a combined key for attacks
-  const correspondingArrays = [
-    cardTableIds,
-    cardSetIds,
-    unifiedAttackCardIds, // Use the result from the unified logic
-    abilityCardIds,
-    hasAnyAbilityCardIds,
-  ];
+  const filterGroupKeys = ["Card", "CardSet", "AttacksOrCardAttacks", "Abilities", "CardAbilities"];
+  const correspondingArrays = [cardTableIds, cardSetIds, unifiedAttackCardIds, abilityCardIds, hasAnyAbilityCardIds];
 
   // Build a list of arrays for only the active filter groups
   const activeArrays = filterGroupKeys
@@ -519,37 +470,28 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       } else {
         isActive = !!grouped[key];
       }
-      // Only include the array if the corresponding group had filters applied
       return isActive ? correspondingArrays[idx] : null;
     })
-    .filter((arr): arr is string[] => Array.isArray(arr)); // Filter out nulls (groups with no filters)
+    .filter((arr): arr is string[] => Array.isArray(arr));
 
   // Determine final logic (AND vs OR)
   // OR logic applies if *any* filter across *any* group specifies it.
   const hasOrLogic = normalizedFilters.some((f) => f.config.logic === "or");
-
-  // Check if any filters were actually provided
   const hasAnyFilters = normalizedFilters.length > 0;
 
   if (!hasAnyFilters) {
-    // No filters applied, return empty (or fetch all cards if desired)
     console.warn("No filters applied, returning empty array.");
     return { cardIds: [], query: "No filters applied" };
   }
 
   if (activeArrays.length === 0 && hasAnyFilters) {
-    // Filters were applied, but no groups yielded results OR no groups had filters applied initially
-    // (e.g., only empty string filters provided)
     return { cardIds: [], query: JSON.stringify(filters) };
   }
 
   // Apply AND/OR logic
   if (hasOrLogic) {
-    // UNION results if any OR logic is present
     finalCardIds = Array.from(new Set(activeArrays.flat()));
   } else {
-    // INTERSECT results if only AND logic is used
-    // Crucial check: If any active group resulted in an empty array, the intersection is empty.
     if (activeArrays.some((arr) => arr.length === 0)) {
       finalCardIds = [];
     } else {
@@ -557,6 +499,6 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     }
   }
 
-  // Return the final list of card IDs and the original filter query for debugging/info
+  // Return the final list of card IDs
   return { cardIds: finalCardIds.sort(), query: JSON.stringify(filters) };
 }

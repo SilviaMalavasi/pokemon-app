@@ -358,12 +358,12 @@ export default function AdvancedSearchForm({
     { label: "Attack Name", value: attacksName },
     { label: "Attack Damage", value: attacksDamage !== "" ? `${attacksDamageOperator} ${attacksDamage}` : "" },
     { label: "Attack Text", value: attacksText },
-    { label: "Attack Cost", value: attacksCost.length ? interleaveWithOr(attacksCost) : "" },
     {
-      label: "Attack Cost Energy Type",
+      label: "Attack Cost",
       value:
         attacksConvertedEnergyCost !== "" ? `${attacksConvertedEnergyCostOperator} ${attacksConvertedEnergyCost}` : "",
     },
+    { label: "Attack Cost Energy Type", value: attacksCost.length ? interleaveWithOr(attacksCost) : "" },
     {
       label: "Attack Cost Slots",
       value: attacksCostSlots.filter(Boolean).length ? interleaveWithAnd(attacksCostSlots.filter(Boolean)) : "",
