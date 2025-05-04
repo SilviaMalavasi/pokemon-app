@@ -14,8 +14,8 @@ const SearchResultStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: theme.padding.xlarge,
-    marginBottom: theme.padding.small,
+    marginTop: theme.padding.medium,
+    paddingBottom: theme.padding.xlarge * 2,
   },
   paginationText: {
     marginHorizontal: theme.padding.small,

@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   container: {
     position: "relative",
     flexDirection: "column",
+    paddingBottom: theme.padding.large * 2,
   },
   imageContainer: {
     position: "relative",

@@ -5,7 +5,6 @@ import ThemedButton from "@/components/base/ThemedButton";
 import CompactCard from "@/components/CompactCard";
 import { CardType } from "@/types/PokemonCardType";
 import SearchResultStyle from "@/style/SearchResultStyle";
-import { ActivityIndicator } from "react-native";
 
 interface SearchResultProps {
   cardIds: string[];
