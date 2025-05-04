@@ -1,0 +1,16 @@
+id,setId,name,series,printedTotal,total,releaseDate,updatedAt,ptcgoCode
+1,sv1,Scarlet & Violet,Scarlet & Violet,198,258,2023/03/31,2023/03/31 15:45:00,SVI
+2,svp,Scarlet & Violet Black Star Promos,Scarlet & Violet,165,165,2023/01/01,2024/11/09 13:20:00,PR-SV
+3,sv2,Paldea Evolved,Scarlet & Violet,193,279,2023/06/09,2023/06/09 15:00:00,PAL
+4,sv3,Obsidian Flames,Scarlet & Violet,197,230,2023/08/11,2023/08/11 15:00:00,OBF
+5,sv3pt5,151,Scarlet & Violet,165,207,2023/09/22,2023/09/22 15:00:00,MEW
+6,sv4,Paradox Rift,Scarlet & Violet,182,266,2023/11/03,2023/11/03 15:00:00,PAR
+7,sv4pt5,Paldean Fates,Scarlet & Violet,91,245,2024/01/26,2024/01/25 15:00:00,PAF
+8,sv5,Temporal Forces,Scarlet & Violet,162,218,2024/03/22,2024/03/22 15:00:00,TEF
+9,sv6,Twilight Masquerade,Scarlet & Violet,167,226,2024/05/24,2024/05/23 15:00:00,TWM
+10,sv6pt5,Shrouded Fable,Scarlet & Violet,64,99,2024/08/02,2024/08/02 15:00:00,SFA
+11,sv7,Stellar Crown,Scarlet & Violet,142,175,2024/09/13,2024/09/13 15:00:00,SCR
+12,sv8,Surging Sparks,Scarlet & Violet,191,252,2024/11/08,2024/11/07 22:00:00,SSP
+13,sv8pt5,Prismatic Evolutions,Scarlet & Violet,131,180,2025/01/17,025/01/16 22:00:00,PRE
+14,sv9,Journey Together,Scarlet & Violet,159,190,2025/03/28,2025/03/27 16:00:00,JTG
+15,sve,Scarlet & Violet Energies,Scarlet & Violet,16,16,2023/03/31,2024/09/19 19:45:00,SVE
