@@ -73,8 +73,10 @@ export default function NumberInput({
               onPress={() => setModalVisible(true)}
               style={styles.pickerWrapper}
             >
-              <ThemedText style={styles.selectPressable}>
-                {/* Show current operator label using operatorRows */}
+              <ThemedText
+                style={styles.selectPressable}
+                color={theme.colors.textAlternative}
+              >
                 {(() => {
                   const flatOps = operatorRows.flat();
                   return flatOps.find((o) => o.value === operator)?.label || "=";
