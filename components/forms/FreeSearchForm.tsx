@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { View, Text } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
@@ -19,8 +19,6 @@ export default function FreeSearchForm({
   resetKey,
   removeDuplicates,
   onRemoveDuplicatesChange,
-  currentPage,
-  itemsPerPage,
 }: {
   onSearchResults?: (ids: string[], query: string) => void;
   setLoading?: (loading: boolean) => void;
@@ -83,42 +81,6 @@ export default function FreeSearchForm({
   const [showHint, setShowHint] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  // Card Exclusion lists
-  const cardExclusions = ["id", "nationalPokedexNumbers", "imagesLarge", "setId", "rarity", "number"];
-  const cardAttacksExclusions = ["id", "cardId", "attackId"];
-  const attacksExclusions = ["id"];
-  const abilitiesExclusions = ["id"];
-
-  // Card columns to search (only include checked fields)
-  const cardColumnsToSearch = allCardColumns
-    .filter((col) => col.table === "Card")
-    .map((col) => col.column)
-    .filter((key) => includedColumns[key]);
-
-  // Attacks columns to search
-  const attacksColumnsToSearch = allCardColumns
-    .filter((col) => col.table === "Attacks")
-    .map((col) => col.column)
-    .filter((key) => includedColumns[key]);
-
-  // Abilities columns to search
-  const abilitiesColumnsToSearch = allCardColumns
-    .filter((col) => col.table === "Abilities")
-    .map((col) => col.column)
-    .filter((key) => includedColumns[key]);
-
-  // CardAttacks columns to search
-  const cardAttacksColumnsToSearch = allCardColumns
-    .filter((col) => col.table === "CardAttacks")
-    .map((col) => col.column)
-    .filter((key) => includedColumns[key]);
-
-  // CardSet columns to search
-  const cardSetColumnsToSearch = allCardColumns
-    .filter((col) => col.table === "CardSet")
-    .map((col) => col.column)
-    .filter((key) => includedColumns[key]);
 
   useEffect(() => {
     setCardSearch("");
@@ -280,17 +242,6 @@ export default function FreeSearchForm({
     },
   };
 
-  // Helper to get label by table and key
-  function getColumnLabel(table: string | undefined, key: string): string {
-    if (table && columnLabelsByTable[table] && columnLabelsByTable[table][key]) {
-      return columnLabelsByTable[table][key];
-    }
-    if (columnLabelsByTable._default[key]) {
-      return columnLabelsByTable._default[key];
-    }
-    return key;
-  }
-
   // Helper: are all columns checked?
   const allKeys = allCardColumns.map((col) => col.key);
   const checkedCount = allKeys.filter((key) => includedColumns[key]).length;
@@ -328,8 +279,44 @@ export default function FreeSearchForm({
     }
   };
 
+  // Helper: get checked fields for summary (label and key)
+  const checkedFields = allCardColumns.filter((col) => includedColumns[col.key]);
+
+  // Helper: render checked field labels separated by OR (no SVG, no dot)
+  const renderCheckedLabelsSummary = () => {
+    if (checkedFields.length === 0) return null;
+    return (
+      <ThemedText style={styles.summaryArrayText}>
+        {checkedFields.map((field, idx) => (
+          <React.Fragment key={field.key}>
+            {idx > 0 && <ThemedText style={styles.summaryArrayTextSeparator}> OR </ThemedText>}
+            <ThemedText style={styles.summaryText}>{field.label}</ThemedText>
+          </React.Fragment>
+        ))}
+      </ThemedText>
+    );
+  };
+
   return (
     <ThemedView>
+      {/* Summary of checked fields styled as in AdvancedSearchForm */}
+      {cardSearch.trim() !== "" && checkedFields.length > 0 && (
+        <ThemedView style={styles.summaryContainer}>
+          <ThemedView style={styles.summaryLabel}>
+            <ThemedText type="label">
+              You are searching for{" "}
+              <ThemedText
+                type="label"
+                style={{ color: theme.colors.textHilight }}
+              >
+                {cardSearch}
+              </ThemedText>{" "}
+              in:
+            </ThemedText>
+          </ThemedView>
+          {renderCheckedLabelsSummary()}
+        </ThemedView>
+      )}
       <ThemedView style={styles.mainButtonsRow}>
         <ThemedButton
           title="Reset"
