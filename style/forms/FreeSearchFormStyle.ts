@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     paddingBottom: theme.padding.small,
   },
   collapsibleItem: {
-    flex: "50%",
+    flex: 0.5,
     width: "50%",
     minWidth: "50%",
   },
