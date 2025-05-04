@@ -22,7 +22,15 @@ const ThemedSwitchStyle = StyleSheet.create({
   label: {
     paddingLeft: theme.padding.xsmall,
   },
-
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+  },
+  hintContainer: {
+    width: "100%",
+    marginTop: theme.padding.xsmall,
+  },
   labelHintTouchable: {
     flexDirection: "row",
     alignItems: "center",
