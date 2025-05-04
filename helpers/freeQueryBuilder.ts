@@ -118,5 +118,23 @@ export async function freeQueryBuilder(
     }
   }
 
-  return { cardIds: Array.from(cardIdSet), query: search };
+  // Sort cardIds by Card name (batching to avoid 1000 limit)
+  const cardIdsArr = Array.from(cardIdSet);
+  if (cardIdsArr.length === 0) return { cardIds: [], query: search };
+  const batchSize = 1000;
+  let nameData: { cardId: string; name: string }[] = [];
+  for (let i = 0; i < cardIdsArr.length; i += batchSize) {
+    const batchIds = cardIdsArr.slice(i, i + batchSize);
+    const { data, error } = await supabase.from("Card").select("cardId, name").in("cardId", batchIds);
+    if (!error && data) {
+      nameData = nameData.concat(data);
+    }
+  }
+  const nameMap = new Map(nameData.map((c) => [c.cardId, c.name?.toLowerCase() || ""]));
+  const sortedCardIds = [...cardIdsArr].sort((a, b) => {
+    const nameA = nameMap.get(a) || "";
+    const nameB = nameMap.get(b) || "";
+    return nameA.localeCompare(nameB);
+  });
+  return { cardIds: sortedCardIds, query: search };
 }

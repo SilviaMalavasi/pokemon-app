@@ -182,7 +182,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       cardSelect = `cardId, ${Array.from(new Set(requiredCols)).join(", ")}`;
     }
 
-    const cardQuery = buildQuery("Card", cardSelect, grouped["Card"]).order("name");
+    const cardQuery = buildQuery("Card", cardSelect, grouped["Card"]);
     const { data, error } = await cardQuery;
     if (error) {
       console.error("Card Query Error:", error);
@@ -212,11 +212,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     }
     const setIds = data?.map((row: any) => row.id) || [];
     if (setIds.length > 0) {
-      const { data: cardData, error: cardError } = await supabase
-        .from("Card")
-        .select("cardId")
-        .in("setId", setIds)
-        .order("name");
+      const { data: cardData, error: cardError } = await supabase.from("Card").select("cardId").in("setId", setIds);
       if (cardError) {
         console.error("Card Query (Set Join) Error:", cardError);
         return { cardIds: [], query: `Card (Set Join) Error: ${cardError.message}` };
@@ -372,11 +368,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
 
     // Final lookup to get cardId strings
     if (cardIdInts.length > 0) {
-      const { data: cardData, error: cardError } = await supabase
-        .from("Card")
-        .select("cardId")
-        .in("id", cardIdInts)
-        .order("name");
+      const { data: cardData, error: cardError } = await supabase.from("Card").select("cardId").in("id", cardIdInts);
       if (cardError) {
         console.error("Card Query (Attack Join) Error:", cardError);
         return { cardIds: [], query: `Card (Attack Join) Error: ${cardError.message}` };
@@ -409,11 +401,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       const cardIdInts = Array.from(new Set(caData?.map((row: any) => row.cardId) || []));
 
       if (cardIdInts.length > 0) {
-        const { data: cardData, error: cardError } = await supabase
-          .from("Card")
-          .select("cardId")
-          .in("id", cardIdInts)
-          .order("name");
+        const { data: cardData, error: cardError } = await supabase.from("Card").select("cardId").in("id", cardIdInts);
         if (cardError) {
           console.error("Card Query (Ability Join) Error:", cardError);
           return { cardIds: [], query: `Card (Ability Join) Error: ${cardError.message}` };
@@ -442,11 +430,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       const cardIdInts = Array.from(new Set(data?.map((row: any) => row.cardId) || []));
 
       if (cardIdInts.length > 0) {
-        const { data: cardData, error: cardError } = await supabase
-          .from("Card")
-          .select("cardId")
-          .in("id", cardIdInts)
-          .order("name");
+        const { data: cardData, error: cardError } = await supabase.from("Card").select("cardId").in("id", cardIdInts);
         if (cardError) {
           console.error("Card Query (Ability Exists Join) Error:", cardError);
           return { cardIds: [], query: `Card (Ability Exists Join) Error: ${cardError.message}` };
@@ -502,6 +486,27 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     }
   }
 
-  // Return the final list of card IDs
-  return { cardIds: finalCardIds.sort(), query: JSON.stringify(filters) };
+  // Return the final list of card IDs, sorted by Card name
+  if (finalCardIds.length === 0) {
+    return { cardIds: [], query: JSON.stringify(filters) };
+  }
+
+  // Fetch all names in batches of 1000 to avoid Supabase limit
+  const batchSize = 1000;
+  let nameData: { cardId: string; name: string }[] = [];
+  for (let i = 0; i < finalCardIds.length; i += batchSize) {
+    const batchIds = finalCardIds.slice(i, i + batchSize);
+    const { data, error } = await supabase.from("Card").select("cardId, name").in("cardId", batchIds);
+    if (!error && data) {
+      nameData = nameData.concat(data);
+    }
+  }
+  // Create a map for quick lookup
+  const nameMap = new Map(nameData.map((c) => [c.cardId, c.name?.toLowerCase() || ""]));
+  const sortedCardIds = [...finalCardIds].sort((a, b) => {
+    const nameA = nameMap.get(a) || "";
+    const nameB = nameMap.get(b) || "";
+    return nameA.localeCompare(nameB);
+  });
+  return { cardIds: sortedCardIds, query: JSON.stringify(filters) };
 }
