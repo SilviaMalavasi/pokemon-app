@@ -317,7 +317,7 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
 
       // JS filter for cost array structure AND text-numeric filters
       const filteredData = (data || []).filter((row: any) => {
-        // 1. Check cost array structure
+        // 1. Check cost array contains all selected slots
         let costArr: string[] = [];
         try {
           costArr = Array.isArray(row.cost) ? row.cost : row.cost ? JSON.parse(row.cost) : [];
@@ -325,12 +325,15 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
           costArr = [];
         }
 
-        if (costArr.length !== slots.length) return false;
+        // Ensure the total cost matches the filter, even if not all slots were specified
+        if (costArr.length !== requiredCost) return false;
+
+        // Check if all selected slots are present in the cost array
         const costArrCopy = [...costArr];
         for (const slot of slots) {
           const idx = costArrCopy.indexOf(slot);
-          if (idx === -1) return false;
-          costArrCopy.splice(idx, 1);
+          if (idx === -1) return false; // A selected slot is missing
+          costArrCopy.splice(idx, 1); // Remove found slot to handle duplicates correctly
         }
 
         // 2. Check JS text-numeric filters
