@@ -1,0 +1,167 @@
+[
+  {
+    "id": 1,
+    "setId": "sv1",
+    "name": "Scarlet & Violet",
+    "series": "Scarlet & Violet",
+    "printedTotal": 198,
+    "total": 258,
+    "releaseDate": "2023/03/31",
+    "updatedAt": "2023/03/31 15:45:00",
+    "ptcgoCode": "SVI"
+  },
+  {
+    "id": 2,
+    "setId": "svp",
+    "name": "Scarlet & Violet Black Star Promos",
+    "series": "Scarlet & Violet",
+    "printedTotal": 165,
+    "total": 165,
+    "releaseDate": "2023/01/01",
+    "updatedAt": "2024/11/09 13:20:00",
+    "ptcgoCode": "PR-SV"
+  },
+  {
+    "id": 3,
+    "setId": "sv2",
+    "name": "Paldea Evolved",
+    "series": "Scarlet & Violet",
+    "printedTotal": 193,
+    "total": 279,
+    "releaseDate": "2023/06/09",
+    "updatedAt": "2023/06/09 15:00:00",
+    "ptcgoCode": "PAL"
+  },
+  {
+    "id": 4,
+    "setId": "sv3",
+    "name": "Obsidian Flames",
+    "series": "Scarlet & Violet",
+    "printedTotal": 197,
+    "total": 230,
+    "releaseDate": "2023/08/11",
+    "updatedAt": "2023/08/11 15:00:00",
+    "ptcgoCode": "OBF"
+  },
+  {
+    "id": 5,
+    "setId": "sv3pt5",
+    "name": "151",
+    "series": "Scarlet & Violet",
+    "printedTotal": 165,
+    "total": 207,
+    "releaseDate": "2023/09/22",
+    "updatedAt": "2023/09/22 15:00:00",
+    "ptcgoCode": "MEW"
+  },
+  {
+    "id": 6,
+    "setId": "sv4",
+    "name": "Paradox Rift",
+    "series": "Scarlet & Violet",
+    "printedTotal": 182,
+    "total": 266,
+    "releaseDate": "2023/11/03",
+    "updatedAt": "2023/11/03 15:00:00",
+    "ptcgoCode": "PAR"
+  },
+  {
+    "id": 7,
+    "setId": "sv4pt5",
+    "name": "Paldean Fates",
+    "series": "Scarlet & Violet",
+    "printedTotal": 91,
+    "total": 245,
+    "releaseDate": "2024/01/26",
+    "updatedAt": "2024/01/25 15:00:00",
+    "ptcgoCode": "PAF"
+  },
+  {
+    "id": 8,
+    "setId": "sv5",
+    "name": "Temporal Forces",
+    "series": "Scarlet & Violet",
+    "printedTotal": 162,
+    "total": 218,
+    "releaseDate": "2024/03/22",
+    "updatedAt": "2024/03/22 15:00:00",
+    "ptcgoCode": "TEF"
+  },
+  {
+    "id": 9,
+    "setId": "sv6",
+    "name": "Twilight Masquerade",
+    "series": "Scarlet & Violet",
+    "printedTotal": 167,
+    "total": 226,
+    "releaseDate": "2024/05/24",
+    "updatedAt": "2024/05/23 15:00:00",
+    "ptcgoCode": "TWM"
+  },
+  {
+    "id": 10,
+    "setId": "sv6pt5",
+    "name": "Shrouded Fable",
+    "series": "Scarlet & Violet",
+    "printedTotal": 64,
+    "total": 99,
+    "releaseDate": "2024/08/02",
+    "updatedAt": "2024/08/02 15:00:00",
+    "ptcgoCode": "SFA"
+  },
+  {
+    "id": 11,
+    "setId": "sv7",
+    "name": "Stellar Crown",
+    "series": "Scarlet & Violet",
+    "printedTotal": 142,
+    "total": 175,
+    "releaseDate": "2024/09/13",
+    "updatedAt": "2024/09/13 15:00:00",
+    "ptcgoCode": "SCR"
+  },
+  {
+    "id": 12,
+    "setId": "sv8",
+    "name": "Surging Sparks",
+    "series": "Scarlet & Violet",
+    "printedTotal": 191,
+    "total": 252,
+    "releaseDate": "2024/11/08",
+    "updatedAt": "2024/11/07 22:00:00",
+    "ptcgoCode": "SSP"
+  },
+  {
+    "id": 13,
+    "setId": "sv8pt5",
+    "name": "Prismatic Evolutions",
+    "series": "Scarlet & Violet",
+    "printedTotal": 131,
+    "total": 180,
+    "releaseDate": "2025/01/17",
+    "updatedAt": "025/01/16 22:00:00",
+    "ptcgoCode": "PRE"
+  },
+  {
+    "id": 14,
+    "setId": "sv9",
+    "name": "Journey Together",
+    "series": "Scarlet & Violet",
+    "printedTotal": 159,
+    "total": 190,
+    "releaseDate": "2025/03/28",
+    "updatedAt": "2025/03/27 16:00:00",
+    "ptcgoCode": "JTG"
+  },
+  {
+    "id": 15,
+    "setId": "sve",
+    "name": "Scarlet & Violet Energies",
+    "series": "Scarlet & Violet",
+    "printedTotal": 16,
+    "total": 16,
+    "releaseDate": "2023/03/31",
+    "updatedAt": "2024/09/19 19:45:00",
+    "ptcgoCode": "SVE"
+  }
+]

@@ -1,0 +1,1337 @@
+[
+  {
+    "id": 1,
+    "name": "Adaptive Evolution",
+    "text": "This Pokémon can evolve during your first turn or the turn you play it."
+  },
+  {
+    "id": 2,
+    "name": "Counterattack Quills",
+    "text": "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
+  },
+  {
+    "id": 3,
+    "name": "Trap Territory",
+    "text": "Your opponent's Active Pokémon's Retreat Cost is Colorless more."
+  },
+  {
+    "id": 4,
+    "name": "Enriching Oil",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may heal all damage from 1 of your Pokémon."
+  },
+  {
+    "id": 7,
+    "name": "Energy Carnival",
+    "text": "Once during your turn, you may attach a Basic Energy card from your hand to 1 of your Pokémon."
+  },
+  {
+    "id": 8,
+    "name": "Strange Behavior",
+    "text": "As often as you like during your turn, you may move 1 damage counter from 1 of your other Pokémon to this Pokémon."
+  },
+  {
+    "id": 9,
+    "name": "Fire Off",
+    "text": "As often as you like during your turn, you may move a Fire Energy from 1 of your Benched Pokémon to your Active Pokémon."
+  },
+  {
+    "id": 10,
+    "name": "Electrogenesis",
+    "text": "Once during your turn, you may search your deck for a Basic Lightning Energy card and attach it to this Pokémon. Then, shuffle your deck."
+  },
+  {
+    "id": 11,
+    "name": "Tandem Unit",
+    "text": "Once during your turn, you may search your deck for up to 2 Basic Lightning Pokémon and put them onto your Bench. Then, shuffle your deck."
+  },
+  {
+    "id": 12,
+    "name": "Psychic Embrace",
+    "text": "As often as you like during your turn, you may attach a Basic Psychic Energy card from your discard pile to 1 of your Psychic Pokémon. If you attached Energy to a Pokémon in this way, put 2 damage counters on that Pokémon. You can't use this Ability on a Pokémon that would be Knocked Out."
+  },
+  {
+    "id": 13,
+    "name": "Mischievous Lock",
+    "text": "As long as this Pokémon is in the Active Spot, Basic Pokémon in play (both yours and your opponent's) have no Abilities, except for Mischievous Lock."
+  },
+  {
+    "id": 14,
+    "name": "Blooming Garden",
+    "text": "Your Pokémon in play have no Weakness."
+  },
+  {
+    "id": 15,
+    "name": "Electricity Pouches",
+    "text": "This Pokémon can't be Paralyzed."
+  },
+  {
+    "id": 16,
+    "name": "Well-Baked Body",
+    "text": "This Pokémon can't be Burned. Prevent all damage done to this Pokémon by attacks from your opponent's Fire Pokémon."
+  },
+  {
+    "id": 17,
+    "name": "Flying Entry",
+    "text": "When you play this Pokémon from your hand onto your Bench during your turn, you may choose 2 of your opponent's Benched Pokémon and put 1 damage counter on each of them."
+  },
+  {
+    "id": 18,
+    "name": "Exoskeleton",
+    "text": "This Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 19,
+    "name": "Dino Cry",
+    "text": "Once during your turn, you may attach up to 2 Basic Fighting Energy cards from your discard pile to your Basic Fighting Pokémon in any way you like. If you use this Ability, your turn ends."
+  },
+  {
+    "id": 20,
+    "name": "Poison Sacs",
+    "text": "Your opponent's Poisoned Pokémon don't recover from that Special Condition when they evolve or devolve."
+  },
+  {
+    "id": 21,
+    "name": "Leadership",
+    "text": "Your Basic Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 22,
+    "name": "Intimidating Howl",
+    "text": "Once during your turn, you may switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)"
+  },
+  {
+    "id": 23,
+    "name": "Rumbling Engine",
+    "text": "You must discard an Energy card from your hand in order to use this Ability. Once during your turn, you may draw cards until you have 6 cards in your hand."
+  },
+  {
+    "id": 24,
+    "name": "Busybody Nurse",
+    "text": "Once during your turn, you may use this Ability. Your Active Pokémon recovers from all Special Conditions."
+  },
+  {
+    "id": 25,
+    "name": "Nest Stash",
+    "text": "Once during your turn, you may shuffle your hand and put it on the bottom of your deck. If you put any cards on the bottom of your deck in this way, draw a card."
+  },
+  {
+    "id": 46,
+    "name": "Drifting Dodge",
+    "text": "If any damage is done to this Pokémon by attacks, flip a coin. If heads, prevent that damage."
+  },
+  {
+    "id": 48,
+    "name": "Exploding Energy",
+    "text": "Once during your turn, you may search your deck for up to 5 Basic Grass Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck. If you searched your deck in this way, this Pokémon is Knocked Out."
+  },
+  {
+    "id": 49,
+    "name": "Bouquet Magic",
+    "text": "You must discard a Basic Grass Energy card from your hand in order to use this Ability. Once during your turn, you may put 3 damage counters on 1 of your opponent's Benched Pokémon."
+  },
+  {
+    "id": 50,
+    "name": "Freezing Disaster",
+    "text": "Pokémon (both yours and your opponent's) can't be healed."
+  },
+  {
+    "id": 51,
+    "name": "Ardent Dancing",
+    "text": "Once during your turn, you may heal 20 damage from your Active Evolution Pokémon."
+  },
+  {
+    "id": 52,
+    "name": "Super Cold",
+    "text": "As often as you like during your turn, you may attach a Basic Water Energy card from your hand to 1 of your Pokémon."
+  },
+  {
+    "id": 53,
+    "name": "Shivery Chill",
+    "text": "Once during your turn, if this Pokémon is in the Active Spot, you may search your deck for up to 2 Basic Water Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 54,
+    "name": "Fettered in Misfortune",
+    "text": "Basic Pokémon V in play (both yours and your opponent's) have no Abilities."
+  },
+  {
+    "id": 55,
+    "name": "Read the Stars",
+    "text": "Once during your turn, you may look at the top 2 cards of your opponent's deck and put 1 of them back. Put the other card on the bottom of their deck."
+  },
+  {
+    "id": 56,
+    "name": "Balloon Therapy",
+    "text": "Once during your turn, you may attach a Therapeutic Energy card from your hand to 1 of your Pokémon."
+  },
+  {
+    "id": 57,
+    "name": "Safeguard",
+    "text": "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon ex and Pokémon V."
+  },
+  {
+    "id": 58,
+    "name": "Gather Materials",
+    "text": "You must discard a card from your hand in order to use this Ability. Once during your turn, you may draw 3 cards."
+  },
+  {
+    "id": 59,
+    "name": "Big Roar",
+    "text": "Once during your turn, if this Pokémon is in the Active Spot, you may switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)"
+  },
+  {
+    "id": 60,
+    "name": "Swelling Flash",
+    "text": "Once during your turn, if this Pokémon is in your hand and you have more Prize cards remaining than your opponent, you may put this Pokémon onto your Bench."
+  },
+  {
+    "id": 61,
+    "name": "Magical Flick",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may move an Energy from your opponent's Active Pokémon to 1 of their Benched Pokémon."
+  },
+  {
+    "id": 62,
+    "name": "Arm Thrust Practice",
+    "text": "All of your Pokémon take 10 less damage from attacks from your opponent's Pokémon (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 63,
+    "name": "Blessed Salt",
+    "text": "During Pokémon Checkup, heal 20 damage from each of your Pokémon."
+  },
+  {
+    "id": 64,
+    "name": "Assaulting Hunt",
+    "text": "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may switch in 1 of your opponent's Benched Basic Pokémon to the Active Spot."
+  },
+  {
+    "id": 65,
+    "name": "Tri Howl",
+    "text": "Once during your turn, you may look at the top 3 cards of your deck and attach any number of Energy cards you find there to your Pokémon in any way you like. Discard the other cards."
+  },
+  {
+    "id": 66,
+    "name": "Bronze Body",
+    "text": "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 67,
+    "name": "Shattering Crystal",
+    "text": "When this Pokémon is Knocked Out, flip a coin. If heads, your opponent can't take any Prize cards for it."
+  },
+  {
+    "id": 68,
+    "name": "Cursed Land",
+    "text": "As long as this Pokémon is in the Active Spot, your opponent's Pokémon in play that have any damage counters on them have no Abilities, except for Pokémon ex."
+  },
+  {
+    "id": 69,
+    "name": "Toxic Wetland",
+    "text": "Once during your turn, if a Stadium is in play, you may make your opponent's Active Pokémon Poisoned."
+  },
+  {
+    "id": 70,
+    "name": "Nutritional Iron",
+    "text": "If this Pokémon has 3 or more Metal Energy attached, it gets +100 HP."
+  },
+  {
+    "id": 71,
+    "name": "Stir and Snooze",
+    "text": "If this Pokémon is Asleep, flip 2 coins instead of 1 during Pokémon Checkup. If either of them is tails, this Pokémon is still Asleep."
+  },
+  {
+    "id": 72,
+    "name": "Hearsay",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may choose 1: put a Supporter card from your discard pile into your hand; or search your deck for a Supporter card, reveal it, put it into your hand, and then shuffle your deck."
+  },
+  {
+    "id": 73,
+    "name": "Insta-Flock",
+    "text": "When you play this Pokémon from your hand onto your Bench during your turn, you may search your deck for up to 3 Flamigo, reveal them, and put them into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 74,
+    "name": "Squawk and Seize",
+    "text": "Once during your first turn, you may discard your hand and draw 6 cards. You can't use more than 1 Squawk and Seize Ability during your turn."
+  },
+  {
+    "id": 98,
+    "name": "Double Type",
+    "text": "As long as this Pokémon is in play, it is Grass and Fire type."
+  },
+  {
+    "id": 99,
+    "name": "Forest Miasma",
+    "text": "During Pokémon Checkup, if this Pokémon is in the Active Spot, put 1 damage counter on your opponent's Active Pokémon."
+  },
+  {
+    "id": 100,
+    "name": "Total Freedom",
+    "text": "Once during your turn, you may use this Ability. If this Pokémon is on the Bench, switch it with your Active Pokémon. Or, if this Pokémon is in the Active Spot, switch it with 1 of your Benched Pokémon."
+  },
+  {
+    "id": 101,
+    "name": "Protective Mycelium",
+    "text": "Prevent all effects of attacks used by your opponent's Pokémon done to all of your Pokémon that have Energy attached. (Existing effects are not removed. Damage is not an effect.)"
+  },
+  {
+    "id": 102,
+    "name": "Pressure",
+    "text": "As long as this Pokémon is in the Active Spot, attacks used by your opponent's Active Pokémon do 20 less damage (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 103,
+    "name": "Adverse Weather",
+    "text": "As long as this Pokémon is in the Active Spot, prevent all damage done to your Benched Pokémon by attacks from your opponent's Pokémon."
+  },
+  {
+    "id": 104,
+    "name": "Lunar Zone",
+    "text": "All of your Pokémon that have Psychic Energy attached have no Retreat Cost."
+  },
+  {
+    "id": 105,
+    "name": "Precious Gift",
+    "text": "Once at the end of your turn (after your attack), you may use this Ability. Draw cards until you have 8 cards in your hand."
+  },
+  {
+    "id": 106,
+    "name": "New Moon",
+    "text": "If you have Solrock in play, prevent all effects of any Stadium done to your Pokémon in play."
+  },
+  {
+    "id": 107,
+    "name": "Scorching Armor",
+    "text": "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Burned."
+  },
+  {
+    "id": 108,
+    "name": "Quaking Zone",
+    "text": "As long as this Pokémon is in the Active Spot, attacks used by your opponent's Active Pokémon cost Colorless more."
+  },
+  {
+    "id": 109,
+    "name": "Custom Trap",
+    "text": "If this Pokémon is in the Active Spot, has a Pokémon Tool attached, and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), put 5 damage counters on the Attacking Pokémon."
+  },
+  {
+    "id": 110,
+    "name": "Counterattacking Pincer",
+    "text": "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), discard an Energy from the Attacking Pokémon."
+  },
+  {
+    "id": 111,
+    "name": "Insulator",
+    "text": "Prevent all damage done to this Pokémon by attacks from your opponent's Lightning Pokémon."
+  },
+  {
+    "id": 112,
+    "name": "Dust Field",
+    "text": "As long as this Pokémon is in the Active Spot, your opponent can't have more than 3 Benched Pokémon. If they have 4 or more Benched Pokémon, they discard Benched Pokémon until they have 3 Pokémon on the Bench. If more than one effect changes the number of Benched Pokémon allowed, use the smaller number."
+  },
+  {
+    "id": 113,
+    "name": "Infernal Reign",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may search your deck for up to 3 Basic Fire Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
+  },
+  {
+    "id": 114,
+    "name": "Psychic Insight",
+    "text": "Once during your turn, you may look at the top card of your opponent's deck. If you do, look at the top card of your deck."
+  },
+  {
+    "id": 115,
+    "name": "Special Eater",
+    "text": "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Special Energy from your opponent's Active Pokémon."
+  },
+  {
+    "id": 116,
+    "name": "Tune-Up",
+    "text": "This Pokémon may have up to 4 Pokémon Tools attached to it. If it loses this Ability, discard Pokémon Tools from it until only 1 remains."
+  },
+  {
+    "id": 117,
+    "name": "Quick Search",
+    "text": "Once during your turn, you may search your deck for a card and put it into your hand. Then, shuffle your deck. You can't use more than 1 Quick Search Ability each turn."
+  },
+  {
+    "id": 118,
+    "name": "Bouffer",
+    "text": "This Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 131,
+    "name": "Tranquil Flower",
+    "text": "Once during your turn, if this Pokémon is in the Active Spot, you may heal 60 damage from 1 of your Pokémon."
+  },
+  {
+    "id": 132,
+    "name": "Solid Shell",
+    "text": "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 133,
+    "name": "Evolutionary Advantage",
+    "text": "If you go second, this Pokémon can evolve during your first turn."
+  },
+  {
+    "id": 134,
+    "name": "Enthusiastic King",
+    "text": "If you have Nidoqueen in play, ignore all Energy in the costs of attacks used by this Pokémon."
+  },
+  {
+    "id": 135,
+    "name": "Semi-Blooming Energy",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may look at the top 3 cards of your deck and attach any number of Basic Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
+  },
+  {
+    "id": 136,
+    "name": "Fully Blooming Energy",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may look at the top 8 cards of your deck and attach any number of Basic Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
+  },
+  {
+    "id": 137,
+    "name": "Cocoon Cover",
+    "text": "Prevent all effects of attacks used by your opponent's Pokémon done to this Pokémon. (Damage is not an effect.)"
+  },
+  {
+    "id": 138,
+    "name": "Electrical Grounding",
+    "text": "When 1 of your Pokémon is Knocked Out by damage from an attack from your opponent's Pokémon, you may move a Lightning Energy from that Pokémon to this Pokémon."
+  },
+  {
+    "id": 139,
+    "name": "Sand Screen",
+    "text": "Trainer cards in your opponent's discard pile can't be put into their deck by an effect of your opponent's Item or Supporter cards."
+  },
+  {
+    "id": 140,
+    "name": "Expanding Body",
+    "text": "If this Pokémon has any Special Energy attached, it gets +100 HP."
+  },
+  {
+    "id": 141,
+    "name": "Revealing Echo",
+    "text": "Once during your turn, if this Pokémon is in the Active Spot, you may have your opponent reveal their hand."
+  },
+  {
+    "id": 142,
+    "name": "Rocket Call",
+    "text": "Once during your turn, you may search your deck for a Giovanni's Charisma card, reveal it, and put it into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 143,
+    "name": "Zooming Draw",
+    "text": "Once during your turn, you may put 1 damage counter on this Pokémon. If you do, draw a card."
+  },
+  {
+    "id": 144,
+    "name": "Guts",
+    "text": "If this Pokémon would be Knocked Out by damage from an attack, flip a coin. If heads, this Pokémon is not Knocked Out, and its remaining HP becomes 10."
+  },
+  {
+    "id": 145,
+    "name": "Spirit Return",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put a Supporter card from your opponent's discard pile into their hand."
+  },
+  {
+    "id": 146,
+    "name": "Here for Hypnosis",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may make your opponent's Active Pokémon Asleep."
+  },
+  {
+    "id": 147,
+    "name": "Cheering Bone",
+    "text": "As long as this Pokémon is on your Bench, attacks used by your Marowak do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 148,
+    "name": "Counterattack",
+    "text": "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
+  },
+  {
+    "id": 149,
+    "name": "Primordial Tentacles",
+    "text": "As long as this Pokémon is in the Active Spot, your opponent's Active Pokémon can't retreat."
+  },
+  {
+    "id": 150,
+    "name": "Voraciousness",
+    "text": "Once during your turn, you may put up to 2 Leftovers cards from your discard pile into your hand."
+  },
+  {
+    "id": 151,
+    "name": "Untamed One",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you must discard the top 5 cards of your deck."
+  },
+  {
+    "id": 152,
+    "name": "Ancient Way",
+    "text": "Apply Weakness for your opponent's Active Pokémon as ×4 instead."
+  },
+  {
+    "id": 153,
+    "name": "Ice Float",
+    "text": "If this Pokémon has any Water Energy attached, it has no Retreat Cost."
+  },
+  {
+    "id": 154,
+    "name": "Lucky Bonus",
+    "text": "If you took this Pokémon as a face-down Prize card during your turn and your Bench isn't full, before you put it into your hand, you may put it onto your Bench. If you put this Pokémon onto your Bench in this way, flip a coin. If heads, take 1 more Prize card."
+  },
+  {
+    "id": 155,
+    "name": "Mimic Barrier",
+    "text": "If this Pokémon and your opponent's Active Pokémon have the same amount of Energy attached, prevent all damage done to this Pokémon by attacks from your opponent's Pokémon."
+  },
+  {
+    "id": 156,
+    "name": "Let's Have a Blast",
+    "text": "If this Pokémon is in the Active Spot and is Knocked Out by damage from an attack from your opponent's Pokémon, flip a coin. If heads, the Attacking Pokémon is Knocked Out."
+  },
+  {
+    "id": 157,
+    "name": "Mysterious Comet",
+    "text": "Once during your turn, you may put 2 damage counters on 1 of your opponent's Pokémon. If you placed any damage counters in this way, discard this Pokémon and all attached cards."
+  },
+  {
+    "id": 158,
+    "name": "Transformative Start",
+    "text": "Once during your first turn, if this Pokémon is in the Active Spot, you may search your deck and choose a Basic Pokémon you find there, except any Ditto. If you do, discard this Pokémon and all attached cards, and put the chosen Pokémon in its place. Then, shuffle your deck."
+  },
+  {
+    "id": 159,
+    "name": "Jet Cruise",
+    "text": "Your Pokémon in play have no Retreat Cost."
+  },
+  {
+    "id": 160,
+    "name": "Domed Armor",
+    "text": "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 161,
+    "name": "Helical Swell",
+    "text": "As long as this Pokémon is in the Active Spot, your opponent can't play any Stadium cards from their hand."
+  },
+  {
+    "id": 162,
+    "name": "Amber Protection",
+    "text": "Prevent all effects of your opponent's Pokémon's Abilities done to this Pokémon."
+  },
+  {
+    "id": 163,
+    "name": "Voltaic Float",
+    "text": "If this Pokémon has any Lightning Energy attached, it has no Retreat Cost."
+  },
+  {
+    "id": 164,
+    "name": "Flare Float",
+    "text": "If this Pokémon has any Fire Energy attached, it has no Retreat Cost."
+  },
+  {
+    "id": 165,
+    "name": "Restart",
+    "text": "Once during your turn, you may draw cards until you have 3 cards in your hand."
+  },
+  {
+    "id": 181,
+    "name": "Evanescent",
+    "text": "If this Pokémon is in the Active Spot and is Knocked Out, flip a coin. If heads, your opponent takes 1 fewer Prize card."
+  },
+  {
+    "id": 182,
+    "name": "Monkey Trio",
+    "text": "If you have Simisage, Simisear, and Simipour in play, ignore all Colorless Energy in the costs of attacks used by this Pokémon."
+  },
+  {
+    "id": 183,
+    "name": "Slime Mold Colony",
+    "text": "Cards in your opponent's discard pile can't be put into their hand by an effect of your opponent's Abilities or Trainer cards."
+  },
+  {
+    "id": 185,
+    "name": "Crimson Armor",
+    "text": "If this Pokémon has full HP, it takes 80 less damage from attacks from your opponent's Pokémon (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 186,
+    "name": "Thermal Reactor",
+    "text": "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may move any amount of Fire Energy from your other Pokémon to it."
+  },
+  {
+    "id": 187,
+    "name": "Suction Cup Draw",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may draw 3 cards."
+  },
+  {
+    "id": 188,
+    "name": "Lifeboat",
+    "text": "Once during your turn, when you play this Pokémon from your hand to evolve 1 of your Pokémon, you may use this Ability. Each player puts a Basic Pokémon from their discard pile onto their Bench. (Your opponent puts a Basic Pokémon onto their Bench first.)"
+  },
+  {
+    "id": 190,
+    "name": "Frigid Room",
+    "text": "Your opponent's Pokémon that have 40 HP or less remaining can't attack."
+  },
+  {
+    "id": 191,
+    "name": "Suddenly Select",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may search your deck for up to 3 Pokémon Tool cards, reveal them, and put them into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 192,
+    "name": "Fillet Memento",
+    "text": "If this Pokémon is in the Active Spot and is Knocked Out by damage from an attack from your opponent's Pokémon, move up to 2 Water Energy cards from this Pokémon to 1 of your Benched Pokémon."
+  },
+  {
+    "id": 193,
+    "name": "Hyper Blower",
+    "text": "Once during your turn, if this Pokémon is on your Bench, you may switch out your opponent's Active Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.) If you do, discard this Pokémon and all attached cards."
+  },
+  {
+    "id": 194,
+    "name": "Buddy Pulse",
+    "text": "If you have Plusle in play, whenever your opponent attaches an Energy card from their hand to 1 of their Pokémon, put 2 damage counters on that Pokémon. The effect of Buddy Pulse doesn't stack."
+  },
+  {
+    "id": 195,
+    "name": "Clairvoyant Sense",
+    "text": "Once during your turn, you may attach a Basic Psychic Energy card from your hand to 1 of your Benched Pokémon. If you attached Energy to a Pokémon in this way, draw 2 cards."
+  },
+  {
+    "id": 196,
+    "name": "Gold Coffin",
+    "text": "If this Pokémon is Knocked Out by damage from an attack from your opponent's Pokémon, search your deck for a card and put it into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 197,
+    "name": "Startling Pumpkin",
+    "text": "If this Pokémon is Knocked Out by damage from an attack from your opponent's Pokémon, discard 2 random cards from your opponent's hand."
+  },
+  {
+    "id": 198,
+    "name": "Stance",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may prevent all damage from and effects of attacks from your opponent's Pokémon done to this Pokémon until the end of your opponent's next turn."
+  },
+  {
+    "id": 199,
+    "name": "Tachyon Bits",
+    "text": "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may put 2 damage counters on 1 of your opponent's Pokémon."
+  },
+  {
+    "id": 200,
+    "name": "Far-Flying Meteor",
+    "text": "Once during your turn, if this Pokémon is on your Bench, when you attach an Energy card from your hand to this Pokémon, you may switch it with your Active Pokémon."
+  },
+  {
+    "id": 201,
+    "name": "Energizing Rock Salt",
+    "text": "Once during your turn, you may attach a Basic Fighting Energy card from your discard pile to 1 of your Pokémon. If you attached Energy to a Pokémon in this way, heal 30 damage from that Pokémon."
+  },
+  {
+    "id": 202,
+    "name": "Magnetic Absorption",
+    "text": "Once during your turn, if your opponent has 4 or fewer Prize cards remaining, you may attach a Basic Fighting Energy card from your discard pile to this Pokémon."
+  },
+  {
+    "id": 203,
+    "name": "Rob-'n'-Run",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may have your opponent reveal their hand, and then you choose 2 Energy cards you find there and shuffle them into your opponent's deck."
+  },
+  {
+    "id": 204,
+    "name": "In a Hungry Hurry",
+    "text": "If this Pokémon has no Energy attached, it has no Retreat Cost."
+  },
+  {
+    "id": 205,
+    "name": "Toxic Powder",
+    "text": "Once during your turn, if this Pokémon has an Ancient Booster Energy Capsule attached, you may make both Active Pokémon Poisoned."
+  },
+  {
+    "id": 206,
+    "name": "Stellar Veil",
+    "text": "Prevent all damage counters from being placed on your Benched Pokémon by effects of attacks used by your opponent's Basic Pokémon."
+  },
+  {
+    "id": 208,
+    "name": "Mysterious Shield",
+    "text": "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon ex and Pokémon V."
+  },
+  {
+    "id": 209,
+    "name": "Incendiary Song",
+    "text": "Once during your turn, you may discard a Basic Fire Energy card from your hand in order to use this Ability. During this turn, attacks used by your Pokémon do 60 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 210,
+    "name": "Coin Bonus",
+    "text": "Once during your turn, you may draw a card. If this Pokémon is in the Active Spot, draw 1 more card."
+  },
+  {
+    "id": 211,
+    "name": "Humming Heal",
+    "text": "Once during your turn, you may heal 20 damage from each of your Pokémon."
+  },
+  {
+    "id": 212,
+    "name": "Buggy Turbo",
+    "text": "Once during your turn, you may flip a coin. If heads, attach up to 4 Basic Energy cards from your discard pile to this Pokémon. If tails, discard an Energy from this Pokémon."
+  },
+  {
+    "id": 213,
+    "name": "Tangled Feet",
+    "text": "If this Pokémon is Confused and is damaged by an attack, flip a coin. If heads, prevent that damage."
+  },
+  {
+    "id": 214,
+    "name": "Solidarity",
+    "text": "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon for each of your Tandemaus, Maushold, and Maushold ex in play."
+  },
+  {
+    "id": 242,
+    "name": "Dazzling Gaze",
+    "text": "As long as this Pokémon is in the Active Spot, attacks used by your opponent's Active Pokémon cost Colorless more."
+  },
+  {
+    "id": 244,
+    "name": "Flare Veil",
+    "text": "Prevent all effects of attacks used by your opponent's Pokémon done to this Pokémon. (Damage is not an effect.)"
+  },
+  {
+    "id": 251,
+    "name": "Quaking Demolition",
+    "text": "Once at the end of your turn (after your attack), if this Pokémon is in the Active Spot, you must discard the top 5 cards of your deck."
+  },
+  {
+    "id": 258,
+    "name": "Night Gate",
+    "text": "Once during your turn, you may switch your Active Pokémon with 1 of your Benched Pokémon."
+  },
+  {
+    "id": 319,
+    "name": "Poison Point",
+    "text": "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned."
+  },
+  {
+    "id": 322,
+    "name": "Wafting Heal",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may heal all damage from your Active Grass Pokémon. If you healed any damage in this way, discard all Energy from that Pokémon."
+  },
+  {
+    "id": 323,
+    "name": "Changing Seasons",
+    "text": "Once during your turn, you may search your deck for a Stadium card, reveal it, and put it into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 324,
+    "name": "Resilient Soul",
+    "text": "This Pokémon gets +50 HP for each Prize card your opponent has taken."
+  },
+  {
+    "id": 325,
+    "name": "Spherical Shield",
+    "text": "Prevent all damage from and effects of attacks from your opponent's Pokémon done to your Benched Pokémon."
+  },
+  {
+    "id": 326,
+    "name": "Rapid Vernier",
+    "text": "When you play this Pokémon from your hand onto your Bench during your turn, you may switch it with your Active Pokémon. If you do, you may move any amount of Energy from your other Pokémon to this Pokémon."
+  },
+  {
+    "id": 327,
+    "name": "Lava Zone",
+    "text": "Whenever your opponent's Active Pokémon moves to the Bench during their turn, their new Active Pokémon is now Burned."
+  },
+  {
+    "id": 328,
+    "name": "Hustle Play",
+    "text": "Attacks used by this Pokémon cost Colorless less for each of your opponent's Benched Pokémon."
+  },
+  {
+    "id": 329,
+    "name": "Torrential Heart",
+    "text": "Once during your turn, you may put 5 damage counters on this Pokémon. If you do, during this turn, attacks used by this Pokémon do 120 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 330,
+    "name": "Azure Seas",
+    "text": "Damage from attacks used by this Pokémon isn't affected by any effects on your opponent's Active Pokémon."
+  },
+  {
+    "id": 331,
+    "name": "Midnight Fluttering",
+    "text": "As long as this Pokémon is in the Active Spot, your opponent's Active Pokémon has no Abilities, except for Midnight Fluttering."
+  },
+  {
+    "id": 332,
+    "name": "Cobalt Command",
+    "text": "Attacks used by your Future Pokémon, except any Iron Crown ex, do 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 333,
+    "name": "Memory Dive",
+    "text": "Each of your evolved Pokémon can use any attack from its previous Evolutions. (You still need the necessary Energy to use each attack.)"
+  },
+  {
+    "id": 334,
+    "name": "Dig Dig Dig",
+    "text": "When you play this Pokémon from your hand onto your Bench during your turn, you may search your deck for up to 3 Basic Fighting Energy cards and discard them. Then, shuffle your deck."
+  },
+  {
+    "id": 335,
+    "name": "Gnawing Curse",
+    "text": "Whenever your opponent attaches an Energy card from their hand to 1 of their Pokémon, put 2 damage counters on that Pokémon."
+  },
+  {
+    "id": 336,
+    "name": "Armor Tail",
+    "text": "Prevent all damage done to this Pokémon by attacks from your opponent's Basic Pokémon ex."
+  },
+  {
+    "id": 337,
+    "name": "Metal Maker",
+    "text": "Once during your turn, you may look at the top 4 cards of your deck and attach any number of Basic Metal Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards and put them on the bottom of your deck."
+  },
+  {
+    "id": 338,
+    "name": "Dual Core",
+    "text": "As long as this Pokémon has a Future Booster Energy Capsule attached, it is Fighting and Metal type."
+  },
+  {
+    "id": 339,
+    "name": "Run Away Draw",
+    "text": "Once during your turn, you may draw 3 cards. If you drew any cards in this way, shuffle this Pokémon and all attached cards into your deck."
+  },
+  {
+    "id": 340,
+    "name": "Emergency Evolution",
+    "text": "Once during your turn, if this Pokémon's remaining HP is 30 or less, you may search your deck for an Unfezant or Unfezant ex and put it onto this Pidove to evolve it. Then, shuffle your deck."
+  },
+  {
+    "id": 341,
+    "name": "Automated Combat",
+    "text": "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
+  },
+  {
+    "id": 360,
+    "name": "Thicket Body",
+    "text": "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 361,
+    "name": "Big Net",
+    "text": "Your opponent's Active Evolution Pokémon's Retreat Cost is Colorless more."
+  },
+  {
+    "id": 362,
+    "name": "Festival Lead",
+    "text": "If Festival Grounds is in play, this Pokémon may use an attack it has twice. If the first attack Knocks Out your opponent's Active Pokémon, you may attack again after your opponent chooses a new Active Pokémon."
+  },
+  {
+    "id": 363,
+    "name": "Boom Boom Groove",
+    "text": "Once during your turn, if your Active Pokémon has the Festival Lead Ability, you may search your deck for a card and put it into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 364,
+    "name": "Storehouse Hideaway",
+    "text": "As long as this Pokémon is on your Bench, prevent all damage from and effects of attacks from your opponent's Pokémon done to this Pokémon."
+  },
+  {
+    "id": 365,
+    "name": "Teal Dance",
+    "text": "Once during your turn, you may attach a Basic Grass Energy card from your hand to this Pokémon. If you attached Energy to a Pokémon in this way, draw a card."
+  },
+  {
+    "id": 366,
+    "name": "Pyro Dance",
+    "text": "Once during your turn, you may attach a Basic Fire Energy card, a Basic Fighting Energy card, or 1 of each from your hand to your Pokémon in any way you like."
+  },
+  {
+    "id": 367,
+    "name": "Alluring Light",
+    "text": "Once during your turn, you may have each player draw a card."
+  },
+  {
+    "id": 369,
+    "name": "Mentally Calm",
+    "text": "Your opponent's Pokémon in play and all attached cards can't be put into your opponent's hand."
+  },
+  {
+    "id": 370,
+    "name": "Freezing Shroud",
+    "text": "During Pokémon Checkup, put 1 damage counter on each Pokémon that has an Ability (both yours and your opponent's), except any Froslass."
+  },
+  {
+    "id": 371,
+    "name": "Zero to Hero",
+    "text": "Once during your turn, when this Pokémon moves from the Active Spot to the Bench, you may search your deck for a Palafin ex and switch it with this Pokémon. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon. If you switched a Pokémon in this way, put this card into your deck. Then, shuffle your deck."
+  },
+  {
+    "id": 372,
+    "name": "Hero's Spirit",
+    "text": "Put this Pokémon into play only with the effect of Palafin's Zero to Hero Ability."
+  },
+  {
+    "id": 373,
+    "name": "Snack Seek",
+    "text": "Once during your turn, you may look at the top card of your deck. You may discard that card."
+  },
+  {
+    "id": 374,
+    "name": "Initialization",
+    "text": "As long as this Pokémon is in the Active Spot, Pokémon with a Rule Box in play (both yours and your opponent's) have no Abilities, except for Future Pokémon. (Pokémon ex, Pokémon V, etc. have Rule Boxes.)"
+  },
+  {
+    "id": 375,
+    "name": "Teleporter",
+    "text": "Once during your turn, if this Pokémon is in the Active Spot, you may shuffle it and all attached cards into your deck."
+  },
+  {
+    "id": 377,
+    "name": "Captivating Invitation",
+    "text": "Once during your turn, you may flip a coin. If heads, switch in 1 of your opponent's Benched Pokémon to the Active Spot, and the new Active Pokémon is now Confused."
+  },
+  {
+    "id": 378,
+    "name": "Adrena-Brain",
+    "text": "Once during your turn, if this Pokémon has any Darkness Energy attached, you may move up to 3 damage counters from 1 of your Pokémon to 1 of your opponent's Pokémon."
+  },
+  {
+    "id": 379,
+    "name": "Adrena-Pheromone",
+    "text": "If this Pokémon has any Darkness Energy attached and is damaged by an attack, flip a coin. If heads, prevent that damage."
+  },
+  {
+    "id": 380,
+    "name": "Adrena-Power",
+    "text": "If this Pokémon has any Darkness Energy attached, it gets +100 HP, and the attacks it uses do 100 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 381,
+    "name": "Cornerstone Stance",
+    "text": "Prevent all damage from attacks done to this Pokémon by your opponent's Pokémon that have an Ability."
+  },
+  {
+    "id": 382,
+    "name": "Incandescent Body",
+    "text": "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Burned."
+  },
+  {
+    "id": 383,
+    "name": "Recon Directive",
+    "text": "Once during your turn, you may look at the top 2 cards of your deck and put 1 of them into your hand. Put the other card on the bottom of your deck."
+  },
+  {
+    "id": 384,
+    "name": "Attract Customers",
+    "text": "Once during your turn, if this Pokémon is in the Active Spot, you may look at the top 6 cards of your deck, reveal a Supporter card you find there, and put it into your hand. Shuffle the other cards back into your deck."
+  },
+  {
+    "id": 385,
+    "name": "Impromptu Carrier",
+    "text": "When you play this Pokémon from your hand onto your Bench during your turn, you may search your deck for a Pokémon Tool card and attach it to this Pokémon. Then, shuffle your deck."
+  },
+  {
+    "id": 386,
+    "name": "Happy Switch",
+    "text": "Once during your turn, you may move a Basic Energy from 1 of your Pokémon to another of your Pokémon."
+  },
+  {
+    "id": 387,
+    "name": "Wicked Tail",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may flip 2 coins. For each heads, choose a random card from your opponent's hand. Your opponent reveals those cards and shuffles them into their deck."
+  },
+  {
+    "id": 388,
+    "name": "Seasoned Skill",
+    "text": "Blood Moon used by this Pokémon costs Colorless less for each Prize card your opponent has taken."
+  },
+  {
+    "id": 415,
+    "name": "Compound Eyes",
+    "text": "Attacks used by this Pokémon do 50 more damage to your opponent's Active Pokémon that has an Ability (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 416,
+    "name": "Cursed Blast",
+    "text": "Once during your turn, you may put 5 damage counters on 1 of your opponent's Pokémon. If you use this Ability, this Pokémon is Knocked Out."
+  },
+  {
+    "id": 418,
+    "name": "Battle-Hardened",
+    "text": "When you play this Pokémon from your hand onto your Bench during your turn, you may attach up to 2 Basic Fighting Energy cards from your hand to this Pokémon."
+  },
+  {
+    "id": 419,
+    "name": "Shadowy Envoy",
+    "text": "Once during your turn, if you played Janine's Secret Art from your hand this turn, you may draw cards until you have 8 cards in your hand."
+  },
+  {
+    "id": 420,
+    "name": "Oh No You Don't",
+    "text": "If this Pokémon is Knocked Out by damage from an attack from your opponent's Pokémon, and if you have any Pecharunt ex in play, your opponent takes 1 fewer Prize card."
+  },
+  {
+    "id": 421,
+    "name": "Flip the Script",
+    "text": "Once during your turn, if any of your Pokémon were Knocked Out during your opponent's last turn, you may draw 3 cards. You can't use more than 1 Flip the Script Ability each turn."
+  },
+  {
+    "id": 422,
+    "name": "Subjugating Chains",
+    "text": "Once during your turn, you may switch 1 of your Benched Darkness Pokémon, except any Pecharunt ex, with your Active Pokémon. If you do, the new Active Pokémon is now Poisoned. You can't use more than 1 Subjugating Chains Ability each turn."
+  },
+  {
+    "id": 423,
+    "name": "ACE Nullifier",
+    "text": "If this Pokémon has a Pokémon Tool attached, your opponent can't play any ACE SPEC cards from their hand."
+  },
+  {
+    "id": 424,
+    "name": "Massive Body",
+    "text": "As long as this Pokémon is in the Active Spot, your opponent can't play any Stadium cards from their hand."
+  },
+  {
+    "id": 425,
+    "name": "Unnerve",
+    "text": "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
+  },
+  {
+    "id": 426,
+    "name": "Plasma Bane",
+    "text": "If your opponent has any cards in their discard pile that have \"Colress\" in the name, this Pokémon can use the Trifrost attack for Colorless."
+  },
+  {
+    "id": 441,
+    "name": "Glittering Star Pattern",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may switch in 1 of your opponent's Benched Pokémon that has 90 HP or less remaining to the Active Spot."
+  },
+  {
+    "id": 442,
+    "name": "Selective Slime",
+    "text": "Once during your turn, you may flip a coin. If heads, choose Burned, Confused, or Poisoned. Your opponent's Active Pokémon is now affected by that Special Condition."
+  },
+  {
+    "id": 443,
+    "name": "Ripening Charge",
+    "text": "Once during your turn, you may attach a Basic Grass Energy card from your hand to 1 of your Pokémon. If you attached Energy to a Pokémon in this way, heal 30 damage from that Pokémon."
+  },
+  {
+    "id": 445,
+    "name": "Primal Knowledge",
+    "text": "Attacks used by your Pokémon do 30 more damage to your opponent's Active Evolution Pokémon (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 446,
+    "name": "Food Prep",
+    "text": "Attacks used by this Pokémon cost Colorless less for each Kofu card in your discard pile."
+  },
+  {
+    "id": 447,
+    "name": "Impervious Shell",
+    "text": "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon if that damage is 200 or more."
+  },
+  {
+    "id": 449,
+    "name": "Time to Chow Down",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may heal all damage from each of your Evolution Pokémon. If you healed any damage in this way, discard all Energy from those Pokémon."
+  },
+  {
+    "id": 450,
+    "name": "Wide Wall",
+    "text": "As long as this Pokémon is in the Active Spot, whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to all of your Pokémon."
+  },
+  {
+    "id": 451,
+    "name": "Salty Body",
+    "text": "This Pokémon can't be affected by any Special Conditions."
+  },
+  {
+    "id": 452,
+    "name": "Emergency Rotation",
+    "text": "Once during your turn, if this Pokémon is in your hand and your opponent has any Stage 2 Pokémon in play, you may put this Pokémon onto your Bench."
+  },
+  {
+    "id": 453,
+    "name": "Metal Bridge",
+    "text": "All of your Pokémon that have Metal Energy attached have no Retreat Cost."
+  },
+  {
+    "id": 454,
+    "name": "Pummeling Payback",
+    "text": "If this Pokémon is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), put 2 damage counters on the Attacking Pokémon for each Metal Energy attached to this Pokémon."
+  },
+  {
+    "id": 455,
+    "name": "Jewel Seeker",
+    "text": "Once during your turn, when you play this Pokémon from your hand to evolve 1 of your Pokémon, if you have any Tera Pokémon in play, you may search your deck for up to 2 Trainer cards, reveal them, and put them into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 456,
+    "name": "Fan Call",
+    "text": "Once during your first turn, you may search your deck for up to 3 Colorless Pokémon with 100 HP or less, reveal them, and put them into your hand. Then, shuffle your deck. You can't use more than 1 Fan Call Ability during your turn."
+  },
+  {
+    "id": 457,
+    "name": "Curly Wall",
+    "text": "As long as you have at least 1 other Bouffalant in play, all of your Basic Colorless Pokémon take 60 less damage from attacks from your opponent's Pokémon (after applying Weakness and Resistance). The effect of Curly Wall doesn't stack."
+  },
+  {
+    "id": 458,
+    "name": "Soft Wool",
+    "text": "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 459,
+    "name": "Protective Cover",
+    "text": "Prevent all effects of attacks used by your opponent's Pokémon done to this Pokémon. (Damage is not an effect.)"
+  },
+  {
+    "id": 460,
+    "name": "Primal Root",
+    "text": "As long as this Pokémon is in the Active Spot, attacks used by your opponent's Basic Pokémon cost Colorless more."
+  },
+  {
+    "id": 469,
+    "name": "Toxic Subjugation",
+    "text": "As long as this Pokémon is in the Active Spot, put 5 more damage counters on your opponent's Poisoned Pokémon during Pokémon Checkup."
+  },
+  {
+    "id": 473,
+    "name": "Mist Float",
+    "text": "If this Pokémon has any Psychic Energy attached, it has no Retreat Cost."
+  },
+  {
+    "id": 477,
+    "name": "Sudden Shearing",
+    "text": "When you play this Pokémon from your hand onto your Bench during your turn, you may discard the top card of your opponent's deck."
+  },
+  {
+    "id": 478,
+    "name": "Calming Light",
+    "text": "Once during your turn, if this Pokémon is in the Active Spot, you may make your opponent's Active Pokémon Asleep."
+  },
+  {
+    "id": 479,
+    "name": "Victory Cheer",
+    "text": "Attacks used by your Evolution Fire Pokémon do 10 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 480,
+    "name": "Unaware",
+    "text": "Prevent all effects of attacks used by your opponent's Pokémon done to this Pokémon. (Damage is not an effect.)"
+  },
+  {
+    "id": 482,
+    "name": "Sparkling Scales",
+    "text": "Prevent all damage from and effects of attacks from your opponent's Tera Pokémon done to this Pokémon."
+  },
+  {
+    "id": 484,
+    "name": "Up-Tempo",
+    "text": "You must put a card from your hand on the bottom of your deck in order to use this Ability. Once during your turn, you may draw cards until you have 5 cards in your hand."
+  },
+  {
+    "id": 485,
+    "name": "Solid Body",
+    "text": "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 486,
+    "name": "Snow Sink",
+    "text": "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Stadium in play."
+  },
+  {
+    "id": 487,
+    "name": "Resolute Heart",
+    "text": "If this Pokémon has full HP and would be Knocked Out by damage from an attack, it is not Knocked Out, and its remaining HP becomes 10."
+  },
+  {
+    "id": 488,
+    "name": "Overvolt Discharge",
+    "text": "Once during your turn, you may attach up to 3 Basic Energy cards from your discard pile to your Lightning Pokémon in any way you like. If you use this Ability, this Pokémon is Knocked Out."
+  },
+  {
+    "id": 489,
+    "name": "Wonder Kiss",
+    "text": "When your opponent's Active Pokémon is Knocked Out, flip a coin. If heads, take 1 more Prize card. The effect of Wonder Kiss doesn't stack."
+  },
+  {
+    "id": 490,
+    "name": "Glistening Bubbles",
+    "text": "If you have any Tera Pokémon in play, this Pokémon can use the Double-Edge attack for Psychic."
+  },
+  {
+    "id": 491,
+    "name": "Skyliner",
+    "text": "Your Basic Pokémon in play have no Retreat Cost."
+  },
+  {
+    "id": 492,
+    "name": "Beckoning Tail",
+    "text": "You must discard a Chill Teaser Toy card from your hand in order to use this Ability. Once during your turn, you may switch in 1 of your opponent's Benched Pokémon to the Active Spot."
+  },
+  {
+    "id": 493,
+    "name": "Obliging Heal",
+    "text": "When you play this Pokémon from your hand onto your Bench during your turn, you may heal 30 damage from your Active Pokémon and have it recover from a Special Condition."
+  },
+  {
+    "id": 494,
+    "name": "Sticky Bind",
+    "text": "As long as this Pokémon is on your Bench, Benched Stage 2 Pokémon (both yours and your opponent's) have no Abilities."
+  },
+  {
+    "id": 495,
+    "name": "Assemble Alloy",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may attach up to 2 Basic Metal Energy cards from your discard pile to your Metal Pokémon in any way you like."
+  },
+  {
+    "id": 496,
+    "name": "Boosted Evolution",
+    "text": "As long as this Pokémon is in the Active Spot, it can evolve during your first turn or the turn you play it."
+  },
+  {
+    "id": 497,
+    "name": "Born to Slack",
+    "text": "If your opponent has no Pokémon ex or Pokémon V in play, this Pokémon can't attack."
+  },
+  {
+    "id": 498,
+    "name": "Expert Hider",
+    "text": "If any damage is done to this Pokémon by attacks, flip a coin. If heads, prevent that damage."
+  },
+  {
+    "id": 538,
+    "name": "Protective Bell",
+    "text": "All of your Pokémon take 10 less damage from attacks from your opponent's Pokémon (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 542,
+    "name": "Rainbow DNA",
+    "text": "This Pokémon can evolve into any Pokémon ex that evolves from Eevee if you play it from your hand onto this Pokémon. (This Pokémon can't evolve during your first turn or the turn you play it.)"
+  },
+  {
+    "id": 544,
+    "name": "Insomnia",
+    "text": "This Pokémon can't be Asleep."
+  },
+  {
+    "id": 547,
+    "name": "Fur Coat",
+    "text": "This Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 562,
+    "name": "Sunny Day",
+    "text": "Attacks used by your Grass Pokémon and Fire Pokémon do 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 563,
+    "name": "Exploding Needles",
+    "text": "If this Pokémon is in the Active Spot and is Knocked Out by damage from an attack from your opponent's Pokémon, put 6 damage counters on the Attacking Pokémon."
+  },
+  {
+    "id": 564,
+    "name": "Showtime",
+    "text": "Once during your turn, if this Pokémon is on your Bench, you may switch it with your Active Pokémon."
+  },
+  {
+    "id": 565,
+    "name": "Magma Surge",
+    "text": "During Pokémon Checkup, put 3 more damage counters on your opponent's Burned Pokémon."
+  },
+  {
+    "id": 566,
+    "name": "Seething Spirit",
+    "text": "Once during your turn, you may attach a Basic Energy card from your discard pile to 1 of your Pokémon."
+  },
+  {
+    "id": 567,
+    "name": "Scalding Steam",
+    "text": "Once during your turn, if this Pokémon is in the Active Spot, you may make your opponent's Active Pokémon Burned."
+  },
+  {
+    "id": 568,
+    "name": "Vibrant Dance",
+    "text": "All of your Pokémon in play get +40 HP. The effect of Vibrant Dance doesn't stack."
+  },
+  {
+    "id": 569,
+    "name": "Electric Streamer",
+    "text": "As often as you like during your turn, you may attach a Basic Lightning Energy card from your hand to 1 of your Iono's Pokémon."
+  },
+  {
+    "id": 570,
+    "name": "Flashing Draw",
+    "text": "You must discard a Basic Lightning Energy from this Pokémon in order to use this Ability. Once during your turn, you may draw cards until you have 6 cards in your hand."
+  },
+  {
+    "id": 571,
+    "name": "Fairy Zone",
+    "text": "The Weakness of each of your opponent's Dragon Pokémon in play is now Psychic. (Apply Weakness as ×2.)"
+  },
+  {
+    "id": 572,
+    "name": "Inviting Wink",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may have your opponent reveal their hand and you put any number of Basic Pokémon you find there onto their Bench."
+  },
+  {
+    "id": 573,
+    "name": "Confectionary Gift",
+    "text": "Once during your turn, you may heal 30 damage from 1 of your Pokémon."
+  },
+  {
+    "id": 574,
+    "name": "Mammoth Hauler",
+    "text": "Once during your turn, you may search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 575,
+    "name": "Rock Armor",
+    "text": "If this Pokémon has any Energy attached, it takes 30 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 576,
+    "name": "Spike-Clad",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may attach up to 2 Spiky Energy cards from your discard pile to this Pokémon."
+  },
+  {
+    "id": 577,
+    "name": "Secret Forest Path",
+    "text": "As long as this Pokémon is on your Bench, your Active Pokémon's Retreat Cost is ColorlessColorless less."
+  },
+  {
+    "id": 578,
+    "name": "Daunting Gaze",
+    "text": "As long as this Pokémon is in the Active Spot, your opponent can't play any Item cards from their hand."
+  },
+  {
+    "id": 579,
+    "name": "Trade",
+    "text": "You must discard a card from your hand in order to use this Ability. Once during your turn, you may draw 2 cards."
+  },
+  {
+    "id": 580,
+    "name": "Auto Heal",
+    "text": "As long as this Pokémon is in the Active Spot, whenever you attach an Energy card from your hand to 1 of your Pokémon, heal 90 damage from that Pokémon."
+  },
+  {
+    "id": 581,
+    "name": "Extra Helpings",
+    "text": "Attacks used by your Hop's Pokémon do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance). The effect of Extra Helpings doesn't stack."
+  },
+  {
+    "id": 582,
+    "name": "Tuning Echo",
+    "text": "If you have the same number of cards in your hand as your opponent, ignore all Energy in the cost of Frightening Howl used by this Pokémon."
+  },
+  {
+    "id": 583,
+    "name": "Defiant Horn",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may switch in 1 of your opponent's Benched Pokémon to the Active Spot."
+  }
+]

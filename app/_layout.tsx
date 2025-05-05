@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
 import SplashScreenComponent from "@/components/ui/SplashScreen";
+import { SQLiteProvider } from "expo-sqlite";
+import { migrateDbIfNeeded } from "@/lib/sqlite";
 
 import "react-native-reanimated";
 
@@ -34,22 +36,27 @@ export default function RootLayout() {
     return <SplashScreenComponent />;
   }
   return (
-    <SearchResultProvider>
-      <ThemedView style={{ flex: 1 }}>
-        <Stack
-          screenOptions={{
-            contentStyle: { backgroundColor: theme.colors.background },
-            animation: "fade",
-          }}
-        >
-          <Stack.Screen
-            name="(tabs)"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemedView>
-    </SearchResultProvider>
+    <SQLiteProvider
+      databaseName="pokemon.db"
+      onInit={migrateDbIfNeeded}
+    >
+      <SearchResultProvider>
+        <ThemedView style={{ flex: 1 }}>
+          <Stack
+            screenOptions={{
+              contentStyle: { backgroundColor: theme.colors.background },
+              animation: "fade",
+            }}
+          >
+            <Stack.Screen
+              name="(tabs)"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemedView>
+      </SearchResultProvider>
+    </SQLiteProvider>
   );
 }
