@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { supabase } from "@/lib/supabase";
+import { useSQLiteContext } from "expo-sqlite";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import SearchResult from "@/components/SearchResult";
@@ -18,6 +18,8 @@ export default function SearchResultScreen() {
   const router = useRouter();
   const { lastSearchPage, clearAdvancedForm } = useSearchFormContext();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  // Get SQLite DB instance
+  const db = useSQLiteContext();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -30,6 +32,12 @@ export default function SearchResultScreen() {
   // Fetch paginated card data when cardIds or currentPage changes
   useEffect(() => {
     const fetchCards = async () => {
+      if (!db) {
+        console.error("Database context not available!");
+        setCards([]);
+        setLoading(false);
+        return;
+      }
       if (!cardIds || cardIds.length === 0) {
         setCards([]);
         return;
@@ -38,24 +46,35 @@ export default function SearchResultScreen() {
       const startIdx = (currentPage - 1) * itemsPerPage;
       const endIdx = startIdx + itemsPerPage;
       const paginatedIds = cardIds.slice(startIdx, endIdx);
-      const { data, error } = await supabase
-        .from("Card")
-        .select("cardId, name, imagesLarge")
-        .in("cardId", paginatedIds);
-      if (error) {
+
+      if (paginatedIds.length === 0) {
         setCards([]);
-      } else {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Use SQLite db instance to fetch names and images
+        const placeholders = paginatedIds.map(() => "?").join(", ");
+        const data = await db.getAllAsync<{ cardId: string; name: string; imagesLarge: string }>(
+          `SELECT cardId, name, imagesLarge FROM Card WHERE cardId IN (${placeholders})`,
+          paginatedIds
+        );
+
         // Ensure order matches paginatedIds
         const cardsOrdered = paginatedIds.map(
           (id) => data.find((c) => c.cardId === id) || { cardId: id, name: id, imagesLarge: "" }
         );
         setCards(cardsOrdered);
+      } catch (error) {
+        console.error("Error fetching cards from SQLite:", error);
+        setCards([]);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchCards();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardIds, currentPage, itemsPerPage]);
+  }, [cardIds, currentPage, itemsPerPage, db, setCards, setLoading]); //
 
   // Pagination handler
   const handlePageChange = useCallback(

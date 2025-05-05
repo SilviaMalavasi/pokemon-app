@@ -5,7 +5,6 @@ function generatePlaceholders(count: number): string {
   return Array(count).fill("?").join(",");
 }
 
-// Define all fields and their types as in FreeSearchForm exclusions
 const allFields: { table: string; column: string; type: "text" | "int" | "json-string-array" }[] = [
   { table: "Card", column: "name", type: "text" },
   { table: "Card", column: "supertype", type: "text" },
@@ -45,7 +44,7 @@ export async function freeQueryBuilder(
   searchNormalized = searchNormalized.replace(/(\d+)\s*[x×]/gi, "$1×");
   const cardIdSet = new Set<string>();
 
-  // Helper to resolve Card.id (numeric primary key) to Card.cardId (string business key)
+  // Helper to resolve Card.id to Card.cardId
   async function cardIdsFromCardIds(ids: number[]): Promise<string[]> {
     if (!ids.length) return [];
     const placeholders = generatePlaceholders(ids.length);
@@ -55,6 +54,7 @@ export async function freeQueryBuilder(
     );
     return results.map((row) => row.cardId).filter(Boolean);
   }
+
   // Helper to resolve CardSet.id to Card.cardId
   async function cardIdsFromSetIds(setIds: number[]): Promise<string[]> {
     if (!setIds.length) return [];
@@ -65,46 +65,44 @@ export async function freeQueryBuilder(
     );
     return results.map((row) => row.cardId).filter(Boolean);
   }
+
   // Helper to resolve Abilities.id to Card.cardId via CardAbilities
   async function cardIdsFromAbilityIds(abilityIds: number[]): Promise<string[]> {
     if (!abilityIds.length) return [];
     const placeholders = generatePlaceholders(abilityIds.length);
-    // First, get the Card.id (numeric PK) associated with these abilities
     const cardIdResults = await db.getAllAsync<{ cardId: number }>(
       `SELECT cardId FROM CardAbilities WHERE abilityId IN (${placeholders})`,
       abilityIds
     );
     const cardIds = cardIdResults.map((row) => row.cardId).filter((id): id is number => id != null); // Type guard
     if (!cardIds.length) return [];
-    // Then, convert Card.id (numeric PK) to Card.cardId (string business key)
     return cardIdsFromCardIds(cardIds);
   }
+
   // Helper to resolve Attacks.id to Card.cardId via CardAttacks
   async function cardIdsFromAttackIds(attackIds: number[]): Promise<string[]> {
     if (!attackIds.length) return [];
     const placeholders = generatePlaceholders(attackIds.length);
-    // First, get the Card.id (numeric PK) associated with these attacks
     const cardIdResults = await db.getAllAsync<{ cardId: number }>(
       `SELECT cardId FROM CardAttacks WHERE attackId IN (${placeholders})`,
       attackIds
     );
-    const cardIds = cardIdResults.map((row) => row.cardId).filter((id): id is number => id != null); // Type guard
+    const cardIds = cardIdResults.map((row) => row.cardId).filter((id): id is number => id != null);
     if (!cardIds.length) return [];
-    // Then, convert Card.id (numeric PK) to Card.cardId (string business key)
     return cardIdsFromCardIds(cardIds);
   }
+
   // Helper to resolve CardAbilities.id to Card.cardId
   async function cardIdsFromCardAbilitiesIds(cardAbilitiesIds: number[]): Promise<string[]> {
     if (!cardAbilitiesIds.length) return [];
     const placeholders = generatePlaceholders(cardAbilitiesIds.length);
-    // First, get the Card.id (numeric PK) from CardAbilities using its own id
     const cardIdResults = await db.getAllAsync<{ cardId: number }>(
       `SELECT cardId FROM CardAbilities WHERE id IN (${placeholders})`,
       cardAbilitiesIds
     );
-    const cardIds = cardIdResults.map((row) => row.cardId).filter((id): id is number => id != null); // Type guard
+    const cardIds = cardIdResults.map((row) => row.cardId).filter((id): id is number => id != null);
     if (!cardIds.length) return [];
-    // Then, convert Card.id (numeric PK) to Card.cardId (string business key)
+
     return cardIdsFromCardIds(cardIds);
   }
   // Helper to resolve CardAttacks.id to Card.cardId
@@ -116,13 +114,11 @@ export async function freeQueryBuilder(
       `SELECT cardId FROM CardAttacks WHERE id IN (${placeholders})`,
       cardAttacksIds
     );
-    const cardIds = cardIdResults.map((row) => row.cardId).filter((id): id is number => id != null); // Type guard
+    const cardIds = cardIdResults.map((row) => row.cardId).filter((id): id is number => id != null);
     if (!cardIds.length) return [];
-    // Then, convert Card.id (numeric PK) to Card.cardId (string business key)
     return cardIdsFromCardIds(cardIds);
   }
 
-  // Only search included fields if provided
   const fieldsToSearch =
     includedTablesAndColumns && includedTablesAndColumns.length > 0
       ? allFields.filter((f) =>
@@ -134,9 +130,6 @@ export async function freeQueryBuilder(
     let results: { id: number }[] = [];
     try {
       if (field.type === "text" || field.type === "json-string-array") {
-        // Use LIKE for text and simple JSON array search (matching Supabase ilike behavior)
-        // Using COLLATE NOCASE for case-insensitivity
-        // Note: Searching Card.cardId (text) directly
         if (field.table === "Card" && field.column === "cardId") {
           const cardResults = await db.getAllAsync<{ cardId: string }>(
             `SELECT cardId FROM Card WHERE cardId LIKE ? COLLATE NOCASE`,
@@ -171,7 +164,7 @@ export async function freeQueryBuilder(
           }
         }
       } else if (field.type === "int") {
-        const num = Number(trimmed); // Use trimmed, not searchNormalized for number conversion
+        const num = Number(trimmed);
         if (!isNaN(num)) {
           results = await db.getAllAsync<{ id: number }>(`SELECT id FROM ${field.table} WHERE ${field.column} = ?`, [
             num,
@@ -198,16 +191,13 @@ export async function freeQueryBuilder(
         }
       }
     } catch (err: unknown) {
-      // Use unknown for catch block error type
-      // Log error appropriately, maybe check if it's an Error instance
       if (err instanceof Error) {
         console.error(`[FreeSearch] Error searching ${field.table}.${field.column}:`, err.message);
       } else {
         console.error(`[FreeSearch] Unknown error searching ${field.table}.${field.column}:`, err);
       }
-      // Continue to next field even if one fails
     }
-  } // Closing brace for the for loop
+  }
 
   // Sort cardIds by Card name (batching to avoid large IN clauses)
   const cardIdsArr = Array.from(cardIdSet);
@@ -227,7 +217,6 @@ export async function freeQueryBuilder(
     }
   } catch (err: unknown) {
     console.error("[FreeSearch] Error fetching card names for sorting:", err);
-    // Return unsorted if fetching names fails
     return { cardIds: cardIdsArr, query: search };
   }
 
@@ -239,4 +228,4 @@ export async function freeQueryBuilder(
   });
 
   return { cardIds: sortedCardIds, query: search };
-} // Closing brace for the function
+}

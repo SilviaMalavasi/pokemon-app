@@ -4,7 +4,7 @@ import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import FullCard from "@/components/FullCard";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { supabase } from "@/lib/supabase";
+import { useSQLiteContext } from "expo-sqlite";
 import { CardType, Ability, Attack } from "@/types/PokemonCardType";
 import FloatingButton from "@/components/ui/FloatingButton";
 import { theme } from "@/style/ui/Theme";
@@ -19,6 +19,9 @@ export default function FullCardScreen() {
   const [loading, setLoading] = useState(true);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const router = useRouter();
+  // Get SQLite DB instance
+  const db = useSQLiteContext();
+
   const handleBack = () => {
     router.back();
   };
@@ -32,73 +35,76 @@ export default function FullCardScreen() {
   );
 
   useEffect(() => {
-    if (!cardId) return;
+    if (!cardId || !db) return;
+
     const fetchCard = async () => {
       setLoading(true);
-      // 1. Fetch main card data
-      const { data: cardData, error: cardError } = await supabase
-        .from("Card")
-        .select("*")
-        .eq("cardId", cardId)
-        .single();
-      if (cardError || !cardData) {
-        setLoading(false);
-        return;
-      }
-      // 2. Fetch CardSet
-      const { data: setData } = await supabase.from("CardSet").select("*").eq("id", cardData.setId).single();
-      // 3. Fetch Abilities
-      const { data: cardAbilities } = await supabase
-        .from("CardAbilities")
-        .select("abilityId")
-        .eq("cardId", cardData.id);
-      let abilities: Ability[] = [];
-      if (cardAbilities && cardAbilities.length > 0) {
-        const abilityIds = cardAbilities.map((a: any) => a.abilityId);
-        const { data: abilitiesData } = await supabase.from("Abilities").select("*").in("id", abilityIds);
-        abilities = abilitiesData || [];
-      }
-      // 4. Fetch Attacks
-      const { data: cardAttacks } = await supabase.from("CardAttacks").select("*").eq("cardId", cardData.id);
-      let attacks: Attack[] = [];
-      if (cardAttacks && cardAttacks.length > 0) {
-        const attackIds = cardAttacks.map((a: any) => a.attackId);
-        const { data: attacksData } = await supabase.from("Attacks").select("*").in("id", attackIds);
+      try {
+        // 1. Fetch main card data using SQLite
+        const cardData = await db.getFirstAsync<CardType>(`SELECT * FROM Card WHERE cardId = ?`, [cardId]);
 
-        // Create a map to track processed attack IDs to avoid duplicates
+        if (!cardData) {
+          console.error(`Card with cardId ${cardId} not found.`);
+          setLoading(false);
+          return;
+        }
+
+        // 2. Fetch CardSet using SQLite
+        const setData = await db.getFirstAsync<any>( // Use 'any' or define a CardSet type
+          `SELECT * FROM CardSet WHERE id = ?`,
+          [cardData.setId]
+        );
+
+        // 3. Fetch Abilities using SQLite (Join approach)
+        const abilitiesData = await db.getAllAsync<Ability>(
+          `SELECT a.*
+           FROM Abilities a
+           JOIN CardAbilities ca ON a.id = ca.abilityId
+           WHERE ca.cardId = ?`,
+          [cardData.id] // Use the internal DB id
+        );
+        const abilities = abilitiesData || [];
+
+        // 4. Fetch Attacks using SQLite (Join approach)
+        const attacksData = await db.getAllAsync<any>( // Use 'any' or define a more specific type if needed
+          `SELECT att.*, ca.cost, ca.convertedEnergyCost, ca.damage
+           FROM Attacks att
+           JOIN CardAttacks ca ON att.id = ca.attackId
+           WHERE ca.cardId = ?`,
+          [cardData.id] // Use the internal DB id
+        );
+
+        // Process attacks to parse cost JSON and handle potential duplicates (if needed, though JOIN might handle it)
         const processedAttackMap = new Map();
-
-        attacks = cardAttacks
-          .map((ca: any) => {
-            const attack = attacksData?.find((a: any) => a.id === ca.attackId);
-            return {
-              ...attack,
-              cost: ca.cost ? JSON.parse(ca.cost) : [],
-              convertedEnergyCost: ca.convertedEnergyCost,
-              damage: ca.damage,
-            };
-          })
+        const attacks: Attack[] = (attacksData || [])
+          .map((attack) => ({
+            ...attack,
+            cost: attack.cost ? JSON.parse(attack.cost) : [],
+          }))
           .filter((attack) => {
-            // Only keep unique attacks based on ID
             if (processedAttackMap.has(attack.id)) {
               return false;
             }
             processedAttackMap.set(attack.id, true);
             return true;
           });
-      }
-      // 5. Assemble the full card object
-      setCard({
-        ...cardData,
-        cardSet: setData,
-        abilities,
-        attacks,
-      });
-      setLoading(false);
-    };
-    fetchCard();
-  }, [cardId]);
 
+        // 5. Assemble the full card object
+        setCard({
+          ...cardData,
+          cardSet: setData, // Assign fetched set data
+          abilities,
+          attacks,
+        });
+      } catch (error) {
+        console.error("Error fetching card data from SQLite:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCard();
+  }, [cardId, db]);
   return (
     <>
       <ParallaxScrollView
