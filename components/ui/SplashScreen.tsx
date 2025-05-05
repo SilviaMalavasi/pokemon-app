@@ -62,17 +62,19 @@ export default function SplashScreen({ isUpdatingDb }: SplashScreenProps) {
             style={styles.icon}
           />
           {isUpdatingDb && (
-            <ThemedText
-              type="buttonSmall"
-              color="white"
-              style={styles.title}
-            >
-              Updating DB
-            </ThemedText>
+            <>
+              <ThemedText
+                type="buttonSmall"
+                color="white"
+                style={styles.title}
+              >
+                Updating Database
+              </ThemedText>
+              <View style={styles.animatedTextContainer}>
+                <Animated.Text style={[styles.text, { opacity: fadeAnim }]}>{messages[messageIndex]}</Animated.Text>
+              </View>{" "}
+            </>
           )}
-          <View style={styles.animatedTextContainer}>
-            <Animated.Text style={[styles.text, { opacity: fadeAnim }]}>{messages[messageIndex]}</Animated.Text>
-          </View>
         </View>
       </ThemedView>
     </View>

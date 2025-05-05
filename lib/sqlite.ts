@@ -141,8 +141,8 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase, setIsUpdating: (isUp
   // ----> INCREMENT THIS WHEN JSON CHANGES <----
   const DATABASE_VERSION = 7;
 
-  // Indicate potential update start (will be set to false quickly if no update needed)
-  setIsUpdating(true);
+  // Don't set updating to true initially
+  // setIsUpdating(true);
 
   const result = await db.getFirstAsync<{ user_version: number }>("PRAGMA user_version");
   let currentDbVersion = result?.user_version ?? 0;
@@ -151,11 +151,14 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase, setIsUpdating: (isUp
 
   if (currentDbVersion >= DATABASE_VERSION) {
     console.log("Database is up-to-date.");
-    setIsUpdating(false); // No update needed
+    // Ensure state is false if we return early
+    setIsUpdating(false);
     return;
   }
 
+  // Set updating to true ONLY if migration is needed
   console.log(`Starting migration from version ${currentDbVersion} to ${DATABASE_VERSION}...`);
+  setIsUpdating(true);
 
   try {
     // --- Migration Steps ---

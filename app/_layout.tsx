@@ -3,7 +3,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState, useCallback } from "react";
 import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
 import SplashScreenComponent from "@/components/ui/SplashScreen";
@@ -26,8 +26,16 @@ export default function RootLayout() {
     "Inter-Light": require("../assets/fonts/Inter_28pt-Light.ttf"),
   });
 
-  // State to track if the database is currently being updated
-  const [isUpdatingDb, setIsUpdatingDb] = useState(true);
+  const [isUpdatingDb, setIsUpdatingDb] = useState(false);
+
+  // Define the init function with the state setter, memoized with useCallback
+  const initializeDatabase = useCallback(
+    async (db: SQLiteDatabase) => {
+      console.log("Running initializeDatabase...");
+      await migrateDbIfNeeded(db, setIsUpdatingDb);
+    },
+    [setIsUpdatingDb]
+  ); // Dependency array includes the setter
 
   useEffect(() => {
     // Hide the native splash screen *only* once fonts are loaded.
@@ -41,11 +49,6 @@ export default function RootLayout() {
     // Pass the updating state even to the initial splash screen
     return <SplashScreenComponent isUpdatingDb={isUpdatingDb} />;
   }
-
-  // Define the init function with the state setter
-  const initializeDatabase = async (db: SQLiteDatabase) => {
-    await migrateDbIfNeeded(db, setIsUpdatingDb);
-  };
 
   return (
     // Pass the updating state to the fallback splash screen
