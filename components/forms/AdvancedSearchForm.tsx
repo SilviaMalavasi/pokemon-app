@@ -11,7 +11,7 @@ import ThemedTextInput from "@/components/base/ThemedTextInput";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { queryBuilder } from "@/helpers/queryBuilder";
 import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
-import { supabase } from "@/lib/supabase";
+import { useSQLiteContext } from "expo-sqlite"; // Import the hook
 
 import CardTypeModal, { getCardTypeFilters } from "@/components/forms/modals/CardTypeModal";
 import RulesModal, { getRulesFilters } from "@/components/forms/modals/RulesModal";
@@ -44,6 +44,7 @@ export default function AdvancedSearchForm({
   currentPage: number;
   itemsPerPage: number;
 }) {
+  const db = useSQLiteContext(); // Get db instance from context
   // Context for form state
   const { advancedForm, setAdvancedForm, lastSearchPage, clearAdvancedForm } = useSearchFormContext();
 
@@ -262,6 +263,7 @@ export default function AdvancedSearchForm({
     cardSetNumber.trim() !== "";
 
   const handleSubmit = async (): Promise<void> => {
+    console.log("handleSubmit started"); // Log start
     if (setLoadingProp) setLoadingProp(true);
     setLoading(true);
     setError(null);
@@ -292,10 +294,25 @@ export default function AdvancedSearchForm({
       ...getRulesFilters(cardRules),
     ].filter(Boolean) as QueryBuilderFilter[];
 
+    console.log("Filters built:", JSON.stringify(filters)); // Log filters
+
+    if (!db) {
+      // Add a check for db instance
+      console.error("Database context not available!");
+      setError("Database not ready. Please try again.");
+      setLoading(false);
+      if (setLoadingProp) setLoadingProp(false);
+      return;
+    }
+
     try {
-      const { cardIds, query } = await queryBuilder(filters);
-      setCardIds(cardIds);
-      setSearchQuery(query);
+      // No need to await dbPromise here
+      console.log("Database context available, calling queryBuilder..."); // Log before queryBuilder
+      const { cardIds, query } = await queryBuilder(db, filters); // Pass db instance from hook
+      console.log("queryBuilder finished. Results:", { cardIdsLength: cardIds.length, query }); // Log results
+
+      // setCardIds(cardIds); // Let parent handle this via onSearchResults
+      // setSearchQuery(query); // Let parent handle this via onSearchResults
       if (onSearchResults) onSearchResults(cardIds, query);
 
       // Fetch and log card names for the returned cardIds (only for paginated IDs)
@@ -303,14 +320,25 @@ export default function AdvancedSearchForm({
       const endIdx = startIdx + itemsPerPage;
       const paginatedIds = cardIds.slice(startIdx, endIdx);
       if (paginatedIds.length > 0) {
-        const { data, error } = await supabase.from("Card").select("cardId, name").in("cardId", paginatedIds);
-        if (error) {
-          console.error("Error fetching card names:", error.message);
+        console.log("Fetching card names for paginated IDs:", paginatedIds);
+        // Use SQLite db instance to fetch names
+        const placeholders = paginatedIds.map(() => "?").join(", ");
+        const nameData = await db.getAllAsync<{ cardId: string; name: string }>(
+          `SELECT cardId, name FROM Card WHERE cardId IN (${placeholders})`,
+          paginatedIds
+        );
+        if (nameData) {
+          console.log("Fetched card names:", nameData);
+        } else {
+          // db.getAllAsync returns empty array if no results, check for actual errors if needed
+          console.log("No card names found for the paginated IDs or an error occurred.");
         }
       }
     } catch (err: any) {
+      console.error("Error during handleSubmit:", err); // Log error
       setError(err.message || "Search failed");
     } finally {
+      console.log("handleSubmit finished"); // Log end
       setLoading(false);
       if (setLoadingProp) setLoadingProp(false);
     }

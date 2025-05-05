@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { type SQLiteDatabase } from "expo-sqlite";
 
 export type InputConfig = {
   key: string;
@@ -91,7 +91,10 @@ function applyFilterToQuery(query: any, filter: QueryBuilderFilter) {
 }
 
 // Helper Function to Normalize all variants of 'pokemon', 'pokèmon', 'pokémon' (any case) to 'Pokémon' (capital P, é)
-export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ cardIds: string[]; query: string }> {
+export async function queryBuilder(
+  db: SQLiteDatabase,
+  filters: QueryBuilderFilter[]
+): Promise<{ cardIds: string[]; query: string }> {
   const normalizedFilters = filters.map((f) => {
     if (f.config.type === "text" && typeof f.value === "string") {
       return {
@@ -114,9 +117,12 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     }
   });
 
-  // Helper to build a Supabase query for a table and its filters (for non-joined tables)
-  const buildQuery = (table: string, selectCol: string, filters: QueryBuilderFilter[]) => {
-    let query = supabase.from(table).select(selectCol);
+  // Helper to build a SQLite query for a table and its filters (for non-joined tables)
+  const buildQuery = async (table: string, selectCol: string, filters: QueryBuilderFilter[]) => {
+    let query = `SELECT ${selectCol} FROM ${table}`;
+    const whereClauses: string[] = [];
+    const params: any[] = [];
+
     // Collect all OR groups for this table
     const orGroups = filters.filter((f) => f.config.logic === "or" && Array.isArray(f.value));
     // Collect all AND filters for this table
@@ -124,7 +130,69 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
 
     // Apply AND filters first using the helper
     andFilters.forEach((f) => {
-      query = applyFilterToQuery(query, f);
+      const { config, value, operator } = f;
+      if (value === null || value === undefined) return;
+
+      // Skip filters that need special JS handling
+      if (requiresJsTextNumericFilter(f)) {
+        return;
+      }
+
+      const col = config.table === "Attacks" ? `Attacks.${config.column}` : config.column;
+
+      if (config.type === "text") {
+        const trimmed = String(value).trim();
+        const words = trimmed.split(/\s+/).filter(Boolean);
+        if (words.length > 1) {
+          // AND logic for multiple words within a single text filter
+          words.forEach((word) => {
+            whereClauses.push(`${col} LIKE ?`);
+            params.push(`%${word}%`);
+          });
+        } else if (trimmed) {
+          whereClauses.push(`${col} LIKE ?`);
+          params.push(`%${trimmed}%`);
+        }
+      } else if (config.type === "number") {
+        if (config.valueType === "int") {
+          const op = operator || "=";
+          whereClauses.push(`${col} IS NOT NULL`);
+          if (op === ">=") {
+            whereClauses.push(`${col} >= ?`);
+            params.push(value);
+          } else if (op === "<=") {
+            whereClauses.push(`${col} <= ?`);
+            params.push(value);
+          } else {
+            whereClauses.push(`${col} = ?`);
+            params.push(value);
+          }
+        } else if (config.valueType === "text") {
+          // Exact match for text like '100+' or '100x'
+          const op = operator || "=";
+          if (op !== ">=" && op !== "<=") {
+            let matchString = String(value);
+            if (operator === "+" || operator === "x" || operator === "×") {
+              const variations = operator === "x" ? [`${value}x`, `${value}×`] : [`${value}${operator}`];
+              const orClause = variations.map((v) => `${col} = ?`).join(" OR ");
+              whereClauses.push(`(${orClause})`);
+              params.push(...variations);
+            } else {
+              whereClauses.push(`${col} = ?`); // Exact match for other cases
+              params.push(matchString);
+            }
+          }
+        }
+      } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
+        if (config.valueType === "json-string-array" || Array.isArray(value)) {
+          // Using OR logic for multiselect items (match any of the selected values)
+          const orString = value.map((v: string) => `${col} LIKE ?`).join(" OR ");
+          if (orString) {
+            whereClauses.push(`(${orString})`);
+            params.push(...value.map((v: string) => `%${v}%`));
+          }
+        }
+      }
     });
 
     // Combine all OR sub-filters into a single .or() clause
@@ -140,34 +208,43 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
 
           if (config.type === "text") {
             const trimmed = String(value).trim();
-            return trimmed ? `${col}.ilike.%${trimmed}%` : null;
+            return trimmed ? `${col} LIKE ?` : null;
           } else if (config.type === "number" && config.valueType === "int") {
-            return `${col}.eq.${value}`;
+            return `${col} = ?`;
           } else if (config.type === "number" && config.valueType === "text") {
             const op = sub.operator || "=";
             if (op !== ">=" && op !== "<=") {
               let matchString = String(value);
               if (sub.operator === "+" || sub.operator === "x" || sub.operator === "×") {
                 const variations = sub.operator === "x" ? [`${value}x`, `${value}×`] : [`${value}${sub.operator}`];
-                return variations.map((v) => `${col}.eq.${v}`).join(",");
+                return variations.map((v) => `${col} = ?`).join(" OR ");
               } else {
-                return `${col}.eq.${matchString}`;
+                return `${col} = ?`;
               }
             }
             return null;
           } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
             // Handle multiselect within OR - assumes OR between items
-            const orString = value.map((v: string) => `${col}.ilike.%${v}%`).join(",");
+            const orString = value.map((v: string) => `${col} LIKE ?`).join(" OR ");
             return orString || null;
           }
           return null;
         })
         .filter(Boolean)
-        .join(",");
+        .join(" OR ");
 
-      if (orFilterStrings) query = query.or(orFilterStrings);
+      if (orFilterStrings) {
+        whereClauses.push(`(${orFilterStrings})`);
+        params.push(...allOrSubs.map((sub: QueryBuilderFilter) => `%${sub.value}%`));
+      }
     }
-    return query;
+
+    if (whereClauses.length > 0) {
+      query += ` WHERE ${whereClauses.join(" AND ")}`;
+    }
+
+    const result = await db.getAllAsync(query, params);
+    return result;
   };
 
   // 1. Card table filters
@@ -182,16 +259,16 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       cardSelect = `cardId, ${Array.from(new Set(requiredCols)).join(", ")}`;
     }
 
-    const cardQuery = buildQuery("Card", cardSelect, grouped["Card"]);
-    const { data, error } = await cardQuery;
-    if (error) {
-      console.error("Card Query Error:", error);
-      return { cardIds: [], query: `Card Error: ${error.message}` };
+    const cardQuery = await buildQuery("Card", cardSelect, grouped["Card"]);
+    const data = cardQuery;
+    if (!data) {
+      console.error("Card Query Error");
+      return { cardIds: [], query: `Card Error` };
     }
 
     let filteredData = data || [];
     if (cardJsFilters.length > 0) {
-      filteredData = filteredData.filter((row) => {
+      filteredData = filteredData.filter((row: any) => {
         return cardJsFilters.every((f) =>
           checkJsTextNumericFilter(row[f.config.column as keyof typeof row] as string, f.value, f.operator!)
         );
@@ -204,18 +281,19 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   // 2. CardSet filters (Card.setId -> CardSet.id)
   let cardSetIds: string[] = [];
   if (grouped["CardSet"]) {
-    const setQuery = buildQuery("CardSet", "id", grouped["CardSet"]);
-    const { data, error } = await setQuery;
-    if (error) {
-      console.error("CardSet Query Error:", error);
-      return { cardIds: [], query: `CardSet Error: ${error.message}` };
+    const setQuery = await buildQuery("CardSet", "id", grouped["CardSet"]);
+    const data = setQuery;
+    if (!data) {
+      console.error("CardSet Query Error");
+      return { cardIds: [], query: `CardSet Error` };
     }
     const setIds = data?.map((row: any) => row.id) || [];
     if (setIds.length > 0) {
-      const { data: cardData, error: cardError } = await supabase.from("Card").select("cardId").in("setId", setIds);
-      if (cardError) {
-        console.error("Card Query (Set Join) Error:", cardError);
-        return { cardIds: [], query: `Card (Set Join) Error: ${cardError.message}` };
+      const placeholders = setIds.map(() => "?").join(", ");
+      const cardData = await db.getAllAsync(`SELECT cardId FROM Card WHERE setId IN (${placeholders})`, ...setIds);
+      if (!cardData) {
+        console.error("Card Query (Set Join) Error");
+        return { cardIds: [], query: `Card (Set Join) Error` };
       }
       cardSetIds = cardData?.map((row: any) => row.cardId) || [];
     } else if (grouped["CardSet"].length > 0) {
@@ -262,12 +340,12 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
 
       selectCols = `cardId, ${Array.from(new Set(requiredCardAttackCols)).join(", ")}`;
       if (requiredAttackCols.length > 0) {
-        selectCols += `, Attacks!inner(id, ${Array.from(new Set(requiredAttackCols)).join(", ")})`;
+        selectCols += `, Attacks.id, ${Array.from(new Set(requiredAttackCols)).join(", ")}`;
       } else {
-        selectCols += `, Attacks!inner(id)`;
+        selectCols += `, Attacks.id`;
       }
     } else {
-      selectCols = "cardId, Attacks!inner(id)";
+      selectCols = "cardId, Attacks.id";
     }
 
     if (costOpFilter && costSlotsFilter) {
@@ -287,28 +365,86 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
 
         specialSelect += `, ${Array.from(new Set(requiredCardAttackCols)).join(", ")}`;
         if (requiredAttackCols.length > 0) {
-          specialSelect += `, Attacks!inner(id, name, text, ${Array.from(new Set(requiredAttackCols)).join(", ")})`;
+          specialSelect += `, Attacks.id, name, text, ${Array.from(new Set(requiredAttackCols)).join(", ")}`;
         } else {
-          specialSelect += `, Attacks!inner(id, name, text)`;
+          specialSelect += `, Attacks.id, name, text`;
         }
       } else {
-        specialSelect += `, Attacks!inner(id, name, text)`;
+        specialSelect += `, Attacks.id, name, text`;
       }
 
       // Build query, apply DB filters first
-      let query = supabase.from("CardAttacks").select(specialSelect).eq("convertedEnergyCost", requiredCost);
+      let query = `SELECT ${specialSelect} FROM CardAttacks WHERE convertedEnergyCost = ?`;
+      const params = [requiredCost];
 
       // Apply other DB attack-related filters (non-cost/slot)
       attackDbFilters.forEach((f) => {
         if (f.config.key !== costOpFilter.config.key && f.config.key !== costSlotsFilter.config.key) {
-          query = applyFilterToQuery(query, f); // Use the helper
+          const { config, value, operator } = f;
+          if (value === null || value === undefined) return;
+
+          const col = config.table === "Attacks" ? `Attacks.${config.column}` : config.column;
+
+          if (config.type === "text") {
+            const trimmed = String(value).trim();
+            const words = trimmed.split(/\s+/).filter(Boolean);
+            if (words.length > 1) {
+              // AND logic for multiple words within a single text filter
+              words.forEach((word) => {
+                query += ` AND ${col} LIKE ?`;
+                params.push(`%${word}%`);
+              });
+            } else if (trimmed) {
+              query += ` AND ${col} LIKE ?`;
+              params.push(`%${trimmed}%`);
+            }
+          } else if (config.type === "number") {
+            if (config.valueType === "int") {
+              const op = operator || "=";
+              query += ` AND ${col} IS NOT NULL`;
+              if (op === ">=") {
+                query += ` AND ${col} >= ?`;
+                params.push(value);
+              } else if (op === "<=") {
+                query += ` AND ${col} <= ?`;
+                params.push(value);
+              } else {
+                query += ` AND ${col} = ?`;
+                params.push(value);
+              }
+            } else if (config.valueType === "text") {
+              // Exact match for text like '100+' or '100x'
+              const op = operator || "=";
+              if (op !== ">=" && op !== "<=") {
+                let matchString = String(value);
+                if (operator === "+" || operator === "x" || operator === "×") {
+                  const variations = operator === "x" ? [`${value}x`, `${value}×`] : [`${value}${operator}`];
+                  const orClause = variations.map((v) => `${col} = ?`).join(" OR ");
+                  query += ` AND (${orClause})`;
+                  params.push(...variations);
+                } else {
+                  query += ` AND ${col} = ?`; // Exact match for other cases
+                  params.push(matchString);
+                }
+              }
+            }
+          } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
+            if (config.valueType === "json-string-array" || Array.isArray(value)) {
+              // Using OR logic for multiselect items (match any of the selected values)
+              const orString = value.map((v: string) => `${col} LIKE ?`).join(" OR ");
+              if (orString) {
+                query += ` AND (${orString})`;
+                params.push(...value.map((v: string) => `%${v}%`));
+              }
+            }
+          }
         }
       });
 
-      const { data, error } = await query;
-      if (error) {
-        console.error("Unified Attack Query Error (Special Cost):", error);
-        return { cardIds: [], query: `Unified Attack Error (Special Cost): ${error.message}` };
+      const data = await db.getAllAsync(query, params);
+      if (!data) {
+        console.error("Unified Attack Query Error (Special Cost)");
+        return { cardIds: [], query: `Unified Attack Error (Special Cost)` };
       }
 
       // JS filter for cost array structure AND text-numeric filters
@@ -342,17 +478,75 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       cardIdInts = Array.from(new Set(filteredData.map((row: any) => row.cardId)));
     } else {
       // --- General Case: Apply DB filters, then JS filters ---
-      let query = supabase.from("CardAttacks").select(selectCols);
+      let query = `SELECT ${selectCols} FROM CardAttacks`;
+      const params: any[] = [];
 
       // Apply all DB attack-related filters
       attackDbFilters.forEach((f) => {
-        query = applyFilterToQuery(query, f);
+        const { config, value, operator } = f;
+        if (value === null || value === undefined) return;
+
+        const col = config.table === "Attacks" ? `Attacks.${config.column}` : config.column;
+
+        if (config.type === "text") {
+          const trimmed = String(value).trim();
+          const words = trimmed.split(/\s+/).filter(Boolean);
+          if (words.length > 1) {
+            // AND logic for multiple words within a single text filter
+            words.forEach((word) => {
+              query += ` AND ${col} LIKE ?`;
+              params.push(`%${word}%`);
+            });
+          } else if (trimmed) {
+            query += ` AND ${col} LIKE ?`;
+            params.push(`%${trimmed}%`);
+          }
+        } else if (config.type === "number") {
+          if (config.valueType === "int") {
+            const op = operator || "=";
+            query += ` AND ${col} IS NOT NULL`;
+            if (op === ">=") {
+              query += ` AND ${col} >= ?`;
+              params.push(value);
+            } else if (op === "<=") {
+              query += ` AND ${col} <= ?`;
+              params.push(value);
+            } else {
+              query += ` AND ${col} = ?`;
+              params.push(value);
+            }
+          } else if (config.valueType === "text") {
+            // Exact match for text like '100+' or '100x'
+            const op = operator || "=";
+            if (op !== ">=" && op !== "<=") {
+              let matchString = String(value);
+              if (operator === "+" || operator === "x" || operator === "×") {
+                const variations = operator === "x" ? [`${value}x`, `${value}×`] : [`${value}${operator}`];
+                const orClause = variations.map((v) => `${col} = ?`).join(" OR ");
+                query += ` AND (${orClause})`;
+                params.push(...variations);
+              } else {
+                query += ` AND ${col} = ?`; // Exact match for other cases
+                params.push(matchString);
+              }
+            }
+          }
+        } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
+          if (config.valueType === "json-string-array" || Array.isArray(value)) {
+            // Using OR logic for multiselect items (match any of the selected values)
+            const orString = value.map((v: string) => `${col} LIKE ?`).join(" OR ");
+            if (orString) {
+              query += ` AND (${orString})`;
+              params.push(...value.map((v: string) => `%${v}%`));
+            }
+          }
+        }
       });
 
-      const { data, error } = await query;
-      if (error) {
-        console.error("Unified Attack Query Error (General):", error);
-        return { cardIds: [], query: `Unified Attack Error (General): ${error.message}` };
+      const data = await db.getAllAsync(query, params);
+      if (!data) {
+        console.error("Unified Attack Query Error (General)");
+        return { cardIds: [], query: `Unified Attack Error (General)` };
       }
 
       // Apply JS filters post-fetch
@@ -368,10 +562,11 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
 
     // Final lookup to get cardId strings
     if (cardIdInts.length > 0) {
-      const { data: cardData, error: cardError } = await supabase.from("Card").select("cardId").in("id", cardIdInts);
-      if (cardError) {
-        console.error("Card Query (Attack Join) Error:", cardError);
-        return { cardIds: [], query: `Card (Attack Join) Error: ${cardError.message}` };
+      const placeholders = cardIdInts.map(() => "?").join(", ");
+      const cardData = await db.getAllAsync(`SELECT cardId FROM Card WHERE id IN (${placeholders})`, ...cardIdInts);
+      if (!cardData) {
+        console.error("Card Query (Attack Join) Error");
+        return { cardIds: [], query: `Card (Attack Join) Error` };
       }
       unifiedAttackCardIds = cardData?.map((row: any) => row.cardId) || [];
     } else if (attackRelatedFilters.length > 0) {
@@ -382,29 +577,31 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
   // 4. Abilities filters (Abilities -> CardAbilities -> Card)
   let abilityCardIds: string[] = [];
   if (grouped["Abilities"]) {
-    const abQuery = buildQuery("Abilities", "id", grouped["Abilities"]);
-    const { data, error } = await abQuery;
-    if (error) {
-      console.error("Abilities Query Error:", error);
-      return { cardIds: [], query: `Abilities Error: ${error.message}` };
+    const abQuery = await buildQuery("Abilities", "id", grouped["Abilities"]);
+    const data = abQuery;
+    if (!data) {
+      console.error("Abilities Query Error");
+      return { cardIds: [], query: `Abilities Error` };
     }
     const abIds = data?.map((row: any) => row.id) || [];
     if (abIds.length > 0) {
-      const { data: caData, error: caError } = await supabase
-        .from("CardAbilities")
-        .select("cardId")
-        .in("abilityId", abIds);
-      if (caError) {
-        console.error("CardAbilities Query Error:", caError);
-        return { cardIds: [], query: `CardAbilities Error: ${caError.message}` };
+      const placeholders = abIds.map(() => "?").join(", ");
+      const caData = await db.getAllAsync(
+        `SELECT cardId FROM CardAbilities WHERE abilityId IN (${placeholders})`,
+        ...abIds
+      );
+      if (!caData) {
+        console.error("CardAbilities Query Error");
+        return { cardIds: [], query: `CardAbilities Error` };
       }
       const cardIdInts = Array.from(new Set(caData?.map((row: any) => row.cardId) || []));
 
       if (cardIdInts.length > 0) {
-        const { data: cardData, error: cardError } = await supabase.from("Card").select("cardId").in("id", cardIdInts);
-        if (cardError) {
-          console.error("Card Query (Ability Join) Error:", cardError);
-          return { cardIds: [], query: `Card (Ability Join) Error: ${cardError.message}` };
+        const placeholders2 = cardIdInts.map(() => "?").join(", ");
+        const cardData = await db.getAllAsync(`SELECT cardId FROM Card WHERE id IN (${placeholders2})`, ...cardIdInts);
+        if (!cardData) {
+          console.error("Card Query (Ability Join) Error");
+          return { cardIds: [], query: `Card (Ability Join) Error` };
         }
         abilityCardIds = cardData?.map((row: any) => row.cardId) || [];
       } else {
@@ -422,18 +619,19 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
       (f) => f.config.type === "exists" && f.config.table === "CardAbilities"
     );
     if (existsFilter) {
-      const { data, error } = await supabase.from("CardAbilities").select("cardId");
-      if (error) {
-        console.error("CardAbilities Exists Query Error:", error);
-        return { cardIds: [], query: `CardAbilities Exists Error: ${error.message}` };
+      const data = await db.getAllAsync("SELECT cardId FROM CardAbilities");
+      if (!data) {
+        console.error("CardAbilities Exists Query Error");
+        return { cardIds: [], query: `CardAbilities Exists Error` };
       }
       const cardIdInts = Array.from(new Set(data?.map((row: any) => row.cardId) || []));
 
       if (cardIdInts.length > 0) {
-        const { data: cardData, error: cardError } = await supabase.from("Card").select("cardId").in("id", cardIdInts);
-        if (cardError) {
-          console.error("Card Query (Ability Exists Join) Error:", cardError);
-          return { cardIds: [], query: `Card (Ability Exists Join) Error: ${cardError.message}` };
+        const placeholders = cardIdInts.map(() => "?").join(", ");
+        const cardData = await db.getAllAsync(`SELECT cardId FROM Card WHERE id IN (${placeholders})`, ...cardIdInts);
+        if (!cardData) {
+          console.error("Card Query (Ability Exists Join) Error");
+          return { cardIds: [], query: `Card (Ability Exists Join) Error` };
         }
         hasAnyAbilityCardIds = cardData?.map((row: any) => row.cardId) || [];
       } else {
@@ -491,14 +689,15 @@ export async function queryBuilder(filters: QueryBuilderFilter[]): Promise<{ car
     return { cardIds: [], query: JSON.stringify(filters) };
   }
 
-  // Fetch all names in batches of 1000 to avoid Supabase limit
+  // Fetch all names in batches of 1000 to avoid SQLite limit
   const batchSize = 1000;
   let nameData: { cardId: string; name: string }[] = [];
   for (let i = 0; i < finalCardIds.length; i += batchSize) {
     const batchIds = finalCardIds.slice(i, i + batchSize);
-    const { data, error } = await supabase.from("Card").select("cardId, name").in("cardId", batchIds);
-    if (!error && data) {
-      nameData = nameData.concat(data);
+    const placeholders = batchIds.map(() => "?").join(", ");
+    const data = await db.getAllAsync(`SELECT cardId, name FROM Card WHERE cardId IN (${placeholders})`, ...batchIds);
+    if (data) {
+      nameData = nameData.concat(data as { cardId: string; name: string }[]);
     }
   }
   // Create a map for quick lookup
