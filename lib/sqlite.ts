@@ -134,7 +134,7 @@ async function populateDataFromJSON(db: SQLiteDatabase) {
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
   // ----> INCREMENT THIS WHEN JSON CHANGES <----
-  const DATABASE_VERSION = 6;
+  const DATABASE_VERSION = 7;
 
   const result = await db.getFirstAsync<{ user_version: number }>("PRAGMA user_version");
   let currentDbVersion = result?.user_version ?? 0;
