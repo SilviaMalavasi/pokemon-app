@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Animated, Image, Text, View } from "react-native";
+import { Animated, Image, View } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
+import ThemedText from "@/components/base/ThemedText";
 import styles from "@/style/ui/SplashScreenStyle";
 
 const messages = [
@@ -45,7 +46,8 @@ export default function SplashScreen() {
             source={require("@/assets/images/icon.png")}
             style={styles.icon}
           />
-          <View style={styles.textContainer}>
+          <ThemedText style={styles.title}>Updating Database</ThemedText>
+          <View style={styles.animatedTextContainer}>
             <Animated.Text style={[styles.text, { opacity: fadeAnim }]}>{messages[messageIndex]}</Animated.Text>
           </View>
         </View>

@@ -17,10 +17,15 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
   },
-  textContainer: {
+  animatedTextContainer: {
     justifyContent: "center",
     alignItems: "center",
     height: 100,
+  },
+  title: {
+    textTransform: "uppercase",
+    textAlign: "center",
+    maxWidth: "60%",
   },
   text: {
     fontFamily: "Inter-SemiBold",
@@ -28,7 +33,7 @@ const styles = StyleSheet.create({
     lineHeight: theme.fontSizes.medium * 1.15,
     color: theme.colors.text,
     textAlign: "center",
-    maxWidth: "50%",
+    maxWidth: "60%",
   },
 });
 
