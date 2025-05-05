@@ -203,49 +203,6 @@ export default function FreeSearchForm({
     onRemoveDuplicatesChange(false);
   };
 
-  // Enhanced column label mapping per table
-  const columnLabelsByTable: Record<string, Record<string, string>> = {
-    Card: {
-      name: "Card Name",
-      supertype: "Type",
-      subtypes: "Label",
-      types: "Energy Type",
-      rules: "Rules/Rule Box",
-      evolvesFrom: "Evolves From",
-      evolvesTo: "Evolves To",
-      hp: "Pokémon HP",
-      convertedRetreatCost: "Retreat Cost",
-      weaknesses: "Weaknesses",
-      resistances: "Resistances",
-      regulationMark: "Regulation Mark",
-      cardId: "Pokédex Number",
-      flavorText: "Flavor Text",
-      artist: "Artist",
-    },
-    Attacks: {
-      name: "Attack Name",
-      text: "Attack Text",
-    },
-    CardAttacks: {
-      cost: "Attack Cost Energy Type",
-      convertedEnergyCost: "Attack Cost",
-      damage: "Attack Damage",
-    },
-    Abilities: {
-      name: "Ability Name",
-      text: "Ability Text",
-    },
-    CardSet: {
-      name: "Set Name",
-      regulationMark: "Regulation Mark",
-    },
-    // Fallback for columns not in a table
-    _default: {
-      flavorText: "Flavor Text",
-      artist: "Artist",
-    },
-  };
-
   // Helper: are all columns checked?
   const allKeys = allCardColumns.map((col) => col.key);
   const checkedCount = allKeys.filter((key) => includedColumns[key]).length;
@@ -303,24 +260,6 @@ export default function FreeSearchForm({
 
   return (
     <ThemedView>
-      {/* Summary of checked fields styled as in AdvancedSearchForm */}
-      {cardSearch.trim() !== "" && checkedFields.length > 0 && (
-        <ThemedView style={styles.summaryContainer}>
-          <ThemedView style={styles.summaryLabel}>
-            <ThemedText type="label">
-              You are searching for{" "}
-              <ThemedText
-                type="label"
-                style={{ color: theme.colors.textHilight }}
-              >
-                {cardSearch}
-              </ThemedText>{" "}
-              in:
-            </ThemedText>
-          </ThemedView>
-          {renderCheckedLabelsSummary()}
-        </ThemedView>
-      )}
       <ThemedView style={styles.mainButtonsRow}>
         <ThemedButton
           title="Reset"
@@ -344,6 +283,24 @@ export default function FreeSearchForm({
         onChange={setCardSearch}
         placeholder="Free text"
       />
+      {/* Summary of checked fields styled as in AdvancedSearchForm */}
+      {cardSearch.trim() !== "" && checkedFields.length > 0 && (
+        <ThemedView style={styles.summaryContainer}>
+          <ThemedView style={styles.summaryLabel}>
+            <ThemedText type="label">
+              You are searching for{" "}
+              <ThemedText
+                type="label"
+                style={{ color: theme.colors.textHilight }}
+              >
+                {cardSearch}
+              </ThemedText>{" "}
+              in:
+            </ThemedText>
+          </ThemedView>
+          {renderCheckedLabelsSummary()}
+        </ThemedView>
+      )}
       <ThemedText
         style={styles.instructions}
         type="default"

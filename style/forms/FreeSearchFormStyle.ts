@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.small,
     paddingHorizontal: theme.padding.small,
     paddingTop: theme.padding.medium,
-    paddingBottom: theme.padding.xlarge,
+    paddingBottom: theme.padding.medium,
     marginTop: theme.padding.small,
-    marginBottom: theme.padding.medium * -1,
+    marginBottom: theme.padding.small,
   },
   summaryLabel: {
     position: "absolute",

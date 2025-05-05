@@ -10,10 +10,6 @@
       "android": {
         "buildType": "apk"
       },
-      "env": {
-        "EXPO_PUBLIC_SUPABASE_URL": "EXPO_PUBLIC_SUPABASE_URL",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "EXPO_PUBLIC_SUPABASE_ANON_KEY"
-      },
       "channel": "development"
     },
     "preview": {
@@ -27,10 +23,6 @@
       "autoIncrement": true,
       "android": {
         "buildType": "apk"
-      },
-      "env": {
-        "SUPABASE_URL": "SUPABASE_URL",
-        "SUPABASE_ANON_KEY": "SUPABASE_ANON_KEY"
       },
       "channel": "production"
     }

@@ -35,8 +35,6 @@ yarn-error.*
 *.tsbuildinfo
 
 # DIFFERENCES WITH .GITIGNORE
-# Do not ignore .env, .env.local
 
 # app
-db/
 scripts/
