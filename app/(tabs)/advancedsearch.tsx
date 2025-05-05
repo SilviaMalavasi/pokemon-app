@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { supabase } from "@/lib/supabase";
 import { useRouter } from "expo-router";
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
@@ -13,6 +12,7 @@ import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
+import { useSQLiteContext } from "expo-sqlite"; // Import the hook
 
 export default function FullFormScreen() {
   const [resetKey, setResetKey] = useState(0);
@@ -21,21 +21,37 @@ export default function FullFormScreen() {
   const ITEMS_PER_PAGE = 20;
   const router = useRouter();
   const { setCardIds, setQuery, setCurrentPage, setItemsPerPage, setCards, setLoading } = useSearchResultContext();
-  const { setAdvancedForm, setLastSearchPage, clearAdvancedForm, lastSearchPage } = useSearchFormContext();
+  const { setLastSearchPage, clearAdvancedForm, lastSearchPage } = useSearchFormContext(); // Removed setAdvancedForm
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const db = useSQLiteContext(); // Get db instance from context
 
   // Handler to receive card IDs from AdvancedSearch
   const handleSearchResults = async (ids: string[], query: string) => {
     let filteredIds = ids;
     if (removeDuplicates && ids.length > 0) {
-      // Fetch card details for duplicate removal
-      const { data, error } = await supabase
-        .from("Card")
-        .select("cardId, name, supertype, hp, rules")
-        .in("cardId", ids);
-      if (!error && data) {
-        const deduped = await removeCardDuplicates(data);
-        filteredIds = deduped.map((c) => c.cardId);
+      // Fetch card details for duplicate removal using SQLite
+      try {
+        const placeholders = ids.map(() => "?").join(", ");
+        const data = await db.getAllAsync<{
+          cardId: string;
+          name: string;
+          supertype: string;
+          hp: number | null;
+          rules: string | null;
+        }>(`SELECT cardId, name, supertype, hp, rules FROM Card WHERE cardId IN (${placeholders})`, ids);
+
+        if (data && data.length > 0) {
+          const deduped = await removeCardDuplicates(data);
+          filteredIds = deduped.map((c) => c.cardId);
+        } else {
+          // Handle case where no data is found for the IDs, though this shouldn't happen if queryBuilder returned them
+          console.log("No card details found in SQLite for the provided IDs.");
+        }
+      } catch (error) {
+        console.error("Error fetching card details from SQLite:", error);
+        // Optionally handle the error, e.g., show a message to the user
+        setLoading(false); // Ensure loading state is reset on error
+        return; // Stop execution if fetching details fails
       }
     }
     if (filteredIds.length === 0) {
@@ -66,7 +82,7 @@ export default function FullFormScreen() {
       }
       setLastSearchPage("advanced");
     }, [lastSearchPage])
-  );
+  ); // Add semicolon
 
   React.useEffect(() => {
     if (scrollRef.current) {
