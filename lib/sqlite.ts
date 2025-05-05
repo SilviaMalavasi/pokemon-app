@@ -153,12 +153,14 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
   // Step 1: Initial Schema Creation (Only if db is brand new)
   if (currentDbVersion < 1) {
     console.log("Applying version 1 migration: Initial schema creation...");
+
+    // Set WAL mode *before* the transaction
+    await db.execAsync("PRAGMA journal_mode = 'wal';");
+
     await db.withTransactionAsync(async () => {
       console.log("Creating initial schema...");
 
       await db.execAsync(`
-        PRAGMA journal_mode = 'wal';
-
         CREATE TABLE IF NOT EXISTS CardSet (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           setId TEXT UNIQUE,
