@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const Database = require("better-sqlite3");
 
-const dbPath = path.resolve(__dirname, "../db/pokemonCardsDB.db");
+const dbPath = path.resolve(__dirname, "../scripts/db/pokemonCardsDB.db");
 const db = new Database(dbPath);
 
 // Create tables
@@ -79,7 +79,7 @@ const createTables = () => {
   `;
 
   // Write schema to db/schema.sql
-  const schemaPath = path.resolve(__dirname, "../db/schema.sql");
+  const schemaPath = path.resolve(__dirname, "../scripts/db/schema.sql");
   fs.writeFileSync(schemaPath, schemaSQL.trim() + "\n");
 
   db.exec(schemaSQL);
@@ -178,7 +178,6 @@ const insertCard = (card) => {
       card.rarity,
       JSON.stringify(card.nationalPokedexNumbers),
       card.regulationMark,
-      card.images?.small,
       card.images?.large,
       rules,
       card.number,
@@ -216,7 +215,7 @@ const insertCard = (card) => {
 const fillDatabase = () => {
   createTables();
 
-  const dataPath = path.resolve(__dirname, "../db/rotationCards.json");
+  const dataPath = path.resolve(__dirname, "../scripts/db/rotationCards.json");
   const cards = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
 
   cards.forEach((card) => {
