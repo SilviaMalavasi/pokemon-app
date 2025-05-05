@@ -17,7 +17,6 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
-    // Renamed for clarity
     "Inter-Black": require("../assets/fonts/Inter_28pt-Black.ttf"),
     "Inter-ExtraBold": require("../assets/fonts/Inter_28pt-ExtraBold.ttf"),
     "Inter-Bold": require("../assets/fonts/Inter_28pt-Bold.ttf"),
@@ -29,29 +28,22 @@ export default function RootLayout() {
 
   useEffect(() => {
     // Hide the native splash screen *only* once fonts are loaded.
-    // Suspense will handle showing the fallback during DB loading.
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
 
-  // If fonts are not loaded yet, show the custom splash screen.
-  // This covers the time between the native splash hiding (triggered by fontsLoaded)
-  // and the Suspense boundary taking over for DB loading.
+  // Use the Suspense boundary for DB loading.
   if (!fontsLoaded) {
     return <SplashScreenComponent />;
   }
 
-  // Fonts are loaded, now render the main app structure.
-  // Use Suspense to show the splash screen while the DB initializes.
   return (
-    // Wrap SQLiteProvider and the rest of the app in Suspense
     <Suspense fallback={<SplashScreenComponent />}>
       <SQLiteProvider
         databaseName="pokemon.db"
         onInit={migrateDbIfNeeded}
-        // Enable Suspense integration
-        useSuspense={true} // Use boolean true
+        useSuspense={true}
       >
         <SearchResultProvider>
           <ThemedView style={{ flex: 1 }}>

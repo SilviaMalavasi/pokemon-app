@@ -6,25 +6,35 @@ import styles from "@/style/ui/SplashScreenStyle";
 
 const messages = [
   "Catching Pokémon in the database",
-  "Browsing full-art cards instead of working",
+  "Negotiating with Mewtwo for loading speed",
   "Polishing Poké Balls to a mirror shine",
   "Syncing with Professor Oak’s Wi-Fi",
-  "Negotiating with Mewtwo for loading speed",
   "Wishing this was a shiny load",
 ];
 
 export default function SplashScreen() {
   const [messageIndex, setMessageIndex] = useState(0);
-  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const fadeAnim = useRef(new Animated.Value(1)).current; // Initial opacity: 1
 
   useEffect(() => {
     const interval = setInterval(() => {
-      Animated.sequence([
-        Animated.timing(fadeAnim, { toValue: 0, duration: 200, useNativeDriver: true }),
-        Animated.timing(fadeAnim, { toValue: 1, duration: 200, useNativeDriver: true }),
-      ]).start();
-      setMessageIndex((prev) => (prev + 1) % messages.length);
-    }, 3500);
+      // Fade out animation
+      Animated.timing(fadeAnim, {
+        toValue: 0, // Fade out
+        duration: 500, // Duration for fade out
+        useNativeDriver: true,
+      }).start(() => {
+        // Change message after fading out
+        setMessageIndex((prev) => (prev + 1) % messages.length);
+        // Fade in animation
+        Animated.timing(fadeAnim, {
+          toValue: 1, // Fade in
+          duration: 500, // Duration for fade in
+          useNativeDriver: true,
+        }).start();
+      });
+    }, 3500); // Change message every 3.5 seconds (includes fade times)
+
     return () => clearInterval(interval);
   }, [fadeAnim]);
 
@@ -46,7 +56,13 @@ export default function SplashScreen() {
             source={require("@/assets/images/icon.png")}
             style={styles.icon}
           />
-          <ThemedText style={styles.title}>Updating Database</ThemedText>
+          <ThemedText
+            type="buttonSmall"
+            color="white"
+            style={styles.title}
+          >
+            Updating
+          </ThemedText>
           <View style={styles.animatedTextContainer}>
             <Animated.Text style={[styles.text, { opacity: fadeAnim }]}>{messages[messageIndex]}</Animated.Text>
           </View>
