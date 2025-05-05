@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
   title: {
     textTransform: "uppercase",
     textAlign: "center",
-    maxWidth: "70%",
   },
   text: {
     fontFamily: "Inter-SemiBold",
