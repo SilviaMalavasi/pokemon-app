@@ -3,11 +3,11 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
 import SplashScreenComponent from "@/components/ui/SplashScreen";
-import { SQLiteProvider } from "expo-sqlite";
+import { SQLiteProvider, type SQLiteDatabase } from "expo-sqlite";
 import { migrateDbIfNeeded } from "@/lib/sqlite";
 
 import "react-native-reanimated";
@@ -26,6 +26,9 @@ export default function RootLayout() {
     "Inter-Light": require("../assets/fonts/Inter_28pt-Light.ttf"),
   });
 
+  // State to track if the database is currently being updated
+  const [isUpdatingDb, setIsUpdatingDb] = useState(true);
+
   useEffect(() => {
     // Hide the native splash screen *only* once fonts are loaded.
     if (fontsLoaded) {
@@ -35,14 +38,21 @@ export default function RootLayout() {
 
   // Use the Suspense boundary for DB loading.
   if (!fontsLoaded) {
-    return <SplashScreenComponent />;
+    // Pass the updating state even to the initial splash screen
+    return <SplashScreenComponent isUpdatingDb={isUpdatingDb} />;
   }
 
+  // Define the init function with the state setter
+  const initializeDatabase = async (db: SQLiteDatabase) => {
+    await migrateDbIfNeeded(db, setIsUpdatingDb);
+  };
+
   return (
-    <Suspense fallback={<SplashScreenComponent />}>
+    // Pass the updating state to the fallback splash screen
+    <Suspense fallback={<SplashScreenComponent isUpdatingDb={isUpdatingDb} />}>
       <SQLiteProvider
         databaseName="pokemon.db"
-        onInit={migrateDbIfNeeded}
+        onInit={initializeDatabase} // Use the function that includes the setter
         useSuspense={true}
       >
         <SearchResultProvider>

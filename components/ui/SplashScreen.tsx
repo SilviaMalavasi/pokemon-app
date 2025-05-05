@@ -12,7 +12,12 @@ const messages = [
   "Wishing this was a shiny load",
 ];
 
-export default function SplashScreen() {
+// Define props for the component
+interface SplashScreenProps {
+  isUpdatingDb: boolean;
+}
+
+export default function SplashScreen({ isUpdatingDb }: SplashScreenProps) {
   const [messageIndex, setMessageIndex] = useState(0);
   const fadeAnim = useRef(new Animated.Value(1)).current; // Initial opacity: 1
 
@@ -56,13 +61,15 @@ export default function SplashScreen() {
             source={require("@/assets/images/icon.png")}
             style={styles.icon}
           />
-          <ThemedText
-            type="buttonSmall"
-            color="white"
-            style={styles.title}
-          >
-            Updating
-          </ThemedText>
+          {isUpdatingDb && (
+            <ThemedText
+              type="buttonSmall"
+              color="white"
+              style={styles.title}
+            >
+              Updating DB
+            </ThemedText>
+          )}
           <View style={styles.animatedTextContainer}>
             <Animated.Text style={[styles.text, { opacity: fadeAnim }]}>{messages[messageIndex]}</Animated.Text>
           </View>
