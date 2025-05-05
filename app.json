@@ -14,8 +14,8 @@
       "edgeToEdgeEnabled": true,
       "package": "com.silviamalavasi.pokedeckbuilder",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
-        "backgroundColor": "#6A1DFF"
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#8249F2"
       }
     },
     "web": {
@@ -28,20 +28,9 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icon.png",
-          "imageWidth": "100%",
+          "image": "./assets/images/splash-combined.png",
           "resizeMode": "cover",
-          "backgroundColor": "#6a1dff"
-        }
-      ],
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "enableProguardInReleaseBuilds": true,
-            "enableShrinkResourcesInReleaseBuilds": true,
-            "useLegacyPackaging": true
-          }
+          "backgroundColor": "#4630EB"
         }
       ],
       "expo-sqlite"
@@ -62,6 +51,11 @@
     },
     "updates": {
       "url": "https://u.expo.dev/5c5ced7b-0261-4a0a-808d-3477e4c6af0e"
+    },
+    "splash": {
+      "image": "./assets/images/splash-combined.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#4630EB"
     }
   }
 }
