@@ -4,7 +4,7 @@ const path = require("path");
 const Database = require("better-sqlite3");
 
 // Path to your SQLite DB and images directory
-const dbPath = path.resolve(__dirname, "../scripts/db/pokemonCardsDB.sqlite");
+const dbPath = path.resolve(__dirname, "../scripts/db/pokemonCardsDB.db");
 const imagesDir = path.resolve(__dirname, "../assets/card-images");
 
 // Open the database

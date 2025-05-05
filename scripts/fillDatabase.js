@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const Database = require("better-sqlite3");
 
-const dbPath = path.resolve(__dirname, "../db/pokemonCardsDB.sqlite");
+const dbPath = path.resolve(__dirname, "../db/pokemonCardsDB.db");
 const db = new Database(dbPath);
 
 // Create tables

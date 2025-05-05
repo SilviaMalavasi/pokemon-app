@@ -2,7 +2,7 @@ const Database = require("better-sqlite3");
 const fs = require("fs");
 const path = require("path");
 
-const dbPath = path.resolve(__dirname, "../db/pokemonCardsDB.sqlite");
+const dbPath = path.resolve(__dirname, "../db/pokemonCardsDB.db");
 const cardImagesDir = path.resolve(__dirname, "../assets/card-images");
 
 // Function to update CardSet.ptcgoCode based on name
