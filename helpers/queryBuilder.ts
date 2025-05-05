@@ -195,47 +195,68 @@ export async function queryBuilder(
       }
     });
 
-    // Combine all OR sub-filters into a single .or() clause
+    // Combine all OR sub-filters into a single OR group
     if (orGroups.length > 0) {
-      const allOrSubs = orGroups.flatMap((g) => g.value);
-      const orFilterStrings = allOrSubs
-        .map((sub: QueryBuilderFilter) => {
-          if (requiresJsTextNumericFilter(sub)) return null;
+      const orClauseParts: string[] = [];
+      const orParams: any[] = [];
 
-          const { config, value } = sub;
-          if (value === null || value === undefined || value === "") return null;
-          const col = config.column;
+      orGroups.forEach((sub: QueryBuilderFilter) => {
+        if (requiresJsTextNumericFilter(sub)) return; // Skip JS handled
 
-          if (config.type === "text") {
-            const trimmed = String(value).trim();
-            return trimmed ? `${col} LIKE ?` : null;
-          } else if (config.type === "number" && config.valueType === "int") {
-            return `${col} = ?`;
-          } else if (config.type === "number" && config.valueType === "text") {
-            const op = sub.operator || "=";
-            if (op !== ">=" && op !== "<=") {
-              let matchString = String(value);
-              if (sub.operator === "+" || sub.operator === "x" || sub.operator === "×") {
-                const variations = sub.operator === "x" ? [`${value}x`, `${value}×`] : [`${value}${sub.operator}`];
-                return variations.map((v) => `${col} = ?`).join(" OR ");
-              } else {
-                return `${col} = ?`;
-              }
-            }
-            return null;
-          } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
-            // Handle multiselect within OR - assumes OR between items
-            const orString = value.map((v: string) => `${col} LIKE ?`).join(" OR ");
-            return orString || null;
+        const { config, value, operator } = sub;
+        // Skip if value is inherently empty for the condition
+        if (value === null || value === undefined || value === "" || (Array.isArray(value) && value.length === 0))
+          return;
+
+        const col = config.column;
+
+        if (config.type === "text") {
+          const trimmed = String(value).trim();
+          if (trimmed) {
+            orClauseParts.push(`${col} LIKE ?`);
+            orParams.push(`%${trimmed}%`); // Push string
           }
-          return null;
-        })
-        .filter(Boolean)
-        .join(" OR ");
+        } else if (config.type === "number" && config.valueType === "int") {
+          const op = operator || "="; // Respect operator for OR condition
+          if (op === ">=") {
+            orClauseParts.push(`${col} >= ?`);
+            orParams.push(value); // Push number
+          } else if (op === "<=") {
+            orClauseParts.push(`${col} <= ?`);
+            orParams.push(value); // Push number
+          } else {
+            // Default to '='
+            orClauseParts.push(`${col} = ?`);
+            orParams.push(value); // Push number
+          }
+        } else if (config.type === "number" && config.valueType === "text") {
+          const op = operator || "=";
+          if (op !== ">=" && op !== "<=") {
+            // Only handle non-range operators here
+            let matchString = String(value);
+            if (operator === "+" || operator === "x" || operator === "×") {
+              const variations = operator === "x" ? [`${value}x`, `${value}×`] : [`${value}${operator}`];
+              orClauseParts.push(`(${variations.map(() => `${col} = ?`).join(" OR ")})`);
+              orParams.push(...variations); // Push strings
+            } else {
+              orClauseParts.push(`${col} = ?`);
+              orParams.push(matchString); // Push string
+            }
+          }
+        } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
+          // OR logic within the multiselect values themselves
+          const multiSelectOrParts = value.map(() => `${col} LIKE ?`);
+          if (multiSelectOrParts.length > 0) {
+            orClauseParts.push(`(${multiSelectOrParts.join(" OR ")})`);
+            orParams.push(...value.map((v: string) => `%${v}%`)); // Push strings
+          }
+        }
+      });
 
-      if (orFilterStrings) {
-        whereClauses.push(`(${orFilterStrings})`);
-        params.push(...allOrSubs.map((sub: QueryBuilderFilter) => `%${sub.value}%`));
+      const finalOrClauseString = orClauseParts.join(" OR ");
+      if (finalOrClauseString) {
+        whereClauses.push(`(${finalOrClauseString})`);
+        params.push(...orParams); // Push the correctly typed params for the OR group
       }
     }
 
