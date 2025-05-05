@@ -12,6 +12,7 @@ import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import styles from "@/style/forms/FreeSearchFormStyle";
 import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
+import { useSQLiteContext } from "expo-sqlite"; // Import useSQLiteContext
 
 export default function FreeSearchForm({
   onSearchResults,
@@ -28,6 +29,7 @@ export default function FreeSearchForm({
   currentPage: number;
   itemsPerPage: number;
 }) {
+  const db = useSQLiteContext(); // Get db instance
   const { freeForm, setFreeForm, lastSearchPage, clearFreeForm } = useSearchFormContext();
   const [cardSearch, setCardSearch] = useState("");
   // All card columns that can be excluded from search
@@ -118,12 +120,14 @@ export default function FreeSearchForm({
       const includedTablesAndColumns = allCardColumns
         .filter((col) => includedColumns[col.key])
         .map((col) => ({ table: col.table, column: col.column }));
-      // Use freeQueryBuilder for free search, passing includedTablesAndColumns
-      const { cardIds, query } = await freeQueryBuilder(trimmedSearch, includedTablesAndColumns);
+      // Use freeQueryBuilder for free search, passing db and includedTablesAndColumns
+      const { cardIds, query } = await freeQueryBuilder(db, trimmedSearch, includedTablesAndColumns);
       if (onSearchResults) onSearchResults(cardIds, query);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      // Use unknown type for catch block
       console.error("[FreeSearch] freeQueryBuilder error:", err);
-      if (onSearchResults) onSearchResults([], err.message || "Search failed");
+      const errorMessage = err instanceof Error ? err.message : "Search failed";
+      if (onSearchResults) onSearchResults([], errorMessage);
     } finally {
       if (setLoading) setLoading(false);
       setButtonLoading(false);

@@ -256,17 +256,6 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
     currentDbVersion = 2; // Update local variable
   }
 
-  // Add more migration blocks here for future versions (v3, v4, etc.)
-  // if (currentDbVersion < 3) {
-  //   console.log('Migrating to version 3...');
-  //   await db.withTransactionAsync(async () => {
-  //      // Schema changes for v3
-  //      // Data updates for v3 (maybe delta logic here?)
-  //   });
-  //   console.log('Migration to version 3 complete.');
-  //   currentDbVersion = 3;
-  // }
-
   // --- Set Final Version ---
   console.log(`Setting final database version to ${DATABASE_VERSION}...`);
   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);

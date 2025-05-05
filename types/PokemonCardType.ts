@@ -54,3 +54,12 @@ export interface CardType {
   regulationMark: string | null;
   imagesLarge: string;
 }
+
+// Type specifically for duplicate check, containing only necessary fields
+export interface CardForDuplicateCheck {
+  cardId: string;
+  name: string;
+  supertype: string;
+  hp: number | null;
+  rules: string[] | null;
+}

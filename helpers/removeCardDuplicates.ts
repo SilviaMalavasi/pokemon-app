@@ -1,13 +1,14 @@
-import { supabase } from "@/lib/supabase";
+import { SQLiteDatabase } from "expo-sqlite";
 
 /**
  * Remove duplicate cards from a list of card objects according to Pokémon TCG rules.
  * - For Pokémon: duplicates have same name, hp, and set of attacks (name, damage, cost)
  * - For Trainer and Energy: duplicates have same name and rules (rules is a JSON array or string)
+ * @param db SQLite database instance
  * @param cards Array of card objects (must include cardId, name, supertype, hp, rules)
  * @returns Array of unique card objects
  */
-export async function removeCardDuplicates(cards: any[]): Promise<any[]> {
+export async function removeCardDuplicates(db: SQLiteDatabase, cards: any[]): Promise<any[]> {
   // Separate cards by supertype
   const pokemonCards = cards.filter((c) => c.supertype === "Pokémon");
   const trainerCards = cards.filter((c) => c.supertype === "Trainer");
@@ -16,17 +17,20 @@ export async function removeCardDuplicates(cards: any[]): Promise<any[]> {
   // --- FIX: Map string cardId to integer id for Pokémon ---
   let cardIdToInt: Record<string, number> = {};
   if (pokemonCards.length > 0) {
-    const { data: cardRows, error: cardRowsError } = await supabase
-      .from("Card")
-      .select("cardId, id")
-      .in(
-        "cardId",
-        pokemonCards.map((c) => c.cardId)
+    const cardIds = pokemonCards.map((c) => c.cardId);
+    const placeholders = cardIds.map(() => "?").join(", ");
+    try {
+      const cardRows = await db.getAllAsync<{ cardId: string; id: number }>(
+        `SELECT cardId, id FROM Card WHERE cardId IN (${placeholders})`,
+        cardIds
       );
-    if (!cardRowsError && cardRows) {
-      for (const row of cardRows) {
-        cardIdToInt[row.cardId] = row.id;
+      if (cardRows) {
+        for (const row of cardRows) {
+          cardIdToInt[row.cardId] = row.id;
+        }
       }
+    } catch (error) {
+      console.error("Error fetching card IDs from SQLite:", error);
     }
   }
 
@@ -34,39 +38,49 @@ export async function removeCardDuplicates(cards: any[]): Promise<any[]> {
   let attacksMap: Record<string, string> = {};
   if (pokemonCards.length > 0 && Object.keys(cardIdToInt).length > 0) {
     const intIds = Object.values(cardIdToInt);
-    const { data: cardAttacks, error } = await supabase
-      .from("CardAttacks")
-      .select("cardId, attackId, cost, damage")
-      .in("cardId", intIds);
-    if (!error && cardAttacks) {
-      // Fetch attack names for all attackIds
-      const attackIds = Array.from(new Set(cardAttacks.map((a) => a.attackId)));
-      let attackNameMap: Record<string, string> = {};
-      if (attackIds.length > 0) {
-        const { data: attacksData } = await supabase.from("Attacks").select("id, name").in("id", attackIds);
-        if (attacksData) {
-          for (const a of attacksData) {
-            attackNameMap[a.id] = a.name;
+    const placeholders = intIds.map(() => "?").join(", ");
+    try {
+      const cardAttacks = await db.getAllAsync<{ cardId: number; attackId: number; cost: string; damage: string }>(
+        `SELECT cardId, attackId, cost, damage FROM CardAttacks WHERE cardId IN (${placeholders})`,
+        intIds
+      );
+
+      if (cardAttacks) {
+        // Fetch attack names for all attackIds
+        const attackIds = Array.from(new Set(cardAttacks.map((a) => a.attackId)));
+        let attackNameMap: Record<string, string> = {};
+        if (attackIds.length > 0) {
+          const attackPlaceholders = attackIds.map(() => "?").join(", ");
+          const attacksData = await db.getAllAsync<{ id: number; name: string }>(
+            `SELECT id, name FROM Attacks WHERE id IN (${attackPlaceholders})`,
+            attackIds
+          );
+          if (attacksData) {
+            for (const a of attacksData) {
+              attackNameMap[a.id] = a.name;
+            }
           }
         }
+        // Group attacks by cardId (int)
+        const grouped: Record<number, any[]> = {};
+        for (const row of cardAttacks) {
+          if (!grouped[row.cardId]) grouped[row.cardId] = [];
+          grouped[row.cardId].push(row);
+        }
+        // For each card, build a normalized string of attacks (name|damage|cost)
+        for (const card of pokemonCards) {
+          const intId = cardIdToInt[card.cardId];
+          const attacks = grouped[intId] || [];
+          const attackStrings = attacks.map((a) => {
+            const cost = a.cost ? JSON.stringify([...JSON.parse(a.cost)].sort()) : "";
+            const name = attackNameMap[a.attackId] || "";
+            return `${name}|${a.damage || ""}|${cost}`;
+          });
+          attacksMap[card.cardId] = attackStrings.sort().join("||");
+        }
       }
-      // Group attacks by cardId (int)
-      const grouped: Record<number, any[]> = {};
-      for (const row of cardAttacks) {
-        if (!grouped[row.cardId]) grouped[row.cardId] = [];
-        grouped[row.cardId].push(row);
-      }
-      // For each card, build a normalized string of attacks (name|damage|cost)
-      for (const card of pokemonCards) {
-        const intId = cardIdToInt[card.cardId];
-        const attacks = grouped[intId] || [];
-        const attackStrings = attacks.map((a) => {
-          const cost = a.cost ? JSON.stringify([...JSON.parse(a.cost)].sort()) : "";
-          const name = attackNameMap[a.attackId] || "";
-          return `${name}|${a.damage || ""}|${cost}`;
-        });
-        attacksMap[card.cardId] = attackStrings.sort().join("||");
-      }
+    } catch (error) {
+      console.error("Error fetching attacks from SQLite:", error);
     }
   }
 
@@ -74,27 +88,30 @@ export async function removeCardDuplicates(cards: any[]): Promise<any[]> {
   let rulesMap: Record<string, string> = {};
   const allTrainerEnergy = [...trainerCards, ...energyCards];
   if (allTrainerEnergy.length > 0) {
-    const { data: rows, error: rowsError } = await supabase
-      .from("Card")
-      .select("cardId, rules")
-      .in(
-        "cardId",
-        allTrainerEnergy.map((c) => c.cardId)
+    const cardIds = allTrainerEnergy.map((c) => c.cardId);
+    const placeholders = cardIds.map(() => "?").join(", ");
+    try {
+      const rows = await db.getAllAsync<{ cardId: string; rules: string | null }>(
+        `SELECT cardId, rules FROM Card WHERE cardId IN (${placeholders})`,
+        cardIds
       );
-    if (!rowsError && rows) {
-      for (const row of rows) {
-        let rule = row.rules || "";
-        // If rules is a JSON array, use only the first string
-        try {
-          const arr = JSON.parse(rule);
-          if (Array.isArray(arr) && arr.length > 0) {
-            rule = arr[0];
+      if (rows) {
+        for (const row of rows) {
+          let rule = row.rules || "";
+          // If rules is a JSON array, use only the first string
+          try {
+            const arr = JSON.parse(rule);
+            if (Array.isArray(arr) && arr.length > 0) {
+              rule = arr[0];
+            }
+          } catch {
+            // Not JSON, use as is
           }
-        } catch {
-          // Not JSON, use as is
+          rulesMap[row.cardId] = (rule || "").replace(/\s+/g, " ").trim();
         }
-        rulesMap[row.cardId] = (rule || "").replace(/\s+/g, " ").trim();
       }
+    } catch (error) {
+      console.error("Error fetching rules from SQLite:", error);
     }
   }
 

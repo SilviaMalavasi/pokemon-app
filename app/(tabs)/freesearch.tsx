@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { supabase } from "@/lib/supabase";
 import { useRouter } from "expo-router";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
@@ -12,10 +11,18 @@ import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
+import { useSQLiteContext } from "expo-sqlite";
+import { CardForDuplicateCheck } from "@/types/PokemonCardType";
+
+// Helper function to generate SQL placeholders like ?,?,?
+function generatePlaceholders(count: number): string {
+  return Array(count).fill("?").join(",");
+}
 
 export default function FreeSearchScreen() {
+  const db = useSQLiteContext();
   const [resetKey, setResetKey] = useState(0);
-  const [removeDuplicates, setRemoveDuplicates] = useState(false);
+  const [removeDuplicatesState, setRemoveDuplicatesState] = useState(false); // Renamed state variable
   const [modalVisible, setModalVisible] = useState(false);
   const ITEMS_PER_PAGE = 20;
   const router = useRouter();
@@ -26,19 +33,26 @@ export default function FreeSearchScreen() {
   // Handler to receive card IDs from FreeSearch
   const handleSearchResults = async (ids: string[], query: string) => {
     let filteredIds = ids;
-    if (removeDuplicates && ids.length > 0) {
-      // Fetch card details for duplicate removal
-      const { data, error } = await supabase
-        .from("Card")
-        .select("cardId, name, supertype, hp, rules")
-        .in("cardId", ids);
-      if (!error && data) {
-        const deduped = await removeCardDuplicates(data);
-        filteredIds = deduped.map((c) => c.cardId);
+    if (removeDuplicatesState && ids.length > 0) {
+      // Use renamed state variable
+      // Fetch card details for duplicate removal using SQLite
+      const placeholders = generatePlaceholders(ids.length);
+      const sql = `SELECT cardId, name, supertype, hp, rules FROM Card WHERE cardId IN (${placeholders})`;
+      try {
+        // Spread the ids array for parameters
+        const data = await db.getAllAsync<CardForDuplicateCheck>(sql, [...ids]);
+        if (data && data.length > 0) {
+          // Pass db and data to removeCardDuplicates
+          const deduped = await removeCardDuplicates(db, data);
+          filteredIds = deduped.map((c) => c.cardId);
+        }
+      } catch (error) {
+        console.error("Error fetching cards for duplicate check:", error);
+        // Proceed with original IDs if fetching fails
       }
     }
     if (filteredIds.length === 0) {
-      setModalVisible(true);
+      setModalVisible(true); // Use correct setter
       setLoading(false);
       return;
     }
@@ -61,10 +75,10 @@ export default function FreeSearchScreen() {
       if (lastSearchPage !== "free") {
         setResetKey((k) => k + 1);
         clearFreeForm();
-        setRemoveDuplicates(false);
+        setRemoveDuplicatesState(false); // Use renamed state setter
       }
       setLastSearchPage("free");
-    }, [lastSearchPage])
+    }, [lastSearchPage]) // Added missing dependency
   );
 
   React.useEffect(() => {
@@ -85,17 +99,17 @@ export default function FreeSearchScreen() {
           onSearchResults={handleSearchResults}
           setLoading={() => {}}
           resetKey={resetKey}
-          removeDuplicates={removeDuplicates}
-          onRemoveDuplicatesChange={setRemoveDuplicates}
+          removeDuplicates={removeDuplicatesState} // Pass renamed state variable
+          onRemoveDuplicatesChange={setRemoveDuplicatesState} // Pass renamed state setter
           currentPage={1}
           itemsPerPage={ITEMS_PER_PAGE}
         />
       </ThemedView>
       <ThemedModal
-        visible={modalVisible}
+        visible={modalVisible} // Add missing visible prop
         buttonType="main"
         buttonSize="small"
-        onClose={() => setModalVisible(false)}
+        onClose={() => setModalVisible(false)} // Use correct setter
         contentStyle={{ width: "85%" }}
       >
         <ThemedText

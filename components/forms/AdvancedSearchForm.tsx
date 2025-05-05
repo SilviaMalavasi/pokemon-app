@@ -263,7 +263,6 @@ export default function AdvancedSearchForm({
     cardSetNumber.trim() !== "";
 
   const handleSubmit = async (): Promise<void> => {
-    console.log("handleSubmit started"); // Log start
     if (setLoadingProp) setLoadingProp(true);
     setLoading(true);
     setError(null);
@@ -294,8 +293,6 @@ export default function AdvancedSearchForm({
       ...getRulesFilters(cardRules),
     ].filter(Boolean) as QueryBuilderFilter[];
 
-    console.log("Filters built:", JSON.stringify(filters)); // Log filters
-
     if (!db) {
       // Add a check for db instance
       console.error("Database context not available!");
@@ -306,13 +303,8 @@ export default function AdvancedSearchForm({
     }
 
     try {
-      // No need to await dbPromise here
-      console.log("Database context available, calling queryBuilder..."); // Log before queryBuilder
-      const { cardIds, query } = await queryBuilder(db, filters); // Pass db instance from hook
-      console.log("queryBuilder finished. Results:", { cardIdsLength: cardIds.length, query }); // Log results
+      const { cardIds, query } = await queryBuilder(db, filters);
 
-      // setCardIds(cardIds); // Let parent handle this via onSearchResults
-      // setSearchQuery(query); // Let parent handle this via onSearchResults
       if (onSearchResults) onSearchResults(cardIds, query);
 
       // Fetch and log card names for the returned cardIds (only for paginated IDs)
@@ -320,25 +312,17 @@ export default function AdvancedSearchForm({
       const endIdx = startIdx + itemsPerPage;
       const paginatedIds = cardIds.slice(startIdx, endIdx);
       if (paginatedIds.length > 0) {
-        console.log("Fetching card names for paginated IDs:", paginatedIds);
         // Use SQLite db instance to fetch names
         const placeholders = paginatedIds.map(() => "?").join(", ");
         const nameData = await db.getAllAsync<{ cardId: string; name: string }>(
           `SELECT cardId, name FROM Card WHERE cardId IN (${placeholders})`,
           paginatedIds
         );
-        if (nameData) {
-          console.log("Fetched card names:", nameData);
-        } else {
-          // db.getAllAsync returns empty array if no results, check for actual errors if needed
-          console.log("No card names found for the paginated IDs or an error occurred.");
-        }
       }
     } catch (err: any) {
       console.error("Error during handleSubmit:", err); // Log error
       setError(err.message || "Search failed");
     } finally {
-      console.log("handleSubmit finished"); // Log end
       setLoading(false);
       if (setLoadingProp) setLoadingProp(false);
     }

@@ -36,60 +36,6 @@ function intersectArrays(arrays: string[][]): string[] {
   return arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 }
 
-// Helper function to apply a number/text operators logic a Supabase query instance
-function applyFilterToQuery(query: any, filter: QueryBuilderFilter) {
-  const { config, value, operator } = filter;
-  if (value === null || value === undefined) return query;
-
-  // Skip filters that need special JS handling
-  if (requiresJsTextNumericFilter(filter)) {
-    return query;
-  }
-
-  const col = config.table === "Attacks" ? `Attacks.${config.column}` : config.column;
-
-  if (config.type === "text") {
-    const trimmed = String(value).trim();
-    const words = trimmed.split(/\s+/).filter(Boolean);
-    if (words.length > 1) {
-      // AND logic for multiple words within a single text filter
-      words.forEach((word) => {
-        query = query.ilike(col, `%${word}%`);
-      });
-    } else if (trimmed) {
-      query = query.ilike(col, `%${trimmed}%`);
-    }
-  } else if (config.type === "number") {
-    if (config.valueType === "int") {
-      const op = operator || "=";
-      query = query.not(col, "is", null);
-      if (op === ">=") query = query.gte(col, value);
-      else if (op === "<=") query = query.lte(col, value);
-      else query = query.eq(col, value);
-    } else if (config.valueType === "text") {
-      // Exact match for text like '100+' or '100x'
-      const op = operator || "=";
-      if (op !== ">=" && op !== "<=") {
-        let matchString = String(value);
-        if (operator === "+" || operator === "x" || operator === "×") {
-          const variations = operator === "x" ? [`${value}x`, `${value}×`] : [`${value}${operator}`];
-          const orClause = variations.map((v) => `${col}.eq.${v}`).join(",");
-          query = query.or(orClause);
-        } else {
-          query = query.eq(col, matchString); // Exact match for other cases
-        }
-      }
-    }
-  } else if (config.type === "multiselect" && Array.isArray(value) && value.length > 0) {
-    if (config.valueType === "json-string-array" || Array.isArray(value)) {
-      // Using OR logic for multiselect items (match any of the selected values)
-      const orString = value.map((v: string) => `${col}.ilike.%${v}%`).join(",");
-      if (orString) query = query.or(orString);
-    }
-  }
-  return query;
-}
-
 // Helper Function to Normalize all variants of 'pokemon', 'pokèmon', 'pokémon' (any case) to 'Pokémon' (capital P, é)
 export async function queryBuilder(
   db: SQLiteDatabase,
@@ -485,8 +431,8 @@ export async function queryBuilder(
         const costArrCopy = [...costArr];
         for (const slot of slots) {
           const idx = costArrCopy.indexOf(slot);
-          if (idx === -1) return false; // A selected slot is missing
-          costArrCopy.splice(idx, 1); // Remove found slot to handle duplicates correctly
+          if (idx === -1) return false;
+          costArrCopy.splice(idx, 1);
         }
 
         // 2. Check JS text-numeric filters

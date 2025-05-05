@@ -41,7 +41,7 @@ export default function FullFormScreen() {
         }>(`SELECT cardId, name, supertype, hp, rules FROM Card WHERE cardId IN (${placeholders})`, ids);
 
         if (data && data.length > 0) {
-          const deduped = await removeCardDuplicates(data);
+          const deduped = await removeCardDuplicates(db, data); // Pass db instance
           filteredIds = deduped.map((c) => c.cardId);
         } else {
           // Handle case where no data is found for the IDs, though this shouldn't happen if queryBuilder returned them
@@ -82,7 +82,7 @@ export default function FullFormScreen() {
       }
       setLastSearchPage("advanced");
     }, [lastSearchPage])
-  ); // Add semicolon
+  );
 
   React.useEffect(() => {
     if (scrollRef.current) {
