@@ -34,21 +34,50 @@ export async function freeQueryBuilder(
   const trimmed = search.trim();
   if (!trimmed) return { cardIds: [], query: "" };
   // Lowercase, then normalize all variants of 'pokemon', 'pokèmon', 'pokémon' to 'Pokémon' (capital P, é)
-  const searchNormalized = trimmed.replace(/pok[eèé]mon/gi, "Pokémon");
+  let searchNormalized = trimmed.replace(/pok[eèé]mon/gi, "Pokémon");
+  // Normalize numbers followed by x or × (e.g., 100x, 100 x, 100×) to "100×"
+  searchNormalized = searchNormalized.replace(/(\d+)\s*[x×]/gi, "$1×");
   const cardIdSet = new Set<string>();
 
   // Helper to resolve Card.id to Card.cardId
-  async function idsToCardIds(ids: number[]): Promise<string[]> {
-    if (!ids.length) return [];
-    const { data } = await supabase.from("Card").select("cardId, id").in("id", ids);
+  async function cardIdsFromCardIds(cardIds: number[]): Promise<string[]> {
+    if (!cardIds.length) return [];
+    const { data } = await supabase.from("Card").select("cardId, id").in("id", cardIds);
     return data?.map((row: any) => row.cardId).filter(Boolean) || [];
   }
-
-  // Helper to resolve Card.setId to Card.cardId
-  async function setIdsToCardIds(setIds: number[]): Promise<string[]> {
+  // Helper to resolve CardSet.id to Card.cardId
+  async function cardIdsFromSetIds(setIds: number[]): Promise<string[]> {
     if (!setIds.length) return [];
     const { data } = await supabase.from("Card").select("cardId, setId").in("setId", setIds);
     return data?.map((row: any) => row.cardId).filter(Boolean) || [];
+  }
+  // Helper to resolve Abilities.id to Card.cardId via CardAbilities
+  async function cardIdsFromAbilityIds(abilityIds: number[]): Promise<string[]> {
+    if (!abilityIds.length) return [];
+    const { data } = await supabase.from("CardAbilities").select("cardId, abilityId").in("abilityId", abilityIds);
+    const cardIds = data?.map((row: any) => row.cardId).filter(Boolean) || [];
+    return cardIdsFromCardIds(cardIds);
+  }
+  // Helper to resolve Attacks.id to Card.cardId via CardAttacks
+  async function cardIdsFromAttackIds(attackIds: number[]): Promise<string[]> {
+    if (!attackIds.length) return [];
+    const { data } = await supabase.from("CardAttacks").select("cardId, attackId").in("attackId", attackIds);
+    const cardIds = data?.map((row: any) => row.cardId).filter(Boolean) || [];
+    return cardIdsFromCardIds(cardIds);
+  }
+  // Helper to resolve CardAbilities.id to Card.cardId
+  async function cardIdsFromCardAbilitiesIds(cardAbilitiesIds: number[]): Promise<string[]> {
+    if (!cardAbilitiesIds.length) return [];
+    const { data } = await supabase.from("CardAbilities").select("cardId, id").in("id", cardAbilitiesIds);
+    const cardIds = data?.map((row: any) => row.cardId).filter(Boolean) || [];
+    return cardIdsFromCardIds(cardIds);
+  }
+  // Helper to resolve CardAttacks.id to Card.cardId
+  async function cardIdsFromCardAttacksIds(cardAttacksIds: number[]): Promise<string[]> {
+    if (!cardAttacksIds.length) return [];
+    const { data } = await supabase.from("CardAttacks").select("cardId, id").in("id", cardAttacksIds);
+    const cardIds = data?.map((row: any) => row.cardId).filter(Boolean) || [];
+    return cardIdsFromCardIds(cardIds);
   }
 
   // Only search included fields if provided
@@ -61,64 +90,77 @@ export async function freeQueryBuilder(
 
   for (const field of fieldsToSearch) {
     if (field.type === "text") {
-      let query = supabase.from(field.table).select(field.table === "Card" ? "cardId" : "id");
+      let query = supabase.from(field.table).select("id");
       query = query.ilike(field.column, `%${searchNormalized}%`);
       const { data, error } = await query;
       if (!error && data && data.length > 0) {
+        const ids = data.map((row: any) => row.id).filter(Boolean);
+        let foundCardIds: string[] = [];
         if (field.table === "Card") {
-          data.forEach((row: any) => row.cardId && cardIdSet.add(row.cardId));
+          // Card: id is cardId
+          const { data: cardData } = await supabase.from("Card").select("cardId").in("id", ids);
+          foundCardIds = cardData?.map((row: any) => row.cardId).filter(Boolean) || [];
         } else if (field.table === "CardSet") {
-          // CardSet: resolve setId to cardId
-          const setIds = data.map((row: any) => row.id).filter(Boolean);
-          const cardIds = await setIdsToCardIds(setIds);
-          cardIds.forEach((id) => cardIdSet.add(id));
-        } else {
-          // Attacks/Abilities: resolve id to cardId via join tables
-          const ids = data.map((row: any) => row.id).filter(Boolean);
-          if (field.table === "Attacks") {
-            const { data: caData } = await supabase.from("CardAttacks").select("cardId").in("attackId", ids);
-            const cardAttackIds = caData?.map((row: any) => row.cardId).filter(Boolean) || [];
-            const cardIds = await idsToCardIds(cardAttackIds);
-            cardIds.forEach((id) => cardIdSet.add(id));
-          } else if (field.table === "Abilities") {
-            const { data: caData } = await supabase.from("CardAbilities").select("cardId").in("abilityId", ids);
-            const cardAbilityIds = caData?.map((row: any) => row.cardId).filter(Boolean) || [];
-            const cardIds = await idsToCardIds(cardAbilityIds);
-            cardIds.forEach((id) => cardIdSet.add(id));
-          }
+          foundCardIds = await cardIdsFromSetIds(ids);
+        } else if (field.table === "Abilities") {
+          foundCardIds = await cardIdsFromAbilityIds(ids);
+        } else if (field.table === "Attacks") {
+          foundCardIds = await cardIdsFromAttackIds(ids);
+        } else if (field.table === "CardAbilities") {
+          foundCardIds = await cardIdsFromCardAbilitiesIds(ids);
+        } else if (field.table === "CardAttacks") {
+          foundCardIds = await cardIdsFromCardAttacksIds(ids);
         }
+        foundCardIds.forEach((id) => cardIdSet.add(id));
       }
     } else if (field.type === "int") {
       const num = Number(trimmed);
       if (!isNaN(num)) {
-        let query = supabase.from(field.table).select(field.table === "Card" ? "cardId" : "id");
+        let query = supabase.from(field.table).select("id");
         query = query.eq(field.column, num);
         const { data, error } = await query;
         if (!error && data && data.length > 0) {
+          const ids = data.map((row: any) => row.id).filter(Boolean);
+          let foundCardIds: string[] = [];
           if (field.table === "Card") {
-            data.forEach((row: any) => row.cardId && cardIdSet.add(row.cardId));
-          } else {
-            // CardAttacks: resolve id to cardId
-            const ids = data.map((row: any) => row.id).filter(Boolean);
-            const { data: caData } = await supabase.from("Card").select("cardId, id").in("id", ids);
-            caData?.forEach((row: any) => row.cardId && cardIdSet.add(row.cardId));
+            const { data: cardData } = await supabase.from("Card").select("cardId").in("id", ids);
+            foundCardIds = cardData?.map((row: any) => row.cardId).filter(Boolean) || [];
+          } else if (field.table === "CardSet") {
+            foundCardIds = await cardIdsFromSetIds(ids);
+          } else if (field.table === "Abilities") {
+            foundCardIds = await cardIdsFromAbilityIds(ids);
+          } else if (field.table === "Attacks") {
+            foundCardIds = await cardIdsFromAttackIds(ids);
+          } else if (field.table === "CardAbilities") {
+            foundCardIds = await cardIdsFromCardAbilitiesIds(ids);
+          } else if (field.table === "CardAttacks") {
+            foundCardIds = await cardIdsFromCardAttacksIds(ids);
           }
+          foundCardIds.forEach((id) => cardIdSet.add(id));
         }
       }
     } else if (field.type === "json-string-array") {
-      // Use .or() with ilike for arrays (as in queryBuilder)
-      let query = supabase.from(field.table).select(field.table === "Card" ? "cardId" : "id");
+      let query = supabase.from(field.table).select("id");
       query = query.or(`${field.column}.ilike.%${searchNormalized}%`);
       const { data, error } = await query;
       if (!error && data && data.length > 0) {
+        const ids = data.map((row: any) => row.id).filter(Boolean);
+        let foundCardIds: string[] = [];
         if (field.table === "Card") {
-          data.forEach((row: any) => row.cardId && cardIdSet.add(row.cardId));
+          const { data: cardData } = await supabase.from("Card").select("cardId").in("id", ids);
+          foundCardIds = cardData?.map((row: any) => row.cardId).filter(Boolean) || [];
+        } else if (field.table === "CardSet") {
+          foundCardIds = await cardIdsFromSetIds(ids);
+        } else if (field.table === "Abilities") {
+          foundCardIds = await cardIdsFromAbilityIds(ids);
+        } else if (field.table === "Attacks") {
+          foundCardIds = await cardIdsFromAttackIds(ids);
+        } else if (field.table === "CardAbilities") {
+          foundCardIds = await cardIdsFromCardAbilitiesIds(ids);
         } else if (field.table === "CardAttacks") {
-          // CardAttacks: resolve id to cardId
-          const ids = data.map((row: any) => row.id).filter(Boolean);
-          const { data: caData } = await supabase.from("Card").select("cardId, id").in("id", ids);
-          caData?.forEach((row: any) => row.cardId && cardIdSet.add(row.cardId));
+          foundCardIds = await cardIdsFromCardAttacksIds(ids);
         }
+        foundCardIds.forEach((id) => cardIdSet.add(id));
       }
     }
   }
