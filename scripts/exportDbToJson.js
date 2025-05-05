@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 // Define paths relative to the script location (helpers/)
-const dbPath = path.join(__dirname, "..", "assets", "database", "pokemonCardsDB.db"); // Go up one level, then to assets/database
+const dbPath = path.join(__dirname, "..", "scripts", "db", "pokemonCardsDB.db"); // Go up one level, then to assets/database
 const outputDir = path.join(__dirname, "..", "assets", "database"); // Go up one level, then to assets/database/data
 const tablesToExport = ["CardSet", "Abilities", "Attacks", "Card", "CardAbilities", "CardAttacks"]; // Add other table names if needed
 
