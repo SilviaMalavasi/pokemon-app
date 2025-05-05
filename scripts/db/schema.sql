@@ -41,7 +41,6 @@ CREATE TABLE IF NOT EXISTS CardSet (
       rarity TEXT,
       nationalPokedexNumbers TEXT,
       regulationMark TEXT,
-      imagesSmall TEXT,
       imagesLarge TEXT,
       rules TEXT,
       number TEXT,

@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const Database = require("better-sqlite3");
 
-const dbPath = path.resolve(__dirname, "../db/pokemonCardsDB.db");
+const dbPath = path.resolve(__dirname, "../scripts/db/pokemonCardsDB.db");
 const db = new Database(dbPath);
 
 function getUniqueValues(table, column) {
