@@ -12,7 +12,7 @@ export async function openUserDatabase(): Promise<SQLite.SQLiteDatabase> {
 // Function to handle user database migrations
 export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase) {
   // ----> INCREMENT THIS WHEN SCHEMA CHANGES <----
-  const USER_DATABASE_VERSION = 1; // Start with version 1
+  const USER_DATABASE_VERSION = 3;
 
   // Read the current version using getFirstAsync
   const result = await db.getFirstAsync<{ user_version: number }>("PRAGMA user_version");
@@ -41,7 +41,8 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase) {
       CREATE TABLE IF NOT EXISTS Decks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        cards TEXT NOT NULL -- Store as JSON: '[{"cardId": "sv1-1", "count": 2}, ...]' 
+        thumbnail TEXT 
+        cards TEXT NOT NULL, -- Store as JSON: '[{"cardId": "sv1-1", "count": 2}, ...]'
       );
 
       -- Create the WatchedCards table
@@ -55,7 +56,8 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase) {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         formType TEXT NOT NULL CHECK(formType IN ('free', 'advanced')), -- 'free' or 'advanced'
-        queryParams TEXT NOT NULL, -- JSON string of search parameters
+        queryParams TEXT NOT NULL -- JSON string of search parameters
+        createdAt INTEGER NOT NULL DEFAULT (strftime('%s','now')) -- Timestamp of creation
       );
     `);
 
@@ -63,13 +65,22 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase) {
   }
 
   // --- Add future migration steps here using 'if (currentDbVersion < X)' blocks ---
-  // if (currentDbVersion < 2) {
-  //   console.log("Applying version 2 user migration...");
-  //   await db.execAsync(`
-  //     -- Add ALTER TABLE or other migration logic for version 2
-  //   `);
-  //   console.log("Version 2 user migration complete.");
-  // }
+  if (currentDbVersion < 2) {
+    console.log("Applying version 2 user migration: Add thumbnail to Decks table...");
+    // Check if the column already exists before trying to add it
+    // This is good practice for robustness, though less critical if versions are managed strictly
+    const columns = await db.getAllAsync<{ name: string }>(`PRAGMA table_info(Decks)`);
+    const hasThumbnailColumn = columns.some((col) => col.name === "thumbnail");
+
+    if (!hasThumbnailColumn) {
+      await db.execAsync(`
+        ALTER TABLE Decks ADD COLUMN thumbnail TEXT;
+      `);
+      console.log("Version 2 user migration complete: Added thumbnail column to Decks.");
+    } else {
+      console.log("Version 2 user migration: Thumbnail column already exists.");
+    }
+  }
 
   // --- Set Final Version ---
   // Use execAsync to set the final version PRAGMA

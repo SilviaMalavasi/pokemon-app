@@ -5,10 +5,10 @@ import ThemedText from "@/components/base/ThemedText";
 import styles from "@/style/ui/SplashScreenStyle";
 
 const messages = [
-  "Catching Pokémon in the database",
-  "Negotiating with Mewtwo for loading speed",
-  "Polishing Poké Balls to a mirror shine",
-  "Syncing with Professor Oak’s Wi-Fi",
+  "Catching Pokémon\nin the database",
+  "Negotiating with Mewtwo\nfor loading speed",
+  "Polishing Poké Balls\nto a mirror shine",
+  "Syncing with\nProfessor Oak’s Wi-Fi",
   "Wishing this was a shiny load",
 ];
 
