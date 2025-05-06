@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
     marginBottom: theme.padding.xlarge,
   },
   instructions: {
-    paddingTop: theme.padding.xsmall,
-    paddingBottom: theme.padding.large,
+    paddingTop: theme.padding.medium,
+    paddingBottom: theme.padding.small,
   },
   mainButtonsRow: {
     flexDirection: "row",
