@@ -17,7 +17,7 @@ export default function HomeScreen() {
   );
   return (
     <ParallaxScrollView
-      headerImage="advanced-search.webp"
+      headerImage="home-bkg"
       headerTitle="Pokémon Deck Builder"
       scrollRef={scrollRef}
     >

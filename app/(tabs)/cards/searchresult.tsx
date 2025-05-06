@@ -101,7 +101,7 @@ export default function SearchResultScreen() {
   return (
     <>
       <ParallaxScrollView
-        headerImage="advanced-search.webp"
+        headerImage="search-results-bkg"
         headerTitle="Search Results"
         scrollRef={scrollRef}
       >

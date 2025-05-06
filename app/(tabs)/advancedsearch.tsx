@@ -93,7 +93,7 @@ export default function FullFormScreen() {
   return (
     <AutocompleteDropdownContextProvider>
       <ParallaxScrollView
-        headerImage="advanced-search.webp"
+        headerImage="advanced-search-bkg"
         headerTitle="Advanced Search"
         scrollRef={scrollRef}
       >

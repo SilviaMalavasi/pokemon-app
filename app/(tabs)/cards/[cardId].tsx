@@ -108,7 +108,7 @@ export default function FullCardScreen() {
   return (
     <>
       <ParallaxScrollView
-        headerImage="advanced-search.webp"
+        headerImage="card-bkg"
         headerTitle="Card Details"
         scrollRef={scrollRef}
       >

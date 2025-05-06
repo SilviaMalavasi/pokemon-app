@@ -89,7 +89,7 @@ export default function FreeSearchScreen() {
 
   return (
     <ParallaxScrollView
-      headerImage="advanced-search.webp"
+      headerImage="free-search-bkg"
       headerTitle="Free Search"
       scrollRef={scrollRef}
     >
