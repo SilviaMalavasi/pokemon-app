@@ -37,7 +37,7 @@ export default function WeakResModal({
       visible={visible}
       onClose={onClose}
       buttonText="set filters"
-      buttonType="alternative"
+      buttonType="main"
       buttonSize="large"
       onCancel={handleCancel}
     >

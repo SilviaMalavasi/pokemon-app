@@ -69,7 +69,7 @@ export default function AttacksModal({
       visible={visible}
       onClose={onClose}
       buttonText="set filters"
-      buttonType="alternative"
+      buttonType="main"
       buttonSize="large"
       onCancel={handleCancel}
     >

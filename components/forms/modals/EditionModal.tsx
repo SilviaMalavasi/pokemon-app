@@ -48,7 +48,7 @@ export default function EditionModal({
       visible={visible}
       onClose={onClose}
       buttonText="set filters"
-      buttonType="alternative"
+      buttonType="main"
       buttonSize="large"
       onCancel={handleCancel}
     >

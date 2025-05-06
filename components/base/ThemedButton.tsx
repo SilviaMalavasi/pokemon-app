@@ -3,7 +3,7 @@ import ThemedText from "@/components/base/ThemedText";
 import { View } from "react-native";
 import { Svg, Path, Rect } from "react-native-svg";
 import { theme } from "@/style/ui/Theme";
-import { Image } from "expo-image";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { createButtonStyle } from "@/style/base/ThemedButtonStyle";
 import { ButtonType, ButtonSize, ButtonStatus } from "@/style/base/ThemedButtonStyle";
@@ -80,37 +80,38 @@ export default function ThemedButton({
   const iconContainerStyle = [buttonStyle.icon].filter(Boolean);
   const iconFill = getIconFill(status);
 
-  // Select background image based on status/type
-  let backgroundImage = null;
-  if (disabled || status === "disabled") {
-    backgroundImage = require("@/assets/images/button-disabled-background.webp");
+  const isDisabled = disabled || status === "disabled";
+  let activeGradientColors: [string, string] | undefined = undefined;
+
+  if (isDisabled) {
+    activeGradientColors = [theme.colors.grey, theme.colors.lightGrey];
   } else if (type === "main") {
-    backgroundImage = require("@/assets/images/button-main-background.webp");
+    activeGradientColors = [theme.colors.lightGreen, theme.colors.green];
   } else if (type === "alternative") {
-    backgroundImage = require("@/assets/images/button-alt-background.webp");
+    activeGradientColors = [theme.colors.lightPurple, theme.colors.purple];
   }
 
   return (
     <TouchableOpacity
       activeOpacity={1}
       style={[containerStyle, typeof width === "number" ? { width } : {}]}
-      disabled={disabled || status === "disabled"}
+      disabled={isDisabled} // Use isDisabled here
       {...rest}
     >
-      {backgroundImage && (
-        <Image
-          source={backgroundImage}
+      {activeGradientColors && (
+        <LinearGradient
+          colors={activeGradientColors} // This is now type-safe
           style={{
             position: "absolute",
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            borderRadius: 8,
+            borderRadius: 8, // Ensure this matches your button's border radius
             zIndex: 0,
           }}
-          contentFit="cover"
-          pointerEvents="none"
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
         />
       )}
       {IconComponent ? (

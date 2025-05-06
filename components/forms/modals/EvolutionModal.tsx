@@ -40,7 +40,7 @@ export default function EvolutionModal({
       visible={visible}
       onClose={onClose}
       buttonText="set filters"
-      buttonType="alternative"
+      buttonType="main"
       buttonSize="large"
       onCancel={handleCancel}
     >

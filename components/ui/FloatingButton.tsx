@@ -1,8 +1,9 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import styles from "@/style/ui/FloatingButtonStyle";
-import { Image } from "expo-image";
 import { Svg, Path } from "react-native-svg";
+import { LinearGradient } from "expo-linear-gradient";
+import { theme } from "@/style/ui/Theme";
 
 interface FloatingButtonProps {
   title: string;
@@ -23,6 +24,9 @@ export default function FloatingButton({ title, onPress }: FloatingButtonProps) 
       />
     </Svg>
   );
+
+  const gradientColors: [string, string] = [theme.colors.lightPurple, theme.colors.purple];
+
   return (
     <TouchableOpacity
       style={styles.fab}
@@ -30,11 +34,19 @@ export default function FloatingButton({ title, onPress }: FloatingButtonProps) 
       activeOpacity={0.8}
     >
       <View style={styles.button}>
-        <Image
-          source={require("@/assets/images/button-alt-background.webp")}
-          style={styles.backgroundImage}
-          contentFit="cover"
-          pointerEvents="none"
+        <LinearGradient
+          colors={gradientColors}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            borderRadius: styles.fab.borderRadius,
+            zIndex: 0,
+          }}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
         />
         <View style={styles.iconContainerStyle}>
           <IconBack />

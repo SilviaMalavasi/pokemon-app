@@ -42,7 +42,7 @@ export default function StatsModal({
       visible={visible}
       onClose={onClose}
       buttonText="set filters"
-      buttonType="alternative"
+      buttonType="main"
       buttonSize="large"
       onCancel={handleCancel}
     >

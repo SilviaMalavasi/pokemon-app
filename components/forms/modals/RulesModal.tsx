@@ -22,7 +22,7 @@ export default function RulesModal({ visible, onClose, cardRules, setCardRules }
       visible={visible}
       onClose={onClose}
       buttonText="set filters"
-      buttonType="alternative"
+      buttonType="main"
       buttonSize="large"
       onCancel={handleCancel}
     >
