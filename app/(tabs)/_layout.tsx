@@ -119,7 +119,12 @@ function SearchFormContextWatcher() {
   const pathname = usePathname();
   const { setLastSearchPage } = useSearchFormContext();
   useEffect(() => {
-    if (pathname === "/advancedsearch" || pathname === "/freesearch" || pathname.startsWith("/cards/")) {
+    if (
+      pathname === "/deckbuilder" ||
+      pathname === "/advancedsearch" ||
+      pathname === "/freesearch" ||
+      pathname.startsWith("/cards/")
+    ) {
       // do nothing
     } else {
       setLastSearchPage(null);
