@@ -3,7 +3,7 @@ import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
-import { addDeck, getSavedDecks } from "@/lib/userDatabase";
+import { addDeck, getSavedDecks, deleteDeck } from "@/lib/userDatabase";
 import NewDeck from "@/components/deckbuilder/NewDeck";
 import SavedDecks from "@/components/deckbuilder/SavedDecks";
 
@@ -22,6 +22,7 @@ export default function DeckBuilderScreen() {
   const [deckThumbnail, setDeckThumbnail] = useState("");
   const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
   const [isLoadingDecks, setIsLoadingDecks] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const fetchSavedDecks = useCallback(async () => {
     if (!db) return;
@@ -68,6 +69,22 @@ export default function DeckBuilderScreen() {
     }
   };
 
+  const handleDeleteDeck = useCallback(
+    async (id: number) => {
+      if (!db) return;
+      setDeletingId(id);
+      try {
+        await deleteDeck(db, id);
+        await fetchSavedDecks();
+      } catch (e) {
+        console.error("Failed to delete deck", e);
+      } finally {
+        setDeletingId(null);
+      }
+    },
+    [db, fetchSavedDecks]
+  );
+
   const handleThumbnailSelect = (imagesLargeUrl: string) => {
     setDeckThumbnail(imagesLargeUrl);
   };
@@ -89,6 +106,8 @@ export default function DeckBuilderScreen() {
       <SavedDecks
         savedDecks={savedDecks}
         isLoadingDecks={isLoadingDecks}
+        onDelete={handleDeleteDeck}
+        deletingId={deletingId}
       />
     </ParallaxScrollView>
   );

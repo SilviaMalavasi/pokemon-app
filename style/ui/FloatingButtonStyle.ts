@@ -28,6 +28,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  background: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: theme.borderRadius.xlarge,
+    zIndex: 0,
+  },
   iconContainerStyle: {
     width: theme.padding.large,
     height: theme.padding.large,

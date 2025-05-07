@@ -28,8 +28,6 @@ export default function FloatingButton({ title, onPress, bottom }: FloatingButto
     </Svg>
   );
 
-  const gradientColors: [string, string] = [theme.colors.lightPurple, theme.colors.purple];
-
   return (
     <TouchableOpacity
       style={[styles.fab, { bottom: bottom !== undefined ? bottom : theme.padding.small }]}
@@ -38,16 +36,8 @@ export default function FloatingButton({ title, onPress, bottom }: FloatingButto
     >
       <View style={styles.button}>
         <LinearGradient
-          colors={gradientColors}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            borderRadius: styles.fab.borderRadius,
-            zIndex: 0,
-          }}
+          colors={[theme.colors.lightPurple, theme.colors.purple]}
+          style={styles.background}
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 1 }}
         />

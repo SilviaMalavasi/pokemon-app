@@ -15,9 +15,11 @@ interface SavedDeck {
 interface SavedDecksSectionProps {
   savedDecks: SavedDeck[];
   isLoadingDecks: boolean;
+  onDelete: (id: number) => void;
+  deletingId: number | null;
 }
 
-export default function SavedDecks({ savedDecks, isLoadingDecks }: SavedDecksSectionProps) {
+export default function SavedDecks({ savedDecks, isLoadingDecks, onDelete, deletingId }: SavedDecksSectionProps) {
   return (
     <ThemedView>
       <ThemedText
@@ -32,9 +34,13 @@ export default function SavedDecks({ savedDecks, isLoadingDecks }: SavedDecksSec
         <ThemedText>No saved decks yet.</ThemedText>
       ) : (
         <ThemedView style={SearchResultStyle.cardList}>
-          {savedDecks.map((deck, idx) => (
+          {savedDecks.map((deck) => (
             <ThemedView key={deck.id + "-deck"}>
-              <CompactDeck deck={deck} />
+              <CompactDeck
+                deck={deck}
+                loading={deletingId === deck.id}
+                onDelete={onDelete}
+              />
             </ThemedView>
           ))}
         </ThemedView>

@@ -130,3 +130,9 @@ export async function getSavedDecks(
     "SELECT id, name, thumbnail, cards FROM Decks ORDER BY name ASC"
   );
 }
+
+// Delete a deck by ID
+export async function deleteDeck(db: SQLite.SQLiteDatabase, id: number): Promise<void> {
+  console.log(`Deleting deck with id: ${id}`);
+  await db.runAsync("DELETE FROM Decks WHERE id = ?", [id]);
+}
