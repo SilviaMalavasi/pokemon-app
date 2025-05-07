@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { useSQLiteContext } from "expo-sqlite";
+import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import SearchResult from "@/components/SearchResult";
@@ -19,7 +19,7 @@ export default function SearchResultScreen() {
   const { lastSearchPage, clearAdvancedForm } = useSearchFormContext();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   // Get SQLite DB instance
-  const db = useSQLiteContext();
+  const { db } = useCardDatabase();
 
   useFocusEffect(
     React.useCallback(() => {

@@ -3,12 +3,11 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import React, { Suspense, useEffect, useState, useCallback } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
 import SplashScreenComponent from "@/components/ui/SplashScreen";
-import { SQLiteProvider, type SQLiteDatabase } from "expo-sqlite";
-import { migrateDbIfNeeded } from "@/lib/cardDatabase";
+import { CardDatabaseProvider } from "@/components/context/CardDatabaseContext";
 
 import "react-native-reanimated";
 
@@ -28,36 +27,19 @@ export default function RootLayout() {
 
   const [isUpdatingDb, setIsUpdatingDb] = useState(false);
 
-  // Define the init function with the state setter, memoized with useCallback
-  const initializeDatabase = useCallback(
-    async (db: SQLiteDatabase) => {
-      console.log("Running initializeDatabase...");
-      await migrateDbIfNeeded(db, setIsUpdatingDb);
-    },
-    [setIsUpdatingDb]
-  ); // Dependency array includes the setter
-
   useEffect(() => {
-    // Hide the native splash screen *only* once fonts are loaded.
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
 
-  // Use the Suspense boundary for DB loading.
   if (!fontsLoaded) {
-    // Pass the updating state even to the initial splash screen
     return <SplashScreenComponent isUpdatingDb={isUpdatingDb} />;
   }
 
   return (
-    // Pass the updating state to the fallback splash screen
     <Suspense fallback={<SplashScreenComponent isUpdatingDb={isUpdatingDb} />}>
-      <SQLiteProvider
-        databaseName="pokemon.db"
-        onInit={initializeDatabase} // Use the function that includes the setter
-        useSuspense={true}
-      >
+      <CardDatabaseProvider setIsUpdatingDb={setIsUpdatingDb}>
         <SearchResultProvider>
           <ThemedView style={{ flex: 1 }}>
             <Stack
@@ -75,7 +57,7 @@ export default function RootLayout() {
             <StatusBar style="auto" />
           </ThemedView>
         </SearchResultProvider>
-      </SQLiteProvider>
+      </CardDatabaseProvider>
     </Suspense>
   );
 }

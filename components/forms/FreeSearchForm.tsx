@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
@@ -12,7 +12,7 @@ import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import styles from "@/style/forms/FreeSearchFormStyle";
 import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
-import { useSQLiteContext } from "expo-sqlite"; // Import useSQLiteContext
+import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 
 export default function FreeSearchForm({
   onSearchResults,
@@ -26,10 +26,8 @@ export default function FreeSearchForm({
   resetKey?: number;
   removeDuplicates: boolean;
   onRemoveDuplicatesChange: (val: boolean) => void;
-  currentPage: number;
-  itemsPerPage: number;
 }) {
-  const db = useSQLiteContext(); // Get db instance
+  const { db, isLoading, isUpdating } = useCardDatabase();
   const { freeForm, setFreeForm, lastSearchPage, clearFreeForm } = useSearchFormContext();
   const [cardSearch, setCardSearch] = useState("");
   // All card columns that can be excluded from search
@@ -101,6 +99,11 @@ export default function FreeSearchForm({
 
   // Log when saving to context
   const handleSubmit = async () => {
+    if (!db || isLoading || isUpdating) {
+      if (setLoadingProp) setLoadingProp(false);
+      setButtonLoading(false);
+      return;
+    }
     setFreeForm({
       cardSearch,
       includedColumns,

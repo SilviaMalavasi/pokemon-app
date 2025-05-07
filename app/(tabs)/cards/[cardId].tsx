@@ -4,7 +4,7 @@ import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import FullCard from "@/components/FullCard";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useSQLiteContext } from "expo-sqlite";
+import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import { CardType, Ability, Attack } from "@/types/PokemonCardType";
 import FloatingButton from "@/components/ui/FloatingButton";
 import { theme } from "@/style/ui/Theme";
@@ -19,8 +19,8 @@ export default function FullCardScreen() {
   const [loading, setLoading] = useState(true);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const router = useRouter();
-  // Get SQLite DB instance
-  const db = useSQLiteContext();
+  // const db = useSQLiteContext();
+  const { db } = useCardDatabase();
 
   const handleBack = () => {
     router.back();

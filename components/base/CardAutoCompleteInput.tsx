@@ -3,7 +3,7 @@ import { Pressable, ScrollView, TextInput, View } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
-import { useSQLiteContext } from "expo-sqlite";
+import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 
 import styles from "@/style/base/CardAutoCompleteInputStyle";
 
@@ -27,7 +27,7 @@ export default function CardAutoCompleteInput({
   const [inputFocused, setInputFocused] = useState(false);
   const selectingSuggestion = useRef(false);
   const inputRef = useRef<TextInput>(null);
-  const db = useSQLiteContext();
+  const { db } = useCardDatabase();
   const [selectedCardName, setSelectedCardName] = useState<string | null>(null);
 
   useEffect(() => {
@@ -38,6 +38,10 @@ export default function CardAutoCompleteInput({
 
   const handleSearch = async (text: string) => {
     setSearchTerm(text);
+    if (!db) {
+      setSuggestions([]);
+      return;
+    }
     if (text.length > 2) {
       try {
         // Query the Card table for matching names (case-insensitive, partial match)

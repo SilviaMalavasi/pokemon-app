@@ -11,7 +11,7 @@ import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
-import { useSQLiteContext } from "expo-sqlite";
+import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import { CardForDuplicateCheck } from "@/types/PokemonCardType";
 
 // Helper function to generate SQL placeholders like ?,?,?
@@ -20,7 +20,7 @@ function generatePlaceholders(count: number): string {
 }
 
 export default function FreeSearchScreen() {
-  const db = useSQLiteContext();
+  const { db } = useCardDatabase();
   const [resetKey, setResetKey] = useState(0);
   const [removeDuplicatesState, setRemoveDuplicatesState] = useState(false); // Renamed state variable
   const [modalVisible, setModalVisible] = useState(false);
@@ -33,6 +33,11 @@ export default function FreeSearchScreen() {
   // Handler to receive card IDs from FreeSearch
   const handleSearchResults = async (ids: string[], query: string) => {
     let filteredIds = ids;
+    if (!db) {
+      setLoading(false);
+      // Optionally show an error to the user
+      return;
+    }
     if (removeDuplicatesState && ids.length > 0) {
       // Use renamed state variable
       // Fetch card details for duplicate removal using SQLite

@@ -12,7 +12,7 @@ import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
-import { useSQLiteContext } from "expo-sqlite"; // Import the hook
+import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 
 export default function FullFormScreen() {
   const [resetKey, setResetKey] = useState(0);
@@ -23,11 +23,16 @@ export default function FullFormScreen() {
   const { setCardIds, setQuery, setCurrentPage, setItemsPerPage, setCards, setLoading } = useSearchResultContext();
   const { setLastSearchPage, clearAdvancedForm, lastSearchPage } = useSearchFormContext(); // Removed setAdvancedForm
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const db = useSQLiteContext(); // Get db instance from context
+  const { db } = useCardDatabase();
 
   // Handler to receive card IDs from AdvancedSearch
   const handleSearchResults = async (ids: string[], query: string) => {
     let filteredIds = ids;
+    if (!db) {
+      setLoading(false);
+      // Optionally show an error to the user
+      return;
+    }
     if (removeDuplicates && ids.length > 0) {
       // Fetch card details for duplicate removal using SQLite
       try {

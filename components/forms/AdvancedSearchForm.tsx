@@ -11,7 +11,7 @@ import ThemedTextInput from "@/components/base/ThemedTextInput";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { queryBuilder } from "@/helpers/queryBuilder";
 import type { QueryBuilderFilter } from "@/helpers/queryBuilder";
-import { useSQLiteContext } from "expo-sqlite"; // Import the hook
+import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 
 import CardTypeModal, { getCardTypeFilters } from "@/components/forms/modals/CardTypeModal";
 import RulesModal, { getRulesFilters } from "@/components/forms/modals/RulesModal";
@@ -44,7 +44,7 @@ export default function AdvancedSearchForm({
   currentPage: number;
   itemsPerPage: number;
 }) {
-  const db = useSQLiteContext(); // Get db instance from context
+  const { db, isLoading, isUpdating } = useCardDatabase();
   // Context for form state
   const { advancedForm, setAdvancedForm, lastSearchPage, clearAdvancedForm } = useSearchFormContext();
 
@@ -263,6 +263,12 @@ export default function AdvancedSearchForm({
     cardSetNumber.trim() !== "";
 
   const handleSubmit = async (): Promise<void> => {
+    if (!db || isLoading || isUpdating) {
+      setLoading(false);
+      if (setLoadingProp) setLoadingProp(false);
+      setError("Database is not ready. Please wait and try again.");
+      return;
+    }
     if (setLoadingProp) setLoadingProp(true);
     setLoading(true);
     setError(null);
