@@ -41,6 +41,9 @@ export async function queryBuilder(
   db: SQLiteDatabase,
   filters: QueryBuilderFilter[]
 ): Promise<{ cardIds: string[]; query: string }> {
+  if (!db) {
+    throw new Error("Database instance is not initialized (db is null or undefined)");
+  }
   const normalizedFilters = filters.map((f) => {
     if (f.config.type === "text" && typeof f.value === "string") {
       return {

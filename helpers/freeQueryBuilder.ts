@@ -36,6 +36,9 @@ export async function freeQueryBuilder(
   search: string,
   includedTablesAndColumns?: { table: string; column: string }[]
 ): Promise<{ cardIds: string[]; query: string }> {
+  if (!db) {
+    throw new Error("Database instance is not initialized (db is null or undefined)");
+  }
   const trimmed = search.trim();
   if (!trimmed) return { cardIds: [], query: "" };
   // Lowercase, then normalize all variants of 'pokemon', 'pokèmon', 'pokémon' to 'Pokémon' (capital P, é)

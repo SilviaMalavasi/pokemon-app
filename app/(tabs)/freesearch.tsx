@@ -106,8 +106,6 @@ export default function FreeSearchScreen() {
           resetKey={resetKey}
           removeDuplicates={removeDuplicatesState} // Pass renamed state variable
           onRemoveDuplicatesChange={setRemoveDuplicatesState} // Pass renamed state setter
-          currentPage={1}
-          itemsPerPage={ITEMS_PER_PAGE}
         />
       </ThemedView>
       <ThemedModal
