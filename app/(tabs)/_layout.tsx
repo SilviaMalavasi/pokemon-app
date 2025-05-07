@@ -17,8 +17,8 @@ import styles from "@/style/ui/TabBarStyles";
 // Inline SVG icon components
 const HomeIcon = ({ color }: { color: string }) => (
   <Svg
-    width="30"
-    height="30"
+    width={styles.icon.width}
+    height={styles.icon.height}
     viewBox="0 0 470.82 470.82"
   >
     <Circle
@@ -49,8 +49,8 @@ const HomeIcon = ({ color }: { color: string }) => (
 
 const DeckBuilderIcon = ({ color }: { color: string }) => (
   <Svg
-    width="30"
-    height="30"
+    width={styles.icon.width}
+    height={styles.icon.height}
     viewBox="0 0 429.45 467.95"
   >
     <Path
@@ -146,7 +146,7 @@ export default function TabLayout() {
                 borderTopWidth: 0,
                 height: styles.tabBarContainer.height + insets.bottom,
                 paddingHorizontal: theme.padding.small,
-                paddingTop: theme.padding.xsmall,
+                paddingTop: 4,
                 paddingBottom: insets.bottom,
               },
               default: {
@@ -154,7 +154,7 @@ export default function TabLayout() {
                 borderTopWidth: 0,
                 height: styles.tabBarContainer.height + insets.bottom,
                 paddingHorizontal: theme.padding.small,
-                paddingTop: theme.padding.xsmall,
+                paddingTop: 4,
               },
             }),
           }}
