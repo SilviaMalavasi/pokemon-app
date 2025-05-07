@@ -19,6 +19,6 @@
 
 5.  **Increment Database Version:**
 
-    - Open the migration script: `lib/sqlite.ts`.
+    - Open the migration script: `lib/cardDatabase.ts`.
     - Find the `DATABASE_VERSION` constant near the top of the `migrateDbIfNeeded` function.
     - Increment its value by 1 (e.g., if it was `1`, change it to `2`).
