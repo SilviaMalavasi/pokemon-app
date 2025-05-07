@@ -7,7 +7,7 @@ const gap = theme.padding.small;
 const columns = 2;
 const cardWidth = (vw(100) - containersPadding * 2 - gap * (columns - 1)) / columns;
 
-const DeckCompactStyle = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     alignItems: "center",
@@ -17,6 +17,7 @@ const DeckCompactStyle = StyleSheet.create({
     paddingBottom: theme.padding.small,
   },
   imageContainer: {
+    position: "relative",
     width: "100%",
     height: cardWidth / 0.71,
   },
@@ -30,6 +31,18 @@ const DeckCompactStyle = StyleSheet.create({
     justifyContent: "center",
     paddingTop: theme.padding.xsmall,
   },
+  deleteButton: {
+    position: "absolute",
+    width: vw(12),
+    height: vw(12),
+    bottom: 0,
+    right: 0,
+    zIndex: 10,
+    backgroundColor: theme.colors.purple,
+    borderRadius: theme.borderRadius.xlarge,
+    padding: 2,
+    elevation: 2,
+  },
 });
 
-export default DeckCompactStyle;
+export default styles;

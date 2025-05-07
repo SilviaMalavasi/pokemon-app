@@ -1,8 +1,9 @@
 import React from "react";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
-import DeckCompact from "@/components/DeckCompact";
+import CompactDeck from "@/components/CompactDeck";
 import SearchResultStyle from "@/style/SearchResultStyle";
+import { theme } from "@/style/ui/Theme";
 
 interface SavedDeck {
   id: number;
@@ -19,7 +20,12 @@ interface SavedDecksSectionProps {
 export default function SavedDecks({ savedDecks, isLoadingDecks }: SavedDecksSectionProps) {
   return (
     <ThemedView>
-      <ThemedText type="subtitle">Saved Decks</ThemedText>
+      <ThemedText
+        type="subtitle"
+        style={{ paddingBottom: theme.padding.medium }}
+      >
+        Saved Decks
+      </ThemedText>
       {isLoadingDecks ? (
         <ThemedText>Loading decks...</ThemedText>
       ) : savedDecks.length === 0 ? (
@@ -28,7 +34,7 @@ export default function SavedDecks({ savedDecks, isLoadingDecks }: SavedDecksSec
         <ThemedView style={SearchResultStyle.cardList}>
           {savedDecks.map((deck, idx) => (
             <ThemedView key={deck.id + "-deck"}>
-              <DeckCompact deck={deck} />
+              <CompactDeck deck={deck} />
             </ThemedView>
           ))}
         </ThemedView>

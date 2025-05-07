@@ -23,7 +23,9 @@ export default function CardAutoCompleteInput({
   labelHint,
 }: CardAutoCompleteInputProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [suggestions, setSuggestions] = useState<{ id: number; name: string; imagesLarge: string }[]>([]);
+  const [suggestions, setSuggestions] = useState<{ id: number; name: string; imagesLarge: string; cardId: string }[]>(
+    []
+  );
   const [inputFocused, setInputFocused] = useState(false);
   const selectingSuggestion = useRef(false);
   const inputRef = useRef<TextInput>(null);
@@ -38,6 +40,7 @@ export default function CardAutoCompleteInput({
 
   const handleSearch = async (text: string) => {
     setSearchTerm(text);
+    setSelectedCardName(null); // Clear selected card when typing or clearing
     if (!db) {
       setSuggestions([]);
       return;
@@ -45,8 +48,8 @@ export default function CardAutoCompleteInput({
     if (text.length > 2) {
       try {
         // Query the Card table for matching names (case-insensitive, partial match)
-        const results = await db.getAllAsync<{ id: number; name: string; imagesLarge: string }>(
-          "SELECT id, name, imagesLarge FROM Card WHERE name LIKE ? ORDER BY name LIMIT 10",
+        const results = await db.getAllAsync<{ id: number; name: string; imagesLarge: string; cardId: string }>(
+          "SELECT id, name, imagesLarge, cardId FROM Card WHERE name LIKE ? ORDER BY name LIMIT 10",
           [`%${text}%`]
         );
         setSuggestions(results);
@@ -72,7 +75,7 @@ export default function CardAutoCompleteInput({
             type="label"
             style={styles.suggestionLabel}
           >
-            Suggestions:
+            Cards:
           </ThemedText>
           {suggestions.map((card) => (
             <Pressable
@@ -93,7 +96,9 @@ export default function CardAutoCompleteInput({
               }}
               accessibilityLabel={`Select card ${card.name}`}
             >
-              <ThemedText style={styles.customItem}>{card.name}</ThemedText>
+              <ThemedText style={styles.customItem}>
+                {card.name} {card.cardId.toUpperCase()}
+              </ThemedText>
             </Pressable>
           ))}
         </ScrollView>
@@ -101,15 +106,19 @@ export default function CardAutoCompleteInput({
       <ThemedTextInput
         ref={inputRef}
         label={label}
-        value={selectedCardName || searchTerm} // Show selected card name or current search term
-        onChange={handleSearch} // Corrected to onChange
+        value={searchTerm}
+        onChange={(text) => {
+          setSearchTerm(text);
+          setSelectedCardName(null);
+          handleSearch(text);
+        }}
         placeholder={placeholder || ""}
         labelHint={labelHint}
         onFocus={() => {
           selectingSuggestion.current = false;
           setInputFocused(true);
           if (selectedCardName) {
-            setSearchTerm(""); // Clear search term to allow new search
+            setSearchTerm("");
             setSelectedCardName(null);
           }
         }}
@@ -117,8 +126,6 @@ export default function CardAutoCompleteInput({
           setTimeout(() => {
             if (!selectingSuggestion.current) {
               setInputFocused(false);
-              if (!selectedCardName && searchTerm) {
-              }
             }
           }, 250);
         }}

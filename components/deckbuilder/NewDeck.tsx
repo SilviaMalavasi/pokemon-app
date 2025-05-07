@@ -4,7 +4,8 @@ import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import CardAutoCompleteInput from "@/components/base/CardAutoCompleteInput";
-import { Image } from "react-native";
+import { vw } from "@/helpers/viewport";
+import { theme } from "@/style/ui/Theme";
 
 interface NewDeckSectionProps {
   deckName: string;
@@ -22,33 +23,40 @@ export default function NewDeck({
   handleSaveDeck,
   handleThumbnailSelect,
 }: NewDeckSectionProps) {
+  const isNameMissing = !deckName.trim();
+  const isThumbnailMissing = !deckThumbnail.trim();
+  const isSaveDisabled = isNameMissing || isThumbnailMissing;
+
+  const handleSavePress = () => {
+    if (isSaveDisabled) return;
+    handleSaveDeck();
+  };
+
   return (
     <ThemedView>
       <ThemedText type="subtitle">New Deck</ThemedText>
-      <ThemedTextInput
-        label="Deck Name"
-        value={deckName}
-        onChange={setDeckName}
-        placeholder="Enter deck name"
-      />
-      <CardAutoCompleteInput
-        label="Deck Thumbnail"
-        value={deckThumbnail}
-        onCardSelect={handleThumbnailSelect}
-        placeholder="Type card name (min 3 chars)"
-        labelHint="Select a card image for the deck"
-      />
-      {deckThumbnail ? (
-        <ThemedView>
-          <Image source={{ uri: deckThumbnail }} />
-        </ThemedView>
-      ) : (
-        <ThemedText>No thumbnail selected.</ThemedText>
-      )}
-      <ThemedButton
-        title="Save Deck"
-        onPress={handleSaveDeck}
-      />
+      <ThemedView style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge }}>
+        <ThemedTextInput
+          label="Deck Name *"
+          value={deckName}
+          onChange={setDeckName}
+          placeholder="Enter deck name"
+        />
+        <CardAutoCompleteInput
+          label="Deck Thumbnail *"
+          value={deckThumbnail}
+          onCardSelect={handleThumbnailSelect}
+          placeholder="Type card name (min 3 chars)"
+          labelHint="Select a card image for the deck"
+        />
+        <ThemedButton
+          title="Save Deck"
+          width={vw(40)}
+          onPress={handleSavePress}
+          disabled={isSaveDisabled}
+          style={{ marginTop: theme.padding.small }}
+        />
+      </ThemedView>
     </ThemedView>
   );
 }
