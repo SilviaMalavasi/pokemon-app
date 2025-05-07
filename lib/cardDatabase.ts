@@ -1,269 +1,517 @@
-import { type SQLiteDatabase } from "expo-sqlite";
+import { SQLiteDatabase, SQLiteStatement } from "expo-sqlite";
+
+// ----> INCREMENT THIS WHEN JSON CHANGES <----
+const DATABASE_VERSION = 22;
+
+// Data types for JSON imports
+interface CardSet {
+  id: number;
+  setId: string;
+  name: string;
+  series: string;
+  printedTotal: number;
+  total: number;
+  releaseDate: string;
+  updatedAt: string;
+  ptcgoCode: string;
+}
+interface Ability {
+  id: number;
+  name: string;
+  text: string;
+}
+interface Attack {
+  id: number;
+  name: string;
+  text: string;
+}
+interface Card {
+  id: number;
+  cardId: string;
+  name: string;
+  supertype: string;
+  subtypes: string;
+  hp: number;
+  types: string;
+  evolvesFrom: string;
+  weaknesses: string;
+  resistances: string;
+  evolvesTo: string;
+  retreatCost: string;
+  convertedRetreatCost: number;
+  flavorText: string;
+  artist: string;
+  rarity: string;
+  nationalPokedexNumbers: string;
+  regulationMark: string;
+  imagesLarge: string;
+  rules: string;
+  number: string;
+  setId: number;
+}
+interface CardAbility {
+  id: number;
+  cardId: number;
+  abilityId: number;
+}
+interface CardAttack {
+  id: number;
+  cardId: number;
+  attackId: number;
+  cost: string;
+  convertedEnergyCost: number;
+  damage: string;
+}
 
 // Import the JSON data files
-const cardSetData = require("@/assets/database/CardSet.json");
-const abilitiesData = require("@/assets/database/Abilities.json");
-const attacksData = require("@/assets/database/Attacks.json");
-const cardData = require("@/assets/database/Card.json");
-const cardAbilitiesData = require("@/assets/database/CardAbilities.json");
-const cardAttacksData = require("@/assets/database/CardAttacks.json");
+const cardSetData: CardSet[] = require("@/assets/database/CardSet.json");
+const abilitiesData: Ability[] = require("@/assets/database/Abilities.json");
+const attacksData: Attack[] = require("@/assets/database/Attacks.json");
+const cardData: Card[] = require("@/assets/database/Card.json");
+const cardAbilitiesData: CardAbility[] = require("@/assets/database/CardAbilities.json");
+const cardAttacksData: CardAttack[] = require("@/assets/database/CardAttacks.json");
+
+// Batch size for large operations
+const BATCH_SIZE = 100;
+
+// --- Helper function to process data in batches with better error handling ---
+async function processBatch<T>(
+  items: T[],
+  processFn: (batch: T[]) => Promise<void>,
+  batchSize: number = BATCH_SIZE,
+  itemName: string = "items"
+) {
+  console.log(`Processing ${items.length} ${itemName} in batches of ${batchSize}...`);
+
+  // Process items in chunks to avoid memory issues
+  for (let i = 0; i < items.length; i += batchSize) {
+    try {
+      const batch = items.slice(i, i + batchSize);
+      await processFn(batch);
+
+      // Log progress for large datasets (but not too frequently)
+      const batchEnd = Math.min(i + batchSize, items.length);
+      if (items.length > 500 && (i + batchSize) % 500 === 0) {
+        console.log(
+          `  Progress: ${batchEnd}/${items.length} ${itemName} (${Math.round((batchEnd / items.length) * 100)}%)`
+        );
+      }
+    } catch (error) {
+      console.error(`Error processing batch ${i}/${items.length} of ${itemName}:`, error);
+      throw error; // Re-throw to handle at a higher level if needed
+    }
+  }
+  console.log(`Finished processing all ${items.length} ${itemName}`);
+}
+
+// --- Helper function to safely execute an SQL statement with detailed error handling ---
+async function safeExecuteAsync(stmt: SQLiteStatement, params: any[], itemType: string, itemId: any): Promise<void> {
+  try {
+    await stmt.executeAsync(params);
+  } catch (error) {
+    console.error(`Error executing statement for ${itemType} with ID ${itemId}:`, error);
+    // Don't throw, allow the process to continue with other items
+  }
+}
 
 // --- Helper function to populate data ---
 async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdating: boolean) => void) {
-  console.log("Populating data from JSON...");
+  console.log("Starting database population from JSON...");
   setIsUpdating(true); // Indicate update start
   try {
-    // Wrap population in a transaction for efficiency and safety
-    await db.withTransactionAsync(async () => {
-      // Clear existing data (important for updates!)
-      console.log("Clearing existing data...");
-      await db.execAsync("DELETE FROM CardAttacks;");
-      await db.execAsync("DELETE FROM CardAbilities;");
-      await db.execAsync("DELETE FROM Card;");
-      await db.execAsync("DELETE FROM Attacks;");
-      await db.execAsync("DELETE FROM Abilities;");
-      await db.execAsync("DELETE FROM CardSet;");
-      // Reset autoincrement counters if needed (optional but good practice)
-      await db.execAsync(
-        "DELETE FROM sqlite_sequence WHERE name IN ('CardSet', 'Abilities', 'Attacks', 'Card', 'CardAbilities', 'CardAttacks');"
-      );
-      console.log("Existing data cleared.");
+    // Clear existing data (important for updates!)
+    console.log("Clearing existing data...");
+    await db.execAsync("DELETE FROM CardAttacks;");
+    await db.execAsync("DELETE FROM CardAbilities;");
+    await db.execAsync("DELETE FROM Card;");
+    await db.execAsync("DELETE FROM Attacks;");
+    await db.execAsync("DELETE FROM Abilities;");
+    await db.execAsync("DELETE FROM CardSet;");
+    // Reset autoincrement counters
+    await db.execAsync(
+      "DELETE FROM sqlite_sequence WHERE name IN ('CardSet', 'Abilities', 'Attacks', 'Card', 'CardAbilities', 'CardAttacks');"
+    );
+    console.log("Existing data cleared.");
 
-      // Populate CardSet
-      console.log(`Populating CardSet (${cardSetData.length} items)...`);
-      const insertSetStmt = await db.prepareAsync(
-        "INSERT INTO CardSet (id, setId, name, series, printedTotal, total, releaseDate, updatedAt, ptcgoCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-      );
+    // Ensure foreign key constraints are enabled
+    await db.execAsync("PRAGMA foreign_keys = ON;");
+
+    // ---- CardSet Population ----
+    console.log(`Populating CardSet (${cardSetData.length} items)...`);
+    const insertSetStmt = await db.prepareAsync(
+      "INSERT INTO CardSet (id, setId, name, series, printedTotal, total, releaseDate, updatedAt, ptcgoCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    );
+
+    try {
+      // CardSet is usually small enough to process without batching
       for (const item of cardSetData) {
-        await insertSetStmt.executeAsync([
-          item.id,
-          item.setId,
-          item.name,
-          item.series,
-          item.printedTotal,
-          item.total,
-          item.releaseDate,
-          item.updatedAt,
-          item.ptcgoCode,
-        ]);
+        await safeExecuteAsync(
+          insertSetStmt,
+          [
+            item.id,
+            item.setId,
+            item.name,
+            item.series,
+            item.printedTotal,
+            item.total,
+            item.releaseDate,
+            item.updatedAt,
+            item.ptcgoCode,
+          ],
+          "CardSet",
+          item.id
+        );
       }
+      console.log("CardSet populated successfully.");
+    } catch (error) {
+      console.error("Error populating CardSet:", error);
+    } finally {
       await insertSetStmt.finalizeAsync();
-      console.log("CardSet populated.");
+    }
 
-      // Populate Abilities
-      console.log(`Populating Abilities (${abilitiesData.length} items)...`);
-      const insertAbilityStmt = await db.prepareAsync("INSERT INTO Abilities (id, name, text) VALUES (?, ?, ?)");
-      for (const item of abilitiesData) {
-        await insertAbilityStmt.executeAsync([item.id, item.name, item.text]);
-      }
+    // ---- Abilities Population ----
+    console.log(`Populating Abilities (${abilitiesData.length} items)...`);
+    const insertAbilityStmt = await db.prepareAsync(
+      "INSERT OR IGNORE INTO Abilities (id, name, text) VALUES (?, ?, ?)"
+    );
+
+    try {
+      await processBatch(
+        abilitiesData,
+        async (batch) => {
+          for (const item of batch) {
+            await safeExecuteAsync(insertAbilityStmt, [item.id, item.name, item.text], "Ability", item.id);
+          }
+        },
+        BATCH_SIZE,
+        "abilities"
+      );
+      console.log("Abilities populated successfully.");
+    } catch (error) {
+      console.error("Error populating Abilities:", error);
+    } finally {
       await insertAbilityStmt.finalizeAsync();
-      console.log("Abilities populated.");
+    }
 
-      // Populate Attacks
-      console.log(`Populating Attacks (${attacksData.length} items)...`);
-      const insertAttackStmt = await db.prepareAsync("INSERT INTO Attacks (id, name, text) VALUES (?, ?, ?)");
-      for (const item of attacksData) {
-        await insertAttackStmt.executeAsync([item.id, item.name, item.text]);
-      }
+    // ---- Attacks Population ----
+    console.log(`Populating Attacks (${attacksData.length} items)...`);
+    const insertAttackStmt = await db.prepareAsync("INSERT OR IGNORE INTO Attacks (id, name, text) VALUES (?, ?, ?)");
+
+    try {
+      await processBatch(
+        attacksData,
+        async (batch) => {
+          for (const item of batch) {
+            await safeExecuteAsync(insertAttackStmt, [item.id, item.name, item.text], "Attack", item.id);
+          }
+        },
+        BATCH_SIZE,
+        "attacks"
+      );
+      console.log("Attacks populated successfully.");
+    } catch (error) {
+      console.error("Error populating Attacks:", error);
+    } finally {
       await insertAttackStmt.finalizeAsync();
-      console.log("Attacks populated.");
+    }
 
-      // Populate Card
-      console.log(`Populating Card (${cardData.length} items)...`);
-      const insertCardStmt = await db.prepareAsync(
-        "INSERT INTO Card (id, cardId, name, supertype, subtypes, hp, types, evolvesFrom, weaknesses, resistances, evolvesTo, retreatCost, convertedRetreatCost, flavorText, artist, rarity, nationalPokedexNumbers, regulationMark, imagesLarge, rules, number, setId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-      );
-      for (const item of cardData) {
-        await insertCardStmt.executeAsync([
-          item.id,
-          item.cardId,
-          item.name,
-          item.supertype,
-          item.subtypes,
-          item.hp,
-          item.types,
-          item.evolvesFrom,
-          item.weaknesses,
-          item.resistances,
-          item.evolvesTo,
-          item.retreatCost,
-          item.convertedRetreatCost,
-          item.flavorText,
-          item.artist,
-          item.rarity,
-          item.nationalPokedexNumbers,
-          item.regulationMark,
-          item.imagesLarge,
-          item.rules,
-          item.number,
-          item.setId,
-        ]);
+    // ---- Card Population ----
+    // First, check for duplicate IDs in the card data
+    console.log(`Analyzing ${cardData.length} cards for duplicates...`);
+    const seenIds = new Set<number>();
+    const uniqueCardData = cardData.filter((card) => {
+      if (seenIds.has(card.id)) {
+        console.warn(`Duplicate card ID found: ${card.id}, skipping...`);
+        return false;
       }
-      await insertCardStmt.finalizeAsync();
-      console.log("Card populated.");
-
-      // Populate CardAbilities
-      console.log(`Populating CardAbilities (${cardAbilitiesData.length} items)...`);
-      const insertCardAbilityStmt = await db.prepareAsync(
-        "INSERT INTO CardAbilities (id, cardId, abilityId) VALUES (?, ?, ?)"
-      );
-      for (const item of cardAbilitiesData) {
-        await insertCardAbilityStmt.executeAsync([item.id, item.cardId, item.abilityId]);
-      }
-      await insertCardAbilityStmt.finalizeAsync();
-      console.log("CardAbilities populated.");
-
-      // Populate CardAttacks
-      console.log(`Populating CardAttacks (${cardAttacksData.length} items)...`);
-      const insertCardAttackStmt = await db.prepareAsync(
-        "INSERT INTO CardAttacks (id, cardId, attackId, cost, convertedEnergyCost, damage) VALUES (?, ?, ?, ?, ?, ?)"
-      );
-      for (const item of cardAttacksData) {
-        await insertCardAttackStmt.executeAsync([
-          item.id,
-          item.cardId,
-          item.attackId,
-          item.cost,
-          item.convertedEnergyCost,
-          item.damage,
-        ]);
-      }
-      await insertCardAttackStmt.finalizeAsync();
-      console.log("CardAttacks populated.");
+      seenIds.add(card.id);
+      return true;
     });
-    console.log("Data population transaction complete.");
+
+    console.log(
+      `Found ${cardData.length - uniqueCardData.length} duplicate card IDs. Processing ${
+        uniqueCardData.length
+      } unique cards.`
+    );
+
+    const insertCardStmt = await db.prepareAsync(
+      "INSERT OR IGNORE INTO Card (id, cardId, name, supertype, subtypes, hp, types, evolvesFrom, weaknesses, " +
+        "resistances, evolvesTo, retreatCost, convertedRetreatCost, flavorText, artist, rarity, " +
+        "nationalPokedexNumbers, regulationMark, imagesLarge, rules, number, setId) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    );
+
+    try {
+      await processBatch(
+        uniqueCardData,
+        async (batch) => {
+          for (const item of batch) {
+            await safeExecuteAsync(
+              insertCardStmt,
+              [
+                item.id,
+                item.cardId,
+                item.name,
+                item.supertype,
+                item.subtypes,
+                item.hp,
+                item.types,
+                item.evolvesFrom,
+                item.weaknesses,
+                item.resistances,
+                item.evolvesTo,
+                item.retreatCost,
+                item.convertedRetreatCost,
+                item.flavorText,
+                item.artist,
+                item.rarity,
+                item.nationalPokedexNumbers,
+                item.regulationMark,
+                item.imagesLarge,
+                item.rules,
+                item.number,
+                item.setId,
+              ],
+              "Card",
+              item.id
+            );
+          }
+        },
+        BATCH_SIZE,
+        "cards"
+      );
+      console.log("Card data populated successfully.");
+    } catch (error) {
+      console.error("Error populating Card table:", error);
+    } finally {
+      await insertCardStmt.finalizeAsync();
+    }
+
+    // ---- CardAbilities Population ----
+    console.log(`Populating CardAbilities (${cardAbilitiesData.length} items)...`);
+
+    // Filter cardAbilitiesData to only include cards that exist in our database
+    const filteredCardAbilitiesData = cardAbilitiesData.filter((item) => seenIds.has(item.cardId));
+    console.log(
+      `Processing ${filteredCardAbilitiesData.length} card abilities (skipped ${
+        cardAbilitiesData.length - filteredCardAbilitiesData.length
+      } with missing cards)`
+    );
+
+    const insertCardAbilityStmt = await db.prepareAsync(
+      "INSERT OR IGNORE INTO CardAbilities (id, cardId, abilityId) VALUES (?, ?, ?)"
+    );
+
+    try {
+      await processBatch(
+        filteredCardAbilitiesData,
+        async (batch) => {
+          for (const item of batch) {
+            await safeExecuteAsync(
+              insertCardAbilityStmt,
+              [item.id, item.cardId, item.abilityId],
+              "CardAbility",
+              item.id
+            );
+          }
+        },
+        BATCH_SIZE,
+        "card abilities"
+      );
+      console.log("CardAbilities populated successfully.");
+    } catch (error) {
+      console.error("Error populating CardAbilities:", error);
+    } finally {
+      await insertCardAbilityStmt.finalizeAsync();
+    }
+
+    // ---- CardAttacks Population ----
+    console.log(`Populating CardAttacks (${cardAttacksData.length} items)...`);
+
+    // Filter cardAttacksData to only include cards that exist in our database
+    const filteredCardAttacksData = cardAttacksData.filter((item) => seenIds.has(item.cardId));
+    console.log(
+      `Processing ${filteredCardAttacksData.length} card attacks (skipped ${
+        cardAttacksData.length - filteredCardAttacksData.length
+      } with missing cards)`
+    );
+
+    const insertCardAttackStmt = await db.prepareAsync(
+      "INSERT OR IGNORE INTO CardAttacks (id, cardId, attackId, cost, convertedEnergyCost, damage) VALUES (?, ?, ?, ?, ?, ?)"
+    );
+
+    try {
+      await processBatch(
+        filteredCardAttacksData,
+        async (batch) => {
+          for (const item of batch) {
+            await safeExecuteAsync(
+              insertCardAttackStmt,
+              [item.id, item.cardId, item.attackId, item.cost, item.convertedEnergyCost, item.damage],
+              "CardAttack",
+              item.id
+            );
+          }
+        },
+        BATCH_SIZE,
+        "card attacks"
+      );
+      console.log("CardAttacks populated successfully.");
+    } catch (error) {
+      console.error("Error populating CardAttacks:", error);
+    } finally {
+      await insertCardAttackStmt.finalizeAsync();
+    }
+
+    console.log("Data population complete.");
+  } catch (error) {
+    console.error("Fatal error during data population:", error);
+    throw error; // Re-throw to handle in the migration function
   } finally {
     setIsUpdating(false); // Indicate update end, even if error occurs
   }
 }
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase, setIsUpdating: (isUpdating: boolean) => void) {
-  // ----> INCREMENT THIS WHEN JSON CHANGES <----
-  const DATABASE_VERSION = 7;
-
-  // Don't set updating to true initially
-  // setIsUpdating(true);
-
-  const result = await db.getFirstAsync<{ user_version: number }>("PRAGMA user_version");
-  let currentDbVersion = result?.user_version ?? 0;
-
-  console.log(`Current DB version: ${currentDbVersion}, Required DB version: ${DATABASE_VERSION}`);
-
-  if (currentDbVersion >= DATABASE_VERSION) {
-    console.log("Database is up-to-date.");
-    // Ensure state is false if we return early
-    setIsUpdating(false);
-    return;
-  }
-
-  // Set updating to true ONLY if migration is needed
-  console.log(`Starting migration from version ${currentDbVersion} to ${DATABASE_VERSION}...`);
-  setIsUpdating(true);
-
   try {
+    const result = await db.getFirstAsync<{ user_version: number }>("PRAGMA user_version");
+    let currentDbVersion = result?.user_version ?? 0;
+
+    console.log(`Current DB version: ${currentDbVersion}, Required DB version: ${DATABASE_VERSION}`);
+
+    if (currentDbVersion >= DATABASE_VERSION) {
+      console.log("Database is up-to-date.");
+      // Ensure state is false if we return early
+      setIsUpdating(false);
+      return;
+    }
+
+    // Set updating to true ONLY if migration is needed
+    console.log(`Starting migration from version ${currentDbVersion} to ${DATABASE_VERSION}...`);
+    setIsUpdating(true);
+
     // --- Migration Steps ---
 
     // Step 1: Initial Schema Creation (Only if db is brand new)
     if (currentDbVersion < 1) {
-      console.log("Applying version 1 migration: Initial schema creation...");
+      try {
+        console.log("Applying version 1 migration: Initial schema creation...");
 
-      // Set WAL mode *before* the transaction
-      await db.execAsync("PRAGMA journal_mode = 'wal';");
+        // Set WAL mode *before* the transaction
+        await db.execAsync("PRAGMA journal_mode = 'wal';");
 
-      await db.withTransactionAsync(async () => {
-        console.log("Creating initial schema...");
+        await db.withTransactionAsync(async () => {
+          console.log("Creating initial schema...");
 
-        await db.execAsync(`
-          CREATE TABLE IF NOT EXISTS CardSet (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            setId TEXT UNIQUE,
-            name TEXT,
-            series TEXT,
-            printedTotal INTEGER,
-            total INTEGER,
-            releaseDate TEXT,
-            updatedAt TEXT,
-            ptcgoCode TEXT
-          );
+          await db.execAsync(`
+            CREATE TABLE IF NOT EXISTS CardSet (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              setId TEXT UNIQUE,
+              name TEXT,
+              series TEXT,
+              printedTotal INTEGER,
+              total INTEGER,
+              releaseDate TEXT,
+              updatedAt TEXT,
+              ptcgoCode TEXT
+            );
 
-          CREATE TABLE IF NOT EXISTS Abilities (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT UNIQUE,
-            text TEXT
-          );
+            CREATE TABLE IF NOT EXISTS Abilities (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT UNIQUE,
+              text TEXT
+            );
 
-          CREATE TABLE IF NOT EXISTS Attacks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT UNIQUE,
-            text TEXT
-          );
+            CREATE TABLE IF NOT EXISTS Attacks (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT UNIQUE,
+              text TEXT
+            );
 
-          CREATE TABLE IF NOT EXISTS Card (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            cardId TEXT UNIQUE,
-            name TEXT,
-            supertype TEXT,
-            subtypes TEXT,
-            hp INTEGER,
-            types TEXT,
-            evolvesFrom TEXT,
-            weaknesses TEXT,
-            resistances TEXT,
-            evolvesTo TEXT,
-            retreatCost TEXT,
-            convertedRetreatCost INTEGER,
-            flavorText TEXT,
-            artist TEXT,
-            rarity TEXT,
-            nationalPokedexNumbers TEXT,
-            regulationMark TEXT,
-            imagesLarge TEXT,
-            rules TEXT,
-            number TEXT,
-            setId INTEGER,
-            FOREIGN KEY (setId) REFERENCES CardSet (id)
-          );
+            CREATE TABLE IF NOT EXISTS Card (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              cardId TEXT UNIQUE,
+              name TEXT,
+              supertype TEXT,
+              subtypes TEXT,
+              hp INTEGER,
+              types TEXT,
+              evolvesFrom TEXT,
+              weaknesses TEXT,
+              resistances TEXT,
+              evolvesTo TEXT,
+              retreatCost TEXT,
+              convertedRetreatCost INTEGER,
+              flavorText TEXT,
+              artist TEXT,
+              rarity TEXT,
+              nationalPokedexNumbers TEXT,
+              regulationMark TEXT,
+              imagesLarge TEXT,
+              rules TEXT,
+              number TEXT,
+              setId INTEGER,
+              FOREIGN KEY (setId) REFERENCES CardSet (id)
+            );
 
-          CREATE TABLE IF NOT EXISTS CardAbilities (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            cardId INTEGER,
-            abilityId INTEGER,
-            FOREIGN KEY (cardId) REFERENCES Card (id),
-            FOREIGN KEY (abilityId) REFERENCES Abilities (id)
-          );
+            CREATE TABLE IF NOT EXISTS CardAbilities (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              cardId INTEGER,
+              abilityId INTEGER,
+              FOREIGN KEY (cardId) REFERENCES Card (id),
+              FOREIGN KEY (abilityId) REFERENCES Abilities (id)
+            );
 
-          CREATE TABLE IF NOT EXISTS CardAttacks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            cardId INTEGER,
-            attackId INTEGER,
-            cost TEXT,
-            convertedEnergyCost INTEGER,
-            damage TEXT,
-            FOREIGN KEY (cardId) REFERENCES Card (id),
-            FOREIGN KEY (attackId) REFERENCES Attacks (id)
-          );
-        `);
-        console.log("Schema created.");
-      });
-      console.log("Version 1 migration complete.");
+            CREATE TABLE IF NOT EXISTS CardAttacks (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              cardId INTEGER,
+              attackId INTEGER,
+              cost TEXT,
+              convertedEnergyCost INTEGER,
+              damage TEXT,
+              FOREIGN KEY (cardId) REFERENCES Card (id),
+              FOREIGN KEY (attackId) REFERENCES Attacks (id)
+            );
+          `);
+          console.log("Schema created successfully.");
+        });
+        console.log("Version 1 migration complete.");
+
+        // Update version after successful schema creation
+        currentDbVersion = 1;
+        await db.execAsync(`PRAGMA user_version = ${currentDbVersion}`);
+        console.log(`Set database version to ${currentDbVersion}`);
+      } catch (error) {
+        console.error("Schema creation failed:", error);
+        throw error;
+      }
     }
 
     // Step 2: Data Refresh (if first time or if version is outdated)
     if (currentDbVersion < DATABASE_VERSION) {
-      console.log(`Refreshing data to match version ${DATABASE_VERSION}...`);
-      // Pass the callback down
-      await populateDataFromJSON(db, setIsUpdating);
-      console.log(`Data refreshed for version ${DATABASE_VERSION}.`);
+      try {
+        console.log(`Refreshing data to match version ${DATABASE_VERSION}...`);
+        // Pass the callback down to populateDataFromJSON
+        await populateDataFromJSON(db, setIsUpdating);
+        console.log(`Data refreshed for version ${DATABASE_VERSION}.`);
+
+        // Only update version if data population was successful
+        console.log(`Setting final database version to ${DATABASE_VERSION}...`);
+        await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+        console.log(`Database version updated to ${DATABASE_VERSION}`);
+      } catch (error) {
+        console.error("Failed to refresh data:", error);
+        // Don't update version if population failed
+        throw error;
+      }
     }
 
-    // --- Set Final Version ---
-    if (currentDbVersion < DATABASE_VERSION) {
-      console.log(`Setting final database version to ${DATABASE_VERSION}...`);
-      await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
-    }
+    console.log("Database migration completed successfully.");
+  } catch (error) {
+    console.error("Database migration failed:", error);
+    throw error;
   } finally {
     setIsUpdating(false);
+    console.log("Database migration process finished.");
   }
-
-  console.log("Database migration check finished.");
 }

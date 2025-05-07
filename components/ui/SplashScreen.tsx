@@ -8,7 +8,7 @@ const messages = [
   "Catching Pokémon\nin the database",
   "Negotiating with Mewtwo\nfor loading speed",
   "Polishing Poké Balls\nto a mirror shine",
-  "Syncing with\nProfessor Oak’s Wi-Fi",
+  "Syncing with\nProfessor Oak's Wi-Fi",
   "Wishing this was a shiny load",
 ];
 
@@ -44,7 +44,7 @@ export default function SplashScreen({ isUpdatingDb }: SplashScreenProps) {
   }, [fadeAnim]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}>
       <View
         style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
         pointerEvents="none"
@@ -72,7 +72,7 @@ export default function SplashScreen({ isUpdatingDb }: SplashScreenProps) {
               </ThemedText>
               <View style={styles.animatedTextContainer}>
                 <Animated.Text style={[styles.text, { opacity: fadeAnim }]}>{messages[messageIndex]}</Animated.Text>
-              </View>{" "}
+              </View>
             </>
           )}
         </View>

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import React, { createContext, useContext, useEffect, useState, ReactNode, useRef } from "react";
 import * as SQLite from "expo-sqlite";
 import { migrateDbIfNeeded } from "@/lib/cardDatabase";
 
@@ -23,41 +23,64 @@ export const CardDatabaseProvider = ({
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  // Keep parent in sync with isUpdating
+  // Use refs to track mounted state and prevent state updates during dismount
+  const isMounted = useRef(true);
+  const setIsUpdatingDbRef = useRef(setIsUpdatingDb);
+
+  // Update the ref when the prop changes
   useEffect(() => {
-    if (setIsUpdatingDb) setIsUpdatingDb(isUpdating);
-  }, [isUpdating, setIsUpdatingDb]);
+    setIsUpdatingDbRef.current = setIsUpdatingDb;
+  }, [setIsUpdatingDb]);
+
+  // Safe state setters that check if component is still mounted
+  const safeSetIsUpdating = (state: boolean) => {
+    if (isMounted.current) {
+      setIsUpdating(state);
+      // Use the ref value to avoid closure issues
+      if (setIsUpdatingDbRef.current) {
+        setIsUpdatingDbRef.current(state);
+      }
+    }
+  };
 
   useEffect(() => {
-    let isMounted = true;
+    // Reset mounted flag on unmount
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
     async function setupDatabase() {
       try {
         // Open or create the card database (fixed name)
         const openedDb = await SQLite.openDatabaseAsync("cardDatabase.db");
-        // Run migration and JSON population
-        await migrateDbIfNeeded(openedDb, (updating) => {
-          if (isMounted) setIsUpdating(updating);
-          if (setIsUpdatingDb) setIsUpdatingDb(updating);
-        });
-        if (isMounted) {
-          setDb(openedDb);
+
+        if (isMounted.current) {
+          // Run migration and JSON population - use a custom wrapper function
+          // that doesn't immediately update state during rendering
+          await migrateDbIfNeeded(openedDb, (updating) => {
+            // Use setTimeout to defer state updates out of the render cycle
+            setTimeout(() => safeSetIsUpdating(updating), 0);
+          });
+
+          if (isMounted.current) {
+            setDb(openedDb);
+          }
         }
       } catch (e) {
-        if (isMounted) {
+        if (isMounted.current) {
           setError(e instanceof Error ? e : new Error(String(e)));
         }
       } finally {
-        if (isMounted) {
+        if (isMounted.current) {
           setIsLoading(false);
         }
       }
     }
+
     setupDatabase();
-    return () => {
-      isMounted = false;
-      // Optionally close db here if needed
-    };
-  }, [setIsUpdatingDb]);
+  }, []);
 
   return (
     <CardDatabaseContext.Provider value={{ db, isLoading, isUpdating, error }}>{children}</CardDatabaseContext.Provider>
