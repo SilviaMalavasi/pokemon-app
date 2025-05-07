@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { SearchFormProvider } from "@/components/context/SearchFormContext";
+import { UserDatabaseProvider } from "@/components/context/UserDatabaseContext";
 import { Tabs } from "expo-router";
 import React from "react";
 import { Platform, Text } from "react-native";
@@ -136,69 +137,71 @@ function SearchFormContextWatcher() {
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
   return (
-    <SearchFormProvider>
-      <SearchFormContextWatcher />
-      <Tabs
-        screenOptions={{
-          tabBarInactiveTintColor: theme.colors.text,
-          tabBarActiveTintColor: theme.colors.textHilight,
-          headerShown: false,
-          tabBarButton: HapticTab,
-          tabBarBackground: TabBarBackground,
-          tabBarStyle: Platform.select({
-            android: {
-              backgroundColor: theme.colors.black,
-              borderTopWidth: 0,
-              height: styles.tabBarContainer.height + insets.bottom,
-              paddingHorizontal: theme.padding.small,
-              paddingTop: theme.padding.xsmall,
-              paddingBottom: insets.bottom,
-            },
-            default: {
-              backgroundColor: theme.colors.black,
-              borderTopWidth: 0,
-              height: styles.tabBarContainer.height + insets.bottom,
-              paddingHorizontal: theme.padding.small,
-              paddingTop: theme.padding.xsmall,
-            },
-          }),
-        }}
-      >
-        <Tabs.Screen
-          name="index"
-          options={{
-            tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Home</Text>,
-            tabBarIcon: ({ color }) => <HomeIcon color={color} />,
+    <UserDatabaseProvider>
+      <SearchFormProvider>
+        <SearchFormContextWatcher />
+        <Tabs
+          screenOptions={{
+            tabBarInactiveTintColor: theme.colors.text,
+            tabBarActiveTintColor: theme.colors.textHilight,
+            headerShown: false,
+            tabBarButton: HapticTab,
+            tabBarBackground: TabBarBackground,
+            tabBarStyle: Platform.select({
+              android: {
+                backgroundColor: theme.colors.black,
+                borderTopWidth: 0,
+                height: styles.tabBarContainer.height + insets.bottom,
+                paddingHorizontal: theme.padding.small,
+                paddingTop: theme.padding.xsmall,
+                paddingBottom: insets.bottom,
+              },
+              default: {
+                backgroundColor: theme.colors.black,
+                borderTopWidth: 0,
+                height: styles.tabBarContainer.height + insets.bottom,
+                paddingHorizontal: theme.padding.small,
+                paddingTop: theme.padding.xsmall,
+              },
+            }),
           }}
-        />
-        <Tabs.Screen
-          name="deckbuilder"
-          options={{
-            tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Deck Builder</Text>,
-            tabBarIcon: ({ color }) => <DeckBuilderIcon color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="advancedsearch"
-          options={{
-            tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Advanced Search</Text>,
-            tabBarIcon: ({ color }) => <AdvSearchIcon color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="freesearch"
-          options={{
-            tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Free Search</Text>,
-            tabBarIcon: ({ color }) => <FreeSearchIcon color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="cards"
-          options={{
-            href: null,
-          }}
-        />
-      </Tabs>
-    </SearchFormProvider>
+        >
+          <Tabs.Screen
+            name="index"
+            options={{
+              tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Home</Text>,
+              tabBarIcon: ({ color }) => <HomeIcon color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="deckbuilder"
+            options={{
+              tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Deck Builder</Text>,
+              tabBarIcon: ({ color }) => <DeckBuilderIcon color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="advancedsearch"
+            options={{
+              tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Advanced Search</Text>,
+              tabBarIcon: ({ color }) => <AdvSearchIcon color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="freesearch"
+            options={{
+              tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Free Search</Text>,
+              tabBarIcon: ({ color }) => <FreeSearchIcon color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="cards"
+            options={{
+              href: null,
+            }}
+          />
+        </Tabs>
+      </SearchFormProvider>
+    </UserDatabaseProvider>
   );
 }

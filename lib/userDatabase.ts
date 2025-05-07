@@ -41,8 +41,8 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase) {
       CREATE TABLE IF NOT EXISTS Decks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        thumbnail TEXT 
-        cards TEXT NOT NULL, -- Store as JSON: '[{"cardId": "sv1-1", "count": 2}, ...]'
+        thumbnail TEXT,
+        cards TEXT NOT NULL -- Store as JSON: '[{"cardId": "sv1-1", "count": 2}, ...]'
       );
 
       -- Create the WatchedCards table
@@ -56,8 +56,8 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase) {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         formType TEXT NOT NULL CHECK(formType IN ('free', 'advanced')), -- 'free' or 'advanced'
-        queryParams TEXT NOT NULL -- JSON string of search parameters
-        createdAt INTEGER NOT NULL DEFAULT (strftime('%s','now')) -- Timestamp of creation
+        queryParams TEXT NOT NULL, -- JSON string of search parameters
+        createdAt INTEGER NOT NULL DEFAULT strftime('%s','now') -- Timestamp of creation
       );
     `);
 
@@ -90,6 +90,40 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase) {
   }
 
   console.log("User database migration check finished.");
+}
+
+// --- Deck Management Functions ---
+
+/**
+ * Adds a new deck to the Decks table.
+ * @param db The SQLite database instance.
+ * @param name The name of the deck.
+ * @param thumbnail The thumbnail for the deck (optional).
+ * @param cards A JSON string representing the cards in the deck (defaults to '[]').
+ * @returns Promise<SQLite.SQLiteRunResult>
+ */
+export async function addDeck(
+  db: SQLite.SQLiteDatabase,
+  name: string,
+  thumbnail?: string,
+  cards: string = "[]"
+): Promise<SQLite.SQLiteRunResult> {
+  console.log(`Adding deck: ${name}, Thumbnail: ${thumbnail}`);
+  return db.runAsync("INSERT INTO Decks (name, thumbnail, cards) VALUES (?, ?, ?)", [name, thumbnail ?? null, cards]);
+}
+
+/**
+ * Retrieves all saved decks from the Decks table.
+ * @param db The SQLite database instance.
+ * @returns Promise<{ id: number; name: string; thumbnail: string | null; cards: string }[]>
+ */
+export async function getSavedDecks(
+  db: SQLite.SQLiteDatabase
+): Promise<{ id: number; name: string; thumbnail: string | null; cards: string }[]> {
+  console.log("Fetching all saved decks.");
+  return db.getAllAsync<{ id: number; name: string; thumbnail: string | null; cards: string }>(
+    "SELECT id, name, thumbnail, cards FROM Decks ORDER BY name ASC"
+  );
 }
 
 // Example of how to get the user DB instance (you'll integrate this into your app logic)
