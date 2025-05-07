@@ -88,8 +88,6 @@ export default function FullCardScreen() {
             processedAttackMap.set(attack.id, true);
             return true;
           });
-        console.log("[FullCardScreen] attacksData:", attacksData);
-        console.log("[FullCardScreen] processed attacks:", attacks);
 
         // 5. Assemble the full card object
         const fullCard = {
@@ -98,7 +96,6 @@ export default function FullCardScreen() {
           abilities,
           attacks,
         };
-        console.log("[FullCardScreen] fullCard:", fullCard);
         setCard(fullCard);
       } catch (error) {
         console.error("Error fetching card data from SQLite:", error);
