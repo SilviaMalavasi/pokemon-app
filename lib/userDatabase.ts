@@ -15,10 +15,7 @@ export async function openUserDatabase(): Promise<SQLite.SQLiteDatabase> {
 // Function to handle user database migrations
 export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase, setIsUpdating?: (isUpdating: boolean) => void) {
   try {
-    // Optional state update at the start
-    if (setIsUpdating) {
-      setIsUpdating(true);
-    }
+    if (setIsUpdating) setIsUpdating(true);
 
     // Migration steps: each has a version and a function
     const migrations: { version: number; migrate: (db: SQLite.SQLiteDatabase) => Promise<void> }[] = [
@@ -26,29 +23,25 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase, setIsUpda
         version: 1,
         migrate: async (db) => {
           console.log("Applying version 1 user migration: Initial schema creation...");
-          await db.execAsync(`
-            PRAGMA journal_mode = WAL;
-
-            CREATE TABLE IF NOT EXISTS Decks (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT NOT NULL,
-              thumbnail TEXT,
-              cards TEXT NOT NULL
-            );
-
-            CREATE TABLE IF NOT EXISTS WatchedCards (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              cardId TEXT NOT NULL
-            );
-
-            CREATE TABLE IF NOT EXISTS SavedQueries (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT NOT NULL,
-              formType TEXT NOT NULL CHECK(formType IN ('free', 'advanced')),
-              queryParams TEXT NOT NULL,
-              createdAt INTEGER NOT NULL DEFAULT strftime('%s','now')
-            );
-          `);
+          // PRAGMA must be run separately
+          await db.execAsync("PRAGMA journal_mode = WAL;");
+          await db.execAsync(`CREATE TABLE IF NOT EXISTS Decks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            thumbnail TEXT,
+            cards TEXT NOT NULL
+          );`);
+          await db.execAsync(`CREATE TABLE IF NOT EXISTS WatchedCards (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cardId TEXT NOT NULL
+          );`);
+          await db.execAsync(`CREATE TABLE IF NOT EXISTS SavedQueries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            formType TEXT NOT NULL CHECK(formType IN ('free', 'advanced')),
+            queryParams TEXT NOT NULL,
+            createdAt INTEGER NOT NULL DEFAULT (strftime('%s','now'))
+          );`);
           console.log("Version 1 user migration complete: Created Decks, WatchedCards, and SavedQueries tables.");
         },
       },
