@@ -262,9 +262,6 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase, setIsUpdating: (isUp
       await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
     }
   } finally {
-    // Ensure setIsUpdating(false) is called even if populateDataFromJSON was skipped
-    // or if an error occurred during migration steps but before populateDataFromJSON.
-    // populateDataFromJSON has its own finally block, but this covers other scenarios.
     setIsUpdating(false);
   }
 

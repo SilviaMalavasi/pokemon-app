@@ -200,6 +200,12 @@ export default function TabLayout() {
               href: null,
             }}
           />
+          <Tabs.Screen
+            name="decks"
+            options={{
+              href: null,
+            }}
+          />
         </Tabs>
       </SearchFormProvider>
     </UserDatabaseProvider>

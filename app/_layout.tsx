@@ -8,7 +8,7 @@ import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
 import SplashScreenComponent from "@/components/ui/SplashScreen";
 import { SQLiteProvider, type SQLiteDatabase } from "expo-sqlite";
-import { migrateDbIfNeeded } from "@/lib/sqlite";
+import { migrateDbIfNeeded } from "@/lib/cardDatabase";
 
 import "react-native-reanimated";
 

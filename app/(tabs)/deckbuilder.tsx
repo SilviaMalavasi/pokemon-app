@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
-import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
-import ThemedButton from "@/components/base/ThemedButton";
-import ThemedTextInput from "@/components/base/ThemedTextInput";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { addDeck, getSavedDecks } from "@/lib/userDatabase";
-import { Alert, FlatList, View } from "react-native";
+import NewDeck from "@/components/deckbuilder/NewDeck";
+import SavedDecks from "@/components/deckbuilder/SavedDecks";
 
 interface SavedDeck {
   id: number;
@@ -34,7 +31,6 @@ export default function DeckBuilderScreen() {
       setSavedDecks(decks);
     } catch (error) {
       console.error("Failed to fetch saved decks:", error);
-      Alert.alert("Error", "Failed to load saved decks.");
     } finally {
       setIsLoadingDecks(false);
     }
@@ -51,7 +47,6 @@ export default function DeckBuilderScreen() {
       if (scrollRef.current) {
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
-      // Re-fetch decks when the screen comes into focus
       if (db) {
         fetchSavedDecks();
       }
@@ -60,40 +55,22 @@ export default function DeckBuilderScreen() {
 
   const handleSaveDeck = async () => {
     if (!db) {
-      Alert.alert("Error", "Database not available.");
-      return;
-    }
-    if (!deckName.trim()) {
-      Alert.alert("Validation", "Deck Name cannot be empty.");
+      console.log("Error", "Database not available.");
       return;
     }
     try {
       await addDeck(db, deckName, deckThumbnail || undefined);
-      Alert.alert("Success", "Deck saved successfully!");
       setDeckName("");
       setDeckThumbnail("");
-      fetchSavedDecks(); // Refresh the list of saved decks
+      fetchSavedDecks();
     } catch (error) {
       console.error("Failed to save deck:", error);
-      Alert.alert("Error", "Failed to save deck.");
     }
   };
 
-  if (dbLoading) {
-    return (
-      <ThemedView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ThemedText>Loading database...</ThemedText>
-      </ThemedView>
-    );
-  }
-
-  if (dbError) {
-    return (
-      <ThemedView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ThemedText>Error loading database: {dbError.message}</ThemedText>
-      </ThemedView>
-    );
-  }
+  const handleThumbnailSelect = (imagesLargeUrl: string) => {
+    setDeckThumbnail(imagesLargeUrl);
+  };
 
   return (
     <ParallaxScrollView
@@ -101,54 +78,18 @@ export default function DeckBuilderScreen() {
       headerTitle="Pokémon Deck Builder"
       scrollRef={scrollRef}
     >
-      <ThemedView style={{ padding: 16 }}>
-        <ThemedText
-          type="subtitle"
-          style={{ marginBottom: 16 }}
-        >
-          New Deck
-        </ThemedText>
-        <ThemedTextInput
-          label="Deck Name"
-          value={deckName}
-          onChange={setDeckName}
-          placeholder="Enter deck name"
-        />
-        <ThemedTextInput
-          label="Deck Thumbnail (Optional)"
-          value={deckThumbnail}
-          onChange={setDeckThumbnail}
-          placeholder="Enter image URL or keyword"
-        />
-        <ThemedButton
-          title="Save Deck"
-          onPress={handleSaveDeck}
-        />
-      </ThemedView>
-
-      <ThemedView style={{ padding: 16, marginTop: 24 }}>
-        <ThemedText
-          type="subtitle"
-          style={{ marginBottom: 16 }}
-        >
-          Saved Decks
-        </ThemedText>
-        {isLoadingDecks ? (
-          <ThemedText>Loading decks...</ThemedText>
-        ) : savedDecks.length === 0 ? (
-          <ThemedText>No saved decks yet.</ThemedText>
-        ) : (
-          <FlatList
-            data={savedDecks}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <ThemedView style={{ paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: "#ccc" }}>
-                <ThemedText>{item.name}</ThemedText>
-              </ThemedView>
-            )}
-          />
-        )}
-      </ThemedView>
+      <NewDeck
+        deckName={deckName}
+        setDeckName={setDeckName}
+        deckThumbnail={deckThumbnail}
+        setDeckThumbnail={setDeckThumbnail}
+        handleSaveDeck={handleSaveDeck}
+        handleThumbnailSelect={handleThumbnailSelect}
+      />
+      <SavedDecks
+        savedDecks={savedDecks}
+        isLoadingDecks={isLoadingDecks}
+      />
     </ParallaxScrollView>
   );
 }

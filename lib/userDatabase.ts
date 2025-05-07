@@ -125,11 +125,3 @@ export async function getSavedDecks(
     "SELECT id, name, thumbnail, cards FROM Decks ORDER BY name ASC"
   );
 }
-
-// Example of how to get the user DB instance (you'll integrate this into your app logic)
-// async function initializeUserDatabase() {
-//   const userDb = await openUserDatabase(); // Now uses await
-//   await migrateUserDbIfNeeded(userDb);
-//   // Now userDb is ready to use
-//   return userDb;
-// }
