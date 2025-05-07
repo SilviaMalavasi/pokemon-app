@@ -8,9 +8,10 @@ import { theme } from "@/style/ui/Theme";
 interface FloatingButtonProps {
   title: string;
   onPress: () => void;
+  bottom?: number;
 }
 
-export default function FloatingButton({ title, onPress }: FloatingButtonProps) {
+export default function FloatingButton({ title, onPress, bottom }: FloatingButtonProps) {
   const IconBack = () => (
     <Svg
       width="100%"
@@ -29,7 +30,7 @@ export default function FloatingButton({ title, onPress }: FloatingButtonProps) 
 
   return (
     <TouchableOpacity
-      style={styles.fab}
+      style={[styles.fab, { bottom: bottom !== undefined ? bottom : theme.padding.small }]}
       onPress={onPress}
       activeOpacity={0.8}
     >

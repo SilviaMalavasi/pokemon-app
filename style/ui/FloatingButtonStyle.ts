@@ -1,21 +1,16 @@
 import { StyleSheet } from "react-native";
 import { theme } from "@/style/ui/Theme";
-import { vw, vh } from "@/helpers/viewport";
+import { vw } from "@/helpers/viewport";
 
 const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     right: theme.padding.xsmall,
     bottom: theme.padding.small,
-    width: vw(16),
-    height: vw(16),
+    width: vw(12),
+    height: vw(12),
     backgroundColor: theme.colors.background,
     borderRadius: theme.borderRadius.xlarge,
-    shadowColor: theme.colors.lightPurple,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 32,
-    elevation: 5,
     zIndex: 100,
   },
   backgroundImage: {
@@ -34,8 +29,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   iconContainerStyle: {
-    width: theme.padding.xlarge,
-    height: theme.padding.xlarge,
+    width: theme.padding.large,
+    height: theme.padding.large,
   },
 });
 
