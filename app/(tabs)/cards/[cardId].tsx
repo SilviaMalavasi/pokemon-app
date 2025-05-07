@@ -57,13 +57,13 @@ export default function FullCardScreen() {
 
         // 3. Fetch Abilities using SQLite (Join approach)
         const abilitiesData = await db.getAllAsync<Ability>(
-          `SELECT a.*
+          `SELECT DISTINCT a.*
            FROM Abilities a
            JOIN CardAbilities ca ON a.id = ca.abilityId
            WHERE ca.cardId = ?`,
-          [cardData.id] // Use the internal DB id
+          [cardData.id]
         );
-        const abilities = abilitiesData || [];
+        const abilities: Ability[] = abilitiesData || [];
 
         // 4. Fetch Attacks using SQLite (Join approach)
         const attacksData = await db.getAllAsync<any>( // Use 'any' or define a more specific type if needed
@@ -71,7 +71,7 @@ export default function FullCardScreen() {
            FROM Attacks att
            JOIN CardAttacks ca ON att.id = ca.attackId
            WHERE ca.cardId = ?`,
-          [cardData.id] // Use the internal DB id
+          [cardData.id]
         );
 
         // Process attacks to parse cost JSON and handle potential duplicates (if needed, though JOIN might handle it)
@@ -88,14 +88,18 @@ export default function FullCardScreen() {
             processedAttackMap.set(attack.id, true);
             return true;
           });
+        console.log("[FullCardScreen] attacksData:", attacksData);
+        console.log("[FullCardScreen] processed attacks:", attacks);
 
         // 5. Assemble the full card object
-        setCard({
+        const fullCard = {
           ...cardData,
           cardSet: setData, // Assign fetched set data
           abilities,
           attacks,
-        });
+        };
+        console.log("[FullCardScreen] fullCard:", fullCard);
+        setCard(fullCard);
       } catch (error) {
         console.error("Error fetching card data from SQLite:", error);
       } finally {

@@ -85,6 +85,11 @@ export default function FullCard(props: FullCardProps) {
     );
   };
 
+  // Log attacks for debugging
+  React.useEffect(() => {
+    console.log("[FullCard] props.attacks:", props.attacks);
+  }, [props.attacks]);
+
   return (
     <ScrollView>
       <ThemedView style={styles.container}>
