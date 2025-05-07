@@ -9,6 +9,12 @@ const messages = [
   "Negotiating with Mewtwo\nfor loading speed",
   "Polishing Poké Balls\nto a mirror shine",
   "Syncing with\nProfessor Oak's Wi-Fi",
+  "Telling Slowpoke to hurry up",
+  "Sending a Pidgey\nwith the last data packet",
+  "Checking the Pokédex\nfor missing assets",
+  "Blaming lag on Team Rocket",
+  "Trying to evolve the spinner\ninto a loaded screen",
+  "Teaching Psyduck\nto debug the app",
   "Wishing this was a shiny load",
 ];
 
