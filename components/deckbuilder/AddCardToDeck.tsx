@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
   CardAutoCompleteSuggestions,
 } from "@/components/base/CardAutoCompleteInput";
 import ThemedNumberInput from "@/components/base/ThemedNumberInput";
 import ThemedView from "@/components/base/ThemedView";
-import { Svg, Path, Polygon } from "react-native-svg";
-import { theme } from "@/style/ui/Theme";
+import ThemedButton from "@/components/base/ThemedButton";
 import styles from "@/style/deckbuilder/AddCardToDeckStyle";
+import ThemedText from "../base/ThemedText";
 
 interface AddCardToDeckProps {
   deck: any;
@@ -18,8 +18,9 @@ interface AddCardToDeckProps {
 
 export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckProps) {
   const [selectedCardId, setSelectedCardId] = useState<string>("");
-  const [cardQuantity, setCardQuantity] = useState<number | "">(1);
+  const [cardQuantity, setCardQuantity] = useState<number | "">("");
   const [isSaving, setIsSaving] = useState(false);
+  const [resetCounter, setResetCounter] = useState(0); // Add reset counter
 
   // Helper to parse deck.cards (stored as JSON string)
   const getCardsArray = () => {
@@ -42,7 +43,8 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
       await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(filtered), deck.id]);
       if (onCardAdded) onCardAdded();
       setSelectedCardId("");
-      setCardQuantity(1);
+      setCardQuantity(""); // Set to empty string for true UI reset
+      setResetCounter((c) => c + 1); // Increment reset counter to force remount
     } catch (e) {
       console.error("Error saving card to deck:", e);
     } finally {
@@ -51,47 +53,49 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
   };
 
   return (
-    <CardAutoCompleteProvider>
-      <CardAutoCompleteSuggestions onCardSelect={setSelectedCardId} />
-      <ThemedView style={styles.row}>
-        <View style={styles.cardInput}>
-          <CardAutoCompleteInput
-            label="Card"
-            value={selectedCardId}
-            onCardSelect={setSelectedCardId}
-            placeholder="Type card name"
-          />
-        </View>
-        <View style={styles.numberInput}>
-          <ThemedNumberInput
-            label="Qty"
-            value={cardQuantity}
-            onChange={(val) => setCardQuantity(val)}
-            placeholder="1"
-            showOperatorSelect="none"
-          />
-        </View>
-        <TouchableOpacity
-          onPress={handleSaveCard}
-          disabled={!selectedCardId || !cardQuantity || isSaving}
-          style={[styles.saveButton, (!selectedCardId || !cardQuantity || isSaving) && styles.saveButtonDisabled]}
-          accessibilityLabel="Add card to deck"
-        >
-          <View style={styles.iconContainerStyle}>
-            <Svg
-              width="100%"
-              height="100%"
-              viewBox="0 0 326.06 326.06"
-            >
-              <Polygon points="306.5 119.6 206.46 119.6 206.46 19.56 119.6 19.56 119.6 119.6 19.56 119.6 19.56 206.46 119.6 206.46 119.6 306.5 206.46 306.5 206.46 206.46 306.5 206.46 306.5 119.6" />
-              <Path
-                d="M192.38,20v113.68h113.68v58.7h-113.68v113.68h-58.7v-113.68H20v-58.7h113.68V20h58.7m-.32-20h-58.38c-11.05,0-20,8.95-20,20V113.68H20c-11.05,0-20,8.95-20,20v58.7c0,11.05,8.95,20,20,20H113.68v93.68c0,11.05,8.95,20,20,20h58.7c11.05,0,20-8.95,20-20v-93.68h93.68c11.05,0,20-8.95,20-20v-58.7c0-11.05-8.95-20-20-20h-93.68V20c0-11.67-9.09-20-20.32-20Z"
-                fill="#fff"
-              />
-            </Svg>
+    <View style={styles.container}>
+      <ThemedText
+        type="subtitle"
+        style={styles.title}
+      >
+        Add Cards
+      </ThemedText>
+      <CardAutoCompleteProvider>
+        <CardAutoCompleteSuggestions onCardSelect={setSelectedCardId} />
+        <ThemedView style={styles.row}>
+          <View style={styles.cardInput}>
+            <CardAutoCompleteInput
+              key={`card-input-${resetCounter}`}
+              label="Card"
+              value={selectedCardId}
+              onCardSelect={setSelectedCardId}
+              placeholder="Type card name"
+              resetKey={resetCounter} // Pass resetKey to force clear
+            />
           </View>
-        </TouchableOpacity>
-      </ThemedView>
-    </CardAutoCompleteProvider>
+          <View style={styles.numberInput}>
+            <ThemedNumberInput
+              key={`number-input-${resetCounter}`}
+              label="Qty"
+              value={cardQuantity}
+              onChange={(val) => setCardQuantity(val)}
+              placeholder="1"
+              showOperatorSelect="none"
+              resetKey={resetCounter} // Pass resetKey to force clear
+            />
+          </View>
+          <ThemedButton
+            title=""
+            type="main"
+            icon="add"
+            status={!selectedCardId || !cardQuantity || isSaving ? "disabled" : "default"}
+            disabled={!selectedCardId || !cardQuantity || isSaving}
+            onPress={handleSaveCard}
+            accessibilityLabel="Add card to deck"
+            style={styles.saveButton}
+          />
+        </ThemedView>
+      </CardAutoCompleteProvider>
+    </View>
   );
 }

@@ -72,6 +72,7 @@ export default function NewDeck({
             onCardSelect={handleThumbnailSelect}
             placeholder="Type card name (min 3 chars)"
             labelHint="Select a card image for the deck"
+            resetKey={autoCompleteKey} // Pass resetKey to force clear
           />
           <CardAutoCompleteSuggestions onCardSelect={handleThumbnailSelect} />
           <ThemedButton

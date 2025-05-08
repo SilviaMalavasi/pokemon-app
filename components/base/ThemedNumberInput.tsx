@@ -17,6 +17,7 @@ interface NumberInputProps {
   showOperatorSelect?: "none" | "basic" | "advanced";
   operator?: string;
   onOperatorChange?: (operator: string) => void;
+  resetKey?: number; // Add resetKey prop
 }
 
 export default function NumberInput({
@@ -28,9 +29,16 @@ export default function NumberInput({
   showOperatorSelect = "none",
   operator = "=",
   onOperatorChange,
+  resetKey,
 }: NumberInputProps) {
   const [showHint, setShowHint] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  // Reset modal and hint when resetKey changes
+  React.useEffect(() => {
+    setShowHint(false);
+    setModalVisible(false);
+  }, [resetKey]);
 
   const handleOperatorSelect = (op: { label: string; value: string }) => {
     if (onOperatorChange) onOperatorChange(op.value);

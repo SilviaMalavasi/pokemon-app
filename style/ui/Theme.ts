@@ -63,13 +63,20 @@ export const theme = {
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 32,
-    elevation: 6,
+    elevation: 8,
   },
   shadowAlternative: {
     shadowColor: lightPurple,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 32,
-    elevation: 6,
+    elevation: 8,
+  },
+  shadowSmall: {
+    shadowColor: lightGreen,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 32,
+    elevation: 4,
   },
 };

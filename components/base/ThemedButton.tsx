@@ -1,7 +1,7 @@
 import { ButtonProps, TouchableOpacity } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import { View } from "react-native";
-import { Svg, Path, Rect } from "react-native-svg";
+import { Svg, Path, Polygon } from "react-native-svg";
 import { theme } from "@/style/ui/Theme";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -45,9 +45,24 @@ const IconArrow = ({ fill }: { fill: string }) => (
   </Svg>
 );
 
+const IconPlus = () => (
+  <Svg
+    width="100%"
+    height="100%"
+    viewBox="0 0 326.06 326.06"
+  >
+    <Polygon points="306.5 119.6 206.46 119.6 206.46 19.56 119.6 19.56 119.6 119.6 19.56 119.6 19.56 206.46 119.6 206.46 119.6 306.5 206.46 306.5 206.46 206.46 306.5 206.46 306.5 119.6" />
+    <Path
+      d="M192.38,20v113.68h113.68v58.7h-113.68v113.68h-58.7v-113.68H20v-58.7h113.68V20h58.7m-.32-20h-58.38c-11.05,0-20,8.95-20,20V113.68H20c-11.05,0-20,8.95-20,20v58.7c0,11.05,8.95,20,20,20H113.68v93.68c0,11.05,8.95,20,20,20h58.7c11.05,0,20-8.95,20-20v-93.68h93.68c11.05,0,20-8.95,20-20v-58.7c0-11.05-8.95-20-20-20h-93.68V20c0-11.67-9.09-20-20.32-20Z"
+      fill="#fff"
+    />
+  </Svg>
+);
+
 const icons: Record<string, (props: { fill: string; style?: any }) => any> = {
   search: IconSearch,
   arrow: IconArrow,
+  add: IconPlus,
 };
 
 const getIconFill = (status: ButtonStatus) => {

@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   summaryLabel: {
     position: "absolute",
-    top: theme.padding.xsmall * -1,
+    top: theme.padding.xsmall * -1.25,
     left: 0,
     zIndex: 2,
     flexDirection: "row",

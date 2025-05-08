@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.lightBackground,
     borderWidth: 1,
     borderColor: theme.colors.lightGreen,
-    ...theme.shadow,
+    ...theme.shadowSmall,
     borderRadius: theme.borderRadius.xlarge,
     zIndex: 100,
   },

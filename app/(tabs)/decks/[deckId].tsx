@@ -16,6 +16,7 @@ import ThemedNumberInput from "@/components/base/ThemedNumberInput";
 import { Svg, Path } from "react-native-svg";
 import { TouchableOpacity } from "react-native";
 import AddCardToDeck from "@/components/deckbuilder/AddCardToDeck";
+import DeckCardList from "@/components/deckbuilder/DeckCardList";
 
 export default function DeckScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
@@ -96,14 +97,7 @@ export default function DeckScreen() {
                   }
                 }}
               />
-              <ThemedText
-                type="subtitle"
-                style={{ marginBottom: 8 }}
-              >
-                Cards in this deck:
-              </ThemedText>
-              {/* You can parse and render deck.cards here as a list of cards */}
-              <ThemedText>{deck.cards}</ThemedText>
+              <DeckCardList cards={getCardsArray()} />
             </>
           ) : (
             <ThemedText>Deck not found.</ThemedText>

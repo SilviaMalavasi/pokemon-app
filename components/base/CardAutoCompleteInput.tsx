@@ -52,7 +52,7 @@ export function CardAutoCompleteProvider({ children }: { children: React.ReactNo
       try {
         const results = await db.getAllAsync<CardSuggestion>(
           "SELECT id, name, imagesLarge, cardId FROM Card WHERE name LIKE ? ORDER BY name LIMIT 10",
-          [`%${text}%`]
+          [`${text}%`]
         );
         setSuggestions(results);
       } catch (error) {
@@ -106,12 +106,6 @@ export function CardAutoCompleteSuggestions({ onCardSelect }: { onCardSelect: (c
       style={styles.suggestionsListContainer}
       keyboardShouldPersistTaps="always"
     >
-      <ThemedText
-        type="label"
-        style={styles.suggestionLabel}
-      >
-        Cards:
-      </ThemedText>
       {suggestions.map((card) => (
         <Pressable
           key={card.id}
@@ -132,7 +126,7 @@ export function CardAutoCompleteSuggestions({ onCardSelect }: { onCardSelect: (c
           accessibilityLabel={`Select card ${card.name}`}
         >
           <ThemedText style={styles.customItem}>
-            {card.name} {card.cardId.toUpperCase()}
+            {card.name} <ThemedText type="hintText">{card.cardId.toUpperCase()}</ThemedText>
           </ThemedText>
         </Pressable>
       ))}
@@ -146,14 +140,15 @@ interface CardAutoCompleteInputProps {
   onCardSelect: (cardId: string) => void;
   placeholder?: string;
   labelHint?: string;
+  resetKey?: number; // Add resetKey prop
 }
 
 export default function CardAutoCompleteInput({
   label,
   value,
-  onCardSelect,
   placeholder,
   labelHint,
+  resetKey,
 }: CardAutoCompleteInputProps) {
   const {
     searchTerm,
@@ -171,6 +166,12 @@ export default function CardAutoCompleteInput({
       setSelectedCardName("Selected Card");
     }
   }, [value]);
+
+  // Clear searchTerm when resetKey changes
+  useEffect(() => {
+    setSearchTerm("");
+    setSelectedCardName(null);
+  }, [resetKey]);
 
   return (
     <ThemedView style={styles.container}>
