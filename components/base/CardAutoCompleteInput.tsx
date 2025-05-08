@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, createContext, useContext } from "react";
 import { Pressable, ScrollView, TextInput, View } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
@@ -6,6 +6,139 @@ import ThemedTextInput from "@/components/base/ThemedTextInput";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 
 import styles from "@/style/base/CardAutoCompleteInputStyle";
+
+// Card suggestion type
+export type CardSuggestion = { id: number; name: string; imagesLarge: string; cardId: string };
+
+interface CardAutoCompleteContextType {
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  suggestions: CardSuggestion[];
+  setSuggestions: (s: CardSuggestion[]) => void;
+  inputFocused: boolean;
+  setInputFocused: (b: boolean) => void;
+  selectedCardName: string | null;
+  setSelectedCardName: (n: string | null) => void;
+  handleSearch: (text: string) => void;
+  selectingSuggestion: React.MutableRefObject<boolean>;
+  inputRef: React.RefObject<TextInput>;
+}
+
+const CardAutoCompleteContext = createContext<CardAutoCompleteContextType | undefined>(undefined);
+
+export function useCardAutoComplete() {
+  const ctx = useContext(CardAutoCompleteContext);
+  if (!ctx) throw new Error("useCardAutoComplete must be used within CardAutoCompleteProvider");
+  return ctx;
+}
+
+export function CardAutoCompleteProvider({ children }: { children: React.ReactNode }) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState<CardSuggestion[]>([]);
+  const [inputFocused, setInputFocused] = useState(false);
+  const selectingSuggestion = useRef(false);
+  const inputRef = useRef<TextInput>(null);
+  const { db } = useCardDatabase();
+  const [selectedCardName, setSelectedCardName] = useState<string | null>(null);
+
+  const handleSearch = async (text: string) => {
+    setSearchTerm(text);
+    setSelectedCardName(null);
+    if (!db) {
+      setSuggestions([]);
+      return;
+    }
+    if (text.length > 2) {
+      try {
+        const results = await db.getAllAsync<CardSuggestion>(
+          "SELECT id, name, imagesLarge, cardId FROM Card WHERE name LIKE ? ORDER BY name LIMIT 10",
+          [`%${text}%`]
+        );
+        setSuggestions(results);
+      } catch (error) {
+        setSuggestions([]);
+      }
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  return (
+    <CardAutoCompleteContext.Provider
+      value={{
+        searchTerm,
+        setSearchTerm,
+        suggestions,
+        setSuggestions,
+        inputFocused,
+        setInputFocused,
+        selectedCardName,
+        setSelectedCardName,
+        handleSearch,
+        selectingSuggestion,
+        inputRef: inputRef as React.RefObject<TextInput>,
+      }}
+    >
+      {children}
+    </CardAutoCompleteContext.Provider>
+  );
+}
+
+export function CardAutoCompleteSuggestions({ onCardSelect }: { onCardSelect: (cardId: string) => void }) {
+  const {
+    suggestions,
+    setSearchTerm,
+    setSelectedCardName,
+    setSuggestions,
+    setInputFocused,
+    selectingSuggestion,
+    inputRef,
+    selectedCardName,
+    inputFocused,
+  } = useCardAutoComplete();
+
+  const showSuggestions = inputFocused && suggestions.length > 0 && !selectedCardName;
+
+  if (!showSuggestions) return null;
+
+  return (
+    <ScrollView
+      style={styles.suggestionsListContainer}
+      keyboardShouldPersistTaps="always"
+    >
+      <ThemedText
+        type="label"
+        style={styles.suggestionLabel}
+      >
+        Cards:
+      </ThemedText>
+      {suggestions.map((card) => (
+        <Pressable
+          key={card.id}
+          onTouchStart={() => {
+            selectingSuggestion.current = true;
+          }}
+          onTouchEnd={() => {
+            onCardSelect(card.cardId);
+            setSearchTerm(card.name);
+            setSelectedCardName(card.name);
+            setSuggestions([]);
+            setInputFocused(false);
+            selectingSuggestion.current = false;
+            if (inputRef.current) {
+              inputRef.current.blur();
+            }
+          }}
+          accessibilityLabel={`Select card ${card.name}`}
+        >
+          <ThemedText style={styles.customItem}>
+            {card.name} {card.cardId.toUpperCase()}
+          </ThemedText>
+        </Pressable>
+      ))}
+    </ScrollView>
+  );
+}
 
 interface CardAutoCompleteInputProps {
   label?: string;
@@ -22,15 +155,16 @@ export default function CardAutoCompleteInput({
   placeholder,
   labelHint,
 }: CardAutoCompleteInputProps) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [suggestions, setSuggestions] = useState<{ id: number; name: string; imagesLarge: string; cardId: string }[]>(
-    []
-  );
-  const [inputFocused, setInputFocused] = useState(false);
-  const selectingSuggestion = useRef(false);
-  const inputRef = useRef<TextInput>(null);
-  const { db } = useCardDatabase();
-  const [selectedCardName, setSelectedCardName] = useState<string | null>(null);
+  const {
+    searchTerm,
+    setSearchTerm,
+    setSelectedCardName,
+    handleSearch,
+    inputRef,
+    setInputFocused,
+    selectingSuggestion,
+    selectedCardName,
+  } = useCardAutoComplete();
 
   useEffect(() => {
     if (value && !searchTerm) {
@@ -38,71 +172,8 @@ export default function CardAutoCompleteInput({
     }
   }, [value]);
 
-  const handleSearch = async (text: string) => {
-    setSearchTerm(text);
-    setSelectedCardName(null); // Clear selected card when typing or clearing
-    if (!db) {
-      setSuggestions([]);
-      return;
-    }
-    if (text.length > 2) {
-      try {
-        // Query the Card table for matching names (case-insensitive, partial match)
-        const results = await db.getAllAsync<{ id: number; name: string; imagesLarge: string; cardId: string }>(
-          "SELECT id, name, imagesLarge, cardId FROM Card WHERE name LIKE ? ORDER BY name LIMIT 10",
-          [`%${text}%`]
-        );
-        setSuggestions(results);
-      } catch (error) {
-        console.error("Failed to fetch card suggestions:", error);
-        setSuggestions([]);
-      }
-    } else {
-      setSuggestions([]);
-    }
-  };
-
-  const showSuggestions = inputFocused && suggestions.length > 0 && !selectedCardName;
-
   return (
     <ThemedView style={styles.container}>
-      {showSuggestions && (
-        <ScrollView
-          style={styles.suggestionsListContainer}
-          keyboardShouldPersistTaps="always"
-        >
-          <ThemedText
-            type="label"
-            style={styles.suggestionLabel}
-          >
-            Cards:
-          </ThemedText>
-          {suggestions.map((card) => (
-            <Pressable
-              key={card.id}
-              onTouchStart={() => {
-                selectingSuggestion.current = true;
-              }}
-              onTouchEnd={() => {
-                onCardSelect(card.cardId);
-                setSearchTerm(card.name);
-                setSelectedCardName(card.name);
-                setSuggestions([]);
-                setInputFocused(false);
-                selectingSuggestion.current = false;
-                if (inputRef.current) {
-                  inputRef.current.blur();
-                }
-              }}
-              accessibilityLabel={`Select card ${card.name}`}
-            >
-              <ThemedText style={styles.customItem}>
-                {card.name} {card.cardId.toUpperCase()}
-              </ThemedText>
-            </Pressable>
-          ))}
-        </ScrollView>
-      )}
       <ThemedTextInput
         ref={inputRef}
         label={label}

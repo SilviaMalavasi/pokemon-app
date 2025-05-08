@@ -3,7 +3,10 @@ import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
-import CardAutoCompleteInput from "@/components/base/CardAutoCompleteInput";
+import CardAutoCompleteInput, {
+  CardAutoCompleteProvider,
+  CardAutoCompleteSuggestions,
+} from "@/components/base/CardAutoCompleteInput";
 import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
@@ -54,29 +57,32 @@ export default function NewDeck({
   return (
     <ThemedView>
       <ThemedText type="subtitle">New Deck</ThemedText>
-      <ThemedView style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge }}>
-        <ThemedTextInput
-          label="Deck Name *"
-          value={deckName}
-          onChange={setDeckName}
-          placeholder="Enter deck name"
-        />
-        <CardAutoCompleteInput
-          key={autoCompleteKey}
-          label="Deck Thumbnail"
-          value={deckThumbnail}
-          onCardSelect={handleThumbnailSelect}
-          placeholder="Type card name (min 3 chars)"
-          labelHint="Select a card image for the deck"
-        />
-        <ThemedButton
-          title="Save Deck"
-          width={vw(40)}
-          onPress={handleSavePress}
-          disabled={isSaveDisabled}
-          style={{ marginTop: theme.padding.small }}
-        />
-      </ThemedView>
+      <CardAutoCompleteProvider>
+        <ThemedView style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge }}>
+          <ThemedTextInput
+            label="Deck Name *"
+            value={deckName}
+            onChange={setDeckName}
+            placeholder="Enter deck name"
+          />
+          <CardAutoCompleteInput
+            key={autoCompleteKey}
+            label="Deck Thumbnail"
+            value={deckThumbnail}
+            onCardSelect={handleThumbnailSelect}
+            placeholder="Type card name (min 3 chars)"
+            labelHint="Select a card image for the deck"
+          />
+          <CardAutoCompleteSuggestions onCardSelect={handleThumbnailSelect} />
+          <ThemedButton
+            title="Save Deck"
+            width={vw(40)}
+            onPress={handleSavePress}
+            disabled={isSaveDisabled}
+            style={{ marginTop: theme.padding.small }}
+          />
+        </ThemedView>
+      </CardAutoCompleteProvider>
     </ThemedView>
   );
 }
