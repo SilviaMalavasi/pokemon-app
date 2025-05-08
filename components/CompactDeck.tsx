@@ -8,7 +8,7 @@ import { Link } from "expo-router";
 import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
 import cardImages from "@/helpers/cardImageMapping";
-import styles from "@/style/CompactDeckStyle";
+import styles from "@/style/deckbuilder/CompactDeckStyle";
 
 function getDeckImage(imagePath: string) {
   if (!imagePath) return undefined;

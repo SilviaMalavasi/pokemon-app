@@ -6,6 +6,7 @@ import ThemedTextInput from "@/components/base/ThemedTextInput";
 import CardAutoCompleteInput from "@/components/base/CardAutoCompleteInput";
 import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
+import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 
 interface NewDeckSectionProps {
   deckName: string;
@@ -21,12 +22,28 @@ export default function NewDeck({
   setDeckName,
   deckThumbnail,
   handleSaveDeck,
-  handleThumbnailSelect,
+  setDeckThumbnail,
 }: NewDeckSectionProps) {
   const isNameMissing = !deckName.trim();
   const isSaveDisabled = isNameMissing;
 
   const [autoCompleteKey, setAutoCompleteKey] = React.useState(0);
+  const { db } = useCardDatabase();
+
+  // Handler to select thumbnail by cardId
+  const handleThumbnailSelect = async (cardId: string) => {
+    if (!db) return;
+    try {
+      const card = await db.getFirstAsync<{ imagesLarge: string }>("SELECT imagesLarge FROM Card WHERE cardId = ?", [
+        cardId,
+      ]);
+      if (card && card.imagesLarge) {
+        setDeckThumbnail(card.imagesLarge);
+      }
+    } catch (e) {
+      console.error("Error fetching card image for thumbnail:", e);
+    }
+  };
 
   const handleSavePress = () => {
     if (isSaveDisabled) return;

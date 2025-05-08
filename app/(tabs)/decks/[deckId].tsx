@@ -6,11 +6,16 @@ import ThemedText from "@/components/base/ThemedText";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import FloatingButton from "@/components/ui/FloatingButton";
+import CardAutoCompleteInput from "@/components/base/CardAutoCompleteInput";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import ThemedNumberInput from "@/components/base/ThemedNumberInput";
+import { Svg, Path } from "react-native-svg";
+import { TouchableOpacity } from "react-native";
+import AddCardToDeck from "@/components/deckbuilder/AddCardToDeck";
 
 export default function DeckScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
@@ -19,6 +24,9 @@ export default function DeckScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const router = useRouter();
   const { db, isLoading: dbLoading, error } = useUserDatabase();
+  const [selectedCard, setSelectedCard] = useState<any | null>(null);
+  const [cardQuantity, setCardQuantity] = useState<number | "">(1);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleBack = () => {
     router.replace("/deckbuilder");
@@ -49,6 +57,15 @@ export default function DeckScreen() {
     fetchDeck();
   }, [deckId, db]);
 
+  // Helper to parse deck.cards (stored as JSON string)
+  const getCardsArray = () => {
+    try {
+      return Array.isArray(deck?.cards) ? deck.cards : JSON.parse(deck?.cards || "[]");
+    } catch {
+      return [];
+    }
+  };
+
   return (
     <>
       <ParallaxScrollView
@@ -67,21 +84,18 @@ export default function DeckScreen() {
             <ThemedText>Error loading deck: {error.message}</ThemedText>
           ) : deck ? (
             <>
-              <ThemedText
-                type="title"
-                style={{ marginBottom: 12 }}
-              >
-                {deck.name}
-              </ThemedText>
-              {deck.thumbnail ? (
-                <View style={{ alignItems: "center", marginBottom: 16 }}>
-                  <Animated.Image
-                    source={{ uri: deck.thumbnail }}
-                    style={{ width: 180, height: 180, borderRadius: 12 }}
-                    resizeMode="contain"
-                  />
-                </View>
-              ) : null}
+              <ThemedText type="subtitle">{deck.name}</ThemedText>
+              <AddCardToDeck
+                deck={deck}
+                db={db}
+                onCardAdded={async () => {
+                  // Refresh deck after card is added
+                  if (db) {
+                    const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
+                    setDeck(updatedDeck);
+                  }
+                }}
+              />
               <ThemedText
                 type="subtitle"
                 style={{ marginBottom: 8 }}

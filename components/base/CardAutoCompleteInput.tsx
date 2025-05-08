@@ -10,7 +10,7 @@ import styles from "@/style/base/CardAutoCompleteInputStyle";
 interface CardAutoCompleteInputProps {
   label?: string;
   value: string;
-  onCardSelect: (imagesLarge: string) => void;
+  onCardSelect: (cardId: string) => void;
   placeholder?: string;
   labelHint?: string;
 }
@@ -84,7 +84,7 @@ export default function CardAutoCompleteInput({
                 selectingSuggestion.current = true;
               }}
               onTouchEnd={() => {
-                onCardSelect(card.imagesLarge);
+                onCardSelect(card.cardId);
                 setSearchTerm(card.name);
                 setSelectedCardName(card.name);
                 setSuggestions([]);
