@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
@@ -246,18 +246,75 @@ export default function FreeSearchForm({
   // Helper: get checked fields for summary (label and key)
   const checkedFields = allCardColumns.filter((col) => includedColumns[col.key]);
 
+  // State for "see more/less" functionality
+  const [showFullSummary, setShowFullSummary] = useState(false);
+
   // Helper: render checked field labels separated by OR (no SVG, no dot)
   const renderCheckedLabelsSummary = () => {
     if (checkedFields.length === 0) return null;
+
+    const fullSummary = checkedFields.map((field, idx) => (
+      <React.Fragment key={field.key}>
+        {idx > 0 && <ThemedText style={styles.summaryArrayTextSeparator}> OR </ThemedText>}
+        <ThemedText style={styles.summaryText}>{field.label}</ThemedText>
+      </React.Fragment>
+    ));
+
+    const fullSummaryText = checkedFields.map((field) => field.label).join(" OR ");
+
+    if (fullSummaryText.length <= 140) {
+      return <ThemedText style={styles.summaryArrayText}>{fullSummary}</ThemedText>;
+    }
+
     return (
-      <ThemedText style={styles.summaryArrayText}>
-        {checkedFields.map((field, idx) => (
-          <React.Fragment key={field.key}>
-            {idx > 0 && <ThemedText style={styles.summaryArrayTextSeparator}> OR </ThemedText>}
-            <ThemedText style={styles.summaryText}>{field.label}</ThemedText>
-          </React.Fragment>
-        ))}
-      </ThemedText>
+      <ThemedView>
+        <ThemedText style={styles.summaryArrayText}>
+          {showFullSummary ? (
+            fullSummary
+          ) : (
+            <>
+              {
+                checkedFields.reduce(
+                  (acc, field, idx) => {
+                    const currentLabel = field.label;
+                    const separator = idx > 0 ? " OR " : "";
+                    if (acc.text.length + separator.length + currentLabel.length <= 140) {
+                      acc.text += separator + currentLabel;
+                      acc.elements.push(
+                        <React.Fragment key={field.key}>
+                          {idx > 0 && <ThemedText style={styles.summaryArrayTextSeparator}> OR </ThemedText>}
+                          <ThemedText style={styles.summaryText}>{currentLabel}</ThemedText>
+                        </React.Fragment>
+                      );
+                    } else if (acc.text.length < 140) {
+                      const remainingSpace = 140 - acc.text.length - separator.length;
+                      if (remainingSpace > 3) {
+                        // space for "..."
+                        const truncatedLabel = currentLabel.substring(0, remainingSpace - 3) + "...";
+                        acc.text += separator + truncatedLabel;
+                        acc.elements.push(
+                          <React.Fragment key={field.key}>
+                            {idx > 0 && <ThemedText style={styles.summaryArrayTextSeparator}> OR </ThemedText>}
+                            <ThemedText style={styles.summaryText}>{truncatedLabel}</ThemedText>
+                          </React.Fragment>
+                        );
+                      }
+                    }
+                    return acc;
+                  },
+                  { text: "", elements: [] as React.ReactNode[] }
+                ).elements
+              }
+            </>
+          )}
+        </ThemedText>
+        <TouchableOpacity
+          onPress={() => setShowFullSummary(!showFullSummary)}
+          style={{ alignItems: "flex-start", marginTop: theme.padding.xsmall }}
+        >
+          <ThemedText type="hintText">{showFullSummary ? "See less..." : "See more..."}</ThemedText>
+        </TouchableOpacity>
+      </ThemedView>
     );
   };
 

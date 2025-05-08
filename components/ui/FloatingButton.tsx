@@ -2,7 +2,6 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import styles from "@/style/ui/FloatingButtonStyle";
 import { Svg, Path } from "react-native-svg";
-import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/style/ui/Theme";
 
 interface FloatingButtonProps {
@@ -35,12 +34,6 @@ export default function FloatingButton({ title, onPress, bottom }: FloatingButto
       activeOpacity={0.8}
     >
       <View style={styles.button}>
-        <LinearGradient
-          colors={[theme.colors.lightPurple, theme.colors.purple]}
-          style={styles.background}
-          start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 1 }}
-        />
         <View style={styles.iconContainerStyle}>
           <IconBack />
         </View>

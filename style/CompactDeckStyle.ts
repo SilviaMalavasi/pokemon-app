@@ -38,10 +38,12 @@ const styles = StyleSheet.create({
     right: theme.padding.xsmall * 0.5,
     bottom: theme.padding.small * 0.5,
     zIndex: 10,
-    backgroundColor: theme.colors.purple,
     borderRadius: theme.borderRadius.xlarge,
     padding: 2,
-    elevation: 2,
+    backgroundColor: theme.colors.lightBackground,
+    borderWidth: 1,
+    borderColor: theme.colors.lightGreen,
+    ...theme.shadow,
   },
   button: {
     position: "relative",
@@ -56,12 +58,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    width: vw(12),
+    height: vw(12),
     borderRadius: theme.borderRadius.xlarge,
     zIndex: 0,
   },
   iconContainerStyle: {
-    width: theme.padding.large * 0.9,
-    height: theme.padding.large * 0.9,
+    width: theme.padding.large * 0.75,
+    height: theme.padding.large * 0.75,
   },
 });
 

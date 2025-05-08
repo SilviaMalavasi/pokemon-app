@@ -24,12 +24,14 @@ export default function NewDeck({
   handleThumbnailSelect,
 }: NewDeckSectionProps) {
   const isNameMissing = !deckName.trim();
-  const isThumbnailMissing = !deckThumbnail.trim();
-  const isSaveDisabled = isNameMissing || isThumbnailMissing;
+  const isSaveDisabled = isNameMissing;
+
+  const [autoCompleteKey, setAutoCompleteKey] = React.useState(0);
 
   const handleSavePress = () => {
     if (isSaveDisabled) return;
     handleSaveDeck();
+    setAutoCompleteKey((k) => k + 1); // Reset CardAutoCompleteInput
   };
 
   return (
@@ -43,7 +45,8 @@ export default function NewDeck({
           placeholder="Enter deck name"
         />
         <CardAutoCompleteInput
-          label="Deck Thumbnail *"
+          key={autoCompleteKey}
+          label="Deck Thumbnail"
           value={deckThumbnail}
           onCardSelect={handleThumbnailSelect}
           placeholder="Type card name (min 3 chars)"

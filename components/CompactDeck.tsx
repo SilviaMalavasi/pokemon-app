@@ -3,7 +3,7 @@ import { View, Image, ActivityIndicator, TouchableOpacity } from "react-native";
 import { Svg, Path } from "react-native-svg";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
-import { LinearGradient } from "expo-linear-gradient";
+import ThemedModal from "@/components/base/ThemedModal";
 import { Link } from "expo-router";
 import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
@@ -13,6 +13,10 @@ import styles from "@/style/CompactDeckStyle";
 function getDeckImage(imagePath: string) {
   if (!imagePath) return undefined;
   const filename = imagePath.split("/").pop() || "";
+  // Workaround: if the path is the default image, use require from /assets/images
+  if (imagePath === "/images/back-card.webp" || filename === "back-card.webp") {
+    return require("@/assets/images/back-card.webp");
+  }
   return cardImages[filename];
 }
 
@@ -29,7 +33,19 @@ interface CompactDeckProps {
 
 export default function CompactDeck({ deck, onImageLoad, loading, onDelete }: CompactDeckProps) {
   const [imageLoading, setImageLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const imageSource = getDeckImage(deck.thumbnail || "");
+
+  const handleDeletePress = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowModal(true);
+  };
+
+  const handleConfirmDelete = () => {
+    setShowModal(false);
+    if (onDelete) onDelete(deck.id);
+  };
 
   if (loading) {
     return (
@@ -60,21 +76,11 @@ export default function CompactDeck({ deck, onImageLoad, loading, onDelete }: Co
               />
               {typeof onDelete === "function" && (
                 <TouchableOpacity
-                  onPress={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onDelete(deck.id);
-                  }}
+                  onPress={handleDeletePress}
                   style={styles.deleteButton}
                   accessibilityLabel="Delete deck"
                 >
                   <View style={styles.button}>
-                    <LinearGradient
-                      colors={[theme.colors.lightPurple, theme.colors.purple]}
-                      style={styles.background}
-                      start={{ x: 0.5, y: 0 }}
-                      end={{ x: 0.5, y: 1 }}
-                    />
                     <View style={styles.iconContainerStyle}>
                       <Svg
                         width="100%"
@@ -82,16 +88,16 @@ export default function CompactDeck({ deck, onImageLoad, loading, onDelete }: Co
                         viewBox="0 0 330.64 367.15"
                       >
                         <Path
-                          d="M291.19,61.94h-40.46v-22.47c-.1-17.34-14.13-31.37-31.47-31.47H111.38c-17.34,.1-31.37,14.13-31.47,31.47v22.47H39.45c-17.33,.1-31.37,14.13-31.45,31.47v17.97c.08,17.35,14.13,31.37,31.45,31.47h251.73c17.33-.1,31.37-14.13,31.45-31.47v-17.97c-.08-17.34-14.13-31.37-31.45-31.47Zm-184.31,0v-22.47c0-2.49,2.02-4.5,4.5-4.5h107.88c1.2,0,2.34,.47,3.19,1.31s1.31,1.99,1.31,3.19v22.47s-116.88,0-116.88,0Z"
+                          d="M291.19,61.94h-40.46v-22.47c-.1-17.34-14.13-31.37-31.47-31.47H111.38c-17.34,.1-31.37,14.13-31.47,31.47v22.47H39.45c-17.33,.1-31.37,14.13-31.45,31.47v17.97c.05,10.84,11.06,20.38,19.41,26.04l32.18,195.48c2.48,15.22,15.68,26.36,31.1,26.25H239.94c15.42,.12,28.62-11.02,31.1-26.25l32.57-195.02c10.01-5.27,18.97-14.4,19.03-26.5v-17.97c-.08-17.34-14.13-31.37-31.45-31.47Zm-159.95,.38v-13.1c0-1.45,1.18-2.62,2.62-2.62h62.92c.7,0,1.37,.28,1.86,.77,.49,.49,.77,1.16,.77,1.86v13.1s-68.17,0-68.17,0Z"
                           stroke="#fff"
-                          strokeMiterlimit={10}
-                          strokeWidth={16}
+                          strokeMiterlimit="10"
+                          strokeWidth="16"
                         />
                         <Path
-                          d="M39.45,169.82h-7.01l27.16,163.08c2.48,15.22,15.68,26.36,31.1,26.25H239.94c15.42,.12,28.62-11.02,31.1-26.25l27.16-163.08H39.45Zm177.68,146.47c-6.73,6.73-18.5,5.85-26.3-1.95l-25.51-25.51-25.51,25.51c-7.81,7.81-19.59,8.67-26.3,1.95s-5.85-18.5,1.95-26.3l25.51-25.51-25.51-25.51c-7.79-7.79-8.68-19.58-1.95-26.3,6.71-6.71,18.52-5.83,26.3,1.95l25.51,25.51,25.51-25.51c7.79-7.79,19.58-8.68,26.3-1.95s5.83,18.52-1.95,26.3l-25.51,25.51,25.51,25.51c7.81,7.81,8.67,19.59,1.95,26.3Z"
+                          d="M115.47,200.98c-7.79-7.79-8.68-19.58-1.95-26.3,6.71-6.71,18.52-5.83,26.3,1.95l25.51,25.51,25.51-25.51c7.79-7.79,19.58-8.68,26.3-1.95,6.71,6.71,5.83,18.52-1.95,26.3l-25.51,25.51,25.51,25.51c7.81,7.81,8.67,19.59,1.95,26.3s-18.5,5.85-26.3-1.95l-25.51-25.51-25.51,25.51c-7.81,7.81-19.59,8.67-26.3,1.95-6.73-6.73-5.85-18.5,1.95-26.3l25.51-25.51-25.51-25.51Z"
                           stroke="#fff"
-                          strokeMiterlimit={10}
-                          strokeWidth={16}
+                          strokeMiterlimit="10"
+                          strokeWidth="16"
                         />
                       </Svg>
                     </View>
@@ -116,6 +122,22 @@ export default function CompactDeck({ deck, onImageLoad, loading, onDelete }: Co
             {deck.name}
           </ThemedText>
         </View>
+        <ThemedModal
+          visible={showModal}
+          onClose={handleConfirmDelete}
+          buttonText="Delete"
+          buttonType="main"
+          buttonSize="large"
+          onCancel={() => setShowModal(false)}
+        >
+          <ThemedText
+            type="subtitle"
+            style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
+          >
+            Delete Deck?
+          </ThemedText>
+          <ThemedText>Are you sure you want to delete '{deck.name}'? This action cannot be undone.</ThemedText>
+        </ThemedModal>
       </ThemedView>
     </Link>
   );

@@ -63,13 +63,13 @@ export const theme = {
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 32,
-    elevation: 8,
+    elevation: 6,
   },
   shadowAlternative: {
     shadowColor: lightPurple,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 32,
-    elevation: 8,
+    elevation: 6,
   },
 };
