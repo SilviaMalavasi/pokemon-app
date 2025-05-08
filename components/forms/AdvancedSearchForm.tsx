@@ -91,12 +91,6 @@ export default function AdvancedSearchForm({
 
   // Local state
   const [loading, setLoading] = useState(false);
-  const [cardIds, setCardIds] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-  const [showHint, setShowHint] = useState(false);
-  // Add a local resetKey to force reset
-  const [localResetKey, setLocalResetKey] = useState(0);
   const [cardTypeModalVisible, setCardTypeModalVisible] = useState(false);
   const [rulesModalVisible, setRulesModalVisible] = useState(false);
   const [attacksModalVisible, setAttacksModalVisible] = useState(false);
@@ -140,10 +134,7 @@ export default function AdvancedSearchForm({
     setCardSetNumber("");
     setAttacksCostSlots([]);
     setHasAnyAbility(false);
-    setShowHint(false);
-    setError(null);
     clearAdvancedForm();
-    setLocalResetKey((k) => k + 1);
     onRemoveDuplicatesChange(false);
   };
 
@@ -266,12 +257,10 @@ export default function AdvancedSearchForm({
     if (!db || isLoading || isUpdating) {
       setLoading(false);
       if (setLoadingProp) setLoadingProp(false);
-      setError("Database is not ready. Please wait and try again.");
       return;
     }
     if (setLoadingProp) setLoadingProp(true);
     setLoading(true);
-    setError(null);
     saveFormToContext();
 
     // Build filters array using modal filter functions
@@ -302,7 +291,6 @@ export default function AdvancedSearchForm({
     if (!db) {
       // Add a check for db instance
       console.error("Database context not available!");
-      setError("Database not ready. Please try again.");
       setLoading(false);
       if (setLoadingProp) setLoadingProp(false);
       return;
@@ -327,7 +315,6 @@ export default function AdvancedSearchForm({
       }
     } catch (err: any) {
       console.error("Error during handleSubmit:", err); // Log error
-      setError(err.message || "Search failed");
     } finally {
       setLoading(false);
       if (setLoadingProp) setLoadingProp(false);
