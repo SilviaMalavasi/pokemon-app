@@ -50,6 +50,8 @@ export type SearchFormContextType = {
   setFreeForm: (state: FreeSearchFormState) => void;
   clearFreeForm: () => void;
   setLastSearchPage: (type: "advanced" | "free" | null) => void;
+  fromCardId: boolean;
+  setFromCardId: (val: boolean) => void;
 };
 
 const defaultAdvancedForm: AdvancedSearchFormState = {
@@ -105,6 +107,7 @@ export const SearchFormProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [lastSearchPage, setLastSearchPage] = useState<"advanced" | "free" | null>(null);
   const [advancedForm, setAdvancedFormState] = useState<AdvancedSearchFormState | null>(null);
   const [freeForm, setFreeFormState] = useState<FreeSearchFormState | null>(null);
+  const [fromCardId, setFromCardId] = useState(false);
 
   const setAdvancedForm = (state: AdvancedSearchFormState) => setAdvancedFormState(state);
   const clearAdvancedForm = () => setAdvancedFormState(null);
@@ -122,6 +125,8 @@ export const SearchFormProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         setFreeForm,
         clearFreeForm,
         setLastSearchPage,
+        fromCardId,
+        setFromCardId,
       }}
     >
       {children}

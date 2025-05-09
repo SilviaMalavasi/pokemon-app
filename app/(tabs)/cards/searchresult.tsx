@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
@@ -16,17 +16,27 @@ export default function SearchResultScreen() {
   const { cardIds, query, currentPage, itemsPerPage, cards, loading, setCards, setLoading, setCurrentPage } =
     useSearchResultContext();
   const router = useRouter();
-  const { lastSearchPage, clearAdvancedForm } = useSearchFormContext();
+  const { lastSearchPage, clearAdvancedForm, fromCardId, setFromCardId } = useSearchFormContext();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const skipNextScroll = useRef(false);
   // Get SQLite DB instance
   const { db } = useCardDatabase();
 
   useFocusEffect(
     React.useCallback(() => {
+      if (fromCardId) {
+        setFromCardId(false);
+        skipNextScroll.current = true;
+        return;
+      }
+      if (skipNextScroll.current) {
+        skipNextScroll.current = false;
+        return;
+      }
       if (scrollRef.current) {
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
-    }, [cardIds, currentPage])
+    }, [cardIds, currentPage, fromCardId, setFromCardId])
   );
 
   // Fetch paginated card data when cardIds or currentPage changes

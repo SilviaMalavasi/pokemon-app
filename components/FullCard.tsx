@@ -99,12 +99,6 @@ export default function FullCard(props: FullCardProps) {
             />
           </View>
         ) : null}
-        <ThemedText
-          type="title"
-          style={{ paddingBottom: theme.padding.large, paddingTop: theme.padding.xsmall }}
-        >
-          {props.name}
-        </ThemedText>
 
         {/* Card Types */}
         <ThemedView style={styles.cardDetailsContainer}>

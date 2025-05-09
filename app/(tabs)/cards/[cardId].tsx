@@ -12,6 +12,7 @@ import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSearchFormContext } from "@/components/context/SearchFormContext";
 
 export default function FullCardScreen() {
   const { cardId } = useLocalSearchParams<{ cardId: string }>();
@@ -21,8 +22,10 @@ export default function FullCardScreen() {
   const router = useRouter();
   const navigation = useNavigation();
   const { db } = useCardDatabase();
+  const { setFromCardId } = useSearchFormContext();
 
   const handleBack = () => {
+    setFromCardId(true);
     router.back();
   };
 
