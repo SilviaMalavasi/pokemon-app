@@ -39,7 +39,6 @@ export default function SavedDecks({ savedDecks, isLoadingDecks, onDelete, delet
               <CompactDeck
                 deck={deck}
                 loading={deletingId === deck.id}
-                onDelete={onDelete}
               />
             </ThemedView>
           ))}

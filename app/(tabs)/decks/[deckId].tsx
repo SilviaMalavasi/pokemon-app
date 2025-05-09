@@ -16,7 +16,6 @@ import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import FloatingEdit from "@/components/ui/FloatingEdit";
 import DeckThumbnailList from "@/components/deckbuilder/DeckThumbnailList";
-import { Ionicons } from "@expo/vector-icons";
 
 export default function DeckScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>();

@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Svg, Path, Rect } from "react-native-svg";
 import ThemedModal from "@/components/base/ThemedModal";
+import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
   CardAutoCompleteSuggestions,
 } from "@/components/base/CardAutoCompleteInput";
+import ThemedButton from "@/components/base/ThemedButton";
 import { theme } from "@/style/ui/Theme";
 import styles from "@/style/ui/FloatingEditStyle";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
+import { useRouter } from "expo-router";
 
 interface FloatingEditProps {
   deck: any;
@@ -26,6 +29,8 @@ const FloatingEdit: React.FC<FloatingEditProps> = ({ deck, db, cardDb, setDeck, 
   const [editName, setEditName] = useState("");
   const [editThumbnail, setEditThumbnail] = useState("");
   const [saving, setSaving] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const router = useRouter();
 
   // Handler to select thumbnail by cardId (use cardDb)
   const handleThumbnailSelect = async (cardId: string) => {
@@ -64,6 +69,25 @@ const FloatingEdit: React.FC<FloatingEditProps> = ({ deck, db, cardDb, setDeck, 
       setModalVisible(false);
     } catch (e) {
       console.error("Error updating deck:", e);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Delete deck handler
+  const handleDeleteDeck = async () => {
+    if (!db || !deckId) return;
+    setSaving(true);
+    try {
+      await db.runAsync("DELETE FROM Decks WHERE id = ?", [Number(deckId)]);
+      setDeck(null); // Notify parent deck is gone
+      incrementDecksVersion();
+      setDeleteModalVisible(false);
+      setModalVisible(false);
+      // Navigate to deckbuilder after delete
+      router.replace("/deckbuilder");
+    } catch (e) {
+      console.error("Error deleting deck:", e);
     } finally {
       setSaving(false);
     }
@@ -142,7 +166,43 @@ const FloatingEdit: React.FC<FloatingEditProps> = ({ deck, db, cardDb, setDeck, 
             labelHint="Select a card image for the deck"
           />
           <CardAutoCompleteSuggestions onCardSelect={handleThumbnailSelect} />
+          <ThemedButton
+            title="Delete Deck"
+            type="alternative"
+            size="small"
+            onPress={() => setDeleteModalVisible(true)}
+            disabled={saving}
+            style={{
+              marginTop: theme.padding.small,
+              alignSelf: "flex-start",
+            }}
+          />
         </CardAutoCompleteProvider>
+      </ThemedModal>
+      <ThemedModal
+        visible={deleteModalVisible}
+        onClose={async () => {
+          if (!saving) {
+            await handleDeleteDeck();
+          }
+        }}
+        buttonText={saving ? "Deleting..." : "Delete"}
+        buttonType="main"
+        buttonSize="large"
+        buttonStyle={{ minWidth: 120, backgroundColor: theme.colors.purple }}
+        onCancelText="Cancel"
+        onCancel={() => setDeleteModalVisible(false)}
+        contentStyle={{ minWidth: 300 }}
+      >
+        <ThemedText
+          type="defaultSemiBold"
+          style={{ marginBottom: theme.padding.medium, textAlign: "center" }}
+        >
+          Delete Deck?
+        </ThemedText>
+        <ThemedText style={{ textAlign: "center", marginBottom: theme.padding.large }}>
+          Are you sure you want to delete '{deck?.name}'? This action cannot be undone.
+        </ThemedText>
       </ThemedModal>
     </>
   );
