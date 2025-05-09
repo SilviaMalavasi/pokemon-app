@@ -7,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import cardImages from "@/helpers/cardImageMapping";
 import styles from "@/style/FullCardStyle";
 import { theme } from "@/style/ui/Theme";
+import AddToDeckModal from "@/components/deckbuilder/AddToDeckModal";
 
 function getCardImage(imagePath: string) {
   if (!imagePath) return undefined;
@@ -88,6 +89,13 @@ export default function FullCard(props: FullCardProps) {
   return (
     <ScrollView>
       <ThemedView style={styles.container}>
+        {/* Add to Deck Button */}
+        <View style={{ alignItems: "flex-end", marginBottom: theme.padding.small }}>
+          <AddToDeckModal
+            cardId={props.cardId}
+            cardName={props.name}
+          />
+        </View>
         {imageSource ? (
           <View style={styles.imageContainer}>
             <Image

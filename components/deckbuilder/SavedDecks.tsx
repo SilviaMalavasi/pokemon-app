@@ -1,7 +1,7 @@
 import React from "react";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedView from "@/components/base/ThemedView";
-import CompactDeck from "@/components/CompactDeck";
+import CompactDeck from "@/components/deckbuilder/CompactDeck";
 import SearchResultStyle from "@/style/SearchResultStyle";
 import { theme } from "@/style/ui/Theme";
 
