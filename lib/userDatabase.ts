@@ -139,7 +139,10 @@ async function updateDeckCards(db: SQLite.SQLiteDatabase, deckId: number, newCar
 // Increase card quantity in a deck (max 4)
 export async function increaseCardQuantity(db: SQLite.SQLiteDatabase, deckId: number, cardId: string) {
   const deck = await db.getFirstAsync<{ cards: string }>("SELECT cards FROM Decks WHERE id = ?", [deckId]);
-  if (!deck) throw new Error("Deck not found");
+  if (!deck) {
+    console.warn(`[increaseCardQuantity] Deck not found for deckId: ${deckId}`);
+    throw new Error("Deck not found");
+  }
   let cardsArr: any[] = [];
   try {
     cardsArr = Array.isArray(deck.cards) ? deck.cards : JSON.parse(deck.cards || "[]");
@@ -160,7 +163,10 @@ export async function increaseCardQuantity(db: SQLite.SQLiteDatabase, deckId: nu
 // Decrease card quantity in a deck (remove if 0)
 export async function decreaseCardQuantity(db: SQLite.SQLiteDatabase, deckId: number, cardId: string) {
   const deck = await db.getFirstAsync<{ cards: string }>("SELECT cards FROM Decks WHERE id = ?", [deckId]);
-  if (!deck) throw new Error("Deck not found");
+  if (!deck) {
+    console.warn(`[decreaseCardQuantity] Deck not found for deckId: ${deckId}`);
+    throw new Error("Deck not found");
+  }
   let cardsArr: any[] = [];
   try {
     cardsArr = Array.isArray(deck.cards) ? deck.cards : JSON.parse(deck.cards || "[]");

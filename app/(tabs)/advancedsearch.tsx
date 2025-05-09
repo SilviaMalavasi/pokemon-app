@@ -50,7 +50,7 @@ export default function FullFormScreen() {
           filteredIds = deduped.map((c) => c.cardId);
         } else {
           // Handle case where no data is found for the IDs, though this shouldn't happen if queryBuilder returned them
-          console.log("No card details found in SQLite for the provided IDs.");
+          console.warn("No card details found in SQLite for the provided IDs.");
         }
       } catch (error) {
         console.error("Error fetching card details from SQLite:", error);

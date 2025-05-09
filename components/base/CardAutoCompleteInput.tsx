@@ -141,6 +141,7 @@ interface CardAutoCompleteInputProps {
   placeholder?: string;
   labelHint?: string;
   resetKey?: number; // Add resetKey prop
+  maxChars?: number; // Optional: max characters to display (with ellipsis)
 }
 
 export default function CardAutoCompleteInput({
@@ -149,6 +150,7 @@ export default function CardAutoCompleteInput({
   placeholder,
   labelHint,
   resetKey,
+  maxChars,
 }: CardAutoCompleteInputProps) {
   const {
     searchTerm,
@@ -179,6 +181,7 @@ export default function CardAutoCompleteInput({
         ref={inputRef}
         label={label}
         value={searchTerm}
+        maxChars={maxChars}
         onChange={(text) => {
           setSearchTerm(text);
           setSelectedCardName(null);

@@ -39,7 +39,9 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
       const cardsArr = getCardsArray();
       // Remove existing entry for this cardId if present
       const filtered = cardsArr.filter((c: any) => c.cardId !== selectedCardId);
-      filtered.push({ cardId: selectedCardId, quantity: cardQuantity });
+      // Clamp quantity to max 4
+      const clampedQty = Math.min(Number(cardQuantity), 4);
+      filtered.push({ cardId: selectedCardId, quantity: clampedQty });
       await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(filtered), deck.id]);
       if (onCardAdded) onCardAdded();
       setSelectedCardId("");
@@ -70,6 +72,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
               value={selectedCardId}
               onCardSelect={setSelectedCardId}
               placeholder="Type card name"
+              maxChars={15}
               resetKey={resetCounter} // Pass resetKey to force clear
             />
           </View>
@@ -78,7 +81,11 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
               key={`number-input-${resetCounter}`}
               label="Qty"
               value={cardQuantity}
-              onChange={(val) => setCardQuantity(val)}
+              onChange={(val) => {
+                // Clamp to max 4 in UI
+                if (val === "") setCardQuantity("");
+                else setCardQuantity(Math.min(Number(val), 4));
+              }}
               placeholder="1"
               showOperatorSelect="none"
               resetKey={resetCounter} // Pass resetKey to force clear

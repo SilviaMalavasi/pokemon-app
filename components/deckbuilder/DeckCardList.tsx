@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text } from "react-native";
+import { TouchableOpacity } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import styles from "@/style/deckbuilder/DeckCardListStyle";
@@ -7,13 +7,18 @@ import { Svg, Circle } from "react-native-svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
+import { increaseCardQuantity, decreaseCardQuantity } from "@/lib/userDatabase";
+import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 
 interface DeckCardListProps {
   cards: any[];
+  deckId: number;
+  onCardsChanged?: () => void;
 }
 
-const DeckCardList: React.FC<DeckCardListProps> = ({ cards }) => {
+const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChanged }) => {
   const { db } = useCardDatabase();
+  const { db: userDb } = useUserDatabase();
   const [cardNames, setCardNames] = useState<{ [id: string]: string }>({});
   const [cardDataMap, setCardDataMap] = useState<{ [id: string]: { name: string; supertype: string } }>({});
 
@@ -77,6 +82,25 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards }) => {
     return groups;
   }, [cards, cardDataMap]);
 
+  // Helper to trigger quantity change and refresh UI
+  const handleChangeQuantity = async (cardId: string, action: "inc" | "dec") => {
+    if (!userDb || !deckId) {
+      console.warn(`[handleChangeQuantity] Early return: userDb or deckId missing. userDb:`, userDb, "deckId:", deckId);
+      return;
+    }
+    let newQty = 1;
+    const card = cards.find((c) => c.cardId === cardId);
+    if (card) newQty = card.quantity || 1;
+    if (action === "inc") {
+      await increaseCardQuantity(userDb, deckId, cardId);
+      newQty = newQty + 1;
+    } else {
+      await decreaseCardQuantity(userDb, deckId, cardId);
+      newQty = Math.max(0, newQty - 1);
+    }
+    if (onCardsChanged) onCardsChanged();
+  };
+
   if (!cards || cards.length === 0) {
     return <ThemedText>No cards in this deck.</ThemedText>;
   }
@@ -122,7 +146,24 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards }) => {
               <ThemedText color={theme.colors.textHilight}>{item.quantity || 1}</ThemedText>
             </ThemedView>
             <ThemedView style={styles.summaryTextCol}>
-              <ThemedText>{cardDataMap[item.cardId]?.name || cardNames[item.cardId]}</ThemedText>
+              <ThemedText>
+                {cardDataMap[item.cardId]?.name}{" "}
+                <ThemedText
+                  type="hintText"
+                  style={styles.cardId}
+                >
+                  {item.cardId}
+                </ThemedText>
+              </ThemedText>
+              <ThemedView style={styles.qtyCol}>
+                <TouchableOpacity onPress={() => handleChangeQuantity(item.cardId, "dec")}>
+                  <ThemedText style={styles.qtyOperator}>-</ThemedText>
+                </TouchableOpacity>
+                <ThemedText> </ThemedText>
+                <TouchableOpacity onPress={() => handleChangeQuantity(item.cardId, "inc")}>
+                  <ThemedText style={styles.qtyOperator}>+</ThemedText>
+                </TouchableOpacity>
+              </ThemedView>
             </ThemedView>
           </ThemedView>
         ))}

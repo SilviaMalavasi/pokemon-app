@@ -12,9 +12,6 @@ import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ThemedNumberInput from "@/components/base/ThemedNumberInput";
-import { Svg, Path } from "react-native-svg";
-import { TouchableOpacity } from "react-native";
 import AddCardToDeck from "@/components/deckbuilder/AddCardToDeck";
 import DeckCardList from "@/components/deckbuilder/DeckCardList";
 
@@ -25,9 +22,6 @@ export default function DeckScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const router = useRouter();
   const { db, isLoading: dbLoading, error } = useUserDatabase();
-  const [selectedCard, setSelectedCard] = useState<any | null>(null);
-  const [cardQuantity, setCardQuantity] = useState<number | "">(1);
-  const [isSaving, setIsSaving] = useState(false);
 
   const handleBack = () => {
     router.replace("/deckbuilder");
@@ -46,7 +40,7 @@ export default function DeckScreen() {
     const fetchDeck = async () => {
       setLoading(true);
       try {
-        const deckData = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
+        const deckData = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [Number(deckId)]);
         setDeck(deckData);
       } catch (error) {
         console.error("Error fetching deck from SQLite:", error);
@@ -97,7 +91,16 @@ export default function DeckScreen() {
                   }
                 }}
               />
-              <DeckCardList cards={getCardsArray()} />
+              <DeckCardList
+                cards={getCardsArray()}
+                deckId={Number(deckId)}
+                onCardsChanged={async () => {
+                  if (db) {
+                    const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
+                    setDeck(updatedDeck);
+                  }
+                }}
+              />
             </>
           ) : (
             <ThemedText>Deck not found.</ThemedText>

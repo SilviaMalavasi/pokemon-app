@@ -56,7 +56,7 @@ export default function DeckBuilderScreen() {
 
   const handleSaveDeck = async () => {
     if (!db) {
-      console.log("Error", "Database not available.");
+      console.warn("Error", "Database not available.");
       return;
     }
     try {

@@ -11,14 +11,14 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    gap: theme.padding.small,
+    gap: theme.padding.xsmall,
     marginBottom: theme.padding.medium,
   },
   cardInput: {
     flex: 2,
   },
   numberInput: {
-    flex: 1,
+    width: vw(22),
   },
   saveButton: {
     width: vw(14),

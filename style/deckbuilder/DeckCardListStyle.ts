@@ -42,9 +42,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 4,
   },
+  cardId: {
+    textTransform: "uppercase",
+  },
   summaryTextCol: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     flex: vw(100) - 8 - theme.padding.xlarge * 2,
     minWidth: vw(100) - 8 - theme.padding.xlarge * 2,
+  },
+  qtyCol: { flexDirection: "row", alignItems: "center" },
+  qtyOperator: {
+    fontSize: theme.fontSizes.large,
+    paddingHorizontal: 4,
+    marginTop: theme.padding.xsmall * -0.5,
   },
 });
 

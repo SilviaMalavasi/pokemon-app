@@ -17,13 +17,20 @@ export interface TextInputProps {
   style?: any;
   onFocus?: () => void;
   onBlur?: () => void;
+  maxChars?: number;
 }
 
 export default forwardRef<RNTextInput, TextInputProps>(function ThemedTextInput(
-  { label, value, onChange, placeholder, labelHint, style, onFocus, onBlur },
+  { label, value, onChange, placeholder, labelHint, style, onFocus, onBlur, maxChars },
   ref
 ) {
   const [showHint, setShowHint] = useState(false);
+
+  // Truncate value for display if maxChars is set
+  let displayValue = value;
+  if (typeof maxChars === "number" && value.length > maxChars) {
+    displayValue = value.slice(0, maxChars) + "...";
+  }
 
   return (
     <ThemedView style={[styles.container, style]}>
@@ -39,7 +46,7 @@ export default forwardRef<RNTextInput, TextInputProps>(function ThemedTextInput(
         <RNTextInput
           ref={ref}
           style={[styles.input, { flex: 1 }]}
-          value={value}
+          value={displayValue}
           onChangeText={onChange}
           placeholder={placeholder}
           placeholderTextColor={styles.placeholder.color}
