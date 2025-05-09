@@ -9,6 +9,8 @@ const USER_DATABASE_NAME = "userDatabase.db";
 export async function openUserDatabase(): Promise<SQLite.SQLiteDatabase> {
   console.log(`Opening user database async: ${USER_DATABASE_NAME}`);
   const db = await SQLite.openDatabaseAsync(USER_DATABASE_NAME);
+  // Set WAL mode immediately after opening, before any migrations
+  await db.execAsync("PRAGMA journal_mode = WAL;");
   return db;
 }
 
@@ -23,8 +25,7 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase, setIsUpda
         version: 1,
         migrate: async (db) => {
           console.log("Applying version 1 user migration: Initial schema creation...");
-          // PRAGMA must be run separately
-          await db.execAsync("PRAGMA journal_mode = WAL;");
+          // PRAGMA journal_mode = WAL; moved to openUserDatabase
           await db.execAsync(`CREATE TABLE IF NOT EXISTS Decks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
@@ -128,4 +129,51 @@ export async function getSavedDecks(
 export async function deleteDeck(db: SQLite.SQLiteDatabase, id: number): Promise<void> {
   console.log(`Deleting deck with id: ${id}`);
   await db.runAsync("DELETE FROM Decks WHERE id = ?", [id]);
+}
+
+// Update the cards array for a deck (helper)
+async function updateDeckCards(db: SQLite.SQLiteDatabase, deckId: number, newCards: any[]) {
+  await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(newCards), deckId]);
+}
+
+// Increase card quantity in a deck (max 4)
+export async function increaseCardQuantity(db: SQLite.SQLiteDatabase, deckId: number, cardId: string) {
+  const deck = await db.getFirstAsync<{ cards: string }>("SELECT cards FROM Decks WHERE id = ?", [deckId]);
+  if (!deck) throw new Error("Deck not found");
+  let cardsArr: any[] = [];
+  try {
+    cardsArr = Array.isArray(deck.cards) ? deck.cards : JSON.parse(deck.cards || "[]");
+  } catch {
+    cardsArr = [];
+  }
+  const idx = cardsArr.findIndex((c) => c.cardId === cardId);
+  if (idx !== -1) {
+    if (cardsArr[idx].quantity < 4) {
+      cardsArr[idx].quantity += 1;
+    }
+  } else {
+    cardsArr.push({ cardId, quantity: 1 });
+  }
+  await updateDeckCards(db, deckId, cardsArr);
+}
+
+// Decrease card quantity in a deck (remove if 0)
+export async function decreaseCardQuantity(db: SQLite.SQLiteDatabase, deckId: number, cardId: string) {
+  const deck = await db.getFirstAsync<{ cards: string }>("SELECT cards FROM Decks WHERE id = ?", [deckId]);
+  if (!deck) throw new Error("Deck not found");
+  let cardsArr: any[] = [];
+  try {
+    cardsArr = Array.isArray(deck.cards) ? deck.cards : JSON.parse(deck.cards || "[]");
+  } catch {
+    cardsArr = [];
+  }
+  const idx = cardsArr.findIndex((c) => c.cardId === cardId);
+  if (idx !== -1) {
+    if (cardsArr[idx].quantity > 1) {
+      cardsArr[idx].quantity -= 1;
+    } else {
+      cardsArr.splice(idx, 1);
+    }
+    await updateDeckCards(db, deckId, cardsArr);
+  }
 }
