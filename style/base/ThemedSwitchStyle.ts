@@ -26,6 +26,7 @@ const ThemedSwitchStyle = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: "100%",
+    backgroundColor: "transparent",
   },
   hintContainer: {
     width: "100%",
