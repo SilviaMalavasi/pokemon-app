@@ -92,7 +92,7 @@ export default function DeckBuilderScreen() {
   return (
     <ParallaxScrollView
       headerImage="deck-builder-bkg"
-      headerTitle="Pokémon Deck Builder"
+      headerTitle="Deck Builder"
       scrollRef={scrollRef}
     >
       <NewDeck

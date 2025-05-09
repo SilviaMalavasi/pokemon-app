@@ -1,18 +1,30 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, View, TouchableOpacity } from "react-native";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
+import { Svg, Path, Rect } from "react-native-svg";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import FloatingButton from "@/components/ui/FloatingButton";
-import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddCardToDeck from "@/components/deckbuilder/AddCardToDeck";
 import DeckCardList from "@/components/deckbuilder/DeckCardList";
+import ThemedModal from "@/components/base/ThemedModal";
+import ThemedTextInput from "@/components/base/ThemedTextInput";
+import CardAutoCompleteInput, {
+  CardAutoCompleteProvider,
+  CardAutoCompleteSuggestions,
+} from "@/components/base/CardAutoCompleteInput";
+import ThemedButton from "@/components/base/ThemedButton";
+
+import { vw } from "@/helpers/viewport";
+import { theme } from "@/style/ui/Theme";
+import { useCardDatabase } from "@/components/context/CardDatabaseContext";
+import FloatingEdit from "@/components/ui/FloatingEdit";
 
 export default function DeckScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
@@ -21,6 +33,11 @@ export default function DeckScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const router = useRouter();
   const { db, isLoading: dbLoading, error, decksVersion } = useUserDatabase();
+  const { db: cardDb } = useCardDatabase();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editThumbnail, setEditThumbnail] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const handleBack = () => {
     router.replace("/deckbuilder");
@@ -60,6 +77,50 @@ export default function DeckScreen() {
     }
   };
 
+  // Handler to select thumbnail by cardId (use cardDb, not user db)
+  const handleThumbnailSelect = async (cardId: string) => {
+    if (!cardDb) return;
+    try {
+      const card = await cardDb.getFirstAsync<{ imagesLarge: string }>(
+        "SELECT imagesLarge FROM Card WHERE cardId = ?",
+        [cardId]
+      );
+      if (card && card.imagesLarge) {
+        setEditThumbnail(card.imagesLarge);
+      }
+    } catch (e) {
+      console.error("Error fetching card image for thumbnail:", e);
+    }
+  };
+
+  // Open modal and prefill fields
+  const openEditModal = () => {
+    setEditName(deck?.name || "");
+    setEditThumbnail(deck?.thumbnail || "");
+    setModalVisible(true);
+  };
+
+  // Save changes to DB
+  const handleSaveEdit = async () => {
+    if (!db || !deckId) return;
+    setSaving(true);
+    try {
+      await db.runAsync("UPDATE Decks SET name = ?, thumbnail = ? WHERE id = ?", [
+        editName,
+        editThumbnail,
+        Number(deckId),
+      ]);
+      // Refresh deck
+      const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
+      setDeck(updatedDeck);
+      setModalVisible(false);
+    } catch (e) {
+      console.error("Error updating deck:", e);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <>
       <ParallaxScrollView
@@ -78,6 +139,13 @@ export default function DeckScreen() {
             <ThemedText>Error loading deck: {error.message}</ThemedText>
           ) : deck ? (
             <>
+              <FloatingEdit
+                deck={deck}
+                db={db}
+                cardDb={cardDb}
+                setDeck={setDeck}
+                deckId={deckId}
+              />
               <AddCardToDeck
                 deck={deck}
                 db={db}

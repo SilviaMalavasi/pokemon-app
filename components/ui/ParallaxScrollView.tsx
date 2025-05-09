@@ -87,7 +87,7 @@ export default function ParallaxScrollView({ children, headerImage, headerTitle,
               fontSize={
                 headerTitle && headerTitle.toString().length > 30
                   ? vw(2)
-                  : headerTitle && headerTitle.toString().length > 17
+                  : headerTitle && headerTitle.toString().length > 14
                   ? vw(1.8)
                   : undefined
               }
@@ -95,7 +95,7 @@ export default function ParallaxScrollView({ children, headerImage, headerTitle,
                 styles.headerTitle,
                 headerTitle && headerTitle.toString().length > 30
                   ? { lineHeight: vw(10) }
-                  : headerTitle && headerTitle.toString().length > 17
+                  : headerTitle && headerTitle.toString().length > 14
                   ? { lineHeight: vw(9.3) }
                   : null,
               ]}
