@@ -78,6 +78,41 @@ export default function AddToDeckModal({ cardId, cardName, onAdded }: AddToDeckD
     setModalVisible(false);
   };
 
+  // Handler to save card to deck
+  const handleConfirmAdd = async () => {
+    if (!db || !workingDeck) return;
+    setAddingDeckId(workingDeck.id);
+    try {
+      // Get current cards array
+      let cardsArr: any[] = [];
+      try {
+        cardsArr = Array.isArray(workingDeck.cards) ? workingDeck.cards : JSON.parse(workingDeck.cards || "[]");
+      } catch {
+        cardsArr = [];
+      }
+      // Remove existing entry for this cardId
+      const filtered = cardsArr.filter((c: any) => c.cardId !== cardId);
+      // Only add if quantity > 0
+      if (stagedQuantity > 0) {
+        filtered.push({ cardId, quantity: stagedQuantity });
+      }
+      await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(filtered), workingDeck.id]);
+      setQuantities((prev) => ({ ...prev, [workingDeck.id]: stagedQuantity }));
+      setModalVisible(false);
+      if (onAdded) onAdded(workingDeck.id);
+    } catch (e) {
+      console.error("Error saving card to deck:", e);
+    } finally {
+      setAddingDeckId(null);
+    }
+  };
+
+  // Handler to save card to deck and close modal
+  const handleConfirmAndClose = async () => {
+    await handleConfirmAdd();
+    setModalVisible(false);
+  };
+
   // Only show the working deck in the select and as the only visible deck
   const deckIdStr = workingDeckId || selectedDeckId;
   const workingDeck = decks.find((deck) => String(deck.id) === deckIdStr);
@@ -107,10 +142,11 @@ export default function AddToDeckModal({ cardId, cardName, onAdded }: AddToDeckD
       </TouchableOpacity>
       <ThemedModal
         visible={modalVisible}
-        onClose={handleCancel}
+        onClose={handleConfirmAndClose}
         buttonText="Add to Deck"
         buttonType="main"
         buttonSize="large"
+        onCancelText="Cancel"
         onCancel={handleCancel}
       >
         <ThemedText

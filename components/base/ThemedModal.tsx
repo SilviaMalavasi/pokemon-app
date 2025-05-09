@@ -15,6 +15,7 @@ interface ThemedModalProps {
   buttonSize?: "small" | "large";
   buttonStyle?: any;
   contentStyle?: any;
+  onCancelText?: string;
   onCancel?: () => void;
 }
 
@@ -27,6 +28,7 @@ export default function ThemedModal({
   buttonSize = "large",
   buttonStyle,
   contentStyle,
+  onCancelText,
   onCancel,
 }: ThemedModalProps) {
   return (
@@ -68,7 +70,7 @@ export default function ThemedModal({
                       style={styles.modalCancel}
                     >
                       <ThemedText style={{ color: theme.colors.placeholder, padding: theme.padding.medium }}>
-                        Reset
+                        {onCancelText || "Reset"}
                       </ThemedText>
                     </Pressable>
                   )}
