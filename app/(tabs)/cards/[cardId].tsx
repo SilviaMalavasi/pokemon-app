@@ -9,7 +9,7 @@ import { CardType, Ability, Attack } from "@/types/PokemonCardType";
 import FloatingButton from "@/components/ui/FloatingButton";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -19,7 +19,7 @@ export default function FullCardScreen() {
   const [loading, setLoading] = useState(true);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const router = useRouter();
-  // const db = useSQLiteContext();
+  const navigation = useNavigation();
   const { db } = useCardDatabase();
 
   const handleBack = () => {
@@ -106,11 +106,20 @@ export default function FullCardScreen() {
 
     fetchCard();
   }, [cardId, db]);
+
+  useEffect(() => {
+    if (card && card.name) {
+      navigation.setOptions({ headerTitle: card.name });
+    } else {
+      navigation.setOptions({ headerTitle: "Card Details" });
+    }
+  }, [card, navigation]);
+
   return (
     <>
       <ParallaxScrollView
         headerImage="card-bkg"
-        headerTitle="Card Details"
+        headerTitle={card && card.name ? card.name : "Card Details"}
         scrollRef={scrollRef}
       >
         <ThemedView>

@@ -11,6 +11,7 @@ import Animated, {
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { Image } from "expo-image";
+import { vw } from "@/helpers/viewport";
 import styles from "@/style/ui/ParallaxScrollViewStyle";
 
 const headerHeight = 160;
@@ -83,7 +84,21 @@ export default function ParallaxScrollView({ children, headerImage, headerTitle,
           <View style={styles.headerTitleContainer}>
             <ThemedText
               type="title"
-              style={styles.headerTitle}
+              fontSize={
+                headerTitle && headerTitle.toString().length > 30
+                  ? vw(2)
+                  : headerTitle && headerTitle.toString().length > 17
+                  ? vw(1.8)
+                  : undefined
+              }
+              style={[
+                styles.headerTitle,
+                headerTitle && headerTitle.toString().length > 30
+                  ? { lineHeight: vw(10) }
+                  : headerTitle && headerTitle.toString().length > 17
+                  ? { lineHeight: vw(9.3) }
+                  : null,
+              ]}
             >
               {headerTitle}
             </ThemedText>

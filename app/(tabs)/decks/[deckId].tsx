@@ -6,7 +6,6 @@ import ThemedText from "@/components/base/ThemedText";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import FloatingButton from "@/components/ui/FloatingButton";
-import CardAutoCompleteInput from "@/components/base/CardAutoCompleteInput";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
@@ -65,7 +64,7 @@ export default function DeckScreen() {
     <>
       <ParallaxScrollView
         headerImage="deck-bkg"
-        headerTitle="Deck Details"
+        headerTitle={deck.name}
         scrollRef={scrollRef}
       >
         <ThemedView>
@@ -79,7 +78,6 @@ export default function DeckScreen() {
             <ThemedText>Error loading deck: {error.message}</ThemedText>
           ) : deck ? (
             <>
-              <ThemedText type="subtitle">{deck.name}</ThemedText>
               <AddCardToDeck
                 deck={deck}
                 db={db}
