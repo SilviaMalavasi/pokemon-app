@@ -89,13 +89,6 @@ export default function FullCard(props: FullCardProps) {
   return (
     <ScrollView>
       <ThemedView style={styles.container}>
-        {/* Add to Deck Button */}
-        <View style={{ alignItems: "flex-end", marginBottom: theme.padding.small }}>
-          <AddToDeckModal
-            cardId={props.cardId}
-            cardName={props.name}
-          />
-        </View>
         {imageSource ? (
           <View style={styles.imageContainer}>
             <Image
@@ -105,6 +98,13 @@ export default function FullCard(props: FullCardProps) {
               onLoadStart={() => setLoading(true)}
               onLoadEnd={() => setLoading(false)}
             />
+            {/* Add to Deck Button */}
+            <View style={{ alignItems: "flex-end", marginBottom: theme.padding.small }}>
+              <AddToDeckModal
+                cardId={props.cardId}
+                cardName={props.name}
+              />
+            </View>
           </View>
         ) : null}
 

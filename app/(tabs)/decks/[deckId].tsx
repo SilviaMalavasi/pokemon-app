@@ -64,7 +64,7 @@ export default function DeckScreen() {
     <>
       <ParallaxScrollView
         headerImage="deck-bkg"
-        headerTitle={deck.name}
+        headerTitle={deck?.name || "Deck Details"}
         scrollRef={scrollRef}
       >
         <ThemedView>

@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: "relative",
-    alignItems: "center",
     justifyContent: "center",
     width: vw(100) - theme.padding.small * 2,
     height: cardWidth / 0.71,

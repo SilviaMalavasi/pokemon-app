@@ -8,7 +8,6 @@ import cardImages from "@/helpers/cardImageMapping";
 import { Link } from "expo-router";
 import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
-import AddToDeckModal from "@/components/deckbuilder/AddToDeckModal";
 
 function getCardImage(imagePath: string) {
   if (!imagePath) return undefined;
@@ -62,11 +61,6 @@ export default function CompactCard({ card, onImageLoad, loading }: CompactCardP
                   color={theme.colors.textAlternative}
                 />
               )}
-              {/* Add to Deck Button */}
-              <AddToDeckModal
-                cardId={card.cardId}
-                cardName={card.name}
-              />
             </View>
           ) : null}
         </View>
