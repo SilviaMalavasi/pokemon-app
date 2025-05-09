@@ -16,7 +16,7 @@ interface SavedDeck {
 
 export default function DeckBuilderScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const { db, isLoading: dbLoading, error: dbError } = useUserDatabase();
+  const { db, isLoading: dbLoading, error: dbError, decksVersion } = useUserDatabase();
 
   const [deckName, setDeckName] = useState("");
   const [deckThumbnail, setDeckThumbnail] = useState("");
@@ -41,7 +41,7 @@ export default function DeckBuilderScreen() {
     if (db) {
       fetchSavedDecks();
     }
-  }, [db, fetchSavedDecks]);
+  }, [db, decksVersion, fetchSavedDecks]);
 
   useFocusEffect(
     React.useCallback(() => {

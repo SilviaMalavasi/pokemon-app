@@ -9,6 +9,7 @@ import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import styles from "@/style/deckbuilder/AddCardToDeckStyle";
 import ThemedText from "../base/ThemedText";
+import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 
 interface AddCardToDeckProps {
   deck: any;
@@ -17,6 +18,7 @@ interface AddCardToDeckProps {
 }
 
 export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckProps) {
+  const { incrementDecksVersion } = useUserDatabase();
   const [selectedCardId, setSelectedCardId] = useState<string>("");
   const [cardQuantity, setCardQuantity] = useState<number | "">("");
   const [isSaving, setIsSaving] = useState(false);
@@ -43,6 +45,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
       const clampedQty = Math.min(Number(cardQuantity), 4);
       filtered.push({ cardId: selectedCardId, quantity: clampedQty });
       await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(filtered), deck.id]);
+      incrementDecksVersion(); // Notify context of deck change
       if (onCardAdded) onCardAdded();
       setSelectedCardId("");
       setCardQuantity(""); // Set to empty string for true UI reset

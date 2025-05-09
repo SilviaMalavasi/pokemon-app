@@ -16,7 +16,7 @@ interface AddToDeckDropdownProps {
 }
 
 export default function AddToDeckModal({ cardId, cardName, onAdded }: AddToDeckDropdownProps) {
-  const { db, workingDeckId, setWorkingDeckId } = useUserDatabase();
+  const { db, workingDeckId, setWorkingDeckId, incrementDecksVersion } = useUserDatabase();
   const [modalVisible, setModalVisible] = useState(false);
   const [deckPickerVisible, setDeckPickerVisible] = useState(false);
   const [decks, setDecks] = useState<any[]>([]);
@@ -98,6 +98,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded }: AddToDeckD
       }
       await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(filtered), workingDeck.id]);
       setQuantities((prev) => ({ ...prev, [workingDeck.id]: stagedQuantity }));
+      incrementDecksVersion(); // Notify context of deck change
       setModalVisible(false);
       if (onAdded) onAdded(workingDeck.id);
     } catch (e) {

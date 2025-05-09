@@ -18,7 +18,7 @@ interface DeckCardListProps {
 
 const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChanged }) => {
   const { db } = useCardDatabase();
-  const { db: userDb } = useUserDatabase();
+  const { db: userDb, decksVersion } = useUserDatabase();
   const [cardNames, setCardNames] = useState<{ [id: string]: string }>({});
   const [cardDataMap, setCardDataMap] = useState<{ [id: string]: { name: string; supertype: string } }>({});
 
@@ -46,7 +46,7 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
       setCardDataMap(dataMap);
     };
     fetchData();
-  }, [db, cards]);
+  }, [db, cards, decksVersion]);
 
   // Group cards by supertype (handle string or JSON array)
   const grouped = React.useMemo(() => {

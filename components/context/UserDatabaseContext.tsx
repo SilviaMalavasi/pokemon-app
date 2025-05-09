@@ -9,6 +9,8 @@ interface UserDatabaseContextType {
   error: Error | null;
   workingDeckId: string | undefined;
   setWorkingDeckId: (id: string | undefined) => void;
+  decksVersion: number;
+  incrementDecksVersion: () => void;
 }
 
 const UserDatabaseContext = createContext<UserDatabaseContextType | undefined>(undefined);
@@ -25,6 +27,9 @@ export const UserDatabaseProvider = ({
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [workingDeckId, setWorkingDeckId] = useState<string | undefined>(undefined);
+  const [decksVersion, setDecksVersion] = useState(0);
+
+  const incrementDecksVersion = () => setDecksVersion((v) => v + 1);
 
   // Use refs to track mounted state and prevent state updates during dismount
   const isMounted = useRef(true);
@@ -91,7 +96,9 @@ export const UserDatabaseProvider = ({
   }, []);
 
   return (
-    <UserDatabaseContext.Provider value={{ db, isLoading, isUpdating, error, workingDeckId, setWorkingDeckId }}>
+    <UserDatabaseContext.Provider
+      value={{ db, isLoading, isUpdating, error, workingDeckId, setWorkingDeckId, decksVersion, incrementDecksVersion }}
+    >
       {children}
     </UserDatabaseContext.Provider>
   );

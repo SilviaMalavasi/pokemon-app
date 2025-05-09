@@ -20,7 +20,7 @@ export default function DeckScreen() {
   const [loading, setLoading] = useState(true);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const router = useRouter();
-  const { db, isLoading: dbLoading, error } = useUserDatabase();
+  const { db, isLoading: dbLoading, error, decksVersion } = useUserDatabase();
 
   const handleBack = () => {
     router.replace("/deckbuilder");
@@ -49,7 +49,7 @@ export default function DeckScreen() {
       }
     };
     fetchDeck();
-  }, [deckId, db]);
+  }, [deckId, db, decksVersion]);
 
   // Helper to parse deck.cards (stored as JSON string)
   const getCardsArray = () => {
