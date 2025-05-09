@@ -173,12 +173,6 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
 
   return (
     <>
-      <ThemedText
-        type="subtitle"
-        style={styles.title}
-      >
-        Cards in Deck
-      </ThemedText>
       {renderGroup("Pokémon", grouped["Pokémon"])}
       {renderGroup("Trainer", grouped["Trainer"])}
       {renderGroup("Energy", grouped["Energy"])}

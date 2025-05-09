@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, View, TouchableOpacity } from "react-native";
+import { ActivityIndicator, TouchableOpacity } from "react-native";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
-import { Svg, Path, Rect } from "react-native-svg";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import FloatingButton from "@/components/ui/FloatingButton";
@@ -13,18 +12,11 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddCardToDeck from "@/components/deckbuilder/AddCardToDeck";
 import DeckCardList from "@/components/deckbuilder/DeckCardList";
-import ThemedModal from "@/components/base/ThemedModal";
-import ThemedTextInput from "@/components/base/ThemedTextInput";
-import CardAutoCompleteInput, {
-  CardAutoCompleteProvider,
-  CardAutoCompleteSuggestions,
-} from "@/components/base/CardAutoCompleteInput";
-import ThemedButton from "@/components/base/ThemedButton";
-
-import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import FloatingEdit from "@/components/ui/FloatingEdit";
+import DeckThumbnailList from "@/components/deckbuilder/DeckThumbnailList";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function DeckScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
@@ -34,10 +26,8 @@ export default function DeckScreen() {
   const router = useRouter();
   const { db, isLoading: dbLoading, error, decksVersion } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editName, setEditName] = useState("");
-  const [editThumbnail, setEditThumbnail] = useState("");
-  const [saving, setSaving] = useState(false);
+  const [viewMode, setViewMode] = useState<"list" | "thumbnails">("list");
+  const [cardDetails, setCardDetails] = useState<any[]>([]);
 
   const handleBack = () => {
     router.replace("/deckbuilder");
@@ -68,56 +58,39 @@ export default function DeckScreen() {
     fetchDeck();
   }, [deckId, db, decksVersion]);
 
+  useEffect(() => {
+    const fetchCardDetails = async () => {
+      if (!cardDb || !deck) return setCardDetails([]);
+      const cardsArr = getCardsArray();
+      if (!cardsArr.length) return setCardDetails([]);
+      const ids = cardsArr.map((c: any) => c.cardId).filter(Boolean);
+      if (!ids.length) return setCardDetails([]);
+      const placeholders = ids.map(() => "?").join(", ");
+      const results = await cardDb.getAllAsync<{ cardId: string; name: string; imagesLarge: string }>(
+        `SELECT cardId, name, imagesLarge FROM Card WHERE cardId IN (${placeholders})`,
+        ids
+      );
+      // Merge quantity from deck
+      const merged = cardsArr.map((c: any) => {
+        const found = results.find((r: any) => r.cardId === c.cardId);
+        return {
+          cardId: c.cardId,
+          quantity: c.quantity || 1,
+          name: found?.name || c.cardId,
+          imagesLarge: found?.imagesLarge || "",
+        };
+      });
+      setCardDetails(merged);
+    };
+    fetchCardDetails();
+  }, [deck, cardDb]);
+
   // Helper to parse deck.cards (stored as JSON string)
   const getCardsArray = () => {
     try {
       return Array.isArray(deck?.cards) ? deck.cards : JSON.parse(deck?.cards || "[]");
     } catch {
       return [];
-    }
-  };
-
-  // Handler to select thumbnail by cardId (use cardDb, not user db)
-  const handleThumbnailSelect = async (cardId: string) => {
-    if (!cardDb) return;
-    try {
-      const card = await cardDb.getFirstAsync<{ imagesLarge: string }>(
-        "SELECT imagesLarge FROM Card WHERE cardId = ?",
-        [cardId]
-      );
-      if (card && card.imagesLarge) {
-        setEditThumbnail(card.imagesLarge);
-      }
-    } catch (e) {
-      console.error("Error fetching card image for thumbnail:", e);
-    }
-  };
-
-  // Open modal and prefill fields
-  const openEditModal = () => {
-    setEditName(deck?.name || "");
-    setEditThumbnail(deck?.thumbnail || "");
-    setModalVisible(true);
-  };
-
-  // Save changes to DB
-  const handleSaveEdit = async () => {
-    if (!db || !deckId) return;
-    setSaving(true);
-    try {
-      await db.runAsync("UPDATE Decks SET name = ?, thumbnail = ? WHERE id = ?", [
-        editName,
-        editThumbnail,
-        Number(deckId),
-      ]);
-      // Refresh deck
-      const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
-      setDeck(updatedDeck);
-      setModalVisible(false);
-    } catch (e) {
-      console.error("Error updating deck:", e);
-    } finally {
-      setSaving(false);
     }
   };
 
@@ -157,16 +130,60 @@ export default function DeckScreen() {
                   }
                 }}
               />
-              <DeckCardList
-                cards={getCardsArray()}
-                deckId={Number(deckId)}
-                onCardsChanged={async () => {
-                  if (db) {
-                    const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
-                    setDeck(updatedDeck);
-                  }
+              {/* Toggle Button */}
+              <ThemedView
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginTop: theme.padding.medium,
+                  marginBottom: theme.padding.large,
                 }}
-              />
+              >
+                <ThemedText type="subtitle">Cards in Deck</ThemedText>
+                <TouchableOpacity
+                  activeOpacity={0.85}
+                  onPress={() => setViewMode(viewMode === "list" ? "thumbnails" : "list")}
+                  style={{
+                    backgroundColor: theme.colors.lightBackground,
+                    borderWidth: 1,
+                    borderColor: theme.colors.lightGreen,
+                    borderRadius: theme.borderRadius.large,
+                    paddingHorizontal: theme.padding.medium,
+                    ...theme.shadowSmall,
+                  }}
+                >
+                  <ThemedText
+                    type="chip"
+                    style={{ color: theme.colors.text, textTransform: "uppercase" }}
+                  >
+                    {viewMode === "list" ? "Thumb View" : "List View"}
+                  </ThemedText>
+                </TouchableOpacity>
+              </ThemedView>
+              {viewMode === "list" ? (
+                <DeckCardList
+                  cards={getCardsArray()}
+                  deckId={Number(deckId)}
+                  onCardsChanged={async () => {
+                    if (db) {
+                      const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
+                      setDeck(updatedDeck);
+                    }
+                  }}
+                />
+              ) : (
+                <DeckThumbnailList
+                  cards={cardDetails}
+                  deckId={Number(deckId)}
+                  onCardsChanged={async () => {
+                    if (db) {
+                      const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
+                      setDeck(updatedDeck);
+                    }
+                  }}
+                />
+              )}
             </>
           ) : (
             <ThemedText>Deck not found.</ThemedText>

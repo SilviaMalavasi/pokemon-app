@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
   },
   summaryContainer: {
     position: "relative",
+    backgroundColor: "transparent",
     borderWidth: 1,
     borderColor: theme.colors.green,
     borderRadius: theme.borderRadius.small,

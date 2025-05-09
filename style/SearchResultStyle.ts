@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 import { theme } from "@/style/ui/Theme";
-import { vw } from "@/helpers/viewport";
 
 const SearchResultStyle = StyleSheet.create({
   cardList: {
