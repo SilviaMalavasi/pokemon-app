@@ -86,20 +86,6 @@ export default function SearchResultScreen() {
     fetchCards();
   }, [cardIds, currentPage, itemsPerPage, db, setCards, setLoading]); //
 
-  // Redirect to search form if no cardIds and not loading
-  useEffect(() => {
-    if (!loading && (!cardIds || cardIds.length === 0)) {
-      if (lastSearchPage === "advanced") {
-        router.replace("/advancedsearch");
-      } else if (lastSearchPage === "free") {
-        router.replace("/freesearch");
-      } else {
-        clearAdvancedForm();
-        router.replace("/advancedsearch");
-      }
-    }
-  }, [loading, cardIds, lastSearchPage, router, clearAdvancedForm]);
-
   // Pagination handler
   const handlePageChange = useCallback(
     (page: number) => {
@@ -112,6 +98,10 @@ export default function SearchResultScreen() {
 
   // Back button handler
   const handleBack = () => {
+    if (loading || !cardIds) {
+      // Optionally, show a message or do nothing while loading or cardIds not loaded
+      return;
+    }
     if (lastSearchPage === "advanced") {
       router.replace("/advancedsearch");
     } else if (lastSearchPage === "free") {
@@ -121,6 +111,12 @@ export default function SearchResultScreen() {
       router.replace("/advancedsearch");
     }
   };
+
+  // Show loading indicator or nothing while loading, or if cardIds is undefined/null
+  if (loading || !cardIds) {
+    // You can replace this View with a custom loading spinner if desired
+    return <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} />;
+  }
 
   return (
     <>
