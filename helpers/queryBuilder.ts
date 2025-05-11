@@ -212,7 +212,6 @@ export async function queryBuilder(
     if (whereClauses.length > 0) {
       query += ` WHERE ${whereClauses.join(" AND ")}`;
     }
-
     const result = await db.getAllAsync(query, params);
     return result;
   };
@@ -308,14 +307,11 @@ export async function queryBuilder(
         .filter((f) => f.config.table === "CardAttacks")
         .map((f) => f.config.column);
 
-      selectCols = `cardId, ${Array.from(new Set(requiredCardAttackCols)).join(", ")}`;
-      if (requiredAttackCols.length > 0) {
-        selectCols += `, Attacks.id, ${Array.from(new Set(requiredAttackCols)).join(", ")}`;
-      } else {
-        selectCols += `, Attacks.id`;
-      }
-    } else {
-      selectCols = "cardId, Attacks.id";
+      selectCols = `cardId${
+        requiredCardAttackCols.length ? ", " + Array.from(new Set(requiredCardAttackCols)).join(", ") : ""
+      }`;
+      // Only add Attacks.id if you are joining Attacks (not in general case)
+      // In the general case, do NOT add Attacks.id
     }
 
     if (costOpFilter && costSlotsFilter) {
@@ -450,6 +446,7 @@ export async function queryBuilder(
       // --- General Case: Apply DB filters, then JS filters ---
       let query = `SELECT ${selectCols} FROM CardAttacks`;
       const params: any[] = [];
+      const whereClauses: string[] = [];
 
       // Apply all DB attack-related filters
       attackDbFilters.forEach((f) => {
@@ -464,25 +461,25 @@ export async function queryBuilder(
           if (words.length > 1) {
             // AND logic for multiple words within a single text filter
             words.forEach((word) => {
-              query += ` AND ${col} LIKE ?`;
+              whereClauses.push(`${col} LIKE ?`);
               params.push(`%${word}%`);
             });
           } else if (trimmed) {
-            query += ` AND ${col} LIKE ?`;
+            whereClauses.push(`${col} LIKE ?`);
             params.push(`%${trimmed}%`);
           }
         } else if (config.type === "number") {
           if (config.valueType === "int") {
             const op = operator || "=";
-            query += ` AND ${col} IS NOT NULL`;
+            whereClauses.push(`${col} IS NOT NULL`);
             if (op === ">=") {
-              query += ` AND ${col} >= ?`;
+              whereClauses.push(`${col} >= ?`);
               params.push(value);
             } else if (op === "<=") {
-              query += ` AND ${col} <= ?`;
+              whereClauses.push(`${col} <= ?`);
               params.push(value);
             } else {
-              query += ` AND ${col} = ?`;
+              whereClauses.push(`${col} = ?`);
               params.push(value);
             }
           } else if (config.valueType === "text") {
@@ -493,10 +490,10 @@ export async function queryBuilder(
               if (operator === "+" || operator === "x" || operator === "×") {
                 const variations = operator === "x" ? [`${value}x`, `${value}×`] : [`${value}${operator}`];
                 const orClause = variations.map((v) => `${col} = ?`).join(" OR ");
-                query += ` AND (${orClause})`;
+                whereClauses.push(`(${orClause})`);
                 params.push(...variations);
               } else {
-                query += ` AND ${col} = ?`; // Exact match for other cases
+                whereClauses.push(`${col} = ?`); // Exact match for other cases
                 params.push(matchString);
               }
             }
@@ -506,13 +503,16 @@ export async function queryBuilder(
             // Using OR logic for multiselect items (match any of the selected values)
             const orString = value.map((v: string) => `${col} LIKE ?`).join(" OR ");
             if (orString) {
-              query += ` AND (${orString})`;
+              whereClauses.push(`(${orString})`);
               params.push(...value.map((v: string) => `%${v}%`));
             }
           }
         }
       });
 
+      if (whereClauses.length > 0) {
+        query += ` WHERE ${whereClauses.join(" AND ")}`;
+      }
       const data = await db.getAllAsync(query, params);
       if (!data) {
         console.error("Unified Attack Query Error (General)");
