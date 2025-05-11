@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: theme.borderRadius.large,
     borderTopRightRadius: theme.borderRadius.large,
-    paddingHorizontal: theme.padding.small,
+    paddingHorizontal: theme.padding.medium,
     paddingVertical: theme.padding.medium,
     minHeight: Dimensions.get("window").height - 150,
   },

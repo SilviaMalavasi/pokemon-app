@@ -146,7 +146,7 @@ export default function DeckScreen() {
                   style={{
                     backgroundColor: theme.colors.lightBackground,
                     borderWidth: 1,
-                    borderColor: theme.colors.lightGreen,
+                    borderColor: theme.colors.green,
                     borderRadius: theme.borderRadius.large,
                     paddingHorizontal: theme.padding.medium,
                     ...theme.shadowSmall,

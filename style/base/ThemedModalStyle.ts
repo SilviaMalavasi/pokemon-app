@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.lightBackground,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: theme.colors.lightGreen,
+    borderColor: theme.colors.green,
     paddingVertical: theme.padding.medium,
     paddingHorizontal: theme.padding.xsmall,
     alignItems: "center",

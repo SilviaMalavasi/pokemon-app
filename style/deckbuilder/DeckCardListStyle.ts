@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: "transparent",
     borderWidth: 1,
-    borderColor: theme.colors.green,
+    borderColor: theme.colors.purple,
     borderRadius: theme.borderRadius.small,
     paddingHorizontal: theme.padding.small,
     paddingTop: theme.padding.medium,

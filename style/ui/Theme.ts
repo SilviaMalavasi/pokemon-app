@@ -10,8 +10,8 @@ export const lightGrey = "#4D4E70";
 
 export const green = "#1BF54A";
 export const lightGreen = "#41F8A3";
-export const purple = "#6a1dff";
-export const lightPurple = "#8249F2";
+export const purple = "#680BFF";
+export const lightPurple = "#C374FF";
 
 export const theme = {
   colors: {
@@ -20,7 +20,7 @@ export const theme = {
     text: white,
     textDark: lightGrey,
     textHilight: green,
-    textAlternative: purple,
+    textAlternative: lightPurple,
     placeholder: grey,
     primary: green,
     secondary: purple,

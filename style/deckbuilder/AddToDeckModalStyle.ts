@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.lightBackground,
     borderWidth: 1,
     marginBottom: theme.padding.xsmall * -1,
-    borderColor: theme.colors.lightGreen,
+    borderColor: theme.colors.green,
     ...theme.shadow,
   },
   iconContainerStyle: {

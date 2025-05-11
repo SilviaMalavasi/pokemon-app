@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     height: vw(12),
     backgroundColor: theme.colors.lightBackground,
     borderWidth: 1,
-    borderColor: theme.colors.lightGreen,
+    borderColor: theme.colors.green,
     ...theme.shadowSmall,
     borderRadius: theme.borderRadius.xlarge,
     zIndex: 100,

@@ -61,7 +61,7 @@ export default function ThemedCollapsible({
         activeOpacity={0.8}
       >
         <View style={{ transform: [{ rotate: actualOpen ? "90deg" : "0deg" }] }}>
-          <ChevronRightIcon color={theme.colors.textAlternative} />
+          <ChevronRightIcon color={theme.colors.purple} />
         </View>
         <ThemedText
           type="buttonSmall"

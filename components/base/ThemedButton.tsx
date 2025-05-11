@@ -72,7 +72,7 @@ const getIconFill = (status: ButtonStatus) => {
     case "disabled":
       return theme.colors.lightGrey;
     default:
-      return theme.colors.textAlternative;
+      return theme.colors.purple;
   }
 };
 
