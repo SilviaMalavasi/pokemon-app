@@ -8,6 +8,7 @@ import cardImages from "@/helpers/cardImageMapping";
 import styles from "@/style/FullCardStyle";
 import { theme } from "@/style/ui/Theme";
 import AddToDeckModal from "@/components/deckbuilder/AddToDeckModal";
+import AddToWatchListModal from "@/components/deckbuilder/AddToWatchListModal";
 
 function getCardImage(imagePath: string) {
   if (!imagePath) return undefined;
@@ -99,12 +100,23 @@ export default function FullCard(props: FullCardProps) {
               onLoadEnd={() => setLoading(false)}
             />
             {/* Add to Deck Button */}
-            <View style={{ alignItems: "flex-end", marginBottom: theme.padding.small }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: theme.padding.small,
+              }}
+            >
               <AddToDeckModal
                 cardId={props.cardId}
                 cardName={props.name}
                 supertype={props.supertype}
                 subtypes={subtypes}
+              />
+              <AddToWatchListModal
+                cardId={props.cardId}
+                cardName={props.name}
               />
             </View>
           </View>

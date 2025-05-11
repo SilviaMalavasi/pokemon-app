@@ -8,9 +8,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: vw(38),
+    width: vw(40),
     height: vw(12),
-    right: theme.padding.xsmall * 0.5,
+    left: theme.padding.xsmall * 0.5 + vw(4),
     bottom: 0,
     zIndex: 10,
     borderRadius: theme.borderRadius.xlarge,
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
   iconContainerStyle: {
     width: theme.padding.large * 0.75,
     height: theme.padding.large * 0.75,
+    marginTop: theme.padding.xsmall * -0.5,
     marginRight: theme.padding.small,
   },
   deckRow: {

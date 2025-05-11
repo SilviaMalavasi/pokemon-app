@@ -134,7 +134,6 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
         accessibilityLabel="Add to Deck"
         style={styles.addButtonTrigger}
       >
-        <ThemedText type="defaultSemiBold">Add to Deck</ThemedText>
         <View style={styles.iconContainerStyle}>
           <Svg
             width="100%"
@@ -148,6 +147,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
             />
           </Svg>
         </View>
+        <ThemedText type="defaultSemiBold">Deck</ThemedText>
       </TouchableOpacity>
       <ThemedModal
         visible={modalVisible}

@@ -199,6 +199,12 @@ export default function TabLayout() {
               href: null,
             }}
           />
+          <Tabs.Screen
+            name="watchlistst"
+            options={{
+              href: null,
+            }}
+          />
         </Tabs>
       </SearchFormProvider>
     </UserDatabaseProvider>

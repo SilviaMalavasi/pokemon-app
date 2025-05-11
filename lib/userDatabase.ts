@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 // ----> INCREMENT THIS WHEN SCHEMA CHANGES <----
-const USER_DATABASE_VERSION = 4;
+const USER_DATABASE_VERSION = 6;
 
 const USER_DATABASE_NAME = "userDatabase.db";
 
@@ -19,82 +19,69 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase, setIsUpda
   try {
     if (setIsUpdating) setIsUpdating(true);
 
-    // Migration steps: each has a version and a function
-    const migrations: { version: number; migrate: (db: SQLite.SQLiteDatabase) => Promise<void> }[] = [
+    // --- GENERIC MIGRATION: Ensure all required tables and columns exist ---
+    // Define the desired schema for each table
+    const desiredTables = [
       {
-        version: 1,
-        migrate: async (db) => {
-          console.log("Applying version 1 user migration: Initial schema creation...");
-          // PRAGMA journal_mode = WAL; moved to openUserDatabase
-          await db.execAsync(`CREATE TABLE IF NOT EXISTS Decks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            thumbnail TEXT,
-            cards TEXT NOT NULL
-          );`);
-          await db.execAsync(`CREATE TABLE IF NOT EXISTS WatchedCards (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            cardId TEXT NOT NULL
-          );`);
-          await db.execAsync(`CREATE TABLE IF NOT EXISTS SavedQueries (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            formType TEXT NOT NULL CHECK(formType IN ('free', 'advanced')),
-            queryParams TEXT NOT NULL,
-            createdAt INTEGER NOT NULL DEFAULT (strftime('%s','now'))
-          );`);
-          console.log("Version 1 user migration complete: Created Decks, WatchedCards, and SavedQueries tables.");
-        },
+        name: "Decks",
+        columns: [
+          { name: "id", type: "INTEGER PRIMARY KEY AUTOINCREMENT" },
+          { name: "name", type: "TEXT NOT NULL" },
+          { name: "thumbnail", type: "TEXT" },
+          { name: "cards", type: "TEXT" },
+        ],
       },
       {
-        version: 2,
-        migrate: async (db) => {
-          console.log("Applying next version user migration: Add thumbnail to Decks table...");
-          const columns = await db.getAllAsync<{ name: string }>(`PRAGMA table_info(Decks)`);
-          const hasThumbnailColumn = columns.some((col) => col.name === "thumbnail");
-          if (!hasThumbnailColumn) {
-            await db.execAsync(`ALTER TABLE Decks ADD COLUMN thumbnail TEXT;`);
-            console.log("User migration complete.");
-          } else {
-            console.log("User migration: columns already exists.");
-          }
-        },
+        name: "WatchedCards",
+        columns: [
+          { name: "id", type: "INTEGER PRIMARY KEY AUTOINCREMENT" },
+          { name: "name", type: "TEXT NOT NULL" },
+          { name: "cards", type: "TEXT" },
+        ],
       },
     ];
+
+    const watchedCols = await db.getAllAsync<{ name: string }>(`PRAGMA table_info(WatchedCards)`);
+    const hasCardIdCol = watchedCols.some((col) => col.name === "cardId");
+    if (hasCardIdCol) {
+      console.warn("Legacy 'cardId' column found in WatchedCards. Migrating schema...");
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS WatchedCards_new (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL,
+          cards TEXT
+        );
+      `);
+      await db.execAsync(`
+        INSERT INTO WatchedCards_new (id, name, cards)
+        SELECT id, name, cards FROM WatchedCards
+      `);
+      await db.execAsync("DROP TABLE WatchedCards");
+      await db.execAsync("ALTER TABLE WatchedCards_new RENAME TO WatchedCards");
+      console.log("WatchedCards schema migration complete.");
+    }
+
+    for (const table of desiredTables) {
+      // Create table if it doesn't exist
+      const columnsDef = table.columns.map((c) => `${c.name} ${c.type}`).join(", ");
+      await db.execAsync(`CREATE TABLE IF NOT EXISTS ${table.name} (${columnsDef});`);
+      // Get current columns
+      const currentCols = await db.getAllAsync<{ name: string }>(`PRAGMA table_info(${table.name})`);
+      for (const col of table.columns) {
+        if (!currentCols.some((c) => c.name === col.name)) {
+          await db.execAsync(`ALTER TABLE ${table.name} ADD COLUMN ${col.name} ${col.type}`);
+        }
+      }
+    }
 
     // Read the current version using getFirstAsync
     const result = await db.getFirstAsync<{ user_version: number }>("PRAGMA user_version");
     let currentDbVersion = result?.user_version ?? 0;
 
-    console.log(`Current User DB version: ${currentDbVersion}, Required User DB version: ${USER_DATABASE_VERSION}`);
-
-    if (currentDbVersion >= USER_DATABASE_VERSION) {
-      console.log("User database is up-to-date.");
-      // Clean up state before returning
-      if (setIsUpdating) {
-        setIsUpdating(false);
-      }
-      return;
-    }
-
-    console.log(`Starting user database migration from version ${currentDbVersion} to ${USER_DATABASE_VERSION}...`);
-
-    // Run all needed migrations in order
-    for (const migration of migrations) {
-      if (currentDbVersion < migration.version) {
-        await migration.migrate(db);
-        currentDbVersion = migration.version;
-        await db.execAsync(`PRAGMA user_version = ${currentDbVersion}`);
-        console.log(`Set user database version to ${currentDbVersion}`);
-      }
-    }
-
-    // If more migrations were added but version constant is higher, set to final version
     if (currentDbVersion < USER_DATABASE_VERSION) {
-      console.log(`Setting final user database version to ${USER_DATABASE_VERSION}...`);
       await db.execAsync(`PRAGMA user_version = ${USER_DATABASE_VERSION}`);
+      console.log(`Set user database version to ${USER_DATABASE_VERSION}`);
     }
-
     console.log("User database migration check finished.");
   } finally {
     // Always clean up state
@@ -129,4 +116,27 @@ export async function getSavedDecks(
 export async function deleteDeck(db: SQLite.SQLiteDatabase, id: number): Promise<void> {
   console.log(`Deleting deck with id: ${id}`);
   await db.runAsync("DELETE FROM Decks WHERE id = ?", [id]);
+}
+
+// --- WatchList Management Functions ---
+
+export async function addWatchList(
+  db: SQLite.SQLiteDatabase,
+  name: string,
+  cards: string = "[]"
+): Promise<SQLite.SQLiteRunResult> {
+  console.log(`Adding watch list: ${name}`);
+  return db.runAsync("INSERT INTO WatchedCards (name, cards) VALUES (?, ?)", [name, cards]);
+}
+
+export async function getWatchLists(db: SQLite.SQLiteDatabase): Promise<{ id: number; name: string; cards: string }[]> {
+  console.log("Fetching all watch lists.");
+  return db.getAllAsync<{ id: number; name: string; cards: string }>(
+    "SELECT id, name, cards FROM WatchedCards ORDER BY name ASC"
+  );
+}
+
+export async function deleteWatchList(db: SQLite.SQLiteDatabase, id: number): Promise<void> {
+  console.log(`Deleting watch list with id: ${id}`);
+  await db.runAsync("DELETE FROM WatchedCards WHERE id = ?", [id]);
 }

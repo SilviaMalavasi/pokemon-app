@@ -6,6 +6,7 @@ import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useState, useEffect, useCallback } from "react";
 import SavedDecks from "@/components/deckbuilder/SavedDecks";
+import WatchLists from "@/components/deckbuilder/WatchLists";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { getSavedDecks, deleteDeck } from "@/lib/userDatabase";
 import { theme } from "@/style/ui/Theme";
@@ -84,6 +85,9 @@ export default function HomeScreen() {
           onDelete={() => {}}
           deletingId={deletingId}
         />
+      </ThemedView>
+      <ThemedView style={{ paddingBottom: theme.padding.xlarge }}>
+        <WatchLists />
       </ThemedView>
       <ThemedView>
         <ThemedText type="hintText">

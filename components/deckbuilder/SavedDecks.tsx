@@ -26,7 +26,7 @@ export default function SavedDecks({ savedDecks, isLoadingDecks, onDelete, delet
         type="subtitle"
         style={{ paddingBottom: theme.padding.medium }}
       >
-        Saved Decks
+        Decks
       </ThemedText>
       {isLoadingDecks ? (
         <ThemedText>Loading decks...</ThemedText>

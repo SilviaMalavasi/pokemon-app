@@ -11,6 +11,12 @@ interface UserDatabaseContextType {
   setWorkingDeckId: (id: string | undefined) => void;
   decksVersion: number;
   incrementDecksVersion: () => void;
+  watchLists: { id: number; name: string; cards: string }[];
+  isLoadingWatchLists: boolean;
+  watchListsVersion: number;
+  incrementWatchListsVersion: () => void;
+  lastWatchListId: number | null;
+  setLastWatchListId: (id: number | null) => void;
 }
 
 const UserDatabaseContext = createContext<UserDatabaseContextType | undefined>(undefined);
@@ -28,8 +34,13 @@ export const UserDatabaseProvider = ({
   const [error, setError] = useState<Error | null>(null);
   const [workingDeckId, setWorkingDeckId] = useState<string | undefined>(undefined);
   const [decksVersion, setDecksVersion] = useState(0);
+  const [watchLists, setWatchLists] = useState<{ id: number; name: string; cards: string }[]>([]);
+  const [isLoadingWatchLists, setIsLoadingWatchLists] = useState(false);
+  const [watchListsVersion, setWatchListsVersion] = useState(0);
+  const [lastWatchListId, setLastWatchListId] = useState<number | null>(null);
 
   const incrementDecksVersion = () => setDecksVersion((v) => v + 1);
+  const incrementWatchListsVersion = () => setWatchListsVersion((v) => v + 1);
 
   // Use refs to track mounted state and prevent state updates during dismount
   const isMounted = useRef(true);
@@ -95,9 +106,35 @@ export const UserDatabaseProvider = ({
     };
   }, []);
 
+  useEffect(() => {
+    if (!db) return;
+    setIsLoadingWatchLists(true);
+    import("@/lib/userDatabase").then(({ getWatchLists }) => {
+      getWatchLists(db)
+        .then((lists) => setWatchLists(lists))
+        .catch((e) => setWatchLists([]))
+        .finally(() => setIsLoadingWatchLists(false));
+    });
+  }, [db, watchListsVersion]);
+
   return (
     <UserDatabaseContext.Provider
-      value={{ db, isLoading, isUpdating, error, workingDeckId, setWorkingDeckId, decksVersion, incrementDecksVersion }}
+      value={{
+        db,
+        isLoading,
+        isUpdating,
+        error,
+        workingDeckId,
+        setWorkingDeckId,
+        decksVersion,
+        incrementDecksVersion,
+        watchLists,
+        isLoadingWatchLists,
+        watchListsVersion,
+        incrementWatchListsVersion,
+        lastWatchListId,
+        setLastWatchListId,
+      }}
     >
       {children}
     </UserDatabaseContext.Provider>
