@@ -7,7 +7,6 @@ import { Svg, Circle } from "react-native-svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
-import { increaseCardQuantity, decreaseCardQuantity } from "@/lib/userDatabase";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 
 interface DeckCardListProps {
@@ -83,6 +82,124 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
   }, [cards, cardDataMap]);
 
   // Helper to trigger quantity change and refresh UI
+  const increaseCardQuantity = async (
+    db: any,
+    deckId: number,
+    cardId: string,
+    getCardSupertypeAndSubtypes: (cardId: string) => Promise<{ supertype: string; subtypes: string } | null>
+  ) => {
+    const deck = await db.getFirstAsync("SELECT cards FROM Decks WHERE id = ?", [deckId]);
+    if (!deck) {
+      console.warn(`[increaseCardQuantity] Deck not found for deckId: ${deckId}`);
+      throw new Error("Deck not found");
+    }
+    let cardsArr: any[] = [];
+    try {
+      cardsArr = Array.isArray(deck.cards) ? deck.cards : JSON.parse(deck.cards || "[]");
+    } catch {
+      cardsArr = [];
+    }
+    const idx = cardsArr.findIndex((c) => c.cardId === cardId);
+
+    // Get supertype and subtypes from card database
+    const cardInfo = await getCardSupertypeAndSubtypes(cardId);
+    let isBasicEnergy = false;
+    if (cardInfo) {
+      const { supertype, subtypes } = cardInfo;
+      // subtypes can be a JSON string or array
+      let subtypesArr: string[] = [];
+      if (Array.isArray(subtypes)) {
+        subtypesArr = subtypes;
+      } else if (typeof subtypes === "string") {
+        try {
+          const arr = JSON.parse(subtypes);
+          if (Array.isArray(arr)) subtypesArr = arr;
+          else if (subtypes) subtypesArr = [subtypes];
+        } catch {
+          if (subtypes) subtypesArr = [subtypes];
+        }
+      }
+      isBasicEnergy = supertype === "Energy" && subtypesArr.includes("Basic");
+    }
+
+    if (idx !== -1) {
+      if (isBasicEnergy || cardsArr[idx].quantity < 4) {
+        cardsArr[idx].quantity += 1;
+      }
+    } else {
+      cardsArr.push({ cardId, quantity: 1 });
+    }
+    await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(cardsArr), deckId]);
+  };
+
+  // Helper to get supertype and subtypes from card database
+  const getCardSupertypeAndSubtypes = async (
+    cardId: string
+  ): Promise<{ supertype: string; subtypes: string } | null> => {
+    if (!db) return null;
+    const result = await db.getFirstAsync("SELECT supertype, subtypes FROM Card WHERE cardId = ?", [cardId]);
+    if (!result || typeof result !== "object" || result === null) return null;
+    const r: any = result;
+    if (typeof r.supertype !== "string" || typeof r.subtypes !== "string") return null;
+    return { supertype: r.supertype, subtypes: r.subtypes };
+  };
+
+  // Helper to decrease card quantity in a deck (remove if 0)
+  const decreaseCardQuantity = async (
+    db: any,
+    deckId: number,
+    cardId: string,
+    getCardSupertypeAndSubtypes: (cardId: string) => Promise<{ supertype: string; subtypes: string } | null>
+  ) => {
+    const deck = await db.getFirstAsync("SELECT cards FROM Decks WHERE id = ?", [deckId]);
+    if (!deck) {
+      console.warn(`[decreaseCardQuantity] Deck not found for deckId: ${deckId}`);
+      throw new Error("Deck not found");
+    }
+    let cardsArr: any[] = [];
+    try {
+      cardsArr = Array.isArray(deck.cards) ? deck.cards : JSON.parse(deck.cards || "[]");
+    } catch {
+      cardsArr = [];
+    }
+    const idx = cardsArr.findIndex((c) => c.cardId === cardId);
+
+    // Get supertype and subtypes from card database
+    const cardInfo = await getCardSupertypeAndSubtypes(cardId);
+    let isBasicEnergy = false;
+    if (cardInfo) {
+      const { supertype, subtypes } = cardInfo;
+      let subtypesArr: string[] = [];
+      if (Array.isArray(subtypes)) {
+        subtypesArr = subtypes;
+      } else if (typeof subtypes === "string") {
+        try {
+          const arr = JSON.parse(subtypes);
+          if (Array.isArray(arr)) subtypesArr = arr;
+          else if (subtypes) subtypesArr = [subtypes];
+        } catch {
+          if (subtypes) subtypesArr = [subtypes];
+        }
+      }
+      isBasicEnergy = supertype === "Energy" && subtypesArr.includes("Basic");
+    }
+
+    if (idx !== -1) {
+      if (cardsArr[idx].quantity > 1) {
+        cardsArr[idx].quantity -= 1;
+      } else {
+        // Only remove if not basic energy, otherwise keep at 1
+        if (!isBasicEnergy) {
+          cardsArr.splice(idx, 1);
+        } else {
+          cardsArr[idx].quantity = 1;
+        }
+      }
+      await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(cardsArr), deckId]);
+    }
+  };
+
+  // Helper to trigger quantity change and refresh UI
   const handleChangeQuantity = async (cardId: string, action: "inc" | "dec") => {
     if (!userDb || !deckId) {
       console.warn(`[handleChangeQuantity] Early return: userDb or deckId missing. userDb:`, userDb, "deckId:", deckId);
@@ -92,10 +209,10 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
     const card = cards.find((c) => c.cardId === cardId);
     if (card) newQty = card.quantity || 1;
     if (action === "inc") {
-      await increaseCardQuantity(userDb, deckId, cardId);
+      await increaseCardQuantity(userDb, deckId, cardId, getCardSupertypeAndSubtypes);
       newQty = newQty + 1;
     } else {
-      await decreaseCardQuantity(userDb, deckId, cardId);
+      await decreaseCardQuantity(userDb, deckId, cardId, getCardSupertypeAndSubtypes);
       newQty = Math.max(0, newQty - 1);
     }
     if (onCardsChanged) onCardsChanged();
