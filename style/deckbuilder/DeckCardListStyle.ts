@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    flex: vw(100) - 8 - theme.padding.xlarge * 2,
-    minWidth: vw(100) - 8 - theme.padding.xlarge * 2,
+    flex: vw(100) - theme.padding.medium - theme.padding.xlarge * 2,
+    minWidth: vw(100) - theme.padding.medium - theme.padding.xlarge * 2,
   },
   qtyCol: { flexDirection: "row", alignItems: "center" },
   qtyOperator: {

@@ -477,17 +477,23 @@ export default function AdvancedSearchForm({
           </ThemedView>
         </ThemedView>
       )}
-      <ThemedView style={styles.mainButtonsRow}>
+      <ThemedView
+        style={
+          summaryFields.filter((f: { value: any }) => f.value && f.value !== "").length > 0
+            ? styles.mainButtonsRowSummary
+            : styles.mainButtonsRow
+        }
+      >
         <ThemedButton
           title="Reset"
           size="small"
-          width={vw(30)}
+          width={summaryFields.filter((f: { value: any }) => f.value && f.value !== "").length > 0 ? vw(28) : vw(32)}
           type="alternative"
           onPress={handleReset}
         />
         <ThemedButton
           title={"Search"}
-          width={vw(50)}
+          width={summaryFields.filter((f: { value: any }) => f.value && f.value !== "").length > 0 ? vw(48) : vw(52)}
           icon="search"
           onPress={handleSubmit}
           status={!isAnyFilterSet || loading ? "disabled" : "default"}

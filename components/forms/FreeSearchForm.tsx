@@ -320,17 +320,17 @@ export default function FreeSearchForm({
 
   return (
     <ThemedView>
-      <ThemedView style={styles.mainButtonsRow}>
+      <ThemedView style={showFullSummary ? styles.mainButtonsRowSummary : styles.mainButtonsRow}>
         <ThemedButton
           title="Reset"
           size="small"
-          width={vw(30)}
+          width={showFullSummary ? vw(28) : vw(32)}
           type="alternative"
           onPress={handleReset}
         />
         <ThemedButton
           title={"Search"}
-          width={vw(50)}
+          width={showFullSummary ? vw(48) : vw(52)}
           icon="search"
           onPress={handleSubmit}
           status={loading || cardSearch.trim() === "" ? "disabled" : "default"}

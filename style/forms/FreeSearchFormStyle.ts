@@ -16,6 +16,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "space-between",
     backgroundColor: "transparent",
+    marginTop: theme.padding.xsmall,
+    marginBottom: theme.padding.xsmall,
+  },
+  mainButtonsRowSummary: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
     paddingHorizontal: theme.padding.small,
     marginTop: theme.padding.xsmall,
     marginBottom: theme.padding.xsmall,
@@ -65,8 +73,8 @@ const styles = StyleSheet.create({
     marginTop: theme.padding.xsmall,
   },
   summaryTextCol: {
-    flex: vw(100) - 8 - theme.padding.xlarge * 2,
-    minWidth: vw(100) - 8 - theme.padding.xlarge * 2,
+    flex: vw(100) - theme.padding.medium - theme.padding.xlarge * 2,
+    minWidth: vw(100) - theme.padding.medium - theme.padding.xlarge * 2,
   },
   summaryArrayText: {
     flexDirection: "row",
