@@ -23,6 +23,8 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
   const { db: cardDb } = useCardDatabase();
   const [selectedCardId, setSelectedCardId] = useState<string>("");
   const [selectedCardName, setSelectedCardName] = useState<string>("");
+  const [selectedCardSupertype, setSelectedCardSupertype] = useState<string>("");
+  const [selectedCardSubtypes, setSelectedCardSubtypes] = useState<string[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [resetCounter, setResetCounter] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
@@ -44,13 +46,18 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
     try {
       const cardsArr = getCardsArray();
       const filtered = cardsArr.filter((c: any) => c.cardId !== selectedCardId);
-      const clampedQty = Math.min(Number(quantity), 4);
+      // Recalculate isBasicEnergy at save time
+      const isBasicEnergy = selectedCardSupertype === "Energy" && selectedCardSubtypes.includes("Basic");
+      let clampedQty = quantity;
+      if (!isBasicEnergy) clampedQty = Math.min(Number(quantity), 4);
       filtered.push({ cardId: selectedCardId, quantity: clampedQty });
       await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(filtered), deck.id]);
       incrementDecksVersion();
       if (onCardAdded) onCardAdded();
       setSelectedCardId("");
       setSelectedCardName("");
+      setSelectedCardSupertype("");
+      setSelectedCardSubtypes([]);
       setResetCounter((c) => c + 1);
     } catch (e) {
       console.error("Error saving card to deck:", e);
@@ -63,17 +70,46 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
   const handleCardSelect = async (cardId: string) => {
     setSelectedCardId(cardId);
     let cardName = cardId;
+    let supertype = "";
+    let subtypes: string[] = [];
     if (cardDb) {
       try {
-        const card = await cardDb.getFirstAsync?.("SELECT name FROM Card WHERE cardId = ?", [cardId]);
-        if (card && typeof card === "object" && "name" in card) cardName = (card as { name: string }).name;
+        const card = await cardDb.getFirstAsync?.("SELECT name, supertype, subtypes FROM Card WHERE cardId = ?", [
+          cardId,
+        ]);
+        if (card && typeof card === "object") {
+          if ("name" in card) cardName = (card as { name: string }).name;
+          if ("supertype" in card) supertype = (card as { supertype: string }).supertype;
+          if ("subtypes" in card) {
+            try {
+              let raw = card.subtypes;
+              if (typeof raw === "string") {
+                const parsed = JSON.parse(raw || "[]");
+                if (Array.isArray(parsed)) subtypes = parsed;
+              } else if (Array.isArray(raw)) {
+                subtypes = raw;
+              } else {
+                subtypes = [];
+              }
+            } catch {
+              subtypes = [];
+            }
+          }
+        }
       } catch {}
     }
     setSelectedCardName(cardName);
+    setSelectedCardSupertype(supertype);
+    setSelectedCardSubtypes(subtypes);
     // Check if card is already in deck and set its quantity as default
     const cardsArr = getCardsArray();
     const existing = cardsArr.find((c: any) => c.cardId === cardId);
-    setStagedQty(existing ? existing.quantity : 1);
+    // If Basic Energy, default to 5 or existing
+    if (supertype === "Energy" && subtypes.includes("Basic")) {
+      setStagedQty(existing ? existing.quantity : 1);
+    } else {
+      setStagedQty(existing ? existing.quantity : 1);
+    }
     setModalVisible(true);
   };
 
@@ -81,9 +117,11 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
     setStagedQty(qty);
   };
 
+  const isBasicEnergy = selectedCardSupertype === "Energy" && selectedCardSubtypes.includes("Basic");
+
   const handleConfirm = () => {
-    setModalVisible(false);
     handleSaveCard(stagedQty);
+    setModalVisible(false);
   };
 
   return (
@@ -127,24 +165,48 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
           Set Quantity for <ThemedText color={theme.colors.textHilight}>{selectedCardName}</ThemedText>
         </ThemedText>
         <ThemedView style={styles.numbersModalContainer}>
-          {[1, 2, 3, 4].map((qty) => (
-            <TouchableOpacity
-              key={qty}
-              onPress={() => handleQtyChange(qty)}
-              style={[
-                {
-                  backgroundColor: stagedQty === qty ? theme.colors.green : theme.colors.lightBackground,
-                },
-                styles.numbersModal,
-              ]}
-            >
-              <ThemedText
-                style={{ color: stagedQty === qty ? theme.colors.background : theme.colors.text, fontWeight: "bold" }}
+          {isBasicEnergy ? (
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+              <TouchableOpacity
+                onPress={() => setStagedQty((q) => Math.max(1, q - 1))}
+                style={[styles.numbersModal, { marginRight: 8 }]}
+                disabled={stagedQty === 1}
               >
-                {qty}
-              </ThemedText>
-            </TouchableOpacity>
-          ))}
+                <ThemedText
+                  type="defaultSemiBold"
+                  style={{ color: stagedQty === 1 ? theme.colors.placeholder : theme.colors.text }}
+                >
+                  -
+                </ThemedText>
+              </TouchableOpacity>
+              <ThemedText style={{ marginHorizontal: 12, fontWeight: "bold", fontSize: 20 }}>{stagedQty}</ThemedText>
+              <TouchableOpacity
+                onPress={() => setStagedQty((q) => q + 1)}
+                style={[styles.numbersModal, { marginLeft: 8 }]}
+              >
+                <ThemedText type="defaultSemiBold">+</ThemedText>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            [1, 2, 3, 4].map((qty) => (
+              <TouchableOpacity
+                key={qty}
+                onPress={() => handleQtyChange(qty)}
+                style={[
+                  {
+                    backgroundColor: stagedQty === qty ? theme.colors.green : theme.colors.lightBackground,
+                  },
+                  styles.numbersModal,
+                ]}
+              >
+                <ThemedText
+                  style={{ color: stagedQty === qty ? theme.colors.background : theme.colors.text, fontWeight: "bold" }}
+                >
+                  {qty}
+                </ThemedText>
+              </TouchableOpacity>
+            ))
+          )}
         </ThemedView>
       </ThemedModal>
     </View>
