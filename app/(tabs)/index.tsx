@@ -4,17 +4,56 @@ import ThemedView from "@/components/base/ThemedView";
 import ExternalLink from "@/components/base/ExternalLink";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import SavedDecks from "@/components/deckbuilder/SavedDecks";
+import { useUserDatabase } from "@/components/context/UserDatabaseContext";
+import { getSavedDecks, deleteDeck } from "@/lib/userDatabase";
+import { theme } from "@/style/ui/Theme";
+
+interface SavedDeck {
+  id: number;
+  name: string;
+  thumbnail: string | null;
+  cards: string;
+}
 
 export default function HomeScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const { db, decksVersion } = useUserDatabase();
+  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
+  const [isLoadingDecks, setIsLoadingDecks] = useState(false);
+  const [deletingId] = useState(null);
+
+  const fetchSavedDecks = useCallback(async () => {
+    if (!db) return;
+    setIsLoadingDecks(true);
+    try {
+      const decks = await getSavedDecks(db);
+      setSavedDecks(decks);
+    } catch (error) {
+      console.error("Failed to fetch saved decks:", error);
+    } finally {
+      setIsLoadingDecks(false);
+    }
+  }, [db]);
+
+  useEffect(() => {
+    if (db) {
+      fetchSavedDecks();
+    }
+  }, [db, decksVersion, fetchSavedDecks]);
+
   useFocusEffect(
     React.useCallback(() => {
       if (scrollRef.current) {
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
-    }, [])
+      if (db) {
+        fetchSavedDecks();
+      }
+    }, [db, fetchSavedDecks])
   );
+
   return (
     <ParallaxScrollView
       headerImage="home-bkg"
@@ -23,15 +62,8 @@ export default function HomeScreen() {
     >
       <ThemedView>
         <ThemedText
-          type="defaultSemiBold"
-          style={{ paddingBottom: 12 }}
-        >
-          This app helps players build their Pokémon decks by searching only for cards in the current rotation. LAST
-          UPDATE: 24-04-2025.
-        </ThemedText>
-        <ThemedText
           type="default"
-          style={{ paddingBottom: 12 }}
+          style={{ paddingBottom: theme.padding.xlarge * 1.5 }}
         >
           This app was created with ♥ by Pokémon nerd and developer{" "}
           <ExternalLink
@@ -44,6 +76,16 @@ export default function HomeScreen() {
           <ExternalLink href="https://pokemontcg.io/">pokemontcg.io </ExternalLink>
           for the Card Archive.
         </ThemedText>
+      </ThemedView>
+      <ThemedView style={{ paddingBottom: theme.padding.xlarge }}>
+        <SavedDecks
+          savedDecks={savedDecks}
+          isLoadingDecks={isLoadingDecks}
+          onDelete={() => {}}
+          deletingId={deletingId}
+        />
+      </ThemedView>
+      <ThemedView>
         <ThemedText type="hintText">
           This app is not produced, endorsed, supported, or affiliated with Nintendo or The Pokémon Company.
         </ThemedText>

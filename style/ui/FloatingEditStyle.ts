@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   fabIconView: {
-    width: theme.padding.large,
-    height: theme.padding.large,
+    width: theme.padding.large * 0.75,
+    height: theme.padding.large * 0.75,
   },
 });
 
