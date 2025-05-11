@@ -11,7 +11,10 @@ import cardImages from "@/helpers/cardImageMapping";
 import styles from "@/style/deckbuilder/CompactDeckStyle";
 
 function getDeckImage(imagePath: string) {
-  if (!imagePath) return undefined;
+  // Always show the default image if no thumbnail is provided
+  if (!imagePath) {
+    return require("@/assets/images/back-card.webp");
+  }
   const filename = imagePath.split("/").pop() || "";
   // Workaround: if the path is the default image, use require from /assets/images
   if (imagePath === "/images/back-card.webp" || filename === "back-card.webp") {
