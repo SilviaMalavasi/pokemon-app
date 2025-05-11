@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, TouchableOpacity, Pressable, Modal } from "react-native";
+import { View, TouchableOpacity, Pressable, Modal, TextInput } from "react-native";
 import { Svg, Polygon, Path } from "react-native-svg";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
+import ThemedTextInput from "@/components/base/ThemedTextInput";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { getSavedDecks } from "@/lib/userDatabase";
 import { theme } from "@/style/ui/Theme";
 import styles from "@/style/deckbuilder/AddToDeckModalStyle";
+import CardAutoCompleteInput, {
+  CardAutoCompleteProvider,
+  CardAutoCompleteSuggestions,
+} from "@/components/base/CardAutoCompleteInput";
+import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 
 interface AddToDeckDropdownProps {
   cardId: string;
@@ -26,6 +32,11 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
   const [quantities, setQuantities] = useState<{ [deckId: number]: number }>({});
   const [selectedDeckId, setSelectedDeckId] = useState<string | undefined>(undefined);
   const [stagedQuantity, setStagedQuantity] = useState<number>(0);
+  const [newDeckModalVisible, setNewDeckModalVisible] = useState(false);
+  const [newDeckName, setNewDeckName] = useState("");
+  const [newDeckThumbnail, setNewDeckThumbnail] = useState("");
+  const [autoCompleteKey, setAutoCompleteKey] = useState(0);
+  const cardDb = useCardDatabase().db;
 
   // Compute maxQuantity based on supertype and subtypes
   let maxQuantity = 4;
@@ -120,6 +131,49 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
   const handleConfirmAndClose = async () => {
     await handleConfirmAdd();
     setModalVisible(false);
+  };
+
+  const handleCreateNewDeck = async () => {
+    if (!db || !newDeckName.trim()) return;
+    try {
+      await db.runAsync("INSERT INTO Decks (name, cards, thumbnail) VALUES (?, ?, ?)", [
+        newDeckName.trim(),
+        JSON.stringify([]),
+        newDeckThumbnail,
+      ]);
+      // Refresh decks and select the last one (newest)
+      const updatedDecks = await getSavedDecks(db);
+      const newDeck = updatedDecks[updatedDecks.length - 1];
+      setDecks(updatedDecks);
+      setSelectedDeckId(String(newDeck.id));
+      setWorkingDeckId(String(newDeck.id));
+      setQuantities((prev) => ({ ...prev, [newDeck.id]: 0 }));
+      setStagedQuantity(0);
+      setNewDeckModalVisible(false);
+      setDeckPickerVisible(false);
+      setNewDeckName("");
+      setNewDeckThumbnail("");
+      setAutoCompleteKey((k) => k + 1);
+      incrementDecksVersion();
+    } catch (e) {
+      console.error("Error creating new deck:", e);
+    }
+  };
+
+  // Handler to select thumbnail by cardId
+  const handleThumbnailSelect = async (cardId: string) => {
+    if (!cardDb) return;
+    try {
+      const card = await cardDb.getFirstAsync<{ imagesLarge: string }>(
+        "SELECT imagesLarge FROM Card WHERE cardId = ?",
+        [cardId]
+      );
+      if (card && card.imagesLarge) {
+        setNewDeckThumbnail(card.imagesLarge);
+      }
+    } catch (e) {
+      console.error("Error fetching card image for thumbnail:", e);
+    }
   };
 
   // Only show the working deck in the select and as the only visible deck
@@ -234,6 +288,14 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
                           </ThemedText>
                         </Pressable>
                       ))}
+                      <Pressable
+                        key={-1}
+                        onPress={() => {
+                          setNewDeckModalVisible(true);
+                        }}
+                      >
+                        <ThemedText style={styles.operator}>- New Deck -</ThemedText>
+                      </Pressable>
                     </View>
                     <Pressable
                       onPress={() => setDeckPickerVisible(false)}
@@ -292,6 +354,49 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
             ) : null}
           </>
         )}
+      </ThemedModal>
+      {/* New Deck Modal */}
+      <ThemedModal
+        visible={newDeckModalVisible}
+        onClose={handleCreateNewDeck}
+        buttonText={"Create"}
+        buttonType="main"
+        buttonSize="large"
+        onCancelText="Cancel"
+        onCancel={() => setNewDeckModalVisible(false)}
+        buttonStyle={!newDeckName.trim() ? { opacity: 0.5 } : undefined}
+      >
+        <ThemedText
+          type="subtitle"
+          style={{ marginBottom: theme.padding.medium, textAlign: "center" }}
+        >
+          Create New Deck
+        </ThemedText>
+        <CardAutoCompleteProvider>
+          <ThemedTextInput
+            label="Deck Name"
+            value={newDeckName}
+            onChange={setNewDeckName}
+            placeholder="Enter deck name"
+            maxChars={25}
+            style={{ marginBottom: theme.padding.medium }}
+          />
+          {cardDb ? (
+            <>
+              <CardAutoCompleteInput
+                key={autoCompleteKey}
+                label="Deck Thumbnail"
+                value={newDeckThumbnail}
+                onCardSelect={handleThumbnailSelect}
+                placeholder="Type card name (min 3 chars)"
+                maxChars={25}
+                labelHint="Select a card image for the deck"
+                resetKey={autoCompleteKey}
+              />
+              <CardAutoCompleteSuggestions onCardSelect={handleThumbnailSelect} />
+            </>
+          ) : null}
+        </CardAutoCompleteProvider>
       </ThemedModal>
     </>
   );
