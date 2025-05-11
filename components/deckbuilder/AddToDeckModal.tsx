@@ -13,9 +13,11 @@ interface AddToDeckDropdownProps {
   cardId: string;
   cardName?: string;
   onAdded?: (deckId: number) => void;
+  supertype?: string;
+  subtypes?: string[];
 }
 
-export default function AddToDeckModal({ cardId, cardName, onAdded }: AddToDeckDropdownProps) {
+export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, subtypes }: AddToDeckDropdownProps) {
   const { db, workingDeckId, setWorkingDeckId, incrementDecksVersion } = useUserDatabase();
   const [modalVisible, setModalVisible] = useState(false);
   const [deckPickerVisible, setDeckPickerVisible] = useState(false);
@@ -24,6 +26,12 @@ export default function AddToDeckModal({ cardId, cardName, onAdded }: AddToDeckD
   const [quantities, setQuantities] = useState<{ [deckId: number]: number }>({});
   const [selectedDeckId, setSelectedDeckId] = useState<string | undefined>(undefined);
   const [stagedQuantity, setStagedQuantity] = useState<number>(0);
+
+  // Compute maxQuantity based on supertype and subtypes
+  let maxQuantity = 4;
+  if (supertype === "Energy" && Array.isArray(subtypes) && subtypes.includes("Basic")) {
+    maxQuantity = 60;
+  }
 
   useEffect(() => {
     if (!modalVisible) return;
@@ -258,12 +266,17 @@ export default function AddToDeckModal({ cardId, cardName, onAdded }: AddToDeckD
                       -
                     </ThemedText>
                   </TouchableOpacity>
-                  <ThemedText style={styles.qtyText}>{stagedQuantity}/4</ThemedText>
+                  <ThemedText style={[styles.qtyText, { textAlign: "center" }]}>
+                    {stagedQuantity}
+                    {!(supertype === "Energy" && Array.isArray(subtypes) && subtypes.includes("Basic")) && (
+                      <>/{maxQuantity}</>
+                    )}
+                  </ThemedText>
                   <TouchableOpacity
-                    onPress={() => setStagedQuantity((q) => Math.min(q + 1, 4))}
-                    disabled={stagedQuantity >= 4 || addingDeckId === workingDeck.id}
+                    onPress={() => setStagedQuantity((q) => Math.min(q + 1, maxQuantity))}
+                    disabled={stagedQuantity >= maxQuantity || addingDeckId === workingDeck.id}
                     style={{
-                      opacity: stagedQuantity >= 4 || addingDeckId === workingDeck.id ? 0.5 : 1,
+                      opacity: stagedQuantity >= maxQuantity || addingDeckId === workingDeck.id ? 0.5 : 1,
                     }}
                     accessibilityLabel={`Add to ${workingDeck.name}`}
                   >

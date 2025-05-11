@@ -103,6 +103,8 @@ export default function FullCard(props: FullCardProps) {
               <AddToDeckModal
                 cardId={props.cardId}
                 cardName={props.name}
+                supertype={props.supertype}
+                subtypes={subtypes}
               />
             </View>
           </View>
