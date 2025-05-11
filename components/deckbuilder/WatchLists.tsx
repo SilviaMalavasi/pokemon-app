@@ -26,7 +26,7 @@ export default function WatchLists() {
             key={wl.id}
             type="outline"
             size="large"
-            icon="search"
+            icon="arrow"
             title={wl.name}
             onPress={() =>
               router.push({ pathname: "/(tabs)/watchlistst/[watchlistId]", params: { watchlistId: String(wl.id) } })
