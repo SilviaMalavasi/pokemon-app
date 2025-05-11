@@ -93,6 +93,9 @@ export default function DeckScreen() {
     }
   };
 
+  // Calculate total number of cards in the deck
+  const totalCardCount = getCardsArray().reduce((sum: number, card: any) => sum + (card.quantity || 1), 0);
+
   return (
     <>
       <ParallaxScrollView
@@ -139,7 +142,7 @@ export default function DeckScreen() {
                   marginBottom: theme.padding.large,
                 }}
               >
-                <ThemedText type="subtitle">Cards in Deck</ThemedText>
+                <ThemedText type="subtitle">Cards ({totalCardCount})</ThemedText>
                 <TouchableOpacity
                   activeOpacity={0.85}
                   onPress={() => setViewMode(viewMode === "list" ? "thumbnails" : "list")}
@@ -148,7 +151,7 @@ export default function DeckScreen() {
                     borderWidth: 1,
                     borderColor: theme.colors.green,
                     borderRadius: theme.borderRadius.large,
-                    paddingHorizontal: theme.padding.medium,
+                    paddingHorizontal: theme.padding.small,
                     ...theme.shadowSmall,
                   }}
                 >
