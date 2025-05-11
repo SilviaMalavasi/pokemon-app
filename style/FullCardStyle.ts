@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
 
-const containersPadding = 16;
+const containersPadding = theme.padding.medium;
 const cardWidth = vw(100) - containersPadding;
 
 const styles = StyleSheet.create({
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: "relative",
     justifyContent: "center",
-    width: vw(100) - theme.padding.small * 2,
+    width: vw(100) - theme.padding.medium * 2,
     height: cardWidth / 0.71,
     marginBottom: theme.padding.large,
   },

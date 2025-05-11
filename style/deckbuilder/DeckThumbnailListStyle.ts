@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     width: vw(12),
     height: vw(12),
     right: theme.padding.xsmall * 0.5,
-    top: vw(50),
+    top: vw(48),
     zIndex: 10,
     borderRadius: theme.borderRadius.xlarge,
     padding: 2,
