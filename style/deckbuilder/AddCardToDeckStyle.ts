@@ -26,6 +26,23 @@ const styles = StyleSheet.create({
     marginTop: theme.padding.small,
     paddingLeft: theme.padding.small,
   },
+  numbersModalContainer: {
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: theme.padding.medium,
+    marginBottom: theme.padding.medium,
+    gap: theme.padding.small,
+  },
+  numbersModal: {
+    borderRadius: theme.borderRadius.large,
+    borderWidth: 1,
+    borderColor: theme.colors.green,
+    paddingHorizontal: theme.padding.small,
+    paddingVertical: theme.padding.xsmall * 1.2,
+    marginHorizontal: 4,
+  },
 });
 
 export default styles;
