@@ -8,7 +8,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import SavedDecks from "@/components/deckbuilder/SavedDecks";
 import WatchLists from "@/components/deckbuilder/WatchLists";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
-import { getSavedDecks, deleteDeck } from "@/lib/userDatabase";
+import { getSavedDecks } from "@/lib/userDatabase";
 import { theme } from "@/style/ui/Theme";
 
 interface SavedDeck {
@@ -64,7 +64,7 @@ export default function HomeScreen() {
       <ThemedView>
         <ThemedText
           type="default"
-          style={{ paddingBottom: theme.padding.xlarge * 1.5 }}
+          style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge * 1.5 }}
         >
           This app was created with ♥ by Pokémon nerd and developer{" "}
           <ExternalLink
@@ -90,7 +90,10 @@ export default function HomeScreen() {
         <WatchLists />
       </ThemedView>
       <ThemedView>
-        <ThemedText type="hintText">
+        <ThemedText
+          type="hintText"
+          color={theme.colors.placeholder}
+        >
           This app is not produced, endorsed, supported, or affiliated with Nintendo or The Pokémon Company.
         </ThemedText>
       </ThemedView>
