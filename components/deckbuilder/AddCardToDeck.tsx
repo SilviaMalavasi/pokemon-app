@@ -152,7 +152,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
       <ThemedModal
         visible={modalVisible}
         onClose={handleConfirm}
-        buttonText="Add to deck"
+        buttonText="Set in deck"
         buttonType="main"
         buttonSize="large"
         onCancelText="Cancel"
