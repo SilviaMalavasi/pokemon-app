@@ -19,9 +19,10 @@ interface CompactCardProps {
   card: Pick<CardType, "cardId" | "name" | "imagesLarge">;
   onImageLoad?: () => void;
   loading?: boolean;
+  disableLink?: boolean; // New prop to control link behavior
 }
 
-export default function CompactCard({ card, onImageLoad, loading }: CompactCardProps) {
+export default function CompactCard({ card, onImageLoad, loading, disableLink }: CompactCardProps) {
   const [imageLoading, setImageLoading] = useState(true);
   const imageSource = getCardImage(card.imagesLarge);
 
@@ -38,41 +39,45 @@ export default function CompactCard({ card, onImageLoad, loading }: CompactCardP
     );
   }
 
-  return (
-    <Link href={{ pathname: "/cards/[cardId]", params: { cardId: card.cardId } }}>
-      <ThemedView style={CompactCardStyle.container}>
-        <View style={CompactCardStyle.imageContainer}>
-          {imageSource ? (
-            <View style={{ position: "relative", justifyContent: "center", alignItems: "center" }}>
-              <Image
-                source={imageSource}
-                style={CompactCardStyle.image}
-                resizeMode="contain"
-                onLoadStart={() => setImageLoading(true)}
-                onLoadEnd={() => {
-                  setImageLoading(false);
-                  if (onImageLoad) onImageLoad();
-                }}
+  const cardContent = (
+    <ThemedView style={CompactCardStyle.container}>
+      <View style={CompactCardStyle.imageContainer}>
+        {imageSource ? (
+          <View style={{ position: "relative", justifyContent: "center", alignItems: "center" }}>
+            <Image
+              source={imageSource}
+              style={CompactCardStyle.image}
+              resizeMode="contain"
+              onLoadStart={() => setImageLoading(true)}
+              onLoadEnd={() => {
+                setImageLoading(false);
+                if (onImageLoad) onImageLoad();
+              }}
+            />
+            {imageLoading && (
+              <ActivityIndicator
+                style={{ position: "absolute" }}
+                size="small"
+                color={theme.colors.textAlternative}
               />
-              {imageLoading && (
-                <ActivityIndicator
-                  style={{ position: "absolute" }}
-                  size="small"
-                  color={theme.colors.textAlternative}
-                />
-              )}
-            </View>
-          ) : null}
-        </View>
-        <View style={CompactCardStyle.textContainer}>
-          <ThemedText
-            type="default"
-            style={{ textAlign: "center" }}
-          >
-            {card.name}
-          </ThemedText>
-        </View>
-      </ThemedView>
-    </Link>
+            )}
+          </View>
+        ) : null}
+      </View>
+      <View style={CompactCardStyle.textContainer}>
+        <ThemedText
+          type="default"
+          style={{ textAlign: "center" }}
+        >
+          {card.name}
+        </ThemedText>
+      </View>
+    </ThemedView>
   );
+
+  if (disableLink) {
+    return cardContent;
+  }
+
+  return <Link href={{ pathname: "/cards/[cardId]", params: { cardId: card.cardId } }}>{cardContent}</Link>;
 }

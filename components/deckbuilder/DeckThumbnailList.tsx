@@ -130,6 +130,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
             >
               <CompactCard
                 card={{ cardId: item.cardId, name: item.name || item.cardId, imagesLarge: item.imagesLarge || "" }}
+                disableLink={true}
               />
               <TouchableOpacity
                 onPress={() => handleQtyPress(item)}
