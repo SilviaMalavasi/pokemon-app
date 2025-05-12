@@ -34,6 +34,29 @@ const styles = StyleSheet.create({
     textAlign: "center",
     maxWidth: "70%",
   },
+  warnigText: {
+    paddingTop: theme.padding.medium,
+    paddingBottom: theme.padding.xsmall,
+    color: theme.colors.text,
+    textAlign: "center",
+    maxWidth: "70%",
+  },
+  progressBarContainer: {
+    width: 220,
+    height: 10,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.borderRadius.small,
+    overflow: "hidden",
+    marginVertical: theme.padding.medium,
+    borderWidth: 1,
+    borderColor: theme.colors.text,
+  },
+  progressBar: {
+    height: "100%",
+    backgroundColor: theme.colors.primary,
+    transitionProperty: "width",
+    transitionDuration: "0.3s",
+  },
 });
 
 export default styles;

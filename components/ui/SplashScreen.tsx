@@ -3,6 +3,7 @@ import { Animated, Image, View } from "react-native";
 import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import styles from "@/style/ui/SplashScreenStyle";
+import { theme } from "@/style/ui/Theme";
 
 const messages = [
   "Catching Pokémon\nin the database",
@@ -21,9 +22,10 @@ const messages = [
 // Define props for the component
 interface SplashScreenProps {
   isUpdatingDb: boolean;
+  progress?: number; // 0 to 1, optional for backward compatibility
 }
 
-export default function SplashScreen({ isUpdatingDb }: SplashScreenProps) {
+export default function SplashScreen({ isUpdatingDb, progress = 0 }: SplashScreenProps) {
   const [messageIndex, setMessageIndex] = useState(0);
   const fadeAnim = useRef(new Animated.Value(1)).current; // Initial opacity: 1
 
@@ -76,6 +78,20 @@ export default function SplashScreen({ isUpdatingDb }: SplashScreenProps) {
               >
                 Updating Database
               </ThemedText>
+              {/* Warning if update is interrupted */}
+              <ThemedText
+                type="hintText"
+                style={styles.warnigText}
+              >
+                This may take few minutes the first time you open the app. Do not close or background the app until the
+                update is complete. If interrupted, the update will resume next time you open the app.
+              </ThemedText>
+              {/* Loading bar */}
+              {typeof progress === "number" && (
+                <View style={styles.progressBarContainer}>
+                  <View style={[styles.progressBar, { width: `${Math.max(0, Math.round(progress * 100))}%` }]} />
+                </View>
+              )}
               <View style={styles.animatedTextContainer}>
                 <Animated.Text style={[styles.text, { opacity: fadeAnim }]}>{messages[messageIndex]}</Animated.Text>
               </View>

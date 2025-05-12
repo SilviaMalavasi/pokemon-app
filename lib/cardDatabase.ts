@@ -1,7 +1,8 @@
 import { SQLiteDatabase, SQLiteStatement } from "expo-sqlite";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // ----> INCREMENT THIS WHEN JSON CHANGES <----
-const DATABASE_VERSION = 23;
+const DATABASE_VERSION = 28;
 
 // Data types for JSON imports
 interface CardSet {
@@ -114,8 +115,45 @@ async function safeExecuteAsync(stmt: SQLiteStatement, params: any[], itemType: 
   }
 }
 
+// --- Helper function to get and set DB update checkpoint ---
+const CHECKPOINT_KEY = "dbUpdateCheckpointV1";
+
+interface DbUpdateCheckpoint {
+  processedCards: number;
+  processedAbilities: number;
+  processedAttacks: number;
+}
+
+async function saveCheckpoint(checkpoint: DbUpdateCheckpoint) {
+  try {
+    await AsyncStorage.setItem(CHECKPOINT_KEY, JSON.stringify(checkpoint));
+  } catch (e) {
+    console.warn("Failed to save DB update checkpoint:", e);
+  }
+}
+
+async function loadCheckpoint(): Promise<DbUpdateCheckpoint | null> {
+  try {
+    const data = await AsyncStorage.getItem(CHECKPOINT_KEY);
+    if (data) return JSON.parse(data);
+  } catch (e) {
+    console.warn("Failed to load DB update checkpoint:", e);
+  }
+  return null;
+}
+
+async function clearCheckpoint() {
+  try {
+    await AsyncStorage.removeItem(CHECKPOINT_KEY);
+  } catch {}
+}
+
 // --- Helper function to populate data ---
-async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdating: boolean) => void) {
+async function populateDataFromJSON(
+  db: SQLiteDatabase,
+  setIsUpdating: (isUpdating: boolean) => void,
+  setProgress?: (progress: number) => void
+) {
   console.log("Starting database population from JSON...");
   setIsUpdating(true); // Indicate update start
   try {
@@ -193,6 +231,9 @@ async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdati
       await insertAbilityStmt.finalizeAsync();
     }
 
+    // Build set of inserted ability IDs
+    const insertedAbilityIds = new Set<number>(abilitiesData.map((a) => a.id));
+
     // ---- Attacks Population ----
     console.log(`Populating Attacks (${attacksData.length} items)...`);
     const insertAttackStmt = await db.prepareAsync("INSERT OR IGNORE INTO Attacks (id, name, text) VALUES (?, ?, ?)");
@@ -215,6 +256,9 @@ async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdati
       await insertAttackStmt.finalizeAsync();
     }
 
+    // Build set of inserted attack IDs
+    const insertedAttackIds = new Set<number>(attacksData.map((a) => a.id));
+
     // ---- Card Population ----
     // First, check for duplicate IDs in the card data
     console.log(`Analyzing ${cardData.length} cards for duplicates...`);
@@ -227,7 +271,6 @@ async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdati
       seenIds.add(card.id);
       return true;
     });
-
     console.log(
       `Found ${cardData.length - uniqueCardData.length} duplicate card IDs. Processing ${
         uniqueCardData.length
@@ -241,6 +284,7 @@ async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdati
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     );
 
+    // --- Card Population ---
     try {
       await processBatch(
         uniqueCardData,
@@ -287,11 +331,48 @@ async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdati
       await insertCardStmt.finalizeAsync();
     }
 
-    // ---- CardAbilities Population ----
+    // After inserting cards, abilities, and attacks
+    // Query the DB for actual IDs
+    const cardRows = await db.getAllAsync<{ id: number }>("SELECT id FROM Card");
+    const abilityRows = await db.getAllAsync<{ id: number }>("SELECT id FROM Abilities");
+    const attackRows = await db.getAllAsync<{ id: number }>("SELECT id FROM Attacks");
+    const actualCardIds = new Set(cardRows.map((row) => row.id));
+    const actualAbilityIds = new Set(abilityRows.map((row) => row.id));
+    const actualAttackIds = new Set(attackRows.map((row) => row.id));
+
+    // Prepare filtered ability/attack data for progress tracking
+    const filteredCardAbilitiesData = cardAbilitiesData.filter(
+      (item) => actualCardIds.has(item.cardId) && actualAbilityIds.has(item.abilityId)
+    );
+    const filteredCardAttacksData = cardAttacksData.filter(
+      (item) => actualCardIds.has(item.cardId) && actualAttackIds.has(item.attackId)
+    );
+    const totalCards = uniqueCardData.length;
+    const totalCardAbilities = filteredCardAbilitiesData.length;
+    const totalCardAttacks = filteredCardAttacksData.length;
+    const total = totalCards + totalCardAbilities + totalCardAttacks;
+    let processed = 0;
+
+    // --- Load checkpoint if available ---
+    let checkpoint = await loadCheckpoint();
+    let startCard = 0,
+      startAbility = 0,
+      startAttack = 0;
+    if (checkpoint) {
+      startCard = checkpoint.processedCards || 0;
+      startAbility = checkpoint.processedAbilities || 0;
+      startAttack = checkpoint.processedAttacks || 0;
+      processed = startCard + startAbility + startAttack;
+      if (setProgress) setProgress(processed / total);
+      console.log(
+        `Resuming DB update from checkpoint: cards=${startCard}, abilities=${startAbility}, attacks=${startAttack}`
+      );
+    }
+
+    // --- CardAbilities Population ---
     console.log(`Populating CardAbilities (${cardAbilitiesData.length} items)...`);
 
     // Filter cardAbilitiesData to only include cards that exist in our database
-    const filteredCardAbilitiesData = cardAbilitiesData.filter((item) => seenIds.has(item.cardId));
     console.log(
       `Processing ${filteredCardAbilitiesData.length} card abilities (skipped ${
         cardAbilitiesData.length - filteredCardAbilitiesData.length
@@ -302,9 +383,10 @@ async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdati
       "INSERT OR IGNORE INTO CardAbilities (id, cardId, abilityId) VALUES (?, ?, ?)"
     );
 
+    // --- CardAbilities Population ---
     try {
       await processBatch(
-        filteredCardAbilitiesData,
+        filteredCardAbilitiesData.slice(startAbility),
         async (batch) => {
           for (const item of batch) {
             await safeExecuteAsync(
@@ -313,6 +395,15 @@ async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdati
               "CardAbility",
               item.id
             );
+            processed++;
+            startAbility++;
+            if (setProgress) setProgress(processed / total);
+            if (processed % 100 === 0)
+              await saveCheckpoint({
+                processedCards: startCard,
+                processedAbilities: startAbility,
+                processedAttacks: startAttack,
+              });
           }
         },
         BATCH_SIZE,
@@ -329,7 +420,6 @@ async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdati
     console.log(`Populating CardAttacks (${cardAttacksData.length} items)...`);
 
     // Filter cardAttacksData to only include cards that exist in our database
-    const filteredCardAttacksData = cardAttacksData.filter((item) => seenIds.has(item.cardId));
     console.log(
       `Processing ${filteredCardAttacksData.length} card attacks (skipped ${
         cardAttacksData.length - filteredCardAttacksData.length
@@ -340,9 +430,10 @@ async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdati
       "INSERT OR IGNORE INTO CardAttacks (id, cardId, attackId, cost, convertedEnergyCost, damage) VALUES (?, ?, ?, ?, ?, ?)"
     );
 
+    // --- CardAttacks Population ---
     try {
       await processBatch(
-        filteredCardAttacksData,
+        filteredCardAttacksData.slice(startAttack),
         async (batch) => {
           for (const item of batch) {
             await safeExecuteAsync(
@@ -351,6 +442,15 @@ async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdati
               "CardAttack",
               item.id
             );
+            processed++;
+            startAttack++;
+            if (setProgress) setProgress(processed / total);
+            if (processed % 100 === 0)
+              await saveCheckpoint({
+                processedCards: startCard,
+                processedAbilities: startAbility,
+                processedAttacks: startAttack,
+              });
           }
         },
         BATCH_SIZE,
@@ -363,16 +463,23 @@ async function populateDataFromJSON(db: SQLiteDatabase, setIsUpdating: (isUpdati
       await insertCardAttackStmt.finalizeAsync();
     }
 
+    // Clear checkpoint on success
+    await clearCheckpoint();
     console.log("Data population complete.");
   } catch (error) {
     console.error("Fatal error during data population:", error);
     throw error; // Re-throw to handle in the migration function
   } finally {
     setIsUpdating(false); // Indicate update end, even if error occurs
+    if (setProgress) setProgress(1);
   }
 }
 
-export async function migrateDbIfNeeded(db: SQLiteDatabase, setIsUpdating: (isUpdating: boolean) => void) {
+export async function migrateDbIfNeeded(
+  db: SQLiteDatabase,
+  setIsUpdating: (isUpdating: boolean) => void,
+  setProgress?: (progress: number) => void
+) {
   try {
     const result = await db.getFirstAsync<{ user_version: number }>("PRAGMA user_version");
     let currentDbVersion = result?.user_version ?? 0;
@@ -383,6 +490,7 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase, setIsUpdating: (isUp
       console.log("Database is up-to-date.");
       // Ensure state is false if we return early
       setIsUpdating(false);
+      if (setProgress) setProgress(1);
       return;
     }
 
@@ -492,7 +600,7 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase, setIsUpdating: (isUp
       try {
         console.log(`Refreshing data to match version ${DATABASE_VERSION}...`);
         // Pass the callback down to populateDataFromJSON
-        await populateDataFromJSON(db, setIsUpdating);
+        await populateDataFromJSON(db, setIsUpdating, setProgress);
         console.log(`Data refreshed for version ${DATABASE_VERSION}.`);
 
         // Only update version if data population was successful
@@ -512,6 +620,7 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase, setIsUpdating: (isUp
     throw error;
   } finally {
     setIsUpdating(false);
+    if (setProgress) setProgress(1);
     console.log("Database migration process finished.");
   }
 }

@@ -14,9 +14,11 @@ const CardDatabaseContext = createContext<CardDatabaseContextType | undefined>(u
 export const CardDatabaseProvider = ({
   children,
   setIsUpdatingDb,
+  setCardDbProgress,
 }: {
   children: ReactNode;
   setIsUpdatingDb?: (isUpdating: boolean) => void;
+  setCardDbProgress?: (progress: number) => void;
 }) => {
   const [db, setDb] = useState<SQLite.SQLiteDatabase | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,10 +61,14 @@ export const CardDatabaseProvider = ({
         if (isMounted.current) {
           // Run migration and JSON population - use a custom wrapper function
           // that doesn't immediately update state during rendering
-          await migrateDbIfNeeded(openedDb, (updating) => {
-            // Use setTimeout to defer state updates out of the render cycle
-            setTimeout(() => safeSetIsUpdating(updating), 0);
-          });
+          await migrateDbIfNeeded(
+            openedDb,
+            (updating) => {
+              // Use setTimeout to defer state updates out of the render cycle
+              setTimeout(() => safeSetIsUpdating(updating), 0);
+            },
+            setCardDbProgress
+          );
 
           if (isMounted.current) {
             setDb(openedDb);

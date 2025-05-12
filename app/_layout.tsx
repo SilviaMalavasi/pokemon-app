@@ -18,16 +18,28 @@ SplashScreen.preventAutoHideAsync();
 
 // Wrapper component to connect the splash screen to database state
 function DatabasesWithSplash({ children }: { children: React.ReactNode }) {
-  const { isAnyDbUpdating, setCardDbUpdating, setUserDbUpdating } = useDatabaseState();
+  const { isAnyDbUpdating, setCardDbUpdating, setUserDbUpdating, cardDbProgress, userDbProgress, setCardDbProgress } =
+    useDatabaseState();
+  const progress = Math.max(cardDbProgress, userDbProgress);
 
   return (
     <>
       <UserDatabaseProvider setIsUpdatingDb={setUserDbUpdating}>
-        <CardDatabaseProvider setIsUpdatingDb={setCardDbUpdating}>{children}</CardDatabaseProvider>
+        <CardDatabaseProvider
+          setIsUpdatingDb={setCardDbUpdating}
+          setCardDbProgress={setCardDbProgress}
+        >
+          {children}
+        </CardDatabaseProvider>
       </UserDatabaseProvider>
 
       {/* Show splash screen when any database is updating */}
-      {isAnyDbUpdating && <SplashScreenComponent isUpdatingDb={true} />}
+      {isAnyDbUpdating && (
+        <SplashScreenComponent
+          isUpdatingDb={true}
+          progress={progress}
+        />
+      )}
     </>
   );
 }

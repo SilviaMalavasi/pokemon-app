@@ -6,6 +6,10 @@ interface DatabaseStateContextType {
   setCardDbUpdating: (isUpdating: boolean) => void;
   setUserDbUpdating: (isUpdating: boolean) => void;
   isAnyDbUpdating: boolean;
+  cardDbProgress: number; // 0 to 1
+  userDbProgress: number; // 0 to 1
+  setCardDbProgress: (progress: number) => void;
+  setUserDbProgress: (progress: number) => void;
 }
 
 const DatabaseStateContext = createContext<DatabaseStateContextType | undefined>(undefined);
@@ -14,6 +18,8 @@ export const DatabaseStateProvider = ({ children }: { children: ReactNode }) => 
   // Set both to true by default so splash is shown immediately
   const [isCardDbUpdating, setCardDbUpdating] = useState(true);
   const [isUserDbUpdating, setUserDbUpdating] = useState(true);
+  const [cardDbProgress, setCardDbProgress] = useState(0);
+  const [userDbProgress, setUserDbProgress] = useState(0);
 
   // Calculate derived state - any database is updating
   const isAnyDbUpdating = isCardDbUpdating || isUserDbUpdating;
@@ -26,6 +32,10 @@ export const DatabaseStateProvider = ({ children }: { children: ReactNode }) => 
         setCardDbUpdating,
         setUserDbUpdating,
         isAnyDbUpdating,
+        cardDbProgress,
+        userDbProgress,
+        setCardDbProgress,
+        setUserDbProgress,
       }}
     >
       {children}
