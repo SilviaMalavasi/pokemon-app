@@ -2,7 +2,8 @@ import * as SQLite from "expo-sqlite";
 
 // ----> INCREMENT THIS WHEN SCHEMA CHANGES <----
 const USER_DATABASE_VERSION = 27;
-const FORCE_USER_DB_RESET = true; // TEMP: Set to false after first run!
+// Set to false; we will force reset only if a mismatch is detected
+const FORCE_USER_DB_RESET = false; // TEMP: Set to false after first run!
 
 const USER_DATABASE_NAME = "userDatabase.db";
 
@@ -15,38 +16,62 @@ export async function openUserDatabase(): Promise<SQLite.SQLiteDatabase> {
   return db;
 }
 
+// Define the desired schema for each table
+const desiredTables = [
+  {
+    name: "Decks",
+    columns: [
+      { name: "id", type: "INTEGER PRIMARY KEY AUTOINCREMENT" },
+      { name: "name", type: "TEXT NOT NULL" },
+      { name: "thumbnail", type: "TEXT" },
+      { name: "cards", type: "TEXT" },
+    ],
+  },
+  {
+    name: "WatchedCards",
+    columns: [
+      { name: "id", type: "INTEGER PRIMARY KEY AUTOINCREMENT" },
+      { name: "name", type: "TEXT NOT NULL" },
+      { name: "cards", type: "TEXT" },
+    ],
+  },
+];
+
 // Function to handle user database migrations
 export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase, setIsUpdating?: (isUpdating: boolean) => void) {
+  let detectedMismatch = false;
   try {
     if (setIsUpdating) setIsUpdating(true);
-    if (FORCE_USER_DB_RESET) {
-      console.warn("[FORCE RESET] Dropping Decks and WatchedCards tables!");
+    // --- GENERIC MIGRATION: Ensure all required tables and columns exist ---
+    // Check for schema mismatches
+    for (const table of desiredTables) {
+      try {
+        const cols = await db.getAllAsync<{ name: string }>(`PRAGMA table_info(${table.name})`);
+        const colNames = cols.map((c) => c.name);
+        const expectedColNames = table.columns.map((c) => c.name);
+        // Check for missing or extra columns
+        const missing = expectedColNames.filter((c) => !colNames.includes(c));
+        const extra = colNames.filter((c) => !expectedColNames.includes(c));
+        if (missing.length > 0 || extra.length > 0) {
+          detectedMismatch = true;
+          console.warn(`[SCHEMA MISMATCH] Table ${table.name}: missing columns: ${missing}, extra columns: ${extra}`);
+        }
+      } catch (e) {
+        // If table doesn't exist, treat as mismatch
+        detectedMismatch = true;
+        console.warn(`[SCHEMA MISMATCH] Table ${table.name} does not exist or error reading columns.`);
+      }
+    }
+
+    // If mismatch detected, force reset
+    if (detectedMismatch) {
+      console.warn("[FORCE RESET] Schema mismatch detected, dropping Decks and WatchedCards tables!");
       await db.execAsync("DROP TABLE IF EXISTS Decks");
       await db.execAsync("DROP TABLE IF EXISTS WatchedCards");
     }
+
     console.log("[MIGRATION] Starting user DB migration");
     // --- GENERIC MIGRATION: Ensure all required tables and columns exist ---
-    // Define the desired schema for each table
-    const desiredTables = [
-      {
-        name: "Decks",
-        columns: [
-          { name: "id", type: "INTEGER PRIMARY KEY AUTOINCREMENT" },
-          { name: "name", type: "TEXT NOT NULL" },
-          { name: "thumbnail", type: "TEXT" },
-          { name: "cards", type: "TEXT" },
-        ],
-      },
-      {
-        name: "WatchedCards",
-        columns: [
-          { name: "id", type: "INTEGER PRIMARY KEY AUTOINCREMENT" },
-          { name: "name", type: "TEXT NOT NULL" },
-          { name: "cards", type: "TEXT" },
-        ],
-      },
-    ];
-
     // Print current columns before migration
     for (const table of desiredTables) {
       try {
