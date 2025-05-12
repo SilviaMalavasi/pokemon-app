@@ -1,8 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 // ----> INCREMENT THIS WHEN SCHEMA CHANGES <----
-const USER_DATABASE_VERSION = 27;
-const FORCE_USER_DB_RESET = true; // TEMP: Set to false after first run!
+const USER_DATABASE_VERSION = 6;
 
 const USER_DATABASE_NAME = "userDatabase.db";
 
@@ -19,12 +18,7 @@ export async function openUserDatabase(): Promise<SQLite.SQLiteDatabase> {
 export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase, setIsUpdating?: (isUpdating: boolean) => void) {
   try {
     if (setIsUpdating) setIsUpdating(true);
-    if (FORCE_USER_DB_RESET) {
-      console.warn("[FORCE RESET] Dropping Decks and WatchedCards tables!");
-      await db.execAsync("DROP TABLE IF EXISTS Decks");
-      await db.execAsync("DROP TABLE IF EXISTS WatchedCards");
-    }
-    console.log("[MIGRATION] Starting user DB migration");
+
     // --- GENERIC MIGRATION: Ensure all required tables and columns exist ---
     // Define the desired schema for each table
     const desiredTables = [
@@ -46,19 +40,6 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase, setIsUpda
         ],
       },
     ];
-
-    // Print current columns before migration
-    for (const table of desiredTables) {
-      try {
-        const cols = await db.getAllAsync<{ name: string }>(`PRAGMA table_info(${table.name})`);
-        console.log(
-          `[MIGRATION] Before: Columns in ${table.name}:`,
-          cols.map((c) => c.name)
-        );
-      } catch (e) {
-        console.error(`[MIGRATION] Error reading columns for ${table.name}:`, e);
-      }
-    }
 
     const watchedCols = await db.getAllAsync<{ name: string }>(`PRAGMA table_info(WatchedCards)`);
     const hasCardIdCol = watchedCols.some((col) => col.name === "cardId");
@@ -89,36 +70,19 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase, setIsUpda
       for (const col of table.columns) {
         if (!currentCols.some((c) => c.name === col.name)) {
           await db.execAsync(`ALTER TABLE ${table.name} ADD COLUMN ${col.name} ${col.type}`);
-          console.log(`[MIGRATION] Added column ${col.name} to ${table.name}`);
         }
-      }
-    }
-
-    // Print current columns after migration
-    for (const table of desiredTables) {
-      try {
-        const cols = await db.getAllAsync<{ name: string }>(`PRAGMA table_info(${table.name})`);
-        console.log(
-          `[MIGRATION] After: Columns in ${table.name}:`,
-          cols.map((c) => c.name)
-        );
-      } catch (e) {
-        console.error(`[MIGRATION] Error reading columns for ${table.name} after migration:`, e);
       }
     }
 
     // Read the current version using getFirstAsync
     const result = await db.getFirstAsync<{ user_version: number }>("PRAGMA user_version");
     let currentDbVersion = result?.user_version ?? 0;
-    console.log(`[MIGRATION] Current user_version: ${currentDbVersion}, expected: ${USER_DATABASE_VERSION}`);
+
     if (currentDbVersion < USER_DATABASE_VERSION) {
       await db.execAsync(`PRAGMA user_version = ${USER_DATABASE_VERSION}`);
-      console.log(`[MIGRATION] Set user database version to ${USER_DATABASE_VERSION}`);
+      console.log(`Set user database version to ${USER_DATABASE_VERSION}`);
     }
-    console.log("[MIGRATION] User database migration check finished.");
-  } catch (err) {
-    console.error("[MIGRATION] Error during user DB migration:", err);
-    throw err;
+    console.log("User database migration check finished.");
   } finally {
     // Always clean up state
     if (setIsUpdating) {
