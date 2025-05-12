@@ -72,23 +72,22 @@ export const UserDatabaseProvider = ({
   useEffect(() => {
     async function setupDatabase() {
       try {
-        console.log("Attempting to open user database...");
+        console.log("[UserDB] Attempting to open user database...");
         const openedDb = await openUserDatabase();
-
+        console.log("[UserDB] Database opened successfully");
         if (isMounted.current) {
-          console.log("User database opened, migrating if needed...");
-          // Use a setTimeout to defer state updates out of the render cycle
+          console.log("[UserDB] Migrating user database if needed...");
           await migrateUserDbIfNeeded(openedDb, (updating) => {
             setTimeout(() => safeSetIsUpdating(updating), 0);
           });
-          console.log("User database migration complete.");
-
+          console.log("[UserDB] Migration complete");
           if (isMounted.current) {
             setDb(openedDb);
+            console.log("[UserDB] setDb called");
           }
         }
       } catch (e) {
-        console.error("Failed to initialize user database:", e);
+        console.error("[UserDB] Failed to initialize user database:", e);
         if (isMounted.current) {
           setError(e instanceof Error ? e : new Error(String(e)));
         }

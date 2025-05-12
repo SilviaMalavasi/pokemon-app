@@ -24,7 +24,7 @@ interface AddToDeckDropdownProps {
 }
 
 export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, subtypes }: AddToDeckDropdownProps) {
-  const { db, workingDeckId, setWorkingDeckId, incrementDecksVersion } = useUserDatabase();
+  const { db, workingDeckId, setWorkingDeckId, incrementDecksVersion, error } = useUserDatabase();
   const [modalVisible, setModalVisible] = useState(false);
   const [deckPickerVisible, setDeckPickerVisible] = useState(false);
   const [decks, setDecks] = useState<any[]>([]);
@@ -230,9 +230,14 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
           to Deck
         </ThemedText>
         {!db ? (
-          <ThemedText style={{ textAlign: "center", marginTop: 16, color: theme.colors.primary }}>
-            Database not available. Please try again later.
-          </ThemedText>
+          <>
+            <ThemedText style={{ textAlign: "center", marginTop: 16, color: theme.colors.primary }}>
+              Database not available. Please try again later.
+            </ThemedText>
+            {error && (
+              <ThemedText style={{ textAlign: "center", marginTop: 8, color: "red" }}>{error.message}</ThemedText>
+            )}
+          </>
         ) : (
           <>
             {/* Deck Picker Pressable and Modal */}

@@ -46,7 +46,7 @@ export default function SplashScreen({ isUpdatingDb, progress = 0 }: SplashScree
           useNativeDriver: true,
         }).start();
       });
-    }, 3500); // Change message every 3.5 seconds (includes fade times)
+    }, 4500); // Change message every 3.5 seconds (includes fade times)
 
     return () => clearInterval(interval);
   }, [fadeAnim]);
