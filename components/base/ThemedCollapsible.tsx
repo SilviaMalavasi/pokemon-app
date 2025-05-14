@@ -1,9 +1,7 @@
 import { PropsWithChildren, useState, useEffect } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Svg, Path } from "react-native-svg";
-
 import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
 import styles from "@/style/base/ThemedCollapsibleStyle";
@@ -54,7 +52,7 @@ export default function ThemedCollapsible({
   };
 
   return (
-    <ThemedView>
+    <View>
       <TouchableOpacity
         style={styles.heading}
         onPress={handleToggle}
@@ -70,7 +68,7 @@ export default function ThemedCollapsible({
           {title}
         </ThemedText>
       </TouchableOpacity>
-      {actualOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
-    </ThemedView>
+      {actualOpen && <View style={styles.content}>{children}</View>}
+    </View>
   );
 }

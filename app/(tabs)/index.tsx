@@ -1,6 +1,5 @@
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 import ExternalLink from "@/components/base/ExternalLink";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
@@ -9,6 +8,7 @@ import SavedDecks from "@/components/deckbuilder/SavedDecks";
 import WatchLists from "@/components/deckbuilder/WatchLists";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { getSavedDecks } from "@/lib/userDatabase";
+import { View } from "react-native";
 import { theme } from "@/style/ui/Theme";
 
 interface SavedDeck {
@@ -61,7 +61,7 @@ export default function HomeScreen() {
       headerTitle="Pokémon Deck Builder"
       scrollRef={scrollRef}
     >
-      <ThemedView>
+      <View>
         <ThemedText
           type="default"
           style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge * 1.5 }}
@@ -77,26 +77,26 @@ export default function HomeScreen() {
           <ExternalLink href="https://pokemontcg.io/">pokemontcg.io </ExternalLink>
           for the Card Archive.
         </ThemedText>
-      </ThemedView>
-      <ThemedView style={{ paddingBottom: theme.padding.xlarge }}>
+      </View>
+      <View style={{ paddingBottom: theme.padding.xlarge }}>
         <SavedDecks
           savedDecks={savedDecks}
           isLoadingDecks={isLoadingDecks}
           onDelete={() => {}}
           deletingId={deletingId}
         />
-      </ThemedView>
-      <ThemedView style={{ paddingBottom: theme.padding.xlarge }}>
+      </View>
+      <View style={{ paddingBottom: theme.padding.xlarge }}>
         <WatchLists />
-      </ThemedView>
-      <ThemedView>
+      </View>
+      <View>
         <ThemedText
           type="hintText"
           color={theme.colors.placeholder}
         >
           This app is not produced, endorsed, supported, or affiliated with Nintendo or The Pokémon Company.
         </ThemedText>
-      </ThemedView>
+      </View>
     </ParallaxScrollView>
   );
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity } from "react-native";
-import ThemedView from "@/components/base/ThemedView";
+import { TouchableOpacity, View } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import styles from "@/style/deckbuilder/DeckCardListStyle";
 import { Svg, Circle } from "react-native-svg";
@@ -225,7 +224,7 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
   const renderGroup = (groupName: string, groupCards: any[]) => {
     if (!groupCards.length) return null;
     return (
-      <ThemedView
+      <View
         style={styles.summaryContainer}
         key={groupName}
       >
@@ -242,11 +241,11 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
           )})`}</ThemedText>
         </LinearGradient>
         {groupCards.map((item, idx) => (
-          <ThemedView
+          <View
             style={styles.summaryItemContainer}
             key={item.cardId || item.id || idx}
           >
-            <ThemedView style={styles.summaryDotCol}>
+            <View style={styles.summaryDotCol}>
               <Svg
                 height={theme.padding.xsmall}
                 width={theme.padding.xsmall}
@@ -258,11 +257,11 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
                   fill={theme.colors.green}
                 />
               </Svg>
-            </ThemedView>
-            <ThemedView style={styles.summaryitemQuantity}>
+            </View>
+            <View style={styles.summaryitemQuantity}>
               <ThemedText color={theme.colors.textHilight}>{item.quantity || 1}</ThemedText>
-            </ThemedView>
-            <ThemedView style={styles.summaryTextCol}>
+            </View>
+            <View style={styles.summaryTextCol}>
               <ThemedText>
                 {cardDataMap[item.cardId]?.name}{" "}
                 <ThemedText
@@ -272,7 +271,7 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
                   {item.cardId}
                 </ThemedText>
               </ThemedText>
-              <ThemedView style={styles.qtyCol}>
+              <View style={styles.qtyCol}>
                 <TouchableOpacity onPress={() => handleChangeQuantity(item.cardId, "dec")}>
                   <ThemedText style={styles.qtyOperator}>-</ThemedText>
                 </TouchableOpacity>
@@ -280,11 +279,11 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
                 <TouchableOpacity onPress={() => handleChangeQuantity(item.cardId, "inc")}>
                   <ThemedText style={styles.qtyOperator}>+</ThemedText>
                 </TouchableOpacity>
-              </ThemedView>
-            </ThemedView>
-          </ThemedView>
+              </View>
+            </View>
+          </View>
         ))}
-      </ThemedView>
+      </View>
     );
   };
 

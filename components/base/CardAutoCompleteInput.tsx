@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, createContext, useContext } from "react";
 import { Pressable, ScrollView, TextInput, View } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 
@@ -176,7 +175,7 @@ export default function CardAutoCompleteInput({
   }, [resetKey]);
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <ThemedTextInput
         ref={inputRef}
         label={label}
@@ -205,6 +204,6 @@ export default function CardAutoCompleteInput({
           }, 250);
         }}
       />
-    </ThemedView>
+    </View>
   );
 }

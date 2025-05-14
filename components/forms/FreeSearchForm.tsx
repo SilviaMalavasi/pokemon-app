@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity } from "react-native";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
@@ -267,7 +266,7 @@ export default function FreeSearchForm({
     }
 
     return (
-      <ThemedView>
+      <View>
         <ThemedText style={styles.summaryArrayText}>
           {showFullSummary ? (
             fullSummary
@@ -314,13 +313,13 @@ export default function FreeSearchForm({
         >
           <ThemedText type="hintText">{showFullSummary ? "See less..." : "See more..."}</ThemedText>
         </TouchableOpacity>
-      </ThemedView>
+      </View>
     );
   };
 
   return (
-    <ThemedView>
-      <ThemedView style={showFullSummary ? styles.mainButtonsRowSummary : styles.mainButtonsRow}>
+    <View>
+      <View style={showFullSummary ? styles.mainButtonsRowSummary : styles.mainButtonsRow}>
         <ThemedButton
           title="Reset"
           size="small"
@@ -336,7 +335,7 @@ export default function FreeSearchForm({
           status={loading || cardSearch.trim() === "" ? "disabled" : "default"}
           disabled={loading || cardSearch.trim() === ""}
         />
-      </ThemedView>
+      </View>
       <ThemedTextInput
         label="Free Search"
         value={cardSearch}
@@ -345,8 +344,8 @@ export default function FreeSearchForm({
       />
       {/* Summary of checked fields styled as in AdvancedSearchForm */}
       {cardSearch.trim() !== "" && checkedFields.length > 0 && (
-        <ThemedView style={styles.summaryContainer}>
-          <ThemedView style={styles.summaryLabel}>
+        <View style={styles.summaryContainer}>
+          <View style={styles.summaryLabel}>
             <ThemedText type="label">
               You are searching for{" "}
               <ThemedText
@@ -357,9 +356,9 @@ export default function FreeSearchForm({
               </ThemedText>{" "}
               in:
             </ThemedText>
-          </ThemedView>
+          </View>
           {renderCheckedLabelsSummary()}
-        </ThemedView>
+        </View>
       )}
       <ThemedText
         style={styles.instructions}
@@ -369,7 +368,7 @@ export default function FreeSearchForm({
         You can exclude database fields in the search by toggling them off.
       </ThemedText>
       {/* Collapsibles in two columns */}
-      <ThemedView style={styles.collapsibleContainer}>
+      <View style={styles.collapsibleContainer}>
         {/* Card Type */}
         <View style={styles.collapsibleItem}>
           <ThemedCollapsible
@@ -378,7 +377,7 @@ export default function FreeSearchForm({
             open={openSections.CardType}
             onToggle={() => handleToggleSection("CardType")}
           >
-            <ThemedView style={{ marginBottom: 12 }}>
+            <View style={{ marginBottom: 12 }}>
               {allCardColumns
                 .filter(
                   (col) =>
@@ -386,15 +385,15 @@ export default function FreeSearchForm({
                     (col.key === "name_Card" && col.table === "Card")
                 )
                 .map((col) => (
-                  <ThemedView key={`${col.table}-${col.key}`}>
+                  <View key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
                       label={col.label}
                     />
-                  </ThemedView>
+                  </View>
                 ))}
-            </ThemedView>
+            </View>
           </ThemedCollapsible>
         </View>
         {/* Card Rules */}
@@ -405,19 +404,19 @@ export default function FreeSearchForm({
             open={openSections.CardRules}
             onToggle={() => handleToggleSection("CardRules")}
           >
-            <ThemedView style={{ marginBottom: 12 }}>
+            <View style={{ marginBottom: 12 }}>
               {allCardColumns
                 .filter((col) => col.key === "rules_Card")
                 .map((col) => (
-                  <ThemedView key={`${col.table}-${col.key}`}>
+                  <View key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
                       label={col.label}
                     />
-                  </ThemedView>
+                  </View>
                 ))}
-            </ThemedView>
+            </View>
           </ThemedCollapsible>
         </View>
         {/* Attacks */}
@@ -428,30 +427,30 @@ export default function FreeSearchForm({
             open={openSections.Attacks}
             onToggle={() => handleToggleSection("Attacks")}
           >
-            <ThemedView style={{ marginBottom: 12 }}>
+            <View style={{ marginBottom: 12 }}>
               {allCardColumns
                 .filter((col) => col.table === "Attacks")
                 .map((col) => (
-                  <ThemedView key={`${col.table}-${col.key}`}>
+                  <View key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
                       label={col.label}
                     />
-                  </ThemedView>
+                  </View>
                 ))}
               {allCardColumns
                 .filter((col) => col.table === "CardAttacks")
                 .map((col) => (
-                  <ThemedView key={`${col.table}-${col.key}`}>
+                  <View key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
                       label={col.label}
                     />
-                  </ThemedView>
+                  </View>
                 ))}
-            </ThemedView>
+            </View>
           </ThemedCollapsible>
         </View>
         {/* Abilities */}
@@ -462,19 +461,19 @@ export default function FreeSearchForm({
             open={openSections.Abilities}
             onToggle={() => handleToggleSection("Abilities")}
           >
-            <ThemedView style={{ marginBottom: 12 }}>
+            <View style={{ marginBottom: 12 }}>
               {allCardColumns
                 .filter((col) => col.table === "Abilities")
                 .map((col) => (
-                  <ThemedView key={`${col.table}-${col.key}`}>
+                  <View key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
                       label={col.label}
                     />
-                  </ThemedView>
+                  </View>
                 ))}
-            </ThemedView>
+            </View>
           </ThemedCollapsible>
         </View>
         {/* Stats */}
@@ -485,19 +484,19 @@ export default function FreeSearchForm({
             open={openSections.Stats}
             onToggle={() => handleToggleSection("Stats")}
           >
-            <ThemedView style={{ marginBottom: 12 }}>
+            <View style={{ marginBottom: 12 }}>
               {allCardColumns
                 .filter((col) => ["hp_Card", "convertedRetreatCost_Card"].includes(col.key))
                 .map((col) => (
-                  <ThemedView key={`${col.table}-${col.key}`}>
+                  <View key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
                       label={col.label}
                     />
-                  </ThemedView>
+                  </View>
                 ))}
-            </ThemedView>
+            </View>
           </ThemedCollapsible>
         </View>
         {/* Evolution */}
@@ -508,19 +507,19 @@ export default function FreeSearchForm({
             open={openSections.Evolution}
             onToggle={() => handleToggleSection("Evolution")}
           >
-            <ThemedView style={{ marginBottom: 12 }}>
+            <View style={{ marginBottom: 12 }}>
               {allCardColumns
                 .filter((col) => ["evolvesFrom_Card", "evolvesTo_Card"].includes(col.key))
                 .map((col) => (
-                  <ThemedView key={`${col.table}-${col.key}`}>
+                  <View key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
                       label={col.label}
                     />
-                  </ThemedView>
+                  </View>
                 ))}
-            </ThemedView>
+            </View>
           </ThemedCollapsible>
         </View>
         {/* Weaknesses/Resistances */}
@@ -531,19 +530,19 @@ export default function FreeSearchForm({
             open={openSections.WeaknessesResistances}
             onToggle={() => handleToggleSection("WeaknessesResistances")}
           >
-            <ThemedView style={{ marginBottom: 12 }}>
+            <View style={{ marginBottom: 12 }}>
               {allCardColumns
                 .filter((col) => ["weaknesses_Card", "resistances_Card"].includes(col.key))
                 .map((col) => (
-                  <ThemedView key={`${col.table}-${col.key}`}>
+                  <View key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
                       label={col.label}
                     />
-                  </ThemedView>
+                  </View>
                 ))}
-            </ThemedView>
+            </View>
           </ThemedCollapsible>
         </View>
         {/* Edition */}
@@ -554,19 +553,19 @@ export default function FreeSearchForm({
             open={openSections.Edition}
             onToggle={() => handleToggleSection("Edition")}
           >
-            <ThemedView style={{ marginBottom: 12 }}>
+            <View style={{ marginBottom: 12 }}>
               {allCardColumns
                 .filter((col) => ["regulationMark_Card", "name_CardSet"].includes(col.key) && col.table === "CardSet")
                 .map((col) => (
-                  <ThemedView key={`${col.table}-${col.key}`}>
+                  <View key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
                       label={col.label}
                     />
-                  </ThemedView>
+                  </View>
                 ))}
-            </ThemedView>
+            </View>
           </ThemedCollapsible>
         </View>
         {/* Artist/Flavor */}
@@ -577,22 +576,22 @@ export default function FreeSearchForm({
             open={openSections.ArtistFlavor}
             onToggle={() => handleToggleSection("ArtistFlavor")}
           >
-            <ThemedView style={{ marginBottom: 12 }}>
+            <View style={{ marginBottom: 12 }}>
               {allCardColumns
                 .filter((col) => ["artist_Card", "flavorText_Card"].includes(col.key))
                 .map((col) => (
-                  <ThemedView key={`${col.table}-${col.key}`}>
+                  <View key={`${col.table}-${col.key}`}>
                     <ThemedCheckbox
                       checked={includedColumns[col.key]}
                       onPress={() => handleToggleColumn(col.key)}
                       label={col.label}
                     />
-                  </ThemedView>
+                  </View>
                 ))}
-            </ThemedView>
+            </View>
           </ThemedCollapsible>
         </View>
-      </ThemedView>
+      </View>
       {/* End collapsibles row */}
       <ThemedButton
         title={toggleAllState === "uncheck" ? "Uncheck all" : allChecked ? "Uncheck all" : "Check all"}
@@ -609,6 +608,6 @@ export default function FreeSearchForm({
         hint="If enabled, cards with same stats but different images or sets will be displayed only once."
         style={styles.switchContainer}
       />
-    </ThemedView>
+    </View>
   );
 }

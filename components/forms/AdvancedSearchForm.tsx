@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 
@@ -395,9 +394,9 @@ export default function AdvancedSearchForm({
   ];
 
   return (
-    <ThemedView>
+    <View>
       {summaryFields.filter((f) => f.value && f.value !== "").length > 0 && (
-        <ThemedView style={styles.summaryContainer}>
+        <View style={styles.summaryContainer}>
           <LinearGradient
             colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
             locations={[0, 0.4, 0.4, 1]}
@@ -407,7 +406,7 @@ export default function AdvancedSearchForm({
           >
             <ThemedText type="label">You are searching for</ThemedText>
           </LinearGradient>
-          <ThemedView>
+          <View>
             {summaryFields
               .filter((f) => f.value && f.value !== "")
               .map((f) => {
@@ -429,11 +428,11 @@ export default function AdvancedSearchForm({
                   f.label === "Attack Damage" && (operator.trim() === "+" || operator.trim() === "×");
 
                 return (
-                  <ThemedView
+                  <View
                     style={styles.summaryItemContainer}
                     key={f.label}
                   >
-                    <ThemedView style={styles.summaryDotCol}>
+                    <View style={styles.summaryDotCol}>
                       <Svg
                         height={theme.padding.xsmall}
                         width={theme.padding.xsmall}
@@ -445,8 +444,8 @@ export default function AdvancedSearchForm({
                           fill={theme.colors.green}
                         />
                       </Svg>
-                    </ThemedView>
-                    <ThemedView style={styles.summaryTextCol}>
+                    </View>
+                    <View style={styles.summaryTextCol}>
                       <ThemedText>
                         <Text style={{ fontWeight: "bold" }}>
                           {f.label}
@@ -470,14 +469,14 @@ export default function AdvancedSearchForm({
                           f.value
                         )}
                       </ThemedText>
-                    </ThemedView>
-                  </ThemedView>
+                    </View>
+                  </View>
                 );
               })}
-          </ThemedView>
-        </ThemedView>
+          </View>
+        </View>
       )}
-      <ThemedView
+      <View
         style={
           summaryFields.filter((f: { value: any }) => f.value && f.value !== "").length > 0
             ? styles.mainButtonsRowSummary
@@ -499,7 +498,7 @@ export default function AdvancedSearchForm({
           status={!isAnyFilterSet || loading ? "disabled" : "default"}
           disabled={!isAnyFilterSet || loading}
         />
-      </ThemedView>
+      </View>
       <ThemedTextInput
         label="Name"
         value={cardName}
@@ -507,7 +506,7 @@ export default function AdvancedSearchForm({
         placeholder="Card name"
         style={{ marginBottom: theme.padding.medium }}
       />
-      <ThemedView style={styles.buttonRow}>
+      <View style={styles.buttonRow}>
         <ThemedButton
           type="outline"
           size="large"
@@ -528,8 +527,8 @@ export default function AdvancedSearchForm({
           onPress={() => setRulesModalVisible(true)}
           style={styles.halfButton}
         />
-      </ThemedView>
-      <ThemedView style={styles.buttonRow}>
+      </View>
+      <View style={styles.buttonRow}>
         <ThemedButton
           type="outline"
           size="large"
@@ -559,8 +558,8 @@ export default function AdvancedSearchForm({
           onPress={() => setAbilitiesModalVisible(true)}
           style={styles.halfButton}
         />
-      </ThemedView>
-      <ThemedView style={styles.buttonRow}>
+      </View>
+      <View style={styles.buttonRow}>
         <ThemedButton
           type="outline"
           size="large"
@@ -581,8 +580,8 @@ export default function AdvancedSearchForm({
           onPress={() => setEvolutionModalVisible(true)}
           style={styles.halfButton}
         />
-      </ThemedView>
-      <ThemedView style={styles.buttonRow}>
+      </View>
+      <View style={styles.buttonRow}>
         <ThemedButton
           type="outline"
           size="large"
@@ -607,7 +606,7 @@ export default function AdvancedSearchForm({
           onPress={() => setEditionModalVisible(true)}
           style={styles.halfButton}
         />
-      </ThemedView>
+      </View>
       <CardTypeModal
         visible={cardTypeModalVisible}
         onClose={() => setCardTypeModalVisible(false)}
@@ -703,6 +702,6 @@ export default function AdvancedSearchForm({
         hint="If enabled, cards with same stats but different images or sets will be displayed only once."
         style={styles.switchContainer}
       />
-    </ThemedView>
+    </View>
   );
 }

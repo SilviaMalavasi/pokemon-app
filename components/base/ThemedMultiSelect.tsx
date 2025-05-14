@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, Modal, ScrollView, Pressable } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedChip from "@/components/base/ThemedChip";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedCheckbox from "@/components/base/ThemedCheckbox";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
 import { theme } from "@/style/ui/Theme";
@@ -45,8 +44,8 @@ export default function ThemedMultiSelect({ label, value, options, onChange, lab
   }, [value]);
 
   return (
-    <ThemedView style={styles.wrapper}>
-      <ThemedView style={styles.container}>
+    <View style={styles.wrapper}>
+      <View style={styles.container}>
         {label && (
           <ThemedLabelWithHint
             label={label}
@@ -106,11 +105,11 @@ export default function ThemedMultiSelect({ label, value, options, onChange, lab
             </View>
           </View>
         </Modal>
-      </ThemedView>
-      <ThemedView style={styles.selectedAndHintWrapper}>
+      </View>
+      <View style={styles.selectedAndHintWrapper}>
         {/* Show selected items */}
         {value.length > 0 && (
-          <ThemedView style={styles.selectedWrapper}>
+          <View style={styles.selectedWrapper}>
             {options
               .filter((o) => value.includes(o.value))
               .map((opt) => (
@@ -122,7 +121,7 @@ export default function ThemedMultiSelect({ label, value, options, onChange, lab
                   selected
                 />
               ))}
-          </ThemedView>
+          </View>
         )}
         {showHint && labelHint && (
           <ThemedText
@@ -132,7 +131,7 @@ export default function ThemedMultiSelect({ label, value, options, onChange, lab
             {labelHint}
           </ThemedText>
         )}
-      </ThemedView>
-    </ThemedView>
+      </View>
+    </View>
   );
 }

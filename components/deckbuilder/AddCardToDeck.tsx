@@ -4,7 +4,6 @@ import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
   CardAutoCompleteSuggestions,
 } from "@/components/base/CardAutoCompleteInput";
-import ThemedView from "@/components/base/ThemedView";
 import styles from "@/style/deckbuilder/AddCardToDeckStyle";
 import ThemedText from "../base/ThemedText";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
@@ -134,7 +133,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
       </ThemedText>
       <CardAutoCompleteProvider>
         <CardAutoCompleteSuggestions onCardSelect={handleCardSelect} />
-        <ThemedView style={styles.row}>
+        <View style={styles.row}>
           <View style={styles.cardInput}>
             <CardAutoCompleteInput
               key={`card-input-${resetCounter}`}
@@ -146,7 +145,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
               resetKey={resetCounter}
             />
           </View>
-        </ThemedView>
+        </View>
       </CardAutoCompleteProvider>
 
       <ThemedModal
@@ -164,7 +163,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
         >
           Set Quantity for <ThemedText color={theme.colors.textHilight}>{selectedCardName}</ThemedText>
         </ThemedText>
-        <ThemedView style={styles.numbersModalContainer}>
+        <View style={styles.numbersModalContainer}>
           {isBasicEnergy ? (
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
               <TouchableOpacity
@@ -207,7 +206,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
               </TouchableOpacity>
             ))
           )}
-        </ThemedView>
+        </View>
       </ThemedModal>
     </View>
   );

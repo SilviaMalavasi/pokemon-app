@@ -3,7 +3,6 @@ import { View, Modal, ScrollView, Pressable, TouchableOpacity } from "react-nati
 import { Svg, Rect, Path } from "react-native-svg";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedChip from "@/components/base/ThemedChip";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
 
 import { theme } from "@/style/ui/Theme";
@@ -31,9 +30,9 @@ export default function ThemedSelect({ label, value, options, onChange, labelHin
   };
 
   return (
-    <ThemedView style={styles.wrapper}>
+    <View style={styles.wrapper}>
       {!value && (
-        <ThemedView style={styles.container}>
+        <View style={styles.container}>
           {label && (
             <ThemedLabelWithHint
               label={label}
@@ -80,9 +79,9 @@ export default function ThemedSelect({ label, value, options, onChange, labelHin
               </View>
             </View>
           </Modal>
-        </ThemedView>
+        </View>
       )}
-      <ThemedView style={styles.selectedAndHintWrapper}>
+      <View style={styles.selectedAndHintWrapper}>
         {/* Show selected item */}
         {value && (
           <>
@@ -119,7 +118,7 @@ export default function ThemedSelect({ label, value, options, onChange, labelHin
             ) : (
               <ThemedText type="label"> {label}</ThemedText>
             )}
-            <ThemedView style={styles.selectedWrapper}>
+            <View style={styles.selectedWrapper}>
               <ThemedChip
                 key={value}
                 label={options.find((o) => o.value === value)?.label || ""}
@@ -129,7 +128,7 @@ export default function ThemedSelect({ label, value, options, onChange, labelHin
                 }}
                 selected
               />
-            </ThemedView>
+            </View>
           </>
         )}
         {showHint && labelHint && (
@@ -140,7 +139,7 @@ export default function ThemedSelect({ label, value, options, onChange, labelHin
             {labelHint}
           </ThemedText>
         )}
-      </ThemedView>
-    </ThemedView>
+      </View>
+    </View>
   );
 }

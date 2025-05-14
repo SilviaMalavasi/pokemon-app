@@ -1,14 +1,13 @@
 import React, { useState, forwardRef } from "react";
 import { TouchableOpacity } from "react-native";
-import { TextInput as RNTextInput } from "react-native";
+import { TextInput, View } from "react-native";
 import { Svg, Rect, Path } from "react-native-svg";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
 import { theme } from "@/style/ui/Theme";
 import styles from "@/style/base/ThemedTextInputStyle";
 
-export interface TextInputProps {
+export interface ThemedTextInputProps {
   label?: string;
   value: string;
   onChange: (value: string) => void;
@@ -20,7 +19,7 @@ export interface TextInputProps {
   maxChars?: number;
 }
 
-export default forwardRef<RNTextInput, TextInputProps>(function ThemedTextInput(
+export default forwardRef<TextInput, ThemedTextInputProps>(function ThemedTextInput(
   { label, value, onChange, placeholder, labelHint, style, onFocus, onBlur, maxChars },
   ref
 ) {
@@ -33,7 +32,7 @@ export default forwardRef<RNTextInput, TextInputProps>(function ThemedTextInput(
   }
 
   return (
-    <ThemedView style={[styles.container, style]}>
+    <View style={[styles.container, style]}>
       {label && (
         <ThemedLabelWithHint
           label={label}
@@ -42,8 +41,8 @@ export default forwardRef<RNTextInput, TextInputProps>(function ThemedTextInput(
           setShowHint={setShowHint}
         />
       )}
-      <ThemedView>
-        <RNTextInput
+      <View>
+        <TextInput
           ref={ref}
           style={[styles.input, { flex: 1 }]}
           value={displayValue}
@@ -89,7 +88,7 @@ export default forwardRef<RNTextInput, TextInputProps>(function ThemedTextInput(
             </Svg>
           </TouchableOpacity>
         )}
-      </ThemedView>
+      </View>
       {showHint && labelHint && (
         <ThemedText
           type="hintText"
@@ -98,6 +97,6 @@ export default forwardRef<RNTextInput, TextInputProps>(function ThemedTextInput(
           {labelHint}
         </ThemedText>
       )}
-    </ThemedView>
+    </View>
   );
 });

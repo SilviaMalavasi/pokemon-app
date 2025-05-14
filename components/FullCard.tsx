@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Image, ScrollView } from "react-native";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { Ability, Attack, CardSet } from "@/types/PokemonCardType";
 import { LinearGradient } from "expo-linear-gradient";
@@ -89,7 +88,7 @@ export default function FullCard(props: FullCardProps) {
 
   return (
     <ScrollView>
-      <ThemedView style={styles.container}>
+      <View style={styles.container}>
         {imageSource ? (
           <View style={styles.imageContainer}>
             <Image
@@ -123,7 +122,7 @@ export default function FullCard(props: FullCardProps) {
         ) : null}
 
         {/* Card Types */}
-        <ThemedView style={styles.cardDetailsContainer}>
+        <View style={styles.cardDetailsContainer}>
           <LinearGradient
             colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
             locations={[0, 0.4, 0.4, 1]}
@@ -155,13 +154,13 @@ export default function FullCard(props: FullCardProps) {
           )}
 
           {renderCardTypes()}
-        </ThemedView>
+        </View>
 
         {/* Rules */}
         {props.rules &&
           ((Array.isArray(props.rules) && props.rules.length > 0) ||
             (props.rules && typeof props.rules === "string" && (props.rules as string).trim() !== "")) && (
-            <ThemedView style={styles.cardDetailsContainer}>
+            <View style={styles.cardDetailsContainer}>
               <LinearGradient
                 colors={[
                   "rgba(255,255,255,0)",
@@ -192,12 +191,12 @@ export default function FullCard(props: FullCardProps) {
                   {typeof props.rules === "string" ? props.rules.replace(/[\[\]"]+/g, "").trim() : "-"}
                 </ThemedText>
               )}
-            </ThemedView>
+            </View>
           )}
 
         {/* Attacks */}
         {props.attacks && props.attacks.length > 0 && (
-          <ThemedView style={styles.cardDetailsContainer}>
+          <View style={styles.cardDetailsContainer}>
             <LinearGradient
               colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
               locations={[0, 0.4, 0.4, 1]}
@@ -282,12 +281,12 @@ export default function FullCard(props: FullCardProps) {
                 })()}
               </View>
             ))}
-          </ThemedView>
+          </View>
         )}
 
         {/* Abilities */}
         {props.abilities && props.abilities.length > 0 && (
-          <ThemedView style={styles.cardDetailsContainer}>
+          <View style={styles.cardDetailsContainer}>
             <LinearGradient
               colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
               locations={[0, 0.4, 0.4, 1]}
@@ -327,13 +326,13 @@ export default function FullCard(props: FullCardProps) {
                 </ThemedText>
               </View>
             ))}
-          </ThemedView>
+          </View>
         )}
 
         {/* Only shown for Pokémon cards */}
         {props.supertype === "Pokémon" && (
           <>
-            <ThemedView style={styles.cardDetailsContainer}>
+            <View style={styles.cardDetailsContainer}>
               <LinearGradient
                 colors={[
                   "rgba(255,255,255,0)",
@@ -370,9 +369,9 @@ export default function FullCard(props: FullCardProps) {
                   {props.convertedRetreatCost}
                 </ThemedText>
               )}
-            </ThemedView>
+            </View>
 
-            <ThemedView style={styles.cardDetailsContainer}>
+            <View style={styles.cardDetailsContainer}>
               <LinearGradient
                 colors={[
                   "rgba(255,255,255,0)",
@@ -512,9 +511,9 @@ export default function FullCard(props: FullCardProps) {
                 }
                 return null;
               })()}
-            </ThemedView>
+            </View>
 
-            <ThemedView style={styles.cardDetailsContainer}>
+            <View style={styles.cardDetailsContainer}>
               <LinearGradient
                 colors={[
                   "rgba(255,255,255,0)",
@@ -563,13 +562,13 @@ export default function FullCard(props: FullCardProps) {
                 }
                 return null;
               })()}
-            </ThemedView>
+            </View>
           </>
         )}
 
         {/* Card Set */}
 
-        <ThemedView style={styles.cardDetailsContainer}>
+        <View style={styles.cardDetailsContainer}>
           <LinearGradient
             colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
             locations={[0, 0.4, 0.4, 1]}
@@ -623,10 +622,10 @@ export default function FullCard(props: FullCardProps) {
               {props.cardSet.series}
             </ThemedText>
           )}
-        </ThemedView>
+        </View>
         {/* Other Details */}
         {props.rarity || props.artist || props.flavorText ? (
-          <ThemedView style={styles.cardDetailsContainer}>
+          <View style={styles.cardDetailsContainer}>
             <LinearGradient
               colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
               locations={[0, 0.4, 0.4, 1]}
@@ -669,9 +668,9 @@ export default function FullCard(props: FullCardProps) {
                 {props.flavorText}
               </ThemedText>
             )}
-          </ThemedView>
+          </View>
         ) : null}
-      </ThemedView>
+      </View>
     </ScrollView>
   );
 }

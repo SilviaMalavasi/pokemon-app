@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { TouchableOpacity, Modal, Pressable, View } from "react-native";
-import { TextInput as RNTextInput } from "react-native";
+import { TextInput, TouchableOpacity, Modal, Pressable, View } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
 import { Svg, Rect, Path } from "react-native-svg";
 import styles from "@/style/base/ThemedNumberInputStyle";
 import { theme } from "@/style/ui/Theme";
 
-interface NumberInputProps {
+interface ThemedNumberInputProps {
   label?: string;
   value: number | "";
   onChange: (value: number | "", operator: string) => void;
@@ -20,7 +18,7 @@ interface NumberInputProps {
   resetKey?: number; // Add resetKey prop
 }
 
-export default function NumberInput({
+export default function ThemedNumberInput({
   label,
   value,
   onChange,
@@ -30,7 +28,7 @@ export default function NumberInput({
   operator = "=",
   onOperatorChange,
   resetKey,
-}: NumberInputProps) {
+}: ThemedNumberInputProps) {
   const [showHint, setShowHint] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -64,7 +62,7 @@ export default function NumberInput({
   ];
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       {label && (
         <ThemedLabelWithHint
           label={label}
@@ -73,7 +71,7 @@ export default function NumberInput({
           setShowHint={setShowHint}
         />
       )}
-      <ThemedView style={styles.inputContainer}>
+      <View style={styles.inputContainer}>
         {/* Modal-based single operator select */}
         {showOperatorSelect !== "none" && (
           <>
@@ -135,7 +133,7 @@ export default function NumberInput({
             </Modal>
           </>
         )}
-        <RNTextInput
+        <TextInput
           style={[
             styles.input,
             showOperatorSelect !== "none"
@@ -198,7 +196,7 @@ export default function NumberInput({
             </Svg>
           </TouchableOpacity>
         )}
-      </ThemedView>
+      </View>
       {showHint && labelHint && (
         <ThemedText
           type="hintText"
@@ -207,6 +205,6 @@ export default function NumberInput({
           {labelHint}
         </ThemedText>
       )}
-    </ThemedView>
+    </View>
   );
 }

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { theme } from "@/style/ui/Theme";
 import CompactCard from "@/components/CompactCard";
 import WatchlistStyle from "@/style/WatchlistStyle";
@@ -73,7 +72,7 @@ export default function WatchListDetailScreen() {
       headerImage="deck-bkg"
       headerTitle={watchList?.name || "WatchList Details"}
     >
-      <ThemedView>
+      <View>
         {loading || dbLoading || cardDbLoading ? (
           <ActivityIndicator
             size="large"
@@ -88,23 +87,23 @@ export default function WatchListDetailScreen() {
             {getCardsArray().length === 0 ? (
               <ThemedText>No cards in this watchlist.</ThemedText>
             ) : (
-              <ThemedView style={WatchlistStyle.cardList}>
+              <View style={WatchlistStyle.cardList}>
                 {cardDetails.map((card: any, idx: number) => (
-                  <ThemedView key={card.cardId || idx}>
+                  <View key={card.cardId || idx}>
                     <CompactCard
                       card={card}
                       onImageLoad={() => {}}
                       loading={false}
                     />
-                  </ThemedView>
+                  </View>
                 ))}
-              </ThemedView>
+              </View>
             )}
           </>
         ) : (
           <ThemedText>WatchList not found.</ThemedText>
         )}
-      </ThemedView>
+      </View>
     </ParallaxScrollView>
   );
 }

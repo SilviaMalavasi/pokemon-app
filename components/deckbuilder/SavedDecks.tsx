@@ -1,8 +1,8 @@
 import React from "react";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 import CompactDeck from "@/components/deckbuilder/CompactDeck";
 import SearchResultStyle from "@/style/SearchResultStyle";
+import { View } from "react-native";
 import { theme } from "@/style/ui/Theme";
 
 interface SavedDeck {
@@ -21,7 +21,7 @@ interface SavedDecksSectionProps {
 
 export default function SavedDecks({ savedDecks, isLoadingDecks, onDelete, deletingId }: SavedDecksSectionProps) {
   return (
-    <ThemedView>
+    <View>
       <ThemedText
         type="subtitle"
         style={{ paddingBottom: theme.padding.medium }}
@@ -33,17 +33,17 @@ export default function SavedDecks({ savedDecks, isLoadingDecks, onDelete, delet
       ) : savedDecks.length === 0 ? (
         <ThemedText>No saved decks yet.</ThemedText>
       ) : (
-        <ThemedView style={SearchResultStyle.cardList}>
+        <View style={SearchResultStyle.cardList}>
           {savedDecks.map((deck) => (
-            <ThemedView key={deck.id + "-deck"}>
+            <View key={deck.id + "-deck"}>
               <CompactDeck
                 deck={deck}
                 loading={deletingId === deck.id}
               />
-            </ThemedView>
+            </View>
           ))}
-        </ThemedView>
+        </View>
       )}
-    </ThemedView>
+    </View>
   );
 }

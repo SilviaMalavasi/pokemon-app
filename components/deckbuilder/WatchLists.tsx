@@ -1,7 +1,7 @@
 import React from "react";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
+import { View } from "react-native";
 import { useRouter } from "expo-router";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 
@@ -9,7 +9,7 @@ export default function WatchLists() {
   const router = useRouter();
   const { watchLists, isLoadingWatchLists } = useUserDatabase();
   return (
-    <ThemedView>
+    <View>
       <ThemedText
         type="subtitle"
         style={{ marginBottom: 16 }}
@@ -35,6 +35,6 @@ export default function WatchLists() {
           />
         ))
       )}
-    </ThemedView>
+    </View>
   );
 }

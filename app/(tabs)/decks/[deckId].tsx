@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, TouchableOpacity } from "react-native";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
@@ -16,6 +15,7 @@ import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import FloatingEdit from "@/components/ui/FloatingEdit";
 import DeckThumbnailList from "@/components/deckbuilder/DeckThumbnailList";
+import { View } from "react-native";
 
 export default function DeckScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
@@ -103,7 +103,7 @@ export default function DeckScreen() {
         headerTitle={deck?.name || "Deck Details"}
         scrollRef={scrollRef}
       >
-        <ThemedView>
+        <View>
           {loading || dbLoading ? (
             <ActivityIndicator
               size="large"
@@ -133,7 +133,7 @@ export default function DeckScreen() {
                 }}
               />
               {/* Toggle Button */}
-              <ThemedView
+              <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
@@ -162,7 +162,7 @@ export default function DeckScreen() {
                     {viewMode === "list" ? "Thumb View" : "List View"}
                   </ThemedText>
                 </TouchableOpacity>
-              </ThemedView>
+              </View>
               {viewMode === "list" ? (
                 <DeckCardList
                   cards={getCardsArray()}
@@ -190,7 +190,7 @@ export default function DeckScreen() {
           ) : (
             <ThemedText>Deck not found.</ThemedText>
           )}
-        </ThemedView>
+        </View>
       </ParallaxScrollView>
       <SafeAreaView
         pointerEvents="box-none"

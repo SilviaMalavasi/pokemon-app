@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Animated, Image, View } from "react-native";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import styles from "@/style/ui/SplashScreenStyle";
-import { theme } from "@/style/ui/Theme";
 
 const messages = [
   "Catching Pokémon\nin the database",
@@ -63,7 +61,7 @@ export default function SplashScreen({ isUpdatingDb, progress = 0 }: SplashScree
           resizeMode="cover"
         />
       </View>
-      <ThemedView style={styles.overlay}>
+      <View style={styles.overlay}>
         <View style={styles.centerContent}>
           <Image
             source={require("@/assets/images/icon.png")}
@@ -98,7 +96,7 @@ export default function SplashScreen({ isUpdatingDb, progress = 0 }: SplashScree
             </>
           )}
         </View>
-      </ThemedView>
+      </View>
     </View>
   );
 }

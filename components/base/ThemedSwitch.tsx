@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Switch, SwitchProps, TouchableOpacity } from "react-native";
+import { Switch, SwitchProps, TouchableOpacity, View } from "react-native";
 import { Svg, Rect, Path } from "react-native-svg";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 
 import styles from "@/style/base/ThemedSwitchStyle";
 import { theme } from "@/style/ui/Theme";
@@ -27,8 +26,8 @@ export default function ThemedSwitch({
 }: ThemedSwitchProps) {
   const [showHint, setShowHint] = useState(false);
   return (
-    <ThemedView style={[styles.container, style]}>
-      <ThemedView style={styles.row}>
+    <View style={[styles.container, style]}>
+      <View style={styles.row}>
         <Switch
           value={value}
           onValueChange={onValueChange}
@@ -38,7 +37,7 @@ export default function ThemedSwitch({
           {...rest}
           style={styles.switch}
         />
-        <ThemedView style={styles.labelContainer}>
+        <View style={styles.labelContainer}>
           {hint ? (
             <TouchableOpacity
               onPress={() => setShowHint((v) => !v)}
@@ -81,18 +80,18 @@ export default function ThemedSwitch({
               {label}
             </ThemedText>
           )}
-        </ThemedView>
-      </ThemedView>
+        </View>
+      </View>
       {showHint && (
-        <ThemedView style={styles.hintContainer}>
+        <View style={styles.hintContainer}>
           <ThemedText
             style={styles.hintText}
             type="hintText"
           >
             {hint}
           </ThemedText>
-        </ThemedView>
+        </View>
       )}
-    </ThemedView>
+    </View>
   );
 }

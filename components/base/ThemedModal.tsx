@@ -1,6 +1,5 @@
 import React from "react";
 import { Modal, Pressable, View, SafeAreaView, Platform, ScrollView } from "react-native";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
@@ -50,7 +49,7 @@ export default function ThemedModal({
             style={[styles.centeredView, contentStyle]}
             pointerEvents="box-none"
           >
-            <ThemedView
+            <View
               style={styles.modalView}
               pointerEvents="auto"
             >
@@ -60,7 +59,7 @@ export default function ThemedModal({
                 persistentScrollbar={true}
               >
                 {children}
-                <ThemedView style={styles.buttonContainer}>
+                <View style={styles.buttonContainer}>
                   {onCancel && (
                     <Pressable
                       onPress={() => {
@@ -81,9 +80,9 @@ export default function ThemedModal({
                     style={[styles.button, buttonStyle]}
                     onPress={onClose}
                   />
-                </ThemedView>
+                </View>
               </ScrollView>
-            </ThemedView>
+            </View>
           </View>
         </View>
       </SafeAreaView>

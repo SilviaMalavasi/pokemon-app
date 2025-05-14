@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Image, ActivityIndicator } from "react-native";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { CardType } from "@/types/PokemonCardType";
 import CompactCardStyle from "@/style/CompactCardStyle";
@@ -28,19 +27,17 @@ export default function CompactCard({ card, onImageLoad, loading, disableLink }:
 
   if (loading) {
     return (
-      <ThemedView
-        style={[CompactCardStyle.container, { justifyContent: "center", alignItems: "center", minHeight: vw(68) }]}
-      >
+      <View style={[CompactCardStyle.container, { justifyContent: "center", alignItems: "center", minHeight: vw(68) }]}>
         <ActivityIndicator
           size="large"
           color={theme.colors.textAlternative}
         />
-      </ThemedView>
+      </View>
     );
   }
 
   const cardContent = (
-    <ThemedView style={CompactCardStyle.container}>
+    <View style={CompactCardStyle.container}>
       <View style={CompactCardStyle.imageContainer}>
         {imageSource ? (
           <View style={{ position: "relative", justifyContent: "center", alignItems: "center" }}>
@@ -72,7 +69,7 @@ export default function CompactCard({ card, onImageLoad, loading, disableLink }:
           {card.name}
         </ThemedText>
       </View>
-    </ThemedView>
+    </View>
   );
 
   if (disableLink) {

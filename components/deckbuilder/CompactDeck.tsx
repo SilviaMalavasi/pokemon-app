@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Image, ActivityIndicator, TouchableOpacity } from "react-native";
 import { Svg, Path } from "react-native-svg";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedModal from "@/components/base/ThemedModal";
 import { Link } from "expo-router";
@@ -52,18 +51,18 @@ export default function CompactDeck({ deck, onImageLoad, loading, onDelete }: Co
 
   if (loading) {
     return (
-      <ThemedView style={[styles.container, { justifyContent: "center", alignItems: "center", minHeight: vw(68) }]}>
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center", minHeight: vw(68) }]}>
         <ActivityIndicator
           size="large"
           color={theme.colors.textAlternative}
         />
-      </ThemedView>
+      </View>
     );
   }
 
   return (
     <Link href={{ pathname: "/decks/[deckId]", params: { deckId: deck.id } }}>
-      <ThemedView style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.imageContainer}>
           {imageSource ? (
             <View style={{ position: "relative", justifyContent: "center", alignItems: "center" }}>
@@ -141,7 +140,7 @@ export default function CompactDeck({ deck, onImageLoad, loading, onDelete }: Co
           </ThemedText>
           <ThemedText>Are you sure you want to delete '{deck.name}'? This action cannot be undone.</ThemedText>
         </ThemedModal>
-      </ThemedView>
+      </View>
     </Link>
   );
 }

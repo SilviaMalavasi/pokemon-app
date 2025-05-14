@@ -8,7 +8,6 @@ import Animated, {
   useScrollViewOffset,
   AnimatedRef,
 } from "react-native-reanimated";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import { Image } from "expo-image";
 import { vw } from "@/helpers/viewport";
@@ -105,7 +104,7 @@ export default function ParallaxScrollView({ children, headerImage, headerTitle,
           </View>
         </View>
       </Animated.View>
-      <ThemedView style={styles.content}>{children}</ThemedView>
+      <View style={styles.content}>{children}</View>
     </Animated.ScrollView>
   );
 }

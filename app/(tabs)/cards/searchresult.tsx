@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback, useRef } from "react";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
-import ThemedView from "@/components/base/ThemedView";
 import SearchResult from "@/components/SearchResult";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import { useRouter } from "expo-router";
@@ -125,7 +124,7 @@ export default function SearchResultScreen() {
         headerTitle="Search Results"
         scrollRef={scrollRef}
       >
-        <ThemedView>
+        <View>
           <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}></View>
           <SearchResult
             cardIds={cardIds}
@@ -137,7 +136,7 @@ export default function SearchResultScreen() {
             onPageChange={handlePageChange}
             onAllImagesLoaded={handleAllImagesLoaded}
           />
-        </ThemedView>
+        </View>
       </ParallaxScrollView>
       <SafeAreaView
         pointerEvents="box-none"

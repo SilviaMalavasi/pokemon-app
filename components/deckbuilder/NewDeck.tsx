@@ -1,6 +1,6 @@
 import React from "react";
+import { View } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import CardAutoCompleteInput, {
@@ -55,10 +55,10 @@ export default function NewDeck({
   };
 
   return (
-    <ThemedView>
+    <View>
       <ThemedText type="subtitle">New Deck</ThemedText>
       <CardAutoCompleteProvider>
-        <ThemedView style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge }}>
+        <View style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge }}>
           <ThemedTextInput
             label="Deck Name *"
             value={deckName}
@@ -83,8 +83,8 @@ export default function NewDeck({
             disabled={isSaveDisabled}
             style={{ marginTop: theme.padding.small }}
           />
-        </ThemedView>
+        </View>
       </CardAutoCompleteProvider>
-    </ThemedView>
+    </View>
   );
 }

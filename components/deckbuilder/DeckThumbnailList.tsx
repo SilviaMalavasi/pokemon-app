@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Svg, Path } from "react-native-svg";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import CompactCard from "@/components/CompactCard";
 import styles from "@/style/deckbuilder/DeckThumbnailListStyle";
@@ -122,9 +120,9 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
         >
           {groupName} ({groupCards.reduce((sum, item) => sum + (item.quantity || 1), 0)})
         </ThemedText>
-        <ThemedView style={styles.cardList}>
+        <View style={styles.cardList}>
           {groupCards.map((item, idx) => (
-            <ThemedView
+            <View
               key={item.cardId || idx}
               style={{ position: "relative" }}
             >
@@ -143,15 +141,15 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
                   </View>
                 </View>
               </TouchableOpacity>
-            </ThemedView>
+            </View>
           ))}
-        </ThemedView>
+        </View>
       </React.Fragment>
     );
   };
 
   return (
-    <ThemedView style={{ backgroundColor: "transparent" }}>
+    <View style={{ backgroundColor: "transparent" }}>
       {(["Pokémon", "Trainer", "Energy"] as const).map((group, idx) => renderGroup(group, grouped[group], idx))}
       {/* Modal for quantity selection */}
       <ThemedModal
@@ -170,7 +168,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
           Set Quantity for{" "}
           <ThemedText color={theme.colors.textHilight}>{selectedCard?.name || selectedCard?.cardId}</ThemedText>
         </ThemedText>
-        <ThemedView style={styles.numbersModalContainer}>
+        <View style={styles.numbersModalContainer}>
           {[0, 1, 2, 3, 4].map((qty) => (
             <TouchableOpacity
               key={qty}
@@ -189,8 +187,8 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
               </ThemedText>
             </TouchableOpacity>
           ))}
-        </ThemedView>
+        </View>
       </ThemedModal>
-    </ThemedView>
+    </View>
   );
 }

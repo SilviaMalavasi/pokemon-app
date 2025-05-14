@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
-import ThemedView from "@/components/base/ThemedView";
 import FreeSearchForm from "@/components/forms/FreeSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import ThemedModal from "@/components/base/ThemedModal";
@@ -13,6 +12,7 @@ import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import { CardForDuplicateCheck } from "@/types/PokemonCardType";
+import { View } from "react-native";
 
 // Helper function to generate SQL placeholders like ?,?,?
 function generatePlaceholders(count: number): string {
@@ -98,7 +98,7 @@ export default function FreeSearchScreen() {
       headerTitle="Free Search"
       scrollRef={scrollRef}
     >
-      <ThemedView>
+      <View>
         <FreeSearchForm
           key={resetKey}
           onSearchResults={handleSearchResults}
@@ -107,7 +107,7 @@ export default function FreeSearchScreen() {
           removeDuplicates={removeDuplicatesState} // Pass renamed state variable
           onRemoveDuplicatesChange={setRemoveDuplicatesState} // Pass renamed state setter
         />
-      </ThemedView>
+      </View>
       <ThemedModal
         visible={modalVisible} // Add missing visible prop
         buttonType="main"

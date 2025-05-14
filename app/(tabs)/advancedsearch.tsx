@@ -3,7 +3,6 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
-import ThemedView from "@/components/base/ThemedView";
 import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import ThemedModal from "@/components/base/ThemedModal";
@@ -13,6 +12,7 @@ import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
+import { View } from "react-native";
 
 export default function FullFormScreen() {
   const [resetKey, setResetKey] = useState(0);
@@ -102,7 +102,7 @@ export default function FullFormScreen() {
         headerTitle="Advanced Search"
         scrollRef={scrollRef}
       >
-        <ThemedView>
+        <View>
           <AdvancedSearchForm
             onSearchResults={handleSearchResults}
             setLoading={() => {}}
@@ -112,7 +112,7 @@ export default function FullFormScreen() {
             currentPage={1}
             itemsPerPage={ITEMS_PER_PAGE}
           />
-        </ThemedView>
+        </View>
 
         <ThemedModal
           visible={modalVisible}

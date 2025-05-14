@@ -1,10 +1,10 @@
 import React from "react";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import CompactCard from "@/components/CompactCard";
 import { CardType } from "@/types/PokemonCardType";
 import SearchResultStyle from "@/style/SearchResultStyle";
+import { View } from "react-native";
 
 interface SearchResultProps {
   cardIds: string[];
@@ -45,23 +45,23 @@ export default function SearchResult({
   }, [imagesLoaded, paginatedIds.length, onAllImagesLoaded]);
 
   return (
-    <ThemedView>
-      <ThemedView style={SearchResultStyle.cardList}>
+    <View>
+      <View style={SearchResultStyle.cardList}>
         {paginatedIds.map((item, idx) => {
           const cardData = cards?.find((c) => c.cardId === item);
           return (
-            <ThemedView key={item + idx}>
+            <View key={item + idx}>
               <CompactCard
                 card={cardData || { cardId: "", name: "", imagesLarge: "" }}
                 onImageLoad={() => setImagesLoaded((n) => n + 1)}
                 loading={loading || !cardData}
               />
-            </ThemedView>
+            </View>
           );
         })}
-      </ThemedView>
+      </View>
       {totalPages > 1 && (
-        <ThemedView style={SearchResultStyle.paginationContainer}>
+        <View style={SearchResultStyle.paginationContainer}>
           <ThemedButton
             type="alternative"
             title="Prev"
@@ -82,8 +82,8 @@ export default function SearchResult({
             status={currentPage >= totalPages ? "disabled" : undefined}
             onPress={() => onPageChange && currentPage < totalPages && onPageChange(currentPage + 1)}
           />
-        </ThemedView>
+        </View>
       )}
-    </ThemedView>
+    </View>
   );
 }

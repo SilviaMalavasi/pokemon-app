@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
-import { Pressable, ScrollView, TextInput } from "react-native";
+import { Pressable, ScrollView, TextInput, View } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 
 import styles from "@/style/base/AutoCompleteInputStyle";
@@ -33,7 +32,7 @@ export default function AutoCompleteInput({
 
   return (
     // Apply padding conditionally here
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       {showSuggestions && (
         <ScrollView
           style={styles.suggestionsListContainer}
@@ -87,6 +86,6 @@ export default function AutoCompleteInput({
           }, 250); // Keep delay for now
         }}
       />
-    </ThemedView>
+    </View>
   );
 }

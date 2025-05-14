@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Svg, Path, Rect } from "react-native-svg";
 import ThemedModal from "@/components/base/ThemedModal";
-import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import CardAutoCompleteInput, {

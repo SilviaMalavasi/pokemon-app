@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
-import ThemedView from "@/components/base/ThemedView";
 import FullCard from "@/components/FullCard";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
@@ -13,6 +12,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
+import { View } from "react-native";
 
 export default function FullCardScreen() {
   const { cardId } = useLocalSearchParams<{ cardId: string }>();
@@ -125,7 +125,7 @@ export default function FullCardScreen() {
         headerTitle={card && card.name ? card.name : "Card Details"}
         scrollRef={scrollRef}
       >
-        <ThemedView>
+        <View>
           {loading ? (
             <ActivityIndicator
               size="large"
@@ -161,7 +161,7 @@ export default function FullCardScreen() {
               imagesLarge={card.imagesLarge}
             />
           ) : null}
-        </ThemedView>
+        </View>
       </ParallaxScrollView>
       <SafeAreaView
         pointerEvents="box-none"

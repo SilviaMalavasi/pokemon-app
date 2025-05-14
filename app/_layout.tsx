@@ -4,7 +4,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import React, { Suspense, useEffect } from "react";
-import ThemedView from "@/components/base/ThemedView";
+import { View } from "react-native";
 import { theme } from "@/style/ui/Theme";
 import SplashScreenComponent from "@/components/ui/SplashScreen";
 import { CardDatabaseProvider } from "@/components/context/CardDatabaseContext";
@@ -70,7 +70,7 @@ export default function RootLayout() {
       <DatabaseStateProvider>
         <DatabasesWithSplash>
           <SearchResultProvider>
-            <ThemedView style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
               <Stack
                 screenOptions={{
                   contentStyle: { backgroundColor: theme.colors.background },
@@ -84,7 +84,7 @@ export default function RootLayout() {
                 <Stack.Screen name="+not-found" />
               </Stack>
               <StatusBar style="auto" />
-            </ThemedView>
+            </View>
           </SearchResultProvider>
         </DatabasesWithSplash>
       </DatabaseStateProvider>
