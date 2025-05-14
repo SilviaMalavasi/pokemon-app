@@ -115,7 +115,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
       <React.Fragment key={groupName}>
         {/* Add extra margin if not the first group and previous group is not empty */}
         <ThemedText
-          type="defaultSemiBold"
+          type="h4"
           style={{ marginTop: index > 0 ? theme.padding.large : 0, marginBottom: theme.padding.xsmall }}
         >
           {groupName} ({groupCards.reduce((sum, item) => sum + (item.quantity || 1), 0)})
@@ -162,11 +162,11 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
         onCancel={() => setModalVisible(false)}
       >
         <ThemedText
-          type="defaultSemiBold"
+          type="h4"
           style={{ marginBottom: 16, textAlign: "center" }}
         >
           Set Quantity for{" "}
-          <ThemedText color={theme.colors.textHilight}>{selectedCard?.name || selectedCard?.cardId}</ThemedText>
+          <ThemedText color={theme.colors.green}>{selectedCard?.name || selectedCard?.cardId}</ThemedText>
         </ThemedText>
         <View style={styles.numbersModalContainer}>
           {[0, 1, 2, 3, 4].map((qty) => (
@@ -175,13 +175,13 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
               onPress={() => handleQtyChange(qty)}
               style={[
                 {
-                  backgroundColor: stagedQty === qty ? theme.colors.green : theme.colors.lightBackground,
+                  backgroundColor: stagedQty === qty ? theme.colors.green : theme.colors.mediumGrey,
                 },
                 styles.numbersModal,
               ]}
             >
               <ThemedText
-                style={{ color: stagedQty === qty ? theme.colors.background : theme.colors.text, fontWeight: "bold" }}
+                style={{ color: stagedQty === qty ? theme.colors.background : theme.colors.grey, fontWeight: "bold" }}
               >
                 {qty}
               </ThemedText>

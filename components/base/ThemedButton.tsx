@@ -68,7 +68,7 @@ const icons: Record<string, (props: { fill: string; style?: any }) => any> = {
 const getIconFill = (status: ButtonStatus) => {
   switch (status) {
     case "active":
-      return theme.colors.textHilight;
+      return theme.colors.green;
     case "disabled":
       return theme.colors.lightGrey;
     default:
@@ -101,9 +101,9 @@ export default function ThemedButton({
   if (isDisabled) {
     activeGradientColors = [theme.colors.grey, theme.colors.lightGrey];
   } else if (type === "main") {
-    activeGradientColors = [theme.colors.lightGreen, theme.colors.green];
+    activeGradientColors = [theme.colors.green, theme.colors.green];
   } else if (type === "alternative") {
-    activeGradientColors = [theme.colors.lightPurple, theme.colors.purple];
+    activeGradientColors = [theme.colors.purple, theme.colors.purple];
   }
 
   return (

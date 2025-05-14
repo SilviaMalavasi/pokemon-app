@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
+import MainScrollView from "@/components/ui/MainScrollView";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
@@ -90,7 +90,7 @@ export default function DeckBuilderScreen() {
   };
 
   return (
-    <ParallaxScrollView
+    <MainScrollView
       headerImage="deck-builder-bkg"
       headerTitle="Deck Builder"
       scrollRef={scrollRef}
@@ -109,6 +109,6 @@ export default function DeckBuilderScreen() {
         onDelete={handleDeleteDeck}
         deletingId={deletingId}
       />
-    </ParallaxScrollView>
+    </MainScrollView>
   );
 }

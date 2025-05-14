@@ -45,11 +45,7 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
   let textColor = theme.colors.background;
   if (type === "outline") {
     textColor =
-      status === "active"
-        ? theme.colors.textHilight
-        : status === "disabled"
-        ? theme.colors.lightGrey
-        : theme.colors.text;
+      status === "active" ? theme.colors.green : status === "disabled" ? theme.colors.lightGrey : theme.colors.grey;
   }
 
   // Icon style

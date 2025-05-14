@@ -18,14 +18,14 @@ const styles = StyleSheet.create({
   suggestionLabel: {
     padding: theme.padding.small,
     paddingBottom: theme.padding.xsmall / 2,
-    color: theme.colors.textAlternative,
+    color: theme.colors.greyAlternative,
   },
   customItem: {
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.mediumGrey,
-    color: theme.colors.text,
+    color: theme.colors.grey,
   },
 });
 

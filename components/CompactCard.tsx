@@ -30,7 +30,7 @@ export default function CompactCard({ card, onImageLoad, loading, disableLink }:
       <View style={[CompactCardStyle.container, { justifyContent: "center", alignItems: "center", minHeight: vw(68) }]}>
         <ActivityIndicator
           size="large"
-          color={theme.colors.textAlternative}
+          color={theme.colors.greyAlternative}
         />
       </View>
     );
@@ -55,7 +55,7 @@ export default function CompactCard({ card, onImageLoad, loading, disableLink }:
               <ActivityIndicator
                 style={{ position: "absolute" }}
                 size="small"
-                color={theme.colors.textAlternative}
+                color={theme.colors.greyAlternative}
               />
             )}
           </View>

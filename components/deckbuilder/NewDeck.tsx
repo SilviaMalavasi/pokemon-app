@@ -56,7 +56,7 @@ export default function NewDeck({
 
   return (
     <View>
-      <ThemedText type="subtitle">New Deck</ThemedText>
+      <ThemedText type="h2">New Deck</ThemedText>
       <CardAutoCompleteProvider>
         <View style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge }}>
           <ThemedTextInput

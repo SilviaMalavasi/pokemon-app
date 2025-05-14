@@ -456,11 +456,11 @@ export default function AdvancedSearchForm({
                         {isAttackDamageSpecialCase ? (
                           <>
                             <Text>{restOfValue}</Text>
-                            <Text style={{ color: theme.colors.textHilight }}>{operator.trim()}</Text>
+                            <Text style={{ color: theme.colors.green }}>{operator.trim()}</Text>
                           </>
                         ) : operator ? (
                           <>
-                            <Text style={{ color: theme.colors.textHilight }}>{operator}</Text>
+                            <Text style={{ color: theme.colors.green }}>{operator}</Text>
                             <Text>{restOfValue}</Text>
                           </>
                         ) : valueStr !== null ? (

@@ -54,7 +54,7 @@ export default function CompactDeck({ deck, onImageLoad, loading, onDelete }: Co
       <View style={[styles.container, { justifyContent: "center", alignItems: "center", minHeight: vw(68) }]}>
         <ActivityIndicator
           size="large"
-          color={theme.colors.textAlternative}
+          color={theme.colors.greyAlternative}
         />
       </View>
     );
@@ -110,7 +110,7 @@ export default function CompactDeck({ deck, onImageLoad, loading, onDelete }: Co
                 <ActivityIndicator
                   style={{ position: "absolute" }}
                   size="small"
-                  color={theme.colors.textAlternative}
+                  color={theme.colors.greyAlternative}
                 />
               )}
             </View>
@@ -133,7 +133,7 @@ export default function CompactDeck({ deck, onImageLoad, loading, onDelete }: Co
           onCancel={() => setShowModal(false)}
         >
           <ThemedText
-            type="subtitle"
+            type="h2"
             style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
           >
             Delete Deck?

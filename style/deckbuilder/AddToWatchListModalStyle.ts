@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
     borderRadius: theme.borderRadius.xlarge,
     padding: 2,
-    backgroundColor: theme.colors.lightBackground,
+    backgroundColor: theme.colors.mediumGrey,
     borderWidth: 1,
     marginBottom: theme.padding.xsmall * -1,
     borderColor: theme.colors.green,
@@ -42,11 +42,11 @@ const styles = StyleSheet.create({
     gap: theme.padding.xsmall,
   },
   qtyText: {
-    color: theme.colors.textAlternative,
+    color: theme.colors.greyAlternative,
     width: vw(8),
   },
   qtyOperator: {
-    fontSize: theme.fontSizes.large,
+    fontSize: theme.fontSizes.font24,
     paddingHorizontal: 4,
     marginTop: theme.padding.xsmall * -0.5,
   },
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   pickerWrapper: {
     borderRadius: theme.borderRadius.small,
     borderWidth: 1,
-    borderColor: theme.colors.text,
+    borderColor: theme.colors.grey,
     backgroundColor: theme.colors.background,
     paddingHorizontal: theme.padding.small,
     paddingTop: theme.padding.small,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     marginHorizontal: theme.padding.large,
-    backgroundColor: theme.colors.lightBackground,
+    backgroundColor: theme.colors.mediumGrey,
     borderRadius: theme.borderRadius.medium,
     borderWidth: 1,
     borderColor: theme.colors.purple,

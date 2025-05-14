@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
-import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
+import MainScrollView from "@/components/ui/MainScrollView";
 import FreeSearchForm from "@/components/forms/FreeSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import ThemedModal from "@/components/base/ThemedModal";
@@ -93,7 +93,7 @@ export default function FreeSearchScreen() {
   }, [resetKey]);
 
   return (
-    <ParallaxScrollView
+    <MainScrollView
       headerImage="free-search-bkg"
       headerTitle="Free Search"
       scrollRef={scrollRef}
@@ -116,12 +116,12 @@ export default function FreeSearchScreen() {
         contentStyle={{ width: "85%" }}
       >
         <ThemedText
-          type="defaultSemiBold"
+          type="h4"
           style={{ paddingTop: theme.padding.small, paddingBottom: theme.padding.xsmall }}
         >
           No cards found
         </ThemedText>
       </ThemedModal>
-    </ParallaxScrollView>
+    </MainScrollView>
   );
 }

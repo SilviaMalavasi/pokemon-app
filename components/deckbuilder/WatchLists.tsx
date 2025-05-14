@@ -11,7 +11,7 @@ export default function WatchLists() {
   return (
     <View>
       <ThemedText
-        type="subtitle"
+        type="h2"
         style={{ marginBottom: 16 }}
       >
         WatchLists

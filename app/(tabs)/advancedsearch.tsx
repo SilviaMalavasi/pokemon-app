@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
-import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
+import MainScrollView from "@/components/ui/MainScrollView";
 import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import ThemedModal from "@/components/base/ThemedModal";
@@ -97,7 +97,7 @@ export default function FullFormScreen() {
 
   return (
     <AutocompleteDropdownContextProvider>
-      <ParallaxScrollView
+      <MainScrollView
         headerImage="advanced-search-bkg"
         headerTitle="Advanced Search"
         scrollRef={scrollRef}
@@ -122,13 +122,13 @@ export default function FullFormScreen() {
           contentStyle={{ width: "85%" }}
         >
           <ThemedText
-            type="defaultSemiBold"
+            type="h4"
             style={{ paddingTop: theme.padding.small, paddingBottom: theme.padding.xsmall }}
           >
             No cards found
           </ThemedText>
         </ThemedModal>
-      </ParallaxScrollView>
+      </MainScrollView>
     </AutocompleteDropdownContextProvider>
   );
 }

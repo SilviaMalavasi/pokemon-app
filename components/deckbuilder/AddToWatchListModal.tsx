@@ -133,7 +133,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
             />
           </Svg>
         </View>
-        <ThemedText type="defaultSemiBold">WatchList</ThemedText>
+        <ThemedText type="h4">WatchList</ThemedText>
       </TouchableOpacity>
       <ThemedModal
         visible={modalVisible}
@@ -145,14 +145,14 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
         onCancel={() => setModalVisible(false)}
       >
         <ThemedText
-          type="defaultSemiBold"
+          type="h4"
           style={{ marginBottom: theme.padding.large, textAlign: "center" }}
         >
           Add{" "}
           {cardName ? (
             <ThemedText
-              type="defaultSemiBold"
-              color={theme.colors.textHilight}
+              type="h4"
+              color={theme.colors.green}
             >
               {cardName}
             </ThemedText>
@@ -162,7 +162,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
           to WatchList
         </ThemedText>
         {!db ? (
-          <ThemedText style={{ textAlign: "center", marginTop: theme.padding.large, color: theme.colors.primary }}>
+          <ThemedText style={{ textAlign: "center", marginTop: theme.padding.large, color: theme.colors.green }}>
             Database not available. Please try again later.
           </ThemedText>
         ) : (
@@ -179,8 +179,8 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
                 <ThemedText
                   color={
                     watchLists.length === 0 || !watchLists.find((wl) => wl.id === selectedWatchListId)
-                      ? theme.colors.placeholder
-                      : theme.colors.textAlternative
+                      ? theme.colors.grey
+                      : theme.colors.greyAlternative
                   }
                 >
                   {(() => {
@@ -232,7 +232,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
                       onPress={() => setWatchListPickerVisible(false)}
                       style={styles.modalCancel}
                     >
-                      <ThemedText style={{ color: theme.colors.placeholder }}>Cancel</ThemedText>
+                      <ThemedText style={{ color: theme.colors.grey }}>Cancel</ThemedText>
                     </Pressable>
                   </Pressable>
                 </Pressable>

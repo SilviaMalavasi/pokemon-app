@@ -27,7 +27,7 @@ export default function RulesModal({ visible, onClose, cardRules, setCardRules }
       onCancel={handleCancel}
     >
       <ThemedText
-        type="subtitle"
+        type="h2"
         style={{ width: "100%", paddingBottom: theme.padding.medium }}
       >
         Rules/Rule Box

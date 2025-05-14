@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import ThemedText from "@/components/base/ThemedText";
-import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
+import MainScrollView from "@/components/ui/MainScrollView";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import { ActivityIndicator, View } from "react-native";
@@ -68,7 +68,7 @@ export default function WatchListDetailScreen() {
   };
 
   return (
-    <ParallaxScrollView
+    <MainScrollView
       headerImage="deck-bkg"
       headerTitle={watchList?.name || "WatchList Details"}
     >
@@ -76,14 +76,14 @@ export default function WatchListDetailScreen() {
         {loading || dbLoading || cardDbLoading ? (
           <ActivityIndicator
             size="large"
-            color={theme.colors.textAlternative}
+            color={theme.colors.greyAlternative}
             style={{ marginTop: 200 }}
           />
         ) : error ? (
           <ThemedText>Error loading watchlist: {error.message}</ThemedText>
         ) : watchList ? (
           <>
-            <ThemedText type="subtitle">Cards ({getCardsArray().length})</ThemedText>
+            <ThemedText type="h2">Cards ({getCardsArray().length})</ThemedText>
             {getCardsArray().length === 0 ? (
               <ThemedText>No cards in this watchlist.</ThemedText>
             ) : (
@@ -104,6 +104,6 @@ export default function WatchListDetailScreen() {
           <ThemedText>WatchList not found.</ThemedText>
         )}
       </View>
-    </ParallaxScrollView>
+    </MainScrollView>
   );
 }

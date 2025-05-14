@@ -85,7 +85,7 @@ export default function ThemedMultiSelect({ label, value, options, onChange, lab
                   >
                     <ThemedText
                       style={{
-                        color: theme.colors.placeholder,
+                        color: theme.colors.grey,
                         paddingVertical: theme.padding.medium,
                       }}
                     >
@@ -94,7 +94,7 @@ export default function ThemedMultiSelect({ label, value, options, onChange, lab
                   </Pressable>
                   <Pressable onPress={confirmSelection}>
                     <ThemedText
-                      type="defaultSemiBold"
+                      type="h4"
                       style={{ paddingVertical: theme.padding.medium, paddingHorizontal: theme.padding.small }}
                     >
                       OK

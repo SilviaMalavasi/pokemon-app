@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   qtyCol: { flexDirection: "row", alignItems: "center" },
   qtyOperator: {
-    fontSize: theme.fontSizes.large,
+    fontSize: theme.fontSizes.font24,
     paddingHorizontal: 4,
     marginTop: theme.padding.xsmall * -0.5,
   },

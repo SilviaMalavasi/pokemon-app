@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
-import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
+import MainScrollView from "@/components/ui/MainScrollView";
 import FullCard from "@/components/FullCard";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
@@ -120,7 +120,7 @@ export default function FullCardScreen() {
 
   return (
     <>
-      <ParallaxScrollView
+      <MainScrollView
         headerImage="card-bkg"
         headerTitle={card && card.name ? card.name : "Card Details"}
         scrollRef={scrollRef}
@@ -129,7 +129,7 @@ export default function FullCardScreen() {
           {loading ? (
             <ActivityIndicator
               size="large"
-              color={theme.colors.textAlternative}
+              color={theme.colors.greyAlternative}
               style={{ marginTop: 200 }}
             />
           ) : card ? (
@@ -162,7 +162,7 @@ export default function FullCardScreen() {
             />
           ) : null}
         </View>
-      </ParallaxScrollView>
+      </MainScrollView>
       <SafeAreaView
         pointerEvents="box-none"
         style={{

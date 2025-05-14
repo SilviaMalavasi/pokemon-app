@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
   touchableOpacity: {
     position: "absolute",
-    top: theme.fontSizes.small / 2,
+    top: theme.fontSizes.font16 / 2,
     left: 0,
     zIndex: 2,
     marginLeft: theme.padding.xsmall,
@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.padding.xsmall,
   },
   labelHintIcon: {
-    height: theme.fontSizes.small,
-    width: theme.fontSizes.small,
+    height: theme.fontSizes.font16,
+    width: theme.fontSizes.font16,
     marginLeft: theme.padding.xsmall,
   },
   labelHint: {

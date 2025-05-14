@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     paddingTop: theme.padding.small,
   },
   label: {
-    fontSize: theme.fontSizes.xxsmall,
-    lineHeight: theme.fontSizes.xxsmall,
+    fontSize: theme.fontSizes.font14,
+    lineHeight: theme.fontSizes.font14,
     paddingTop: 4,
     textAlign: "center",
   },

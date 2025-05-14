@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     ...theme.shadow,
   },
   modalView: {
-    backgroundColor: theme.colors.lightBackground,
+    backgroundColor: theme.colors.mediumGrey,
     borderRadius: 16,
     borderWidth: 1,
     borderColor: theme.colors.green,

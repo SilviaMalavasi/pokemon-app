@@ -12,13 +12,13 @@ const styles = StyleSheet.create({
     height: theme.padding.medium,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: theme.colors.text,
+    borderColor: theme.colors.grey,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "transparent",
   },
   checkboxChecked: {
-    backgroundColor: theme.colors.text,
+    backgroundColor: theme.colors.grey,
   },
   checkboxInner: {
     width: theme.padding.medium - 2,
@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.background,
   },
   label: {
-    color: theme.colors.text,
-    fontSize: theme.fontSizes.medium,
+    color: theme.colors.grey,
+    fontSize: theme.fontSizes.font18,
     paddingHorizontal: theme.padding.small,
   },
 });

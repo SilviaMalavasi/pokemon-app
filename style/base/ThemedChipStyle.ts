@@ -10,20 +10,20 @@ export default StyleSheet.create({
     paddingHorizontal: theme.padding.small,
     paddingVertical: theme.padding.xsmall * 0.5,
     borderWidth: 1,
-    borderColor: theme.colors.text,
+    borderColor: theme.colors.grey,
   },
   chipSelected: {
     backgroundColor: theme.colors.lightGrey,
-    borderColor: theme.colors.text,
+    borderColor: theme.colors.grey,
   },
   chipDisabled: {
     opacity: 0.5,
   },
   chipText: {
-    color: theme.colors.text,
+    color: theme.colors.grey,
   },
   chipTextSelected: {
-    color: theme.colors.textHilight,
+    color: theme.colors.green,
   },
   icon: {
     width: theme.padding.small,

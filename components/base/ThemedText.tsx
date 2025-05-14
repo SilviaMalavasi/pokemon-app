@@ -4,10 +4,10 @@ import styles from "@/style/base/ThemedTextStyle";
 
 export type ThemedTextProps = TextProps & {
   type?:
-    | "title"
-    | "subtitle"
+    | "h1"
+    | "h2"
     | "default"
-    | "defaultSemiBold"
+    | "h4"
     | "link"
     | "button"
     | "buttonSmall"
@@ -38,9 +38,9 @@ export default function ThemedText({ style, type = "default", color, fontSize, f
   // Determine the style based on type
   const textStyle = [
     type === "default" ? styles.default : undefined,
-    type === "title" ? styles.title : undefined,
-    type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
-    type === "subtitle" ? styles.subtitle : undefined,
+    type === "h1" ? styles.h1 : undefined,
+    type === "h4" ? styles.h4 : undefined,
+    type === "h2" ? styles.h2 : undefined,
     type === "link" ? styles.link : undefined,
     type === "button" ? styles.button : undefined,
     type === "buttonSmall" ? styles.buttonSmall : undefined,

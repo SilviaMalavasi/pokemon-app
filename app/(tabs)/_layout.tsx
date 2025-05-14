@@ -159,8 +159,8 @@ export default function TabLayout() {
         <SearchFormContextWatcher />
         <Tabs
           screenOptions={{
-            tabBarInactiveTintColor: theme.colors.text,
-            tabBarActiveTintColor: theme.colors.textHilight,
+            tabBarInactiveTintColor: theme.colors.grey,
+            tabBarActiveTintColor: theme.colors.green,
             headerShown: false,
             tabBarButton: HapticTab,
             tabBarBackground: TabBarBackground,

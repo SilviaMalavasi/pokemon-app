@@ -66,9 +66,9 @@ export default function ThemedChip({
   chipTextColor,
 }: ThemedChipProps) {
   const IconComponent = icon !== "void" && icons[icon] ? icons[icon] : null;
-  const iconStroke = chipTextColor || theme.colors.text;
-  const chipBg = chipBackgroundColor || (selected ? theme.colors.primary : theme.colors.lightBackground);
-  const chipText = chipTextColor || theme.colors.text;
+  const iconStroke = chipTextColor || theme.colors.grey;
+  const chipBg = chipBackgroundColor || (selected ? theme.colors.green : theme.colors.mediumGrey);
+  const chipText = chipTextColor || theme.colors.grey;
   return (
     <TouchableOpacity
       style={[

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, TouchableOpacity } from "react-native";
-import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
+import MainScrollView from "@/components/ui/MainScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
@@ -98,7 +98,7 @@ export default function DeckScreen() {
 
   return (
     <>
-      <ParallaxScrollView
+      <MainScrollView
         headerImage="deck-bkg"
         headerTitle={deck?.name || "Deck Details"}
         scrollRef={scrollRef}
@@ -107,7 +107,7 @@ export default function DeckScreen() {
           {loading || dbLoading ? (
             <ActivityIndicator
               size="large"
-              color={theme.colors.textAlternative}
+              color={theme.colors.greyAlternative}
               style={{ marginTop: 200 }}
             />
           ) : error ? (
@@ -142,12 +142,12 @@ export default function DeckScreen() {
                   marginBottom: theme.padding.large,
                 }}
               >
-                <ThemedText type="subtitle">Cards ({totalCardCount})</ThemedText>
+                <ThemedText type="h2">Cards ({totalCardCount})</ThemedText>
                 <TouchableOpacity
                   activeOpacity={0.85}
                   onPress={() => setViewMode(viewMode === "list" ? "thumbnails" : "list")}
                   style={{
-                    backgroundColor: theme.colors.lightBackground,
+                    backgroundColor: theme.colors.mediumGrey,
                     borderWidth: 1,
                     borderColor: theme.colors.green,
                     borderRadius: theme.borderRadius.large,
@@ -157,7 +157,7 @@ export default function DeckScreen() {
                 >
                   <ThemedText
                     type="chip"
-                    style={{ color: theme.colors.text, textTransform: "uppercase" }}
+                    style={{ color: theme.colors.grey, textTransform: "uppercase" }}
                   >
                     {viewMode === "list" ? "Thumb View" : "List View"}
                   </ThemedText>
@@ -191,7 +191,7 @@ export default function DeckScreen() {
             <ThemedText>Deck not found.</ThemedText>
           )}
         </View>
-      </ParallaxScrollView>
+      </MainScrollView>
       <SafeAreaView
         pointerEvents="box-none"
         style={{

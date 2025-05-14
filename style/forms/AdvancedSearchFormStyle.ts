@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   summaryArrayTextSeparator: {
     color: theme.colors.green,
-    fontSize: theme.fontSizes.xsmall,
+    fontSize: theme.fontSizes.font15,
   },
   mainButtonsRow: {
     flexDirection: "row",

@@ -259,7 +259,7 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
               </Svg>
             </View>
             <View style={styles.summaryitemQuantity}>
-              <ThemedText color={theme.colors.textHilight}>{item.quantity || 1}</ThemedText>
+              <ThemedText color={theme.colors.green}>{item.quantity || 1}</ThemedText>
             </View>
             <View style={styles.summaryTextCol}>
               <ThemedText>

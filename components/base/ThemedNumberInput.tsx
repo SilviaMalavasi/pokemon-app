@@ -81,7 +81,7 @@ export default function ThemedNumberInput({
             >
               <ThemedText
                 style={styles.selectPressable}
-                color={theme.colors.textAlternative}
+                color={theme.colors.greyAlternative}
               >
                 {(() => {
                   const flatOps = operatorRows.flat();
@@ -126,7 +126,7 @@ export default function ThemedNumberInput({
                     onPress={() => setModalVisible(false)}
                     style={styles.modalCancel}
                   >
-                    <ThemedText style={{ color: theme.colors.placeholder }}>Cancel</ThemedText>
+                    <ThemedText style={{ color: theme.colors.grey }}>Cancel</ThemedText>
                   </Pressable>
                 </Pressable>
               </Pressable>
@@ -155,7 +155,7 @@ export default function ThemedNumberInput({
             }
           }}
           placeholder={placeholder}
-          placeholderTextColor={theme.colors.placeholder}
+          placeholderTextColor={theme.colors.grey}
           keyboardType="numeric"
           inputMode="numeric"
           returnKeyType="done"
@@ -178,18 +178,18 @@ export default function ThemedNumberInput({
                 width={15.5}
                 height={15.5}
                 rx={7.75}
-                stroke={theme.colors.textHilight}
+                stroke={theme.colors.green}
                 strokeWidth={1.5}
               />
               <Path
                 d="M5 5.5L12 12.5"
-                stroke={theme.colors.textHilight}
+                stroke={theme.colors.green}
                 strokeWidth={1.5}
                 strokeLinecap="round"
               />
               <Path
                 d="M12 5.5L5 12.5"
-                stroke={theme.colors.textHilight}
+                stroke={theme.colors.green}
                 strokeWidth={1.5}
                 strokeLinecap="round"
               />

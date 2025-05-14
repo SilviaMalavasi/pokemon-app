@@ -1,8 +1,8 @@
 import { vw } from "@/helpers/viewport";
 
 export const white = "#ffffff";
-export const grey = "#ABADB3";
 export const black = "#000000";
+export const grey = "#ABADB3";
 
 export const background = "#1B1C21";
 export const darkGrey = "#191A20";
@@ -17,30 +17,28 @@ export const shadowDark = "rgba(25, 26, 32, 0.5)";
 export const shadowLightPurlple = "#9D6AE3";
 export const shadowPurple = "rgba(61, 16, 124, 0.65)";
 
-export const lightGreen = "#41F8A3"; //old
-export const lightPurple = "#C374FF"; //old
-
 export const theme = {
   colors: {
-    background: darkGrey,
-    lightBackground: mediumGrey,
-    text: white,
-    textDark: lightGrey,
-    textHilight: green,
-    textAlternative: lightPurple,
-    placeholder: grey,
-    primary: green,
-    secondary: purple,
-    black: black,
     white: white,
+    black: black,
     grey: grey,
+
+    background: background,
     darkGrey: darkGrey,
     mediumGrey: mediumGrey,
     lightGrey: lightGrey,
-    green: green,
-    lightGreen: lightGreen,
+
     purple: purple,
-    lightPurple: lightPurple,
+    green: green,
+  },
+  fontSizes: {
+    font36: vw(9),
+    font28: vw(7),
+    font24: vw(6),
+    font18: vw(4.5),
+    font16: vw(4),
+    font15: vw(3.8),
+    font14: vw(3.5),
   },
   padding: {
     none: 0,
@@ -48,14 +46,6 @@ export const theme = {
     small: vw(4),
     medium: vw(6),
     large: vw(8),
-    xlarge: vw(10),
-  },
-  fontSizes: {
-    xxsmall: vw(2.7),
-    xsmall: vw(3),
-    small: vw(3.8),
-    medium: vw(4.5),
-    large: vw(6.5),
     xlarge: vw(10),
   },
   borderRadius: {
@@ -66,21 +56,21 @@ export const theme = {
     xlarge: 16,
   },
   shadow: {
-    shadowColor: lightGreen,
+    shadowColor: green,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 32,
     elevation: 8,
   },
   shadowAlternative: {
-    shadowColor: lightPurple,
+    shadowColor: purple,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 32,
     elevation: 8,
   },
   shadowSmall: {
-    shadowColor: lightGreen,
+    shadowColor: green,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 32,

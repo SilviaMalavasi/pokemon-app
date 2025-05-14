@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     top: theme.padding.xlarge * -1.2,
     width: vw(12),
     height: vw(12),
-    backgroundColor: theme.colors.lightBackground,
+    backgroundColor: theme.colors.mediumGrey,
     borderWidth: 1,
     borderColor: theme.colors.green,
     ...theme.shadowSmall,

@@ -63,7 +63,7 @@ export default function ThemedCollapsible({
         </View>
         <ThemedText
           type="buttonSmall"
-          color={theme.colors.text}
+          color={theme.colors.grey}
         >
           {title}
         </ThemedText>

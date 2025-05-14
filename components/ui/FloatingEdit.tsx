@@ -149,7 +149,7 @@ const FloatingEdit: React.FC<FloatingEditProps> = ({ deck, db, cardDb, setDeck, 
         contentStyle={{ minWidth: 300 }}
       >
         <CardAutoCompleteProvider>
-          <ThemedText type="subtitle">Edit Deck</ThemedText>
+          <ThemedText type="h2">Edit Deck</ThemedText>
           <ThemedTextInput
             label="Deck Name *"
             value={editName}
@@ -194,7 +194,7 @@ const FloatingEdit: React.FC<FloatingEditProps> = ({ deck, db, cardDb, setDeck, 
         contentStyle={{ minWidth: 300 }}
       >
         <ThemedText
-          type="defaultSemiBold"
+          type="h4"
           style={{ marginBottom: theme.padding.medium, textAlign: "center" }}
         >
           Delete Deck?

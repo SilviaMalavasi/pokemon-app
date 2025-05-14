@@ -72,7 +72,7 @@ export default function ThemedSelect({ label, value, options, onChange, labelHin
                       onPress={cancelSelection}
                       style={styles.modalActionCancel}
                     >
-                      <ThemedText style={{ color: theme.colors.placeholder }}>Cancel</ThemedText>
+                      <ThemedText style={{ color: theme.colors.grey }}>Cancel</ThemedText>
                     </Pressable>
                   </View>
                 </ScrollView>
@@ -94,8 +94,8 @@ export default function ThemedSelect({ label, value, options, onChange, labelHin
               >
                 <ThemedText type="label">{label}</ThemedText>
                 <Svg
-                  width={theme.fontSizes.small}
-                  height={theme.fontSizes.small}
+                  width={theme.fontSizes.font16}
+                  height={theme.fontSizes.font16}
                   viewBox="0 0 17 17"
                   fill="none"
                   style={styles.labelHintIcon}

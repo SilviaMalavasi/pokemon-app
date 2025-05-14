@@ -47,7 +47,7 @@ export default function StatsModal({
       onCancel={handleCancel}
     >
       <ThemedText
-        type="subtitle"
+        type="h2"
         style={{ width: "100%", paddingBottom: theme.padding.medium }}
       >
         Stats

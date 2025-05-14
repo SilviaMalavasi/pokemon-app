@@ -201,7 +201,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
             />
           </Svg>
         </View>
-        <ThemedText type="defaultSemiBold">Deck</ThemedText>
+        <ThemedText type="h4">Deck</ThemedText>
       </TouchableOpacity>
       <ThemedModal
         visible={modalVisible}
@@ -213,14 +213,14 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
         onCancel={handleCancel}
       >
         <ThemedText
-          type="defaultSemiBold"
+          type="h4"
           style={{ marginBottom: theme.padding.large, textAlign: "center" }}
         >
           Add{" "}
           {cardName ? (
             <ThemedText
-              type="defaultSemiBold"
-              color={theme.colors.textHilight}
+              type="h4"
+              color={theme.colors.green}
             >
               {cardName}
             </ThemedText>
@@ -231,7 +231,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
         </ThemedText>
         {!db ? (
           <>
-            <ThemedText style={{ textAlign: "center", marginTop: 16, color: theme.colors.primary }}>
+            <ThemedText style={{ textAlign: "center", marginTop: 16, color: theme.colors.green }}>
               Database not available. Please try again later.
             </ThemedText>
             {error && (
@@ -250,7 +250,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
                 onPress={() => setDeckPickerVisible(true)}
                 style={styles.pickerWrapper}
               >
-                <ThemedText color={theme.colors.textAlternative}>
+                <ThemedText color={theme.colors.greyAlternative}>
                   {(() => {
                     const selected = selectOptions.find((o: any) => o.value === deckIdStr);
                     return selected ? selected.label : "Select";
@@ -306,7 +306,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
                       onPress={() => setDeckPickerVisible(false)}
                       style={styles.modalCancel}
                     >
-                      <ThemedText style={{ color: theme.colors.placeholder }}>Cancel</ThemedText>
+                      <ThemedText style={{ color: theme.colors.grey }}>Cancel</ThemedText>
                     </Pressable>
                   </Pressable>
                 </Pressable>
@@ -328,7 +328,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
                   >
                     <ThemedText
                       style={styles.qtyOperator}
-                      type="defaultSemiBold"
+                      type="h4"
                     >
                       -
                     </ThemedText>
@@ -349,7 +349,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
                   >
                     <ThemedText
                       style={styles.qtyOperator}
-                      type="defaultSemiBold"
+                      type="h4"
                     >
                       +
                     </ThemedText>
@@ -372,7 +372,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
         buttonStyle={!newDeckName.trim() ? { opacity: 0.5 } : undefined}
       >
         <ThemedText
-          type="subtitle"
+          type="h2"
           style={{ marginBottom: theme.padding.medium, textAlign: "center" }}
         >
           Create New Deck

@@ -38,8 +38,8 @@ const ThemedSwitchStyle = StyleSheet.create({
     backgroundColor: "transparent",
   },
   labelHintIcon: {
-    width: theme.fontSizes.small,
-    height: theme.fontSizes.small,
+    width: theme.fontSizes.font16,
+    height: theme.fontSizes.font16,
     marginLeft: theme.padding.xsmall,
   },
   hintText: {

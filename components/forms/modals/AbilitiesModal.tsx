@@ -44,7 +44,7 @@ export default function AbilitiesModal({
       onCancel={handleCancel}
     >
       <ThemedText
-        type="subtitle"
+        type="h2"
         style={{ width: "100%", paddingBottom: theme.padding.medium }}
       >
         Abilities

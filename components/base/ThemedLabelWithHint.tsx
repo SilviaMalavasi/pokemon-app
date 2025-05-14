@@ -43,8 +43,8 @@ export default function ThemedLabelWithHint({
           >
             <ThemedText type="label">{label}</ThemedText>
             <Svg
-              width={theme.fontSizes.small}
-              height={theme.fontSizes.small}
+              width={theme.fontSizes.font16}
+              height={theme.fontSizes.font16}
               viewBox="0 0 17 17"
               fill="none"
               style={styles.labelHintIcon}

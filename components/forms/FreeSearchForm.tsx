@@ -350,7 +350,7 @@ export default function FreeSearchForm({
               You are searching for{" "}
               <ThemedText
                 type="label"
-                style={{ color: theme.colors.textHilight }}
+                style={{ color: theme.colors.green }}
               >
                 {cardSearch}
               </ThemedText>{" "}
@@ -363,7 +363,7 @@ export default function FreeSearchForm({
       <ThemedText
         style={styles.instructions}
         type="hintText"
-        color={theme.colors.textAlternative}
+        color={theme.colors.greyAlternative}
       >
         You can exclude database fields in the search by toggling them off.
       </ThemedText>

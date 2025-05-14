@@ -126,7 +126,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
   return (
     <View style={styles.container}>
       <ThemedText
-        type="subtitle"
+        type="h2"
         style={styles.title}
       >
         Add Cards
@@ -158,10 +158,10 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
         onCancel={() => setModalVisible(false)}
       >
         <ThemedText
-          type="defaultSemiBold"
+          type="h4"
           style={{ marginBottom: 16, textAlign: "center" }}
         >
-          Set Quantity for <ThemedText color={theme.colors.textHilight}>{selectedCardName}</ThemedText>
+          Set Quantity for <ThemedText color={theme.colors.green}>{selectedCardName}</ThemedText>
         </ThemedText>
         <View style={styles.numbersModalContainer}>
           {isBasicEnergy ? (
@@ -172,8 +172,8 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
                 disabled={stagedQty === 1}
               >
                 <ThemedText
-                  type="defaultSemiBold"
-                  style={{ color: stagedQty === 1 ? theme.colors.placeholder : theme.colors.text }}
+                  type="h4"
+                  style={{ color: stagedQty === 1 ? theme.colors.grey : theme.colors.grey }}
                 >
                   -
                 </ThemedText>
@@ -183,7 +183,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
                 onPress={() => setStagedQty((q) => q + 1)}
                 style={[styles.numbersModal, { marginLeft: 8 }]}
               >
-                <ThemedText type="defaultSemiBold">+</ThemedText>
+                <ThemedText type="h4">+</ThemedText>
               </TouchableOpacity>
             </View>
           ) : (
@@ -193,13 +193,13 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
                 onPress={() => handleQtyChange(qty)}
                 style={[
                   {
-                    backgroundColor: stagedQty === qty ? theme.colors.green : theme.colors.lightBackground,
+                    backgroundColor: stagedQty === qty ? theme.colors.green : theme.colors.mediumGrey,
                   },
                   styles.numbersModal,
                 ]}
               >
                 <ThemedText
-                  style={{ color: stagedQty === qty ? theme.colors.background : theme.colors.text, fontWeight: "bold" }}
+                  style={{ color: stagedQty === qty ? theme.colors.background : theme.colors.grey, fontWeight: "bold" }}
                 >
                   {qty}
                 </ThemedText>

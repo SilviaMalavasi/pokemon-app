@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     paddingTop: theme.padding.small,
     paddingBottom: theme.padding.small * 0.9,
     paddingHorizontal: theme.padding.small,
-    color: theme.colors.placeholder,
+    color: theme.colors.grey,
     borderRadius: theme.borderRadius.small,
     backgroundColor: theme.colors.background,
   },
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     marginHorizontal: theme.padding.large,
-    backgroundColor: theme.colors.lightBackground,
+    backgroundColor: theme.colors.mediumGrey,
     borderRadius: theme.borderRadius.medium,
     borderWidth: 1,
     borderColor: theme.colors.purple,
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   pickerWrapper: {
     borderRadius: theme.borderRadius.small,
     borderWidth: 1,
-    borderColor: theme.colors.text,
+    borderColor: theme.colors.grey,
     width: "100%",
   },
   modalActions: {

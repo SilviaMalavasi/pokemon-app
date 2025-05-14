@@ -76,8 +76,8 @@ export default function FullCard(props: FullCardProps) {
     return (
       <ThemedText style={{ paddingBottom: 4 }}>
         <ThemedText
-          type="defaultSemiBold"
-          color={theme.colors.textAlternative}
+          type="h4"
+          color={theme.colors.greyAlternative}
         >
           Energy Type:{" "}
         </ThemedText>
@@ -134,8 +134,8 @@ export default function FullCard(props: FullCardProps) {
           </LinearGradient>
           <ThemedText style={{ paddingBottom: 4 }}>
             <ThemedText
-              type="defaultSemiBold"
-              color={theme.colors.textAlternative}
+              type="h4"
+              color={theme.colors.greyAlternative}
             >
               Type:{" "}
             </ThemedText>
@@ -144,8 +144,8 @@ export default function FullCard(props: FullCardProps) {
           {filteredSubtypes.length > 0 && (
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
-                type="defaultSemiBold"
-                color={theme.colors.textAlternative}
+                type="h4"
+                color={theme.colors.greyAlternative}
               >
                 Label:{" "}
               </ThemedText>
@@ -215,11 +215,11 @@ export default function FullCard(props: FullCardProps) {
               >
                 <ThemedText
                   style={{ paddingBottom: 4 }}
-                  color={theme.colors.textHilight}
+                  color={theme.colors.green}
                 >
                   <ThemedText
-                    type="defaultSemiBold"
-                    color={theme.colors.textHilight}
+                    type="h4"
+                    color={theme.colors.green}
                   >
                     Name:{" "}
                   </ThemedText>
@@ -229,8 +229,8 @@ export default function FullCard(props: FullCardProps) {
                 {atk.damage && (
                   <ThemedText style={{ paddingBottom: 4 }}>
                     <ThemedText
-                      type="defaultSemiBold"
-                      color={theme.colors.textAlternative}
+                      type="h4"
+                      color={theme.colors.greyAlternative}
                     >
                       Damage:{" "}
                     </ThemedText>
@@ -241,8 +241,8 @@ export default function FullCard(props: FullCardProps) {
                 {atk.text && (
                   <ThemedText style={{ paddingBottom: 4 }}>
                     <ThemedText
-                      type="defaultSemiBold"
-                      color={theme.colors.textAlternative}
+                      type="h4"
+                      color={theme.colors.greyAlternative}
                     >
                       Text:{" "}
                     </ThemedText>
@@ -253,8 +253,8 @@ export default function FullCard(props: FullCardProps) {
                 {atk.convertedEnergyCost !== undefined && (
                   <ThemedText style={{ paddingBottom: 4 }}>
                     <ThemedText
-                      type="defaultSemiBold"
-                      color={theme.colors.textAlternative}
+                      type="h4"
+                      color={theme.colors.greyAlternative}
                     >
                       Cost:{" "}
                     </ThemedText>
@@ -268,8 +268,8 @@ export default function FullCard(props: FullCardProps) {
                     return (
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
-                          type="defaultSemiBold"
-                          color={theme.colors.textAlternative}
+                          type="h4"
+                          color={theme.colors.greyAlternative}
                         >
                           Energy Cost:{" "}
                         </ThemedText>
@@ -305,11 +305,11 @@ export default function FullCard(props: FullCardProps) {
               >
                 <ThemedText
                   style={{ paddingBottom: 4 }}
-                  color={theme.colors.textHilight}
+                  color={theme.colors.green}
                 >
                   <ThemedText
-                    type="defaultSemiBold"
-                    color={theme.colors.textHilight}
+                    type="h4"
+                    color={theme.colors.green}
                   >
                     Name:{" "}
                   </ThemedText>
@@ -317,8 +317,8 @@ export default function FullCard(props: FullCardProps) {
                 </ThemedText>
                 <ThemedText style={{ paddingBottom: 4 }}>
                   <ThemedText
-                    type="defaultSemiBold"
-                    color={theme.colors.textAlternative}
+                    type="h4"
+                    color={theme.colors.greyAlternative}
                   >
                     Text:{" "}
                   </ThemedText>
@@ -350,8 +350,8 @@ export default function FullCard(props: FullCardProps) {
 
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
-                  type="defaultSemiBold"
-                  color={theme.colors.textAlternative}
+                  type="h4"
+                  color={theme.colors.greyAlternative}
                 >
                   Pokémon HP:
                 </ThemedText>{" "}
@@ -361,8 +361,8 @@ export default function FullCard(props: FullCardProps) {
               {props.convertedRetreatCost && (
                 <ThemedText style={{ paddingBottom: 4 }}>
                   <ThemedText
-                    type="defaultSemiBold"
-                    color={theme.colors.textAlternative}
+                    type="h4"
+                    color={theme.colors.greyAlternative}
                   >
                     Retreat Cost:
                   </ThemedText>{" "}
@@ -388,8 +388,8 @@ export default function FullCard(props: FullCardProps) {
               </LinearGradient>
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
-                  type="defaultSemiBold"
-                  color={theme.colors.textAlternative}
+                  type="h4"
+                  color={theme.colors.greyAlternative}
                 >
                   Stage:
                 </ThemedText>{" "}
@@ -401,8 +401,8 @@ export default function FullCard(props: FullCardProps) {
                   return (
                     <ThemedText style={{ paddingBottom: 4 }}>
                       <ThemedText
-                        type="defaultSemiBold"
-                        color={theme.colors.textAlternative}
+                        type="h4"
+                        color={theme.colors.greyAlternative}
                       >
                         Evolves From:
                       </ThemedText>{" "}
@@ -417,8 +417,8 @@ export default function FullCard(props: FullCardProps) {
                       return (
                         <ThemedText style={{ paddingBottom: 4 }}>
                           <ThemedText
-                            type="defaultSemiBold"
-                            color={theme.colors.textAlternative}
+                            type="h4"
+                            color={theme.colors.greyAlternative}
                           >
                             Evolves From:
                           </ThemedText>{" "}
@@ -429,8 +429,8 @@ export default function FullCard(props: FullCardProps) {
                     return (
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
-                          type="defaultSemiBold"
-                          color={theme.colors.textAlternative}
+                          type="h4"
+                          color={theme.colors.greyAlternative}
                         >
                           Evolves From:
                         </ThemedText>{" "}
@@ -441,8 +441,8 @@ export default function FullCard(props: FullCardProps) {
                     return (
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
-                          type="defaultSemiBold"
-                          color={theme.colors.textAlternative}
+                          type="h4"
+                          color={theme.colors.greyAlternative}
                         >
                           Evolves From:
                         </ThemedText>{" "}
@@ -459,8 +459,8 @@ export default function FullCard(props: FullCardProps) {
                   return (
                     <ThemedText style={{ paddingBottom: 4 }}>
                       <ThemedText
-                        type="defaultSemiBold"
-                        color={theme.colors.textAlternative}
+                        type="h4"
+                        color={theme.colors.greyAlternative}
                       >
                         Evolves To:
                       </ThemedText>{" "}
@@ -475,8 +475,8 @@ export default function FullCard(props: FullCardProps) {
                       return (
                         <ThemedText style={{ paddingBottom: 4 }}>
                           <ThemedText
-                            type="defaultSemiBold"
-                            color={theme.colors.textAlternative}
+                            type="h4"
+                            color={theme.colors.greyAlternative}
                           >
                             Evolves To:
                           </ThemedText>{" "}
@@ -487,8 +487,8 @@ export default function FullCard(props: FullCardProps) {
                     return (
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
-                          type="defaultSemiBold"
-                          color={theme.colors.textAlternative}
+                          type="h4"
+                          color={theme.colors.greyAlternative}
                         >
                           Evolves To:
                         </ThemedText>{" "}
@@ -499,8 +499,8 @@ export default function FullCard(props: FullCardProps) {
                     return (
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
-                          type="defaultSemiBold"
-                          color={theme.colors.textAlternative}
+                          type="h4"
+                          color={theme.colors.greyAlternative}
                         >
                           Evolves To:
                         </ThemedText>{" "}
@@ -534,8 +534,8 @@ export default function FullCard(props: FullCardProps) {
                   return (
                     <ThemedText style={{ paddingBottom: 4 }}>
                       <ThemedText
-                        type="defaultSemiBold"
-                        color={theme.colors.textAlternative}
+                        type="h4"
+                        color={theme.colors.greyAlternative}
                       >
                         Weakness:
                       </ThemedText>{" "}
@@ -551,8 +551,8 @@ export default function FullCard(props: FullCardProps) {
                   return (
                     <ThemedText style={{ paddingBottom: 4 }}>
                       <ThemedText
-                        type="defaultSemiBold"
-                        color={theme.colors.textAlternative}
+                        type="h4"
+                        color={theme.colors.greyAlternative}
                       >
                         Resistance:
                       </ThemedText>{" "}
@@ -581,8 +581,8 @@ export default function FullCard(props: FullCardProps) {
           {props.cardId && (
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
-                type="defaultSemiBold"
-                color={theme.colors.textAlternative}
+                type="h4"
+                color={theme.colors.greyAlternative}
               >
                 Pokédex Number:
               </ThemedText>{" "}
@@ -592,8 +592,8 @@ export default function FullCard(props: FullCardProps) {
           {props.regulationMark && (
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
-                type="defaultSemiBold"
-                color={theme.colors.textAlternative}
+                type="h4"
+                color={theme.colors.greyAlternative}
               >
                 Regulation Mark:
               </ThemedText>{" "}
@@ -603,8 +603,8 @@ export default function FullCard(props: FullCardProps) {
           {props.cardSet && props.cardSet.name && (
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
-                type="defaultSemiBold"
-                color={theme.colors.textAlternative}
+                type="h4"
+                color={theme.colors.greyAlternative}
               >
                 Name:
               </ThemedText>{" "}
@@ -614,8 +614,8 @@ export default function FullCard(props: FullCardProps) {
           {props.cardSet && props.cardSet.series && (
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
-                type="defaultSemiBold"
-                color={theme.colors.textAlternative}
+                type="h4"
+                color={theme.colors.greyAlternative}
               >
                 Series:
               </ThemedText>{" "}
@@ -638,8 +638,8 @@ export default function FullCard(props: FullCardProps) {
             {props.rarity && (
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
-                  type="defaultSemiBold"
-                  color={theme.colors.textAlternative}
+                  type="h4"
+                  color={theme.colors.greyAlternative}
                 >
                   Rarity:
                 </ThemedText>{" "}
@@ -649,8 +649,8 @@ export default function FullCard(props: FullCardProps) {
             {props.artist && (
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
-                  type="defaultSemiBold"
-                  color={theme.colors.textAlternative}
+                  type="h4"
+                  color={theme.colors.greyAlternative}
                 >
                   Artist:
                 </ThemedText>{" "}
@@ -660,8 +660,8 @@ export default function FullCard(props: FullCardProps) {
             {props.flavorText && (
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
-                  type="defaultSemiBold"
-                  color={theme.colors.textAlternative}
+                  type="h4"
+                  color={theme.colors.greyAlternative}
                 >
                   Flavor Text:
                 </ThemedText>{" "}

@@ -1,4 +1,4 @@
-import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
+import MainScrollView from "@/components/ui/MainScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import ExternalLink from "@/components/base/ExternalLink";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
@@ -56,7 +56,7 @@ export default function HomeScreen() {
   );
 
   return (
-    <ParallaxScrollView
+    <MainScrollView
       headerImage="home-bkg"
       headerTitle="Pokémon Deck Builder"
       scrollRef={scrollRef}
@@ -92,11 +92,11 @@ export default function HomeScreen() {
       <View>
         <ThemedText
           type="hintText"
-          color={theme.colors.placeholder}
+          color={theme.colors.grey}
         >
           This app is not produced, endorsed, supported, or affiliated with Nintendo or The Pokémon Company.
         </ThemedText>
       </View>
-    </ParallaxScrollView>
+    </MainScrollView>
   );
 }

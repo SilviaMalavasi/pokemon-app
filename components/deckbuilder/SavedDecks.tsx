@@ -23,7 +23,7 @@ export default function SavedDecks({ savedDecks, isLoadingDecks, onDelete, delet
   return (
     <View>
       <ThemedText
-        type="subtitle"
+        type="h2"
         style={{ paddingBottom: theme.padding.medium }}
       >
         Decks

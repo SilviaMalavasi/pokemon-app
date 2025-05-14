@@ -1,21 +1,12 @@
 import type { PropsWithChildren } from "react";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
-import Animated, {
-  interpolate,
-  useAnimatedRef,
-  useAnimatedStyle,
-  useScrollViewOffset,
-  AnimatedRef,
-} from "react-native-reanimated";
 import ThemedText from "@/components/base/ThemedText";
 import { Image } from "expo-image";
 import { vw } from "@/helpers/viewport";
-import styles from "@/style/ui/ParallaxScrollViewStyle";
+import styles from "@/style/ui/MainScrollViewStyle";
+import { theme } from "@/style/ui/Theme";
 
-const headerHeight = 160;
-
-// Mapping of header image filenames to require statements
 const headerImages: Record<string, any> = {
   "home-bkg": require("@/assets/images/home.webp"),
   "deck-builder-bkg": require("@/assets/images/deck-builder.webp"),
@@ -27,44 +18,23 @@ const headerImages: Record<string, any> = {
   "watchlist-bkg": require("@/assets/images/watchlist.webp"),
 };
 
-type Props = PropsWithChildren<{
+type MainScrollViewProps = PropsWithChildren<{
   headerImage: string;
   headerTitle: string;
-  scrollRef?: AnimatedRef<Animated.ScrollView>;
+  scrollRef?: React.RefObject<ScrollView>;
 }>;
 
-export default function ParallaxScrollView({ children, headerImage, headerTitle, scrollRef }: Props) {
-  const internalScrollRef = useAnimatedRef<Animated.ScrollView>();
-  const usedScrollRef = scrollRef || internalScrollRef;
-  const scrollOffset = useScrollViewOffset(usedScrollRef);
+export default function MainScrollView({ children, headerImage, headerTitle, scrollRef }: MainScrollViewProps) {
   const bottom = useBottomTabOverflow();
-  const headerAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: interpolate(
-            scrollOffset.value,
-            [-headerHeight, 0, headerHeight],
-            [-headerHeight / 2, 0, headerHeight * 0.75]
-          ),
-        },
-        {
-          scale: interpolate(scrollOffset.value, [-headerHeight, 0, headerHeight], [2, 1, 1]),
-        },
-      ],
-    };
-  });
-  // Get the image source from the mapping
   const headerImageSource = headerImages[headerImage];
 
   return (
-    <Animated.ScrollView
-      ref={usedScrollRef}
-      scrollEventThrottle={16}
+    <ScrollView
+      ref={scrollRef}
       scrollIndicatorInsets={{ bottom }}
-      contentContainerStyle={{ paddingBottom: bottom }}
+      contentContainerStyle={{ paddingBottom: bottom, backgroundColor: theme.colors.background }}
     >
-      <Animated.View style={[styles.header, headerAnimatedStyle]}>
+      <View style={styles.header}>
         <View style={styles.headerBackground}>
           <Image
             style={styles.headerBackgroundImage}
@@ -82,7 +52,7 @@ export default function ParallaxScrollView({ children, headerImage, headerTitle,
           </View>
           <View style={styles.headerTitleContainer}>
             <ThemedText
-              type="title"
+              type="h1"
               fontSize={
                 headerTitle && headerTitle.toString().length > 30
                   ? vw(2)
@@ -103,8 +73,8 @@ export default function ParallaxScrollView({ children, headerImage, headerTitle,
             </ThemedText>
           </View>
         </View>
-      </Animated.View>
+      </View>
       <View style={styles.content}>{children}</View>
-    </Animated.ScrollView>
+    </ScrollView>
   );
 }
