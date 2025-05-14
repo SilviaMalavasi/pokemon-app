@@ -1,17 +1,24 @@
 import { vw } from "@/helpers/viewport";
 
 export const white = "#ffffff";
-export const grey = "#676776";
+export const grey = "#ABADB3";
 export const black = "#000000";
 
-export const darkGrey = "#111218";
-export const mediumGrey = "#171926";
-export const lightGrey = "#4D4E70";
+export const background = "#1B1C21";
+export const darkGrey = "#191A20";
+export const mediumGrey = "#242832";
+export const lightGrey = "#2B3141";
 
-export const green = "#1BF54A";
-export const lightGreen = "#41F8A3";
-export const purple = "#680BFF";
-export const lightPurple = "#C374FF";
+export const purple = "#9142FF";
+export const green = "#4FFFCA";
+
+export const shadowLight = "#2E3644";
+export const shadowDark = "rgba(25, 26, 32, 0.5)";
+export const shadowLightPurlple = "#9D6AE3";
+export const shadowPurple = "rgba(61, 16, 124, 0.65)";
+
+export const lightGreen = "#41F8A3"; //old
+export const lightPurple = "#C374FF"; //old
 
 export const theme = {
   colors: {
