@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   suggestionLabel: {
     padding: theme.padding.small,
     paddingBottom: theme.padding.xsmall / 2,
-    color: theme.colors.greyAlternative,
+    color: theme.colors.purple,
   },
   customItem: {
     paddingVertical: 10,

@@ -250,7 +250,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
                 onPress={() => setDeckPickerVisible(true)}
                 style={styles.pickerWrapper}
               >
-                <ThemedText color={theme.colors.greyAlternative}>
+                <ThemedText color={theme.colors.purple}>
                   {(() => {
                     const selected = selectOptions.find((o: any) => o.value === deckIdStr);
                     return selected ? selected.label : "Select";

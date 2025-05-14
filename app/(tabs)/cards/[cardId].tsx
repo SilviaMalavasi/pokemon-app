@@ -129,7 +129,7 @@ export default function FullCardScreen() {
           {loading ? (
             <ActivityIndicator
               size="large"
-              color={theme.colors.greyAlternative}
+              color={theme.colors.purple}
               style={{ marginTop: 200 }}
             />
           ) : card ? (

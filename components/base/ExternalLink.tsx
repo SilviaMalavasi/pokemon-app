@@ -8,7 +8,7 @@ import { theme } from "@/style/ui/Theme";
 type Props = Omit<ComponentProps<typeof Link>, "href"> & { href: string; color?: "default" | "alternative" };
 
 export default function ExternalLink({ href, color = "default", ...rest }: Props) {
-  const linkColor = color === "alternative" ? theme.colors.greyAlternative : theme.colors.green;
+  const linkColor = color === "alternative" ? theme.colors.purple : theme.colors.green;
   return (
     <Link
       target="_blank"

@@ -107,7 +107,7 @@ export default function DeckScreen() {
           {loading || dbLoading ? (
             <ActivityIndicator
               size="large"
-              color={theme.colors.greyAlternative}
+              color={theme.colors.purple}
               style={{ marginTop: 200 }}
             />
           ) : error ? (

@@ -363,7 +363,7 @@ export default function FreeSearchForm({
       <ThemedText
         style={styles.instructions}
         type="hintText"
-        color={theme.colors.greyAlternative}
+        color={theme.colors.purple}
       >
         You can exclude database fields in the search by toggling them off.
       </ThemedText>

@@ -180,7 +180,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
                   color={
                     watchLists.length === 0 || !watchLists.find((wl) => wl.id === selectedWatchListId)
                       ? theme.colors.grey
-                      : theme.colors.greyAlternative
+                      : theme.colors.purple
                   }
                 >
                   {(() => {

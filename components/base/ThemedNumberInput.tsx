@@ -81,7 +81,7 @@ export default function ThemedNumberInput({
             >
               <ThemedText
                 style={styles.selectPressable}
-                color={theme.colors.greyAlternative}
+                color={theme.colors.purple}
               >
                 {(() => {
                   const flatOps = operatorRows.flat();

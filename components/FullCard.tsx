@@ -77,7 +77,7 @@ export default function FullCard(props: FullCardProps) {
       <ThemedText style={{ paddingBottom: 4 }}>
         <ThemedText
           type="h4"
-          color={theme.colors.greyAlternative}
+          color={theme.colors.purple}
         >
           Energy Type:{" "}
         </ThemedText>
@@ -135,7 +135,7 @@ export default function FullCard(props: FullCardProps) {
           <ThemedText style={{ paddingBottom: 4 }}>
             <ThemedText
               type="h4"
-              color={theme.colors.greyAlternative}
+              color={theme.colors.purple}
             >
               Type:{" "}
             </ThemedText>
@@ -145,7 +145,7 @@ export default function FullCard(props: FullCardProps) {
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
                 type="h4"
-                color={theme.colors.greyAlternative}
+                color={theme.colors.purple}
               >
                 Label:{" "}
               </ThemedText>
@@ -230,7 +230,7 @@ export default function FullCard(props: FullCardProps) {
                   <ThemedText style={{ paddingBottom: 4 }}>
                     <ThemedText
                       type="h4"
-                      color={theme.colors.greyAlternative}
+                      color={theme.colors.purple}
                     >
                       Damage:{" "}
                     </ThemedText>
@@ -242,7 +242,7 @@ export default function FullCard(props: FullCardProps) {
                   <ThemedText style={{ paddingBottom: 4 }}>
                     <ThemedText
                       type="h4"
-                      color={theme.colors.greyAlternative}
+                      color={theme.colors.purple}
                     >
                       Text:{" "}
                     </ThemedText>
@@ -254,7 +254,7 @@ export default function FullCard(props: FullCardProps) {
                   <ThemedText style={{ paddingBottom: 4 }}>
                     <ThemedText
                       type="h4"
-                      color={theme.colors.greyAlternative}
+                      color={theme.colors.purple}
                     >
                       Cost:{" "}
                     </ThemedText>
@@ -269,7 +269,7 @@ export default function FullCard(props: FullCardProps) {
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
                           type="h4"
-                          color={theme.colors.greyAlternative}
+                          color={theme.colors.purple}
                         >
                           Energy Cost:{" "}
                         </ThemedText>
@@ -318,7 +318,7 @@ export default function FullCard(props: FullCardProps) {
                 <ThemedText style={{ paddingBottom: 4 }}>
                   <ThemedText
                     type="h4"
-                    color={theme.colors.greyAlternative}
+                    color={theme.colors.purple}
                   >
                     Text:{" "}
                   </ThemedText>
@@ -351,7 +351,7 @@ export default function FullCard(props: FullCardProps) {
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
                   type="h4"
-                  color={theme.colors.greyAlternative}
+                  color={theme.colors.purple}
                 >
                   Pokémon HP:
                 </ThemedText>{" "}
@@ -362,7 +362,7 @@ export default function FullCard(props: FullCardProps) {
                 <ThemedText style={{ paddingBottom: 4 }}>
                   <ThemedText
                     type="h4"
-                    color={theme.colors.greyAlternative}
+                    color={theme.colors.purple}
                   >
                     Retreat Cost:
                   </ThemedText>{" "}
@@ -389,7 +389,7 @@ export default function FullCard(props: FullCardProps) {
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
                   type="h4"
-                  color={theme.colors.greyAlternative}
+                  color={theme.colors.purple}
                 >
                   Stage:
                 </ThemedText>{" "}
@@ -402,7 +402,7 @@ export default function FullCard(props: FullCardProps) {
                     <ThemedText style={{ paddingBottom: 4 }}>
                       <ThemedText
                         type="h4"
-                        color={theme.colors.greyAlternative}
+                        color={theme.colors.purple}
                       >
                         Evolves From:
                       </ThemedText>{" "}
@@ -418,7 +418,7 @@ export default function FullCard(props: FullCardProps) {
                         <ThemedText style={{ paddingBottom: 4 }}>
                           <ThemedText
                             type="h4"
-                            color={theme.colors.greyAlternative}
+                            color={theme.colors.purple}
                           >
                             Evolves From:
                           </ThemedText>{" "}
@@ -430,7 +430,7 @@ export default function FullCard(props: FullCardProps) {
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
                           type="h4"
-                          color={theme.colors.greyAlternative}
+                          color={theme.colors.purple}
                         >
                           Evolves From:
                         </ThemedText>{" "}
@@ -442,7 +442,7 @@ export default function FullCard(props: FullCardProps) {
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
                           type="h4"
-                          color={theme.colors.greyAlternative}
+                          color={theme.colors.purple}
                         >
                           Evolves From:
                         </ThemedText>{" "}
@@ -460,7 +460,7 @@ export default function FullCard(props: FullCardProps) {
                     <ThemedText style={{ paddingBottom: 4 }}>
                       <ThemedText
                         type="h4"
-                        color={theme.colors.greyAlternative}
+                        color={theme.colors.purple}
                       >
                         Evolves To:
                       </ThemedText>{" "}
@@ -476,7 +476,7 @@ export default function FullCard(props: FullCardProps) {
                         <ThemedText style={{ paddingBottom: 4 }}>
                           <ThemedText
                             type="h4"
-                            color={theme.colors.greyAlternative}
+                            color={theme.colors.purple}
                           >
                             Evolves To:
                           </ThemedText>{" "}
@@ -488,7 +488,7 @@ export default function FullCard(props: FullCardProps) {
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
                           type="h4"
-                          color={theme.colors.greyAlternative}
+                          color={theme.colors.purple}
                         >
                           Evolves To:
                         </ThemedText>{" "}
@@ -500,7 +500,7 @@ export default function FullCard(props: FullCardProps) {
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
                           type="h4"
-                          color={theme.colors.greyAlternative}
+                          color={theme.colors.purple}
                         >
                           Evolves To:
                         </ThemedText>{" "}
@@ -535,7 +535,7 @@ export default function FullCard(props: FullCardProps) {
                     <ThemedText style={{ paddingBottom: 4 }}>
                       <ThemedText
                         type="h4"
-                        color={theme.colors.greyAlternative}
+                        color={theme.colors.purple}
                       >
                         Weakness:
                       </ThemedText>{" "}
@@ -552,7 +552,7 @@ export default function FullCard(props: FullCardProps) {
                     <ThemedText style={{ paddingBottom: 4 }}>
                       <ThemedText
                         type="h4"
-                        color={theme.colors.greyAlternative}
+                        color={theme.colors.purple}
                       >
                         Resistance:
                       </ThemedText>{" "}
@@ -582,7 +582,7 @@ export default function FullCard(props: FullCardProps) {
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
                 type="h4"
-                color={theme.colors.greyAlternative}
+                color={theme.colors.purple}
               >
                 Pokédex Number:
               </ThemedText>{" "}
@@ -593,7 +593,7 @@ export default function FullCard(props: FullCardProps) {
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
                 type="h4"
-                color={theme.colors.greyAlternative}
+                color={theme.colors.purple}
               >
                 Regulation Mark:
               </ThemedText>{" "}
@@ -604,7 +604,7 @@ export default function FullCard(props: FullCardProps) {
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
                 type="h4"
-                color={theme.colors.greyAlternative}
+                color={theme.colors.purple}
               >
                 Name:
               </ThemedText>{" "}
@@ -615,7 +615,7 @@ export default function FullCard(props: FullCardProps) {
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
                 type="h4"
-                color={theme.colors.greyAlternative}
+                color={theme.colors.purple}
               >
                 Series:
               </ThemedText>{" "}
@@ -639,7 +639,7 @@ export default function FullCard(props: FullCardProps) {
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
                   type="h4"
-                  color={theme.colors.greyAlternative}
+                  color={theme.colors.purple}
                 >
                   Rarity:
                 </ThemedText>{" "}
@@ -650,7 +650,7 @@ export default function FullCard(props: FullCardProps) {
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
                   type="h4"
-                  color={theme.colors.greyAlternative}
+                  color={theme.colors.purple}
                 >
                   Artist:
                 </ThemedText>{" "}
@@ -661,7 +661,7 @@ export default function FullCard(props: FullCardProps) {
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
                   type="h4"
-                  color={theme.colors.greyAlternative}
+                  color={theme.colors.purple}
                 >
                   Flavor Text:
                 </ThemedText>{" "}

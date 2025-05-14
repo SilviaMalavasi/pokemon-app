@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     gap: theme.padding.xsmall,
   },
   qtyText: {
-    color: theme.colors.greyAlternative,
+    color: theme.colors.purple,
     width: vw(8),
   },
   qtyOperator: {
