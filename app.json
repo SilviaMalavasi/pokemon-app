@@ -68,11 +68,6 @@
     },
     "updates": {
       "url": "https://u.expo.dev/5c5ced7b-0261-4a0a-808d-3477e4c6af0e"
-    },
-    "splash": {
-      "image": "./assets/images/splash-combined.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#4630EB"
     }
   }
 }
