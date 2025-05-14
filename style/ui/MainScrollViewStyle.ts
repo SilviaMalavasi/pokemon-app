@@ -8,13 +8,22 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 170,
+    height: 150,
     position: "relative",
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: theme.colors.darkGrey,
-    paddingBottom: 10,
-    marginBottom: -10,
+    boxShadow: "0px 12px 12px #191A20",
+  },
+  headerInnerShadow: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: "100%",
+    height: "100%",
+    zIndex: 2,
+    borderBottomLeftRadius: theme.borderRadius.large,
+    borderBottomRightRadius: theme.borderRadius.large,
   },
   headerBackground: {
     width: "100%",
@@ -61,10 +70,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    borderTopLeftRadius: theme.borderRadius.large,
-    borderTopRightRadius: theme.borderRadius.large,
-    paddingHorizontal: theme.padding.medium,
-    paddingVertical: theme.padding.medium,
     minHeight: Dimensions.get("window").height - 150,
   },
 });

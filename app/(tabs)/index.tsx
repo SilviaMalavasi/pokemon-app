@@ -58,9 +58,40 @@ export default function HomeScreen() {
   return (
     <MainScrollView
       headerImage="home-bkg"
-      headerTitle="Pokémon Deck Builder"
+      headerTitle="PokéDeck Builder"
       scrollRef={scrollRef}
     >
+      <View style={{ paddingHorizontal: theme.padding.medium }}>
+        <ThemedText
+          type="default"
+          color={theme.colors.white}
+          style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge * 1.5 }}
+        >
+          <ThemedText
+            fontWeight="bold"
+            color={theme.colors.white}
+          >
+            LAST DATABASE UPDATE:{" "}
+          </ThemedText>
+          25-05-2015
+        </ThemedText>
+      </View>
+      <SavedDecks
+        savedDecks={savedDecks}
+        isLoadingDecks={isLoadingDecks}
+        deletingId={deletingId}
+      />
+      <View style={{ paddingBottom: theme.padding.xlarge, backgroundColor: theme.colors.mediumGrey }}>
+        <WatchLists />
+      </View>
+      <View>
+        <ThemedText
+          type="hintText"
+          color={theme.colors.grey}
+        >
+          This app is not produced, endorsed, supported, or affiliated with Nintendo or The Pokémon Company.
+        </ThemedText>
+      </View>
       <View>
         <ThemedText
           type="default"
@@ -76,25 +107,6 @@ export default function HomeScreen() {
           for the Pokémon TCG community. Credits goes to{" "}
           <ExternalLink href="https://pokemontcg.io/">pokemontcg.io </ExternalLink>
           for the Card Archive.
-        </ThemedText>
-      </View>
-      <View style={{ paddingBottom: theme.padding.xlarge, backgroundColor: theme.colors.darkGrey }}>
-        <SavedDecks
-          savedDecks={savedDecks}
-          isLoadingDecks={isLoadingDecks}
-          onDelete={() => {}}
-          deletingId={deletingId}
-        />
-      </View>
-      <View style={{ paddingBottom: theme.padding.xlarge, backgroundColor: theme.colors.mediumGrey }}>
-        <WatchLists />
-      </View>
-      <View>
-        <ThemedText
-          type="hintText"
-          color={theme.colors.grey}
-        >
-          This app is not produced, endorsed, supported, or affiliated with Nintendo or The Pokémon Company.
         </ThemedText>
       </View>
     </MainScrollView>

@@ -7,6 +7,7 @@ import { Image } from "expo-image";
 import { vw } from "@/helpers/viewport";
 import styles from "@/style/ui/MainScrollViewStyle";
 import { theme } from "@/style/ui/Theme";
+import { LinearGradient } from "expo-linear-gradient";
 
 // Mapping of header image filenames to require statements
 const headerImages: Record<string, any> = {
@@ -47,6 +48,14 @@ export default function MainScrollView({ children, headerImage, headerTitle, scr
             source={headerImageSource}
             contentFit="cover"
           />
+          {/* Fake inner shadow using LinearGradient overlay */}
+          <LinearGradient
+            colors={[theme.colors.darkGrey + "99", "transparent"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={styles.headerInnerShadow}
+            pointerEvents="none"
+          />
         </View>
         <View style={styles.headerContainer}>
           <View style={styles.headerImageContainer}>
@@ -59,6 +68,7 @@ export default function MainScrollView({ children, headerImage, headerTitle, scr
           <View style={styles.headerTitleContainer}>
             <ThemedText
               type="h1"
+              color={theme.colors.white}
               fontSize={
                 headerTitle && headerTitle.toString().length > 30
                   ? vw(2)
