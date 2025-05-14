@@ -78,7 +78,7 @@ export default function HomeScreen() {
           for the Card Archive.
         </ThemedText>
       </View>
-      <View style={{ paddingBottom: theme.padding.xlarge }}>
+      <View style={{ paddingBottom: theme.padding.xlarge, backgroundColor: theme.colors.darkGrey }}>
         <SavedDecks
           savedDecks={savedDecks}
           isLoadingDecks={isLoadingDecks}
@@ -86,7 +86,7 @@ export default function HomeScreen() {
           deletingId={deletingId}
         />
       </View>
-      <View style={{ paddingBottom: theme.padding.xlarge }}>
+      <View style={{ paddingBottom: theme.padding.xlarge, backgroundColor: theme.colors.mediumGrey }}>
         <WatchLists />
       </View>
       <View>

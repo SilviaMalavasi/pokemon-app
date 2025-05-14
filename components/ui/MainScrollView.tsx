@@ -1,12 +1,14 @@
 import type { PropsWithChildren } from "react";
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
+import Animated, { useAnimatedRef, useScrollViewOffset, AnimatedRef } from "react-native-reanimated";
 import ThemedText from "@/components/base/ThemedText";
 import { Image } from "expo-image";
 import { vw } from "@/helpers/viewport";
 import styles from "@/style/ui/MainScrollViewStyle";
 import { theme } from "@/style/ui/Theme";
 
+// Mapping of header image filenames to require statements
 const headerImages: Record<string, any> = {
   "home-bkg": require("@/assets/images/home.webp"),
   "deck-builder-bkg": require("@/assets/images/deck-builder.webp"),
@@ -18,23 +20,27 @@ const headerImages: Record<string, any> = {
   "watchlist-bkg": require("@/assets/images/watchlist.webp"),
 };
 
-type MainScrollViewProps = PropsWithChildren<{
+type Props = PropsWithChildren<{
   headerImage: string;
   headerTitle: string;
-  scrollRef?: React.RefObject<ScrollView>;
+  scrollRef?: AnimatedRef<Animated.ScrollView>;
 }>;
 
-export default function MainScrollView({ children, headerImage, headerTitle, scrollRef }: MainScrollViewProps) {
+export default function MainScrollView({ children, headerImage, headerTitle, scrollRef }: Props) {
+  const internalScrollRef = useAnimatedRef<Animated.ScrollView>();
+  const usedScrollRef = scrollRef || internalScrollRef;
   const bottom = useBottomTabOverflow();
+  // Get the image source from the mapping
   const headerImageSource = headerImages[headerImage];
 
   return (
-    <ScrollView
-      ref={scrollRef}
+    <Animated.ScrollView
+      ref={usedScrollRef}
+      scrollEventThrottle={16}
       scrollIndicatorInsets={{ bottom }}
       contentContainerStyle={{ paddingBottom: bottom, backgroundColor: theme.colors.background }}
     >
-      <View style={styles.header}>
+      <Animated.View style={styles.header}>
         <View style={styles.headerBackground}>
           <Image
             style={styles.headerBackgroundImage}
@@ -73,8 +79,8 @@ export default function MainScrollView({ children, headerImage, headerTitle, scr
             </ThemedText>
           </View>
         </View>
-      </View>
+      </Animated.View>
       <View style={styles.content}>{children}</View>
-    </ScrollView>
+    </Animated.ScrollView>
   );
 }
