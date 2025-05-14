@@ -4,6 +4,7 @@ export const white = "#ffffff";
 export const black = "#000000";
 export const grey = "#ABADB3";
 
+export const background = "#252939";
 export const darkGrey = "#191A20";
 export const mediumGrey = "#242832";
 export const lightGrey = "#2B3141";
@@ -22,12 +23,18 @@ export const theme = {
     black: black,
     grey: grey,
 
+    background: darkGrey,
     darkGrey: darkGrey,
     mediumGrey: mediumGrey,
     lightGrey: lightGrey,
 
     purple: purple,
     green: green,
+
+    shadowLight: shadowLight,
+    shadowDark: shadowDark,
+    shadowLightPurlple: shadowLightPurlple,
+    shadowPurple: shadowPurple,
   },
   fontSizes: {
     font36: vw(9),
