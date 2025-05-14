@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.purple,
     borderRadius: 4,
     borderWidth: 4,
-    borderColor: theme.colors.background,
+    borderColor: theme.colors.darkGrey,
   },
   label: {
     color: theme.colors.grey,

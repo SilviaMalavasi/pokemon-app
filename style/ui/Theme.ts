@@ -4,7 +4,6 @@ export const white = "#ffffff";
 export const black = "#000000";
 export const grey = "#ABADB3";
 
-export const background = "#1B1C21";
 export const darkGrey = "#191A20";
 export const mediumGrey = "#242832";
 export const lightGrey = "#2B3141";
@@ -23,7 +22,6 @@ export const theme = {
     black: black,
     grey: grey,
 
-    background: background,
     darkGrey: darkGrey,
     mediumGrey: mediumGrey,
     lightGrey: lightGrey,

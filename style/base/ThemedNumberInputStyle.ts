@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.darkGrey,
   },
   selectPressable: {
     fontSize: theme.fontSizes.font24,

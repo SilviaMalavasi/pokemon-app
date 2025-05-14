@@ -35,7 +35,7 @@ export default function ThemedLabelWithHint({
           activeOpacity={1}
         >
           <LinearGradient
-            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
             locations={[0, 0.4, 0.4, 1]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
@@ -67,7 +67,7 @@ export default function ThemedLabelWithHint({
         </TouchableOpacity>
       ) : (
         <LinearGradient
-          colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+          colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
           locations={[0, 0.4, 0.4, 1]}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}

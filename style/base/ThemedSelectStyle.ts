@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.padding.small,
     color: theme.colors.grey,
     borderRadius: theme.borderRadius.small,
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.darkGrey,
   },
   modalOverlay: {
     flex: 1,

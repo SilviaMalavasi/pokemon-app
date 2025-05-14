@@ -181,7 +181,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
               ]}
             >
               <ThemedText
-                style={{ color: stagedQty === qty ? theme.colors.background : theme.colors.grey, fontWeight: "bold" }}
+                style={{ color: stagedQty === qty ? theme.colors.darkGrey : theme.colors.grey, fontWeight: "bold" }}
               >
                 {qty}
               </ThemedText>

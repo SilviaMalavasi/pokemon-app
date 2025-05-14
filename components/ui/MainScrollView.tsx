@@ -38,9 +38,9 @@ export default function MainScrollView({ children, headerImage, headerTitle, scr
       ref={usedScrollRef}
       scrollEventThrottle={16}
       scrollIndicatorInsets={{ bottom }}
-      contentContainerStyle={{ paddingBottom: bottom, backgroundColor: theme.colors.background }}
+      contentContainerStyle={{ paddingBottom: bottom, backgroundColor: theme.colors.darkGrey }}
     >
-      <Animated.View style={styles.header}>
+      <View style={styles.header}>
         <View style={styles.headerBackground}>
           <Image
             style={styles.headerBackgroundImage}
@@ -79,7 +79,7 @@ export default function MainScrollView({ children, headerImage, headerTitle, scr
             </ThemedText>
           </View>
         </View>
-      </Animated.View>
+      </View>
       <View style={styles.content}>{children}</View>
     </Animated.ScrollView>
   );

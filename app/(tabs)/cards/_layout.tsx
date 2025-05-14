@@ -8,7 +8,7 @@ export default function CardsLayout() {
       screenOptions={{
         headerShown: false,
         animation: "fade",
-        contentStyle: { backgroundColor: theme.colors.background },
+        contentStyle: { backgroundColor: theme.colors.darkGrey },
       }}
     />
   );

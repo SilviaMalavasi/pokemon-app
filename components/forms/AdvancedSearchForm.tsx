@@ -398,7 +398,7 @@ export default function AdvancedSearchForm({
       {summaryFields.filter((f) => f.value && f.value !== "").length > 0 && (
         <View style={styles.summaryContainer}>
           <LinearGradient
-            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
             locations={[0, 0.4, 0.4, 1]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}

@@ -42,7 +42,7 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
   }
 
   // Text color
-  let textColor = theme.colors.background;
+  let textColor = theme.colors.darkGrey;
   if (type === "outline") {
     textColor =
       status === "active" ? theme.colors.green : status === "disabled" ? theme.colors.lightGrey : theme.colors.grey;

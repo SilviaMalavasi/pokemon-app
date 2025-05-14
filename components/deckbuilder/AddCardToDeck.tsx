@@ -199,7 +199,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
                 ]}
               >
                 <ThemedText
-                  style={{ color: stagedQty === qty ? theme.colors.background : theme.colors.grey, fontWeight: "bold" }}
+                  style={{ color: stagedQty === qty ? theme.colors.darkGrey : theme.colors.grey, fontWeight: "bold" }}
                 >
                   {qty}
                 </ThemedText>

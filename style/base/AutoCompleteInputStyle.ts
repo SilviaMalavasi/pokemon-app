@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   suggestionsListContainer: {
     width: "100%",
     marginBottom: theme.padding.xsmall,
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.darkGrey,
     borderRadius: theme.borderRadius.medium,
     borderWidth: 1,
     borderColor: theme.colors.grey,

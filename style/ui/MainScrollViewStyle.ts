@@ -4,7 +4,7 @@ import { theme } from "@/style/ui/Theme";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.darkGrey,
   },
   header: {
     width: "100%",
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     position: "relative",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.darkGrey,
     paddingBottom: 10,
     marginBottom: -10,
   },
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   headerImageContainer: {
-    flexBasis: 110,
-    width: 110,
+    flexBasis: 100,
+    width: 100,
     height: "100%",
     paddingHorizontal: theme.padding.medium,
     paddingTop: theme.padding.xlarge,

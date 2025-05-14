@@ -124,7 +124,7 @@ export default function FullCard(props: FullCardProps) {
         {/* Card Types */}
         <View style={styles.cardDetailsContainer}>
           <LinearGradient
-            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
             locations={[0, 0.4, 0.4, 1]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
@@ -162,12 +162,7 @@ export default function FullCard(props: FullCardProps) {
             (props.rules && typeof props.rules === "string" && (props.rules as string).trim() !== "")) && (
             <View style={styles.cardDetailsContainer}>
               <LinearGradient
-                colors={[
-                  "rgba(255,255,255,0)",
-                  "rgba(255,255,255,0)",
-                  theme.colors.background,
-                  theme.colors.background,
-                ]}
+                colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
                 locations={[0, 0.4, 0.4, 1]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
@@ -198,7 +193,7 @@ export default function FullCard(props: FullCardProps) {
         {props.attacks && props.attacks.length > 0 && (
           <View style={styles.cardDetailsContainer}>
             <LinearGradient
-              colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+              colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
               locations={[0, 0.4, 0.4, 1]}
               start={{ x: 0, y: 0 }}
               end={{ x: 0, y: 1 }}
@@ -288,7 +283,7 @@ export default function FullCard(props: FullCardProps) {
         {props.abilities && props.abilities.length > 0 && (
           <View style={styles.cardDetailsContainer}>
             <LinearGradient
-              colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+              colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
               locations={[0, 0.4, 0.4, 1]}
               start={{ x: 0, y: 0 }}
               end={{ x: 0, y: 1 }}
@@ -334,12 +329,7 @@ export default function FullCard(props: FullCardProps) {
           <>
             <View style={styles.cardDetailsContainer}>
               <LinearGradient
-                colors={[
-                  "rgba(255,255,255,0)",
-                  "rgba(255,255,255,0)",
-                  theme.colors.background,
-                  theme.colors.background,
-                ]}
+                colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
                 locations={[0, 0.4, 0.4, 1]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
@@ -373,12 +363,7 @@ export default function FullCard(props: FullCardProps) {
 
             <View style={styles.cardDetailsContainer}>
               <LinearGradient
-                colors={[
-                  "rgba(255,255,255,0)",
-                  "rgba(255,255,255,0)",
-                  theme.colors.background,
-                  theme.colors.background,
-                ]}
+                colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
                 locations={[0, 0.4, 0.4, 1]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
@@ -515,12 +500,7 @@ export default function FullCard(props: FullCardProps) {
 
             <View style={styles.cardDetailsContainer}>
               <LinearGradient
-                colors={[
-                  "rgba(255,255,255,0)",
-                  "rgba(255,255,255,0)",
-                  theme.colors.background,
-                  theme.colors.background,
-                ]}
+                colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
                 locations={[0, 0.4, 0.4, 1]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
@@ -570,7 +550,7 @@ export default function FullCard(props: FullCardProps) {
 
         <View style={styles.cardDetailsContainer}>
           <LinearGradient
-            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
             locations={[0, 0.4, 0.4, 1]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
@@ -627,7 +607,7 @@ export default function FullCard(props: FullCardProps) {
         {props.rarity || props.artist || props.flavorText ? (
           <View style={styles.cardDetailsContainer}>
             <LinearGradient
-              colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.background, theme.colors.background]}
+              colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
               locations={[0, 0.4, 0.4, 1]}
               start={{ x: 0, y: 0 }}
               end={{ x: 0, y: 1 }}

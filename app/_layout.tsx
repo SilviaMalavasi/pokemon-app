@@ -73,7 +73,7 @@ export default function RootLayout() {
             <View style={{ flex: 1 }}>
               <Stack
                 screenOptions={{
-                  contentStyle: { backgroundColor: theme.colors.background },
+                  contentStyle: { backgroundColor: theme.colors.darkGrey },
                   animation: "fade",
                 }}
               >

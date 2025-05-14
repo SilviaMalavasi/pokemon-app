@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.small,
     borderWidth: 1,
     borderColor: theme.colors.grey,
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.darkGrey,
     paddingHorizontal: theme.padding.small,
     paddingTop: theme.padding.small,
     paddingBottom: theme.padding.small * 0.9,
