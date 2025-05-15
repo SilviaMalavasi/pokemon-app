@@ -3,7 +3,6 @@
     "name": "Pokédeck Builder",
     "slug": "pokemon-deck-builder",
     "version": "1.0.0",
-    "newArchEnabled": true,
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "com.silviamalavasi.pokedeckbuilder",

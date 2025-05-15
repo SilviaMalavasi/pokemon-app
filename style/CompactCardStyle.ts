@@ -15,6 +15,13 @@ const CompactCardViewStyle = StyleSheet.create({
     width: cardWidth,
     paddingTop: theme.padding.xsmall,
     paddingBottom: theme.padding.small,
+    shadowColor: theme.colors.darkGrey,
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 12,
   },
   imageContainer: {
     width: "100%",
