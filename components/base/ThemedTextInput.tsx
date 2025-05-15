@@ -41,7 +41,7 @@ export default forwardRef<TextInput, ThemedTextInputProps>(function ThemedTextIn
           setShowHint={setShowHint}
         />
       )}
-      <View>
+      <View style={{ position: "relative" }}>
         <TextInput
           ref={ref}
           style={[styles.input, { flex: 1 }]}
@@ -52,6 +52,7 @@ export default forwardRef<TextInput, ThemedTextInputProps>(function ThemedTextIn
           onFocus={onFocus}
           onBlur={onBlur}
         />
+        <View style={styles.fakeInnerShadow} />
         {value.length > 0 && (
           <TouchableOpacity
             onPress={() => onChange("")}

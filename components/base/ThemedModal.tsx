@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Pressable, View, SafeAreaView, Platform, ScrollView } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
@@ -55,32 +56,35 @@ export default function ThemedModal({
             >
               <ScrollView
                 contentContainerStyle={{ alignItems: "center" }}
-                style={styles.scrollView}
                 persistentScrollbar={true}
               >
-                {children}
-                <View style={styles.buttonContainer}>
-                  {onCancel && (
-                    <Pressable
-                      onPress={() => {
-                        onCancel();
-                        onClose();
-                      }}
-                      style={styles.modalCancel}
-                    >
-                      <ThemedText style={{ color: theme.colors.grey, padding: theme.padding.medium }}>
-                        {onCancelText || "Reset"}
-                      </ThemedText>
-                    </Pressable>
-                  )}
-                  <ThemedButton
-                    title={buttonText}
-                    type={buttonType}
-                    size={buttonSize}
-                    style={[styles.button, buttonStyle]}
-                    onPress={onClose}
-                  />
-                </View>
+                <LinearGradient
+                  colors={[theme.colors.mediumGrey, theme.colors.darkGrey]}
+                  start={{ x: 0.2, y: 0 }}
+                  end={{ x: 0.4, y: 0.7 }}
+                  style={styles.mainModal}
+                >
+                  {children}
+                  <View style={styles.buttonContainer}>
+                    {onCancel && (
+                      <ThemedButton
+                        title={onCancelText || "Reset"}
+                        type="alternative"
+                        size="large"
+                        onPress={() => {
+                          onCancel();
+                          onClose();
+                        }}
+                      />
+                    )}
+                    <ThemedButton
+                      title={buttonText}
+                      type={buttonType}
+                      size={buttonSize}
+                      onPress={onClose}
+                    />
+                  </View>
+                </LinearGradient>
               </ScrollView>
             </View>
           </View>

@@ -105,6 +105,7 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
                   title="Delete"
                   type="alternative"
                   size="small"
+                  onPress={handleDeletePress}
                 />
               </ThemedView>
             </View>
@@ -157,15 +158,22 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
         buttonText="Delete"
         buttonType="main"
         buttonSize="large"
+        onCancelText="Cancel"
         onCancel={() => setShowModal(false)}
       >
         <ThemedText
           type="h2"
+          color={theme.colors.white}
           style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
         >
           Delete Deck?
         </ThemedText>
-        <ThemedText>Are you sure you want to delete '{deck.name}'? This action cannot be undone.</ThemedText>
+        <ThemedText
+          color={theme.colors.grey}
+          style={{ textAlign: "center", paddingBottom: theme.padding.small }}
+        >
+          Are you sure you want to delete '{deck.name}'? This action cannot be undone.
+        </ThemedText>
       </ThemedModal>
     </View>
   );

@@ -25,37 +25,39 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    margin: theme.padding.medium,
     ...theme.shadow,
   },
   modalView: {
-    backgroundColor: theme.colors.mediumGrey,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: theme.colors.green,
-    paddingVertical: theme.padding.medium,
-    paddingHorizontal: theme.padding.xsmall,
+    backgroundColor: theme.colors.darkGrey,
+    borderRadius: theme.borderRadius.large,
     alignItems: "center",
     justifyContent: "space-between",
-    width: "92%",
-    ...theme.shadow,
+    overflow: "hidden",
+    width: "85%",
+    boxShadow: [
+      {
+        color: theme.colors.shadowLight,
+        offsetX: -2,
+        offsetY: -2,
+        blurRadius: "2px",
+      },
+      {
+        color: theme.colors.black,
+        offsetX: 6,
+        offsetY: 6,
+        blurRadius: "12px",
+      },
+    ],
   },
-  scrollView: {
+  mainModal: {
     width: "100%",
-    paddingHorizontal: theme.padding.small,
+    padding: theme.padding.medium,
   },
   buttonContainer: {
     flexDirection: "row",
     alignItems: "center",
     gap: theme.padding.medium,
-    backgroundColor: "transparent",
-  },
-  button: {
-    marginTop: theme.padding.medium,
-  },
-  modalCancel: {
-    marginTop: theme.padding.small,
-    alignItems: "center",
+    padding: theme.padding.medium,
   },
 });
 

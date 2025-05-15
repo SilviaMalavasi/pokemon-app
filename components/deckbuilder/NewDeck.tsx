@@ -57,41 +57,28 @@ export default function NewDeck({
 
   return (
     <ThemedView layout="big">
-      <ThemedText
-        type="h2"
-        color={theme.colors.white}
-        style={{
-          paddingBottom: theme.padding.medium,
-          paddingLeft: theme.padding.small,
-        }}
-      >
-        New Deck
-      </ThemedText>
       <CardAutoCompleteProvider>
         <View style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge }}>
           <ThemedTextInput
-            label="Deck Name *"
             value={deckName}
             onChange={setDeckName}
-            placeholder="Enter deck name"
+            placeholder="Enter deck name *"
           />
           <CardAutoCompleteInput
             key={autoCompleteKey}
-            label="Deck Thumbnail"
             value={deckThumbnail}
             onCardSelect={handleThumbnailSelect}
             placeholder="Type card name (min 3 chars)"
             maxChars={25}
-            labelHint="Select a card image for the deck"
             resetKey={autoCompleteKey} // Pass resetKey to force clear
           />
           <CardAutoCompleteSuggestions onCardSelect={handleThumbnailSelect} />
           <ThemedButton
-            title="Save Deck"
-            width={vw(40)}
+            title="Add New Deck"
+            width={vw(52)}
             onPress={handleSavePress}
             disabled={isSaveDisabled}
-            style={{ marginTop: theme.padding.small }}
+            style={{ marginTop: theme.padding.medium }}
           />
         </View>
       </CardAutoCompleteProvider>

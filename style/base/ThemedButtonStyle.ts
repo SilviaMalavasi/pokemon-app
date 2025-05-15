@@ -9,8 +9,12 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
   // Shared values
   const borderRadius = theme.borderRadius.large;
   const paddingVertical =
-    type === "alternative" ? "small" : size === "large" ? theme.padding.medium : theme.padding.small;
-  const paddingHorizontal = size === "large" ? theme.padding.large : theme.padding.large;
+    type === "alternative" && size === "small"
+      ? theme.padding.xsmall
+      : size === "large"
+      ? theme.padding.medium
+      : theme.padding.small;
+  const paddingHorizontal = theme.padding.large;
   let iconSize = size === "large" ? theme.padding.medium : theme.padding.small;
   const textWithIconMargin = size === "large" ? theme.padding.small : theme.padding.xsmall;
 

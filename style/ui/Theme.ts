@@ -7,7 +7,7 @@ export const grey = "rgb(171, 173, 179)";
 export const background = "rgb(25, 29, 42)";
 export const darkGrey = "rgb(10, 13, 22)";
 export const mediumGrey = "rgb(37, 42, 54)";
-export const lightGrey = "rgb(48, 55, 78)";
+export const lightGrey = "rgb(41, 48, 70)";
 
 export const purple = "rgb(145, 66, 255)";
 export const green = "rgb(79, 255, 202)";
