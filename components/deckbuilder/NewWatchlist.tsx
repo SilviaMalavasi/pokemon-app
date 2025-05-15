@@ -12,26 +12,26 @@ import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 
 interface NewDeckSectionProps {
-  deckName: string;
-  setDeckName: (name: string) => void;
-  deckThumbnail: string;
-  setDeckThumbnail: (url: string) => void;
-  handleSaveDeck: () => void;
+  watchlistName: string;
+  setWatchlistName: (name: string) => void;
+  watchlistThumbnail: string;
+  setWatchlistThumbnail: (url: string) => void;
+  handleSaveWatchList: () => void;
   handleThumbnailSelect: (url: string) => void;
 }
 
-export default function NewDeck({
-  deckName,
-  setDeckName,
-  deckThumbnail,
-  handleSaveDeck,
-  setDeckThumbnail,
+export default function NewWatchlist({
+  watchlistName,
+  setWatchlistName,
+  watchlistThumbnail,
+  handleSaveWatchList,
+  setWatchlistThumbnail,
 }: NewDeckSectionProps) {
-  const isNameMissing = !deckName.trim();
+  const isNameMissing = !watchlistName.trim();
   const isSaveDisabled = isNameMissing;
 
   const [autoCompleteKey, setAutoCompleteKey] = React.useState(0);
-  const { db } = useCardDatabase();
+  const { db, isLoading: cardDbLoading } = useCardDatabase();
 
   // Handler to select thumbnail by cardId
   const handleThumbnailSelect = async (cardId: string) => {
@@ -41,7 +41,7 @@ export default function NewDeck({
         cardId,
       ]);
       if (card && card.imagesLarge) {
-        setDeckThumbnail(card.imagesLarge);
+        setWatchlistThumbnail(card.imagesLarge);
       }
     } catch (e) {
       console.error("Error fetching card image for thumbnail:", e);
@@ -50,8 +50,8 @@ export default function NewDeck({
 
   const handleSavePress = () => {
     if (isSaveDisabled) return;
-    handleSaveDeck();
-    setAutoCompleteKey((k) => k + 1); // Reset CardAutoCompleteInput
+    handleSaveWatchList();
+    setAutoCompleteKey((k) => k + 1);
   };
 
   return (
@@ -59,11 +59,11 @@ export default function NewDeck({
       <CardAutoCompleteProvider>
         <View style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge }}>
           <ThemedTextInput
-            value={deckName}
-            onChange={setDeckName}
-            placeholder="Enter deck name *"
+            value={watchlistName}
+            onChange={setWatchlistName}
+            placeholder="Enter watchlist name *"
           />
-          {!db ? (
+          {cardDbLoading || !db ? (
             <ThemedButton
               title="Loading cards..."
               width={vw(64)}
@@ -74,21 +74,20 @@ export default function NewDeck({
             <>
               <CardAutoCompleteInput
                 key={autoCompleteKey}
-                value={deckThumbnail}
+                value={watchlistThumbnail}
                 onCardSelect={handleThumbnailSelect}
                 placeholder="Thumbnail card name (min 3 chars)"
                 maxChars={25}
-                resetKey={autoCompleteKey} // Pass resetKey to force clear
+                resetKey={autoCompleteKey}
               />
               <CardAutoCompleteSuggestions onCardSelect={handleThumbnailSelect} />
             </>
           )}
-
           <ThemedButton
-            title="Add New Deck"
-            width={vw(52)}
+            title="Add New Watchlist"
+            width={vw(64)}
             onPress={handleSavePress}
-            disabled={isSaveDisabled}
+            disabled={isSaveDisabled || cardDbLoading || !db}
             style={{ marginTop: theme.padding.medium }}
           />
         </View>

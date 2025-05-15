@@ -18,6 +18,7 @@ import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
   CardAutoCompleteSuggestions,
 } from "@/components/base/CardAutoCompleteInput";
+import { addWatchList, getWatchLists } from "@/lib/userDatabase";
 
 function getDeckImage(imagePath: string) {
   // Always show the default image if no thumbnail is provided
@@ -32,8 +33,8 @@ function getDeckImage(imagePath: string) {
   return cardImages[filename];
 }
 
-interface CompactDeckProps {
-  deck: {
+interface CompactWatchlistProps {
+  watchlist: {
     id: number;
     name: string;
     thumbnail: string | null;
@@ -44,14 +45,14 @@ interface CompactDeckProps {
   onDelete?: (id: number) => void;
 }
 
-export default function CompactDeck({ deck, onImageLoad, layout, loading, onDelete }: CompactDeckProps) {
+export default function CompactWatchlist({ watchlist, onImageLoad, layout, loading, onDelete }: CompactWatchlistProps) {
   const [imageLoading, setImageLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
-  const [editName, setEditName] = useState(deck.name);
-  const [editThumbnail, setEditThumbnail] = useState(deck.thumbnail || "");
+  const [editName, setEditName] = useState(watchlist.name);
+  const [editThumbnail, setEditThumbnail] = useState(watchlist.thumbnail || "");
   const [saving, setSaving] = useState(false);
-  const imageSource = getDeckImage(deck.thumbnail || "");
+  const imageSource = getDeckImage(watchlist.thumbnail || "");
   const router = useRouter();
   const { incrementDecksVersion, db: userDb } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
@@ -64,20 +65,19 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
 
   const handleConfirmDelete = () => {
     setShowModal(false);
-    if (onDelete) onDelete(deck.id);
+    if (onDelete) onDelete(watchlist.id);
   };
 
-  const handleCloneDeck = async () => {
-    if (!deck) return;
-    let baseName = deck.name.replace(/#\d+$/, "").trim();
+  const handleCloneWatchlist = async () => {
+    if (!watchlist) return;
+    let baseName = watchlist.name.replace(/#\d+$/, "").trim();
     let cloneNumber = 1;
     let newName = `${baseName} #${cloneNumber}`;
     try {
-      const { getSavedDecks, addDeck } = await import("@/lib/userDatabase");
       if (!userDb) return;
-      const allDecks = await getSavedDecks(userDb);
+      const allWatchlists = await getWatchLists(userDb);
       const regex = new RegExp(`^${baseName} #(\\d+)$`);
-      const usedNumbers = allDecks
+      const usedNumbers = allWatchlists
         .map((d) => {
           const match = d.name.match(regex);
           return match ? parseInt(match[1], 10) : null;
@@ -87,18 +87,17 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
         cloneNumber++;
         newName = `${baseName} #${cloneNumber}`;
       }
-      const cards = (deck as any).cards ? (deck as any).cards : "[]";
-      await addDeck(userDb, newName, deck.thumbnail || undefined, cards);
-      incrementDecksVersion(); // Refresh UI after clone
-      // Optionally: trigger a UI refresh if needed (parent handles this)
+      const cards = (watchlist as any).cards ? (watchlist as any).cards : "[]";
+      await addWatchList(userDb, newName, cards, watchlist.thumbnail || undefined);
+      incrementDecksVersion();
     } catch (e) {
-      console.error("Failed to clone deck", e);
+      console.error("Failed to clone watchlist", e);
     }
   };
 
   const handleEditPress = () => {
-    setEditName(deck.name);
-    setEditThumbnail(deck.thumbnail || "");
+    setEditName(watchlist.name);
+    setEditThumbnail(watchlist.thumbnail || "");
     setEditModalVisible(true);
   };
 
@@ -106,15 +105,15 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
     if (!userDb || !editName.trim()) return;
     setSaving(true);
     try {
-      await userDb.runAsync("UPDATE Decks SET name = ?, thumbnail = ? WHERE id = ?", [
+      await userDb.runAsync("UPDATE WatchedCards SET name = ?, thumbnail = ? WHERE id = ?", [
         editName,
         editThumbnail || null,
-        deck.id,
+        watchlist.id,
       ]);
       incrementDecksVersion();
       setEditModalVisible(false);
     } catch (e) {
-      console.error("Error updating deck:", e);
+      console.error("Error updating watchlist:", e);
     } finally {
       setSaving(false);
     }
@@ -132,9 +131,9 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
         setEditThumbnail(card.imagesLarge);
       }
     } catch (e) {
-      console.error("[CompactDeck] Error fetching card image for thumbnail:", e, { cardId, cardDb });
+      console.error("[CompactWatchlist] Error fetching card image for thumbnail:", e, { cardId, cardDb });
       if (e && (e as any).stack) {
-        console.error("[CompactDeck] Error stack:", (e as any).stack);
+        console.error("[CompactWatchlist] Error stack:", (e as any).stack);
       }
     }
   };
@@ -153,33 +152,35 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
-        <View style={styles.deckName}>
+        <View style={styles.watchlistName}>
           <ThemedText
             type="h3"
             color={theme.colors.white}
             style={{ paddingTop: theme.padding.medium }}
           >
-            {deck.name}
+            {watchlist.name}
           </ThemedText>
           {layout === "edit" && (
             <ThemedButton
-              title="View Deck"
+              title="View Watchlist"
               type="main"
               size="small"
-              onPress={() => router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id } })}
+              onPress={() =>
+                router.push({ pathname: "/watchlists/[watchlistId]", params: { watchlistId: watchlist.id } })
+              }
             />
           )}
         </View>
         <>
           {layout === "edit" && (
-            <View style={styles.deckButtons}>
+            <View style={styles.watchlistButtons}>
               <ThemedView layout="box">
                 <ThemedButton
                   title="Clone"
                   type="outline"
                   size="small"
                   style={{ marginBottom: theme.padding.medium * 0.8 }}
-                  onPress={handleCloneDeck}
+                  onPress={handleCloneWatchlist}
                 />
                 <ThemedButton
                   title="Edit"
@@ -198,12 +199,14 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
             </View>
           )}
           {layout === "view" && (
-            <View style={[styles.deckButtons, { justifyContent: "flex-end", alignItems: "flex-end" }]}>
+            <View style={[styles.watchlistButtons, { justifyContent: "flex-end", alignItems: "flex-end" }]}>
               <ThemedButton
-                title="View Deck"
+                title="View Watchlist"
                 type="main"
                 size="small"
-                onPress={() => router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id } })}
+                onPress={() =>
+                  router.push({ pathname: "/watchlists/[watchlistId]", params: { watchlistId: watchlist.id } })
+                }
                 style={{ marginBottom: theme.padding.medium }}
               />
             </View>
@@ -254,13 +257,13 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
           color={theme.colors.white}
           style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
         >
-          Delete Deck?
+          Delete Watchlist?
         </ThemedText>
         <ThemedText
           color={theme.colors.grey}
           style={{ textAlign: "center", paddingBottom: theme.padding.small }}
         >
-          Are you sure you want to delete '{deck.name}'? This action cannot be undone.
+          Are you sure you want to delete '{watchlist.name}'? This action cannot be undone.
         </ThemedText>
       </ThemedModal>
       <ThemedModal
@@ -278,21 +281,21 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
             color={theme.colors.white}
             style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
           >
-            Edit Deck
+            Edit Watchlist
           </ThemedText>
           <ThemedTextInput
             value={editName}
             onChange={setEditName}
-            placeholder="Enter deck name"
+            placeholder="Enter watchlist name"
             style={{ marginBottom: theme.padding.medium }}
           />
           <CardAutoCompleteInput
-            key={deck.id}
+            key={watchlist.id}
             value={editThumbnail}
             onCardSelect={handleThumbnailSelect}
             placeholder="Type card name (min 3 chars)"
             maxChars={25}
-            resetKey={deck.id}
+            resetKey={watchlist.id}
           />
           <CardAutoCompleteSuggestions onCardSelect={handleThumbnailSelect} />
         </CardAutoCompleteProvider>

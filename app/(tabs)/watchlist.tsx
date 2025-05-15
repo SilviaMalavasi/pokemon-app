@@ -3,11 +3,11 @@ import MainScrollView from "@/components/ui/MainScrollView";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
-import { addDeck, getSavedDecks, deleteDeck } from "@/lib/userDatabase";
-import NewDeck from "@/components/deckbuilder/NewDeck";
-import SavedDecks from "@/components/deckbuilder/SavedDecks";
+import { addWatchList, getWatchLists, deleteWatchList } from "@/lib/userDatabase";
+import NewWatchlist from "@/components/deckbuilder/NewWatchlist";
+import WatchLists from "@/components/deckbuilder/WatchLists";
 
-interface SavedDeck {
+interface Watchlist {
   id: number;
   name: string;
   thumbnail: string | null;
@@ -18,30 +18,30 @@ export default function WatchlistScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const { db, isLoading: dbLoading, error: dbError, decksVersion } = useUserDatabase();
 
-  const [deckName, setDeckName] = useState("");
-  const [deckThumbnail, setDeckThumbnail] = useState("");
-  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
-  const [isLoadingDecks, setIsLoadingDecks] = useState(false);
+  const [watchlistName, setWatchlistName] = useState("");
+  const [watchlistThumbnail, setWatchlistThumbnail] = useState("");
+  const [watchLists, setWatchLists] = useState<Watchlist[]>([]);
+  const [isLoadingWatchLists, setIsLoadingWatchLists] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
-  const fetchSavedDecks = useCallback(async () => {
+  const fetchWatchLists = useCallback(async () => {
     if (!db) return;
-    setIsLoadingDecks(true);
+    setIsLoadingWatchLists(true);
     try {
-      const decks = await getSavedDecks(db);
-      setSavedDecks(decks);
+      const lists = await getWatchLists(db);
+      setWatchLists(lists);
     } catch (error) {
-      console.error("Failed to fetch saved decks:", error);
+      console.error("Failed to fetch watchlists:", error);
     } finally {
-      setIsLoadingDecks(false);
+      setIsLoadingWatchLists(false);
     }
   }, [db]);
 
   useEffect(() => {
     if (db) {
-      fetchSavedDecks();
+      fetchWatchLists();
     }
-  }, [db, decksVersion, fetchSavedDecks]);
+  }, [db, decksVersion, fetchWatchLists]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -49,65 +49,67 @@ export default function WatchlistScreen() {
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
       if (db) {
-        fetchSavedDecks();
+        fetchWatchLists();
       }
-    }, [db, fetchSavedDecks])
+    }, [db, fetchWatchLists])
   );
 
-  const handleSaveDeck = async () => {
+  const handleSaveWatchList = async () => {
     if (!db) {
       console.warn("Error", "Database not available.");
       return;
     }
     try {
-      await addDeck(db, deckName, deckThumbnail || undefined);
-      setDeckName("");
-      setDeckThumbnail("");
-      fetchSavedDecks();
+      await addWatchList(db, watchlistName, "[]", watchlistThumbnail || undefined);
+      setWatchlistName("");
+      setWatchlistThumbnail("");
+      fetchWatchLists();
     } catch (error) {
-      console.error("Failed to save deck:", error);
+      console.error("Failed to save watchlist:", error);
     }
   };
 
-  const handleDeleteDeck = useCallback(
+  const handleDeleteWatchList = useCallback(
     async (id: number) => {
       if (!db) return;
       setDeletingId(id);
       try {
-        await deleteDeck(db, id);
-        await fetchSavedDecks();
+        await deleteWatchList(db, id);
+        await fetchWatchLists();
       } catch (e) {
-        console.error("Failed to delete deck", e);
+        console.error("Failed to delete watchlist", e);
       } finally {
         setDeletingId(null);
       }
     },
-    [db, fetchSavedDecks]
+    [db, fetchWatchLists]
   );
 
   const handleThumbnailSelect = (imagesLargeUrl: string) => {
-    setDeckThumbnail(imagesLargeUrl);
+    setWatchlistThumbnail(imagesLargeUrl);
   };
 
   return (
     <MainScrollView
       headerImage="deck-builder-bkg"
-      headerTitle="Deck Builder"
+      headerTitle="Watchlists"
       scrollRef={scrollRef}
     >
-      <NewDeck
-        deckName={deckName}
-        setDeckName={setDeckName}
-        deckThumbnail={deckThumbnail}
-        setDeckThumbnail={setDeckThumbnail}
-        handleSaveDeck={handleSaveDeck}
+      <NewWatchlist
+        watchlistName={watchlistName}
+        setWatchlistName={setWatchlistName}
+        watchlistThumbnail={watchlistThumbnail}
+        setWatchlistThumbnail={setWatchlistThumbnail}
+        handleSaveWatchList={handleSaveWatchList}
         handleThumbnailSelect={handleThumbnailSelect}
       />
-      <SavedDecks
-        savedDecks={savedDecks}
-        isLoadingDecks={isLoadingDecks}
-        onDelete={handleDeleteDeck}
+      <WatchLists
+        watchLists={watchLists}
+        isLoadingWatchLists={isLoadingWatchLists}
+        onDelete={handleDeleteWatchList}
         deletingId={deletingId}
+        layout="edit"
+        style={{ marginTop: -24 }}
       />
     </MainScrollView>
   );
