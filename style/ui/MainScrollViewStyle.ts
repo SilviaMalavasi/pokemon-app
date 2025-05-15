@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: theme.borderRadius.xlarge,
     borderBottomRightRadius: theme.borderRadius.xlarge,
     overflow: "hidden",
-    marginBottom: theme.padding.large,
+    marginBottom: theme.padding.medium,
     boxShadow: [
       {
         color: theme.colors.shadowDark,
