@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 // ----> INCREMENT THIS WHEN SCHEMA CHANGES <----
-const USER_DATABASE_VERSION = 27;
+const USER_DATABASE_VERSION = 28;
 // Set to false; we will force reset only if a mismatch is detected
 const FORCE_USER_DB_RESET = false; // TEMP: Set to false after first run!
 
@@ -32,6 +32,7 @@ const desiredTables = [
     columns: [
       { name: "id", type: "INTEGER PRIMARY KEY AUTOINCREMENT" },
       { name: "name", type: "TEXT NOT NULL" },
+      { name: "thumbnail", type: "TEXT" },
       { name: "cards", type: "TEXT" },
     ],
   },
@@ -184,16 +185,23 @@ export async function deleteDeck(db: SQLite.SQLiteDatabase, id: number): Promise
 export async function addWatchList(
   db: SQLite.SQLiteDatabase,
   name: string,
-  cards: string = "[]"
+  cards: string = "[]",
+  thumbnail?: string
 ): Promise<SQLite.SQLiteRunResult> {
   console.log(`Adding watch list: ${name}`);
-  return db.runAsync("INSERT INTO WatchedCards (name, cards) VALUES (?, ?)", [name, cards]);
+  return db.runAsync("INSERT INTO WatchedCards (name, thumbnail, cards) VALUES (?, ?, ?)", [
+    name,
+    thumbnail ?? null,
+    cards,
+  ]);
 }
 
-export async function getWatchLists(db: SQLite.SQLiteDatabase): Promise<{ id: number; name: string; cards: string }[]> {
+export async function getWatchLists(
+  db: SQLite.SQLiteDatabase
+): Promise<{ id: number; name: string; thumbnail: string | null; cards: string }[]> {
   console.log("Fetching all watch lists.");
-  return db.getAllAsync<{ id: number; name: string; cards: string }>(
-    "SELECT id, name, cards FROM WatchedCards ORDER BY name ASC"
+  return db.getAllAsync<{ id: number; name: string; thumbnail: string | null; cards: string }>(
+    "SELECT id, name, thumbnail, cards FROM WatchedCards ORDER BY name ASC"
   );
 }
 

@@ -4,14 +4,22 @@ import { Svg, Path } from "react-native-svg";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedButton from "../base/ThemedButton";
+import ThemedView from "@/components/ui/ThemedView";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { vw } from "@/helpers/viewport";
 import cardImages from "@/helpers/cardImageMapping";
 import styles from "@/style/deckbuilder/CompactWatchlistStyle";
 import { theme } from "@/style/ui/Theme";
+import { useUserDatabase } from "@/components/context/UserDatabaseContext";
+import { useCardDatabase } from "@/components/context/CardDatabaseContext";
+import ThemedTextInput from "@/components/base/ThemedTextInput";
+import CardAutoCompleteInput, {
+  CardAutoCompleteProvider,
+  CardAutoCompleteSuggestions,
+} from "@/components/base/CardAutoCompleteInput";
 
-function getWatchlistImage(imagePath: string) {
+function getDeckImage(imagePath: string) {
   // Always show the default image if no thumbnail is provided
   if (!imagePath) {
     return require("@/assets/images/back-card.webp");
@@ -24,8 +32,8 @@ function getWatchlistImage(imagePath: string) {
   return cardImages[filename];
 }
 
-interface CompactWatchlistProps {
-  watchlist: {
+interface CompactDeckProps {
+  deck: {
     id: number;
     name: string;
     thumbnail: string | null;
@@ -36,11 +44,17 @@ interface CompactWatchlistProps {
   onDelete?: (id: number) => void;
 }
 
-export default function CompactWatchlist({ watchlist, onImageLoad, layout, loading, onDelete }: CompactWatchlistProps) {
+export default function CompactDeck({ deck, onImageLoad, layout, loading, onDelete }: CompactDeckProps) {
   const [imageLoading, setImageLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const imageSource = getWatchlistImage(watchlist.thumbnail || "");
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editName, setEditName] = useState(deck.name);
+  const [editThumbnail, setEditThumbnail] = useState(deck.thumbnail || "");
+  const [saving, setSaving] = useState(false);
+  const imageSource = getDeckImage(deck.thumbnail || "");
   const router = useRouter();
+  const { incrementDecksVersion, db: userDb } = useUserDatabase();
+  const { db: cardDb } = useCardDatabase();
 
   const handleDeletePress = (e: any) => {
     e.preventDefault();
@@ -50,7 +64,79 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
 
   const handleConfirmDelete = () => {
     setShowModal(false);
-    if (onDelete) onDelete(watchlist.id);
+    if (onDelete) onDelete(deck.id);
+  };
+
+  const handleCloneDeck = async () => {
+    if (!deck) return;
+    let baseName = deck.name.replace(/#\d+$/, "").trim();
+    let cloneNumber = 1;
+    let newName = `${baseName} #${cloneNumber}`;
+    try {
+      const { getSavedDecks, addDeck } = await import("@/lib/userDatabase");
+      if (!userDb) return;
+      const allDecks = await getSavedDecks(userDb);
+      const regex = new RegExp(`^${baseName} #(\\d+)$`);
+      const usedNumbers = allDecks
+        .map((d) => {
+          const match = d.name.match(regex);
+          return match ? parseInt(match[1], 10) : null;
+        })
+        .filter((n) => n !== null);
+      while (usedNumbers.includes(cloneNumber)) {
+        cloneNumber++;
+        newName = `${baseName} #${cloneNumber}`;
+      }
+      const cards = (deck as any).cards ? (deck as any).cards : "[]";
+      await addDeck(userDb, newName, deck.thumbnail || undefined, cards);
+      incrementDecksVersion(); // Refresh UI after clone
+      // Optionally: trigger a UI refresh if needed (parent handles this)
+    } catch (e) {
+      console.error("Failed to clone deck", e);
+    }
+  };
+
+  const handleEditPress = () => {
+    setEditName(deck.name);
+    setEditThumbnail(deck.thumbnail || "");
+    setEditModalVisible(true);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!userDb || !editName.trim()) return;
+    setSaving(true);
+    try {
+      await userDb.runAsync("UPDATE Decks SET name = ?, thumbnail = ? WHERE id = ?", [
+        editName,
+        editThumbnail || null,
+        deck.id,
+      ]);
+      incrementDecksVersion();
+      setEditModalVisible(false);
+    } catch (e) {
+      console.error("Error updating deck:", e);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Helper to select thumbnail by cardId (used in edit modal)
+  const handleThumbnailSelect = async (cardId: string) => {
+    if (!cardDb) return;
+    try {
+      const card = await cardDb.getFirstAsync<{ imagesLarge: string }>(
+        "SELECT imagesLarge FROM Card WHERE cardId = ?",
+        [cardId]
+      );
+      if (card && card.imagesLarge) {
+        setEditThumbnail(card.imagesLarge);
+      }
+    } catch (e) {
+      console.error("[CompactDeck] Error fetching card image for thumbnail:", e, { cardId, cardDb });
+      if (e && (e as any).stack) {
+        console.error("[CompactDeck] Error stack:", (e as any).stack);
+      }
+    }
   };
 
   if (loading) {
@@ -67,38 +153,62 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
-        <View style={styles.watchlistName}>
+        <View style={styles.deckName}>
           <ThemedText
             type="h3"
             color={theme.colors.white}
             style={{ paddingTop: theme.padding.medium }}
           >
-            {watchlist.name}
+            {deck.name}
           </ThemedText>
           {layout === "edit" && (
             <ThemedButton
-              title="View Watchlist"
+              title="View Deck"
               type="main"
               size="small"
-              onPress={() =>
-                router.push({ pathname: "/watchlists/[watchlistId]", params: { watchlistId: watchlist.id } })
-              }
+              onPress={() => router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id } })}
             />
           )}
         </View>
-        <View style={styles.watchlistButtons}>
+        <>
+          {layout === "edit" && (
+            <View style={styles.deckButtons}>
+              <ThemedView layout="box">
+                <ThemedButton
+                  title="Clone"
+                  type="outline"
+                  size="small"
+                  style={{ marginBottom: theme.padding.medium * 0.8 }}
+                  onPress={handleCloneDeck}
+                />
+                <ThemedButton
+                  title="Edit"
+                  type="outline"
+                  size="small"
+                  style={{ marginBottom: theme.padding.medium }}
+                  onPress={handleEditPress}
+                />
+                <ThemedButton
+                  title="Delete"
+                  type="alternative"
+                  size="small"
+                  onPress={handleDeletePress}
+                />
+              </ThemedView>
+            </View>
+          )}
           {layout === "view" && (
-            <ThemedButton
-              title="View Watchlist"
-              type="main"
-              size="small"
-              onPress={() =>
-                router.push({ pathname: "/watchlists/[watchlistId]", params: { watchlistId: watchlist.id } })
-              }
-              style={{ marginBottom: theme.padding.medium }}
-            />
+            <View style={[styles.deckButtons, { justifyContent: "flex-end", alignItems: "flex-end" }]}>
+              <ThemedButton
+                title="View Deck"
+                type="main"
+                size="small"
+                onPress={() => router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id } })}
+                style={{ marginBottom: theme.padding.medium }}
+              />
+            </View>
           )}
-        </View>
+        </>
       </View>
       <LinearGradient
         colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0)"]}
@@ -129,51 +239,63 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
           </>
         ) : null}
       </View>
-      {typeof onDelete === "function" && (
-        <TouchableOpacity
-          onPress={handleDeletePress}
-          style={styles.deleteButton}
-          accessibilityLabel="Delete watchlist"
-        >
-          <View style={styles.button}>
-            <View style={styles.iconContainerStyle}>
-              <Svg
-                width="100%"
-                height="100%"
-                viewBox="0 0 330.64 367.15"
-              >
-                <Path
-                  d="M291.19,61.94h-40.46v-22.47c-.1-17.34-14.13-31.37-31.47-31.47H111.38c-17.34,.1-31.37,14.13-31.47,31.47v22.47H39.45c-17.33,.1-31.37,14.13-31.45,31.47v17.97c.05,10.84,11.06,20.38,19.41,26.04l32.18,195.48c2.48,15.22,15.68,26.36,31.1,26.25H239.94c15.42,.12,28.62-11.02,31.1-26.25l32.57-195.02c10.01-5.27,18.97-14.4,19.03-26.5v-17.97c-.08-17.34-14.13-31.37-31.45-31.47Zm-159.95,.38v-13.1c0-1.45,1.18-2.62,2.62-2.62h62.92c.7,0,1.37,.28,1.86,.77,.49,.49,.77,1.16,.77,1.86v13.1s-68.17,0-68.17,0Z"
-                  stroke="#fff"
-                  strokeMiterlimit="10"
-                  strokeWidth="16"
-                />
-                <Path
-                  d="M115.47,200.98c-7.79-7.79-8.68-19.58-1.95-26.3,6.71-6.71,18.52-5.83,26.3,1.95l25.51,25.51,25.51-25.51c7.79-7.79,19.58-8.68,26.3-1.95,6.71,6.71,5.83,18.52-1.95,26.3l-25.51,25.51,25.51,25.51c7.81,7.81,8.67,19.59,1.95,26.3s-18.5,5.85-26.3-1.95l-25.51-25.51-25.51,25.51c-7.81,7.81-19.59,8.67-26.3,1.95-6.73-6.73-5.85-18.5,1.95-26.3l25.51-25.51-25.51-25.51Z"
-                  stroke="#fff"
-                  strokeMiterlimit="10"
-                  strokeWidth="16"
-                />
-              </Svg>
-            </View>
-          </View>
-        </TouchableOpacity>
-      )}
       <ThemedModal
         visible={showModal}
-        onClose={handleConfirmDelete}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleConfirmDelete}
         buttonText="Delete"
         buttonType="main"
         buttonSize="large"
+        onCancelText="Cancel"
         onCancel={() => setShowModal(false)}
       >
         <ThemedText
           type="h2"
+          color={theme.colors.white}
           style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
         >
-          Delete Watchlist?
+          Delete Deck?
         </ThemedText>
-        <ThemedText>Are you sure you want to delete '{watchlist.name}'? This action cannot be undone.</ThemedText>
+        <ThemedText
+          color={theme.colors.grey}
+          style={{ textAlign: "center", paddingBottom: theme.padding.small }}
+        >
+          Are you sure you want to delete '{deck.name}'? This action cannot be undone.
+        </ThemedText>
+      </ThemedModal>
+      <ThemedModal
+        visible={editModalVisible}
+        onClose={handleSaveEdit}
+        buttonText={saving ? "Saving..." : "Save"}
+        buttonType="main"
+        buttonSize="large"
+        onCancelText="Cancel"
+        onCancel={() => setEditModalVisible(false)}
+      >
+        <CardAutoCompleteProvider>
+          <ThemedText
+            type="h2"
+            color={theme.colors.white}
+            style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
+          >
+            Edit Deck
+          </ThemedText>
+          <ThemedTextInput
+            value={editName}
+            onChange={setEditName}
+            placeholder="Enter deck name"
+            style={{ marginBottom: theme.padding.medium }}
+          />
+          <CardAutoCompleteInput
+            key={deck.id}
+            value={editThumbnail}
+            onCardSelect={handleThumbnailSelect}
+            placeholder="Type card name (min 3 chars)"
+            maxChars={25}
+            resetKey={deck.id}
+          />
+          <CardAutoCompleteSuggestions onCardSelect={handleThumbnailSelect} />
+        </CardAutoCompleteProvider>
       </ThemedModal>
     </View>
   );

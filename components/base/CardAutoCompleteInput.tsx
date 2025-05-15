@@ -41,11 +41,9 @@ export function CardAutoCompleteProvider({ children }: { children: React.ReactNo
   const [selectedCardName, setSelectedCardName] = useState<string | null>(null);
 
   const handleSearch = async (text: string) => {
-    console.log("[CardAutoCompleteInput] handleSearch called", { text, db, dbLoading });
     setSearchTerm(text);
     setSelectedCardName(null);
     if (dbLoading || !db) {
-      console.log("[CardAutoCompleteInput] dbLoading or db is falsy", { dbLoading, db });
       setSuggestions([]);
       return;
     }

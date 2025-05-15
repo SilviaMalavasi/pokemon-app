@@ -122,15 +122,12 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
 
   // Helper to select thumbnail by cardId (used in edit modal)
   const handleThumbnailSelect = async (cardId: string) => {
-    console.log("[CompactDeck] handleThumbnailSelect called", { cardId, cardDb });
     if (!cardDb) return;
     try {
-      console.log("[CompactDeck] Querying Card table for imagesLarge", { cardId });
       const card = await cardDb.getFirstAsync<{ imagesLarge: string }>(
         "SELECT imagesLarge FROM Card WHERE cardId = ?",
         [cardId]
       );
-      console.log("[CompactDeck] Query result", { card });
       if (card && card.imagesLarge) {
         setEditThumbnail(card.imagesLarge);
       }
