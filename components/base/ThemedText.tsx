@@ -11,12 +11,13 @@ export type ThemedTextProps = TextProps & {
     | "default"
     | "link"
     | "button"
-    | "buttonSmall"
+    | "buttonOutline"
+    | "buttonOutlineSmall"
     | "chip"
-    | "buttonDisabled"
     | "hintIcon"
     | "hintText"
-    | "label";
+    | "label"
+    | "tabLabel";
   color?: string;
   fontSize?: number;
   fontWeight?: "black" | "bold" | "extra-bold" | "light" | "medium" | "regular" | "semi-bold";
@@ -45,12 +46,13 @@ export default function ThemedText({ style, type = "default", color, fontSize, f
     type === "h4" ? styles.h4 : undefined,
     type === "link" ? styles.link : undefined,
     type === "button" ? styles.button : undefined,
-    type === "buttonSmall" ? styles.buttonSmall : undefined,
-    type === "buttonDisabled" ? styles.buttonDisabled : undefined,
+    type === "buttonOutline" ? styles.buttonOutline : undefined,
+    type === "buttonOutlineSmall" ? styles.buttonOutlineSmall : undefined,
     type === "chip" ? styles.chip : undefined,
     type === "hintIcon" ? styles.hintIcon : undefined,
     type === "hintText" ? styles.hintText : undefined,
     type === "label" ? styles.label : undefined,
+    type === "tabLabel" ? styles.tabLabel : undefined,
     style,
     fontSize ? { fontSize: vw(fontSize) } : undefined,
     mappedFontWeight ? { fontWeight: mappedFontWeight } : undefined,

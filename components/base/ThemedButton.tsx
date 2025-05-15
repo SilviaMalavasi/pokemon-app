@@ -3,7 +3,6 @@ import ThemedText from "@/components/base/ThemedText";
 import { View } from "react-native";
 import { Svg, Path, Polygon } from "react-native-svg";
 import { theme } from "@/style/ui/Theme";
-import { LinearGradient } from "expo-linear-gradient";
 
 import { createButtonStyle } from "@/style/base/ThemedButtonStyle";
 import { ButtonType, ButtonSize, ButtonStatus } from "@/style/base/ThemedButtonStyle";
@@ -94,41 +93,38 @@ export default function ThemedButton({
   const textStyle = [hasIcon && buttonStyle.textWithIcon ? buttonStyle.textWithIcon : buttonStyle.text].filter(Boolean);
   const iconContainerStyle = [buttonStyle.icon].filter(Boolean);
   const iconFill = getIconFill(status);
-
   const isDisabled = disabled || status === "disabled";
-  let activeGradientColors: [string, string] | undefined = undefined;
-
-  if (isDisabled) {
-    activeGradientColors = [theme.colors.grey, theme.colors.lightGrey];
-  } else if (type === "main") {
-    activeGradientColors = [theme.colors.green, theme.colors.green];
-  } else if (type === "alternative") {
-    activeGradientColors = [theme.colors.purple, theme.colors.purple];
-  }
 
   return (
     <TouchableOpacity
       activeOpacity={1}
-      style={[containerStyle, typeof width === "number" ? { width } : {}]}
-      disabled={isDisabled} // Use isDisabled here
+      style={[
+        containerStyle,
+        typeof width === "number" ? { width } : {},
+        isDisabled
+          ? {
+              backgroundColor: theme.colors.lightGrey,
+              boxShadow: [
+                {
+                  color: theme.colors.shadowDark,
+                  offsetX: 6,
+                  offsetY: 6,
+                  blurRadius: "12px",
+                },
+                {
+                  offsetX: 1,
+                  offsetY: 2,
+                  blurRadius: "2px",
+                  color: theme.colors.shadowInsetLight,
+                  inset: true,
+                },
+              ],
+            }
+          : {},
+      ]}
+      disabled={isDisabled}
       {...rest}
     >
-      {activeGradientColors && (
-        <LinearGradient
-          colors={activeGradientColors} // This is now type-safe
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            borderRadius: 8, // Ensure this matches your button's border radius
-            zIndex: 0,
-          }}
-          start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 1 }}
-        />
-      )}
       {IconComponent ? (
         <View style={[iconContainerStyle]}>
           <IconComponent fill={iconFill} />
@@ -136,7 +132,16 @@ export default function ThemedButton({
       ) : null}
       <ThemedText
         style={[textStyle]}
-        type={type === "outline" ? "buttonSmall" : size === "large" ? "button" : "buttonSmall"}
+        type={
+          type === "main"
+            ? size === "large"
+              ? "button"
+              : "buttonOutlineSmall"
+            : size === "large"
+            ? "buttonOutline"
+            : "buttonOutlineSmall"
+        }
+        color={isDisabled ? theme.colors.grey : type === "main" ? theme.colors.white : theme.colors.grey}
       >
         {title}
       </ThemedText>

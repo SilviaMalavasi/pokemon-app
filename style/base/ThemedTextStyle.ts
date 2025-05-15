@@ -33,23 +33,19 @@ const styles = StyleSheet.create({
     lineHeight: theme.fontSizes.font15 * 1.15,
   },
   button: {
-    fontFamily: "Inter-ExtraBold",
-    fontSize: theme.fontSizes.font18,
-    lineHeight: theme.fontSizes.font18 * 1.15,
-    textTransform: "uppercase",
-    color: theme.colors.white,
-  },
-  buttonSmall: {
-    fontFamily: "Inter-ExtraBold",
+    fontFamily: "Inter-Bold",
     fontSize: theme.fontSizes.font16,
     lineHeight: theme.fontSizes.font16 * 1.15,
-    textTransform: "uppercase",
   },
-  buttonDisabled: {
-    fontFamily: "Inter-Bold",
-    fontSize: theme.fontSizes.font18,
-    lineHeight: theme.fontSizes.font18 * 1.15,
-    textTransform: "uppercase",
+  buttonOutline: {
+    fontFamily: "Inter-Medium",
+    fontSize: theme.fontSizes.font16,
+    lineHeight: theme.fontSizes.font16 * 1.15,
+  },
+  buttonOutlineSmall: {
+    fontFamily: "Inter-Medium",
+    fontSize: theme.fontSizes.font14,
+    lineHeight: theme.fontSizes.font14 * 1.15,
   },
   chip: {
     fontFamily: "Inter-Bold",
@@ -80,6 +76,11 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSizes.font16,
     lineHeight: theme.fontSizes.font16 * 1.15,
     color: theme.colors.grey,
+  },
+  tabLabel: {
+    fontFamily: "Inter-Medium",
+    fontSize: theme.fontSizes.font9,
+    lineHeight: theme.fontSizes.font9 * 1.15,
   },
 });
 

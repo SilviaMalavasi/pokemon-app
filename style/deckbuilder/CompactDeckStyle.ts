@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: vw(48),
     marginBottom: theme.padding.large,
-    backgroundColor: "red",
+    backgroundColor: theme.colors.darkGrey,
     borderRadius: theme.borderRadius.large,
     overflow: "hidden",
     boxShadow: [
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: vw(125) - theme.padding.medium * 2,
     height: (vw(125) - theme.padding.medium * 2) * 1.395,
-    top: -vw(27),
+    top: -vw(27.5),
     left: -vw(12.5),
   },
   mainContainer: {

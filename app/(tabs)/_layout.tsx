@@ -4,12 +4,13 @@ import { SearchFormProvider } from "@/components/context/SearchFormContext";
 import { UserDatabaseProvider } from "@/components/context/UserDatabaseContext";
 import { Tabs } from "expo-router";
 import React from "react";
-import { Platform, Text } from "react-native";
+import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HapticTab } from "@/components/ui/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { usePathname } from "expo-router";
-import { Svg, Path, Circle, Rect } from "react-native-svg";
+import ThemedText from "@/components/base/ThemedText";
+import { Svg, Path } from "react-native-svg";
 
 import { theme } from "@/style/ui/Theme";
 import styles from "@/style/ui/TabBarStyles";
@@ -169,7 +170,7 @@ export default function TabLayout() {
                 backgroundColor: theme.colors.black,
                 borderTopWidth: 0,
                 height: styles.tabBarContainer.height + insets.bottom,
-                paddingHorizontal: theme.padding.small,
+                paddingHorizontal: theme.padding.xsmall,
                 paddingTop: 4,
                 paddingBottom: insets.bottom,
               },
@@ -177,7 +178,7 @@ export default function TabLayout() {
                 backgroundColor: theme.colors.black,
                 borderTopWidth: 0,
                 height: styles.tabBarContainer.height + insets.bottom,
-                paddingHorizontal: theme.padding.small,
+                paddingHorizontal: theme.padding.xsmall,
                 paddingTop: 4,
               },
             }),
@@ -186,35 +187,70 @@ export default function TabLayout() {
           <Tabs.Screen
             name="index"
             options={{
-              tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Home</Text>,
+              tabBarLabel: ({ color }) => (
+                <ThemedText
+                  type="tabLabel"
+                  style={[styles.label, { color }]}
+                >
+                  Home
+                </ThemedText>
+              ),
               tabBarIcon: ({ color }) => <HomeIcon color={color} />,
             }}
           />
           <Tabs.Screen
             name="deckbuilder"
             options={{
-              tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Deck Builder</Text>,
+              tabBarLabel: ({ color }) => (
+                <ThemedText
+                  type="tabLabel"
+                  style={[styles.label, { color }]}
+                >
+                  Deck Builder
+                </ThemedText>
+              ),
               tabBarIcon: ({ color }) => <DeckBuilderIcon color={color} />,
             }}
           />
           <Tabs.Screen
-            name="watachlist"
+            name="watchlist"
             options={{
-              tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Watchlist</Text>,
+              tabBarLabel: ({ color }) => (
+                <ThemedText
+                  type="tabLabel"
+                  style={[styles.label, { color }]}
+                >
+                  Watchlist
+                </ThemedText>
+              ),
               tabBarIcon: ({ color }) => <WatchlistIcon color={color} />,
             }}
           />
           <Tabs.Screen
             name="advancedsearch"
             options={{
-              tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Advanced Search</Text>,
+              tabBarLabel: ({ color }) => (
+                <ThemedText
+                  type="tabLabel"
+                  style={[styles.label, { color }]}
+                >
+                  Advanced Search
+                </ThemedText>
+              ),
               tabBarIcon: ({ color }) => <AdvSearchIcon color={color} />,
             }}
           />
           <Tabs.Screen
             name="freesearch"
             options={{
-              tabBarLabel: ({ color }) => <Text style={[styles.label, { color }]}>Free Search</Text>,
+              tabBarLabel: ({ color }) => (
+                <ThemedText
+                  type="tabLabel"
+                  style={[styles.label, { color }]}
+                >
+                  Free Search
+                </ThemedText>
+              ),
               tabBarIcon: ({ color }) => <FreeSearchIcon color={color} />,
             }}
           />
@@ -231,7 +267,7 @@ export default function TabLayout() {
             }}
           />
           <Tabs.Screen
-            name="watchlistst"
+            name="watchlists"
             options={{
               href: null,
             }}

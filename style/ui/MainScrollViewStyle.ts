@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 130,
+    height: 140,
     position: "relative",
     justifyContent: "space-between",
     alignItems: "center",
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     position: "relative",
     flexDirection: "row",
     alignItems: "center",
-    paddingTop: theme.padding.large,
+    paddingTop: 38,
 
     zIndex: 2,
     boxShadow: [
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.background,
 
-    minHeight: Dimensions.get("window").height - 150,
+    minHeight: Dimensions.get("window").height - 140,
   },
 });
 

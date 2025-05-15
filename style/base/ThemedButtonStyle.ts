@@ -7,9 +7,9 @@ export type ButtonStatus = "default" | "active" | "disabled";
 // Factory function for button styles
 export function createButtonStyle(type: ButtonType, size: ButtonSize, status: ButtonStatus, hasIcon: boolean) {
   // Shared values
-  const borderRadius = theme.borderRadius.medium;
-  const paddingVertical = size === "large" ? theme.padding.small * 0.8 : theme.padding.xsmall;
-  const paddingHorizontal = size === "large" ? theme.padding.medium : theme.padding.small;
+  const borderRadius = theme.borderRadius.large;
+  const paddingVertical = size === "large" ? theme.padding.medium : theme.padding.small;
+  const paddingHorizontal = size === "large" ? theme.padding.large : theme.padding.large;
   let iconSize = size === "large" ? theme.padding.medium : theme.padding.small;
   const textWithIconMargin = size === "large" ? theme.padding.small : theme.padding.xsmall;
 
@@ -21,6 +21,41 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
     alignItems: "center",
     justifyContent: "center",
     marginBottom: theme.padding.xsmall,
+    backgroundColor:
+      type === "main"
+        ? theme.colors.purple
+        : type === "alternative"
+        ? "transparent"
+        : type === "outline"
+        ? theme.colors.mediumGrey
+        : undefined,
+    boxShadow:
+      type === "main"
+        ? [
+            {
+              color: theme.colors.shadowDark,
+              offsetX: 6,
+              offsetY: 6,
+              blurRadius: "12px",
+            },
+            {
+              offsetX: 1,
+              offsetY: 2,
+              blurRadius: "2px",
+              color: theme.colors.shadowLightPurlple,
+              inset: true,
+            },
+          ]
+        : type === "outline"
+        ? [
+            {
+              color: theme.colors.shadowDark,
+              offsetX: 0,
+              offsetY: 2,
+              blurRadius: "4px",
+            },
+          ]
+        : undefined,
   };
 
   // Outline special case
@@ -42,10 +77,9 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
   }
 
   // Text color
-  let textColor = theme.colors.darkGrey;
-  if (type === "outline") {
-    textColor =
-      status === "active" ? theme.colors.green : status === "disabled" ? theme.colors.lightGrey : theme.colors.grey;
+  let textColor = theme.colors.grey;
+  if (type !== "outline") {
+    textColor = status !== "disabled" ? theme.colors.white : theme.colors.grey;
   }
 
   // Icon style

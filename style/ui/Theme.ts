@@ -18,6 +18,8 @@ export const shadowLightPurlple = "rgb(157, 106, 227)";
 export const shadowPurple = "rgba(61, 16, 124, 0.65)";
 export const shadowInsetLight = "rgba(255, 255, 255, 0.1)";
 
+const fontSize1 = vw(0.3);
+
 export const theme = {
   colors: {
     white: white,
@@ -39,21 +41,22 @@ export const theme = {
     shadowInsetLight: shadowInsetLight,
   },
   fontSizes: {
-    font36: vw(10),
-    font28: vw(7.5),
-    font24: vw(6.5),
-    font18: vw(4.5),
-    font16: vw(4),
-    font15: vw(3.8),
-    font14: vw(3.5),
+    font36: fontSize1 * 36,
+    font28: fontSize1 * 28,
+    font24: fontSize1 * 24,
+    font18: fontSize1 * 18,
+    font16: fontSize1 * 16,
+    font15: fontSize1 * 15,
+    font14: fontSize1 * 14,
+    font9: fontSize1 * 9,
   },
   padding: {
     none: 0,
-    xsmall: vw(1.25),
-    small: vw(2.5),
-    medium: vw(5),
-    large: vw(10),
-    xlarge: vw(15),
+    xsmall: vw(1),
+    small: vw(2),
+    medium: vw(4),
+    large: vw(8),
+    xlarge: vw(16),
   },
   borderRadius: {
     none: 0,

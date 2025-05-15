@@ -64,7 +64,7 @@ export default function MainScrollView({ children, headerImage, headerTitle, scr
               fontSize={
                 headerTitle && headerTitle.toString().length > 30
                   ? vw(2)
-                  : headerTitle && headerTitle.toString().length > 14
+                  : headerTitle && headerTitle.toString().length > 20
                   ? vw(2.5)
                   : undefined
               }

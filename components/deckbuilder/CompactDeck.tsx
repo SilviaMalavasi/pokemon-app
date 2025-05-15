@@ -71,6 +71,7 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
           <ThemedText
             type="h3"
             color={theme.colors.white}
+            style={{ paddingTop: theme.padding.medium }}
           >
             {deck.name}
           </ThemedText>
@@ -90,6 +91,7 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
               type="main"
               size="small"
               onPress={() => router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id } })}
+              style={{ marginBottom: theme.padding.medium }}
             />
           )}
         </View>
