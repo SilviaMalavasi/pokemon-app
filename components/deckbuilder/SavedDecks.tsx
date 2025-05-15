@@ -1,7 +1,6 @@
 import React from "react";
 import ThemedText from "@/components/base/ThemedText";
 import CompactDeck from "@/components/deckbuilder/CompactDeck";
-import SearchResultStyle from "@/style/SearchResultStyle";
 import ThemedView from "@/components/ui/ThemedView";
 import { View } from "react-native";
 import { theme } from "@/style/ui/Theme";
@@ -17,11 +16,19 @@ interface SavedDecksSectionProps {
   savedDecks: SavedDeck[];
   isLoadingDecks: boolean;
   deletingId: number | null;
+  onDelete?: (id: number) => void;
+  layout: "view" | "edit";
 }
 
-export default function SavedDecks({ savedDecks, isLoadingDecks, deletingId }: SavedDecksSectionProps) {
+export default function SavedDecks({
+  savedDecks,
+  isLoadingDecks,
+  deletingId,
+  onDelete,
+  layout,
+}: SavedDecksSectionProps) {
   return (
-    <ThemedView>
+    <ThemedView layout="big">
       <ThemedText
         type="h2"
         color={theme.colors.white}
@@ -42,7 +49,7 @@ export default function SavedDecks({ savedDecks, isLoadingDecks, deletingId }: S
             <View key={deck.id + "-deck"}>
               <CompactDeck
                 deck={deck}
-                layout="view"
+                layout={layout}
                 loading={deletingId === deck.id}
               />
             </View>

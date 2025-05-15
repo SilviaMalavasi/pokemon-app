@@ -53,22 +53,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: theme.padding.medium,
   },
-  deckName: {
+  watchlistName: {
     width: "50%",
     maxWidth: "50%",
     minWidth: "50%",
     flexGrow: 0,
     flexShrink: 0,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
   },
-  deckButtons: {
+  watchlistButtons: {
     width: "50%",
     maxWidth: "50%",
     minWidth: "50%",
     flexGrow: 0,
     flexShrink: 0,
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
     flexDirection: "column",
   },
   deleteButton: {

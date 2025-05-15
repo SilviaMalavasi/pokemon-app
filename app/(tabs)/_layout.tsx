@@ -171,7 +171,7 @@ export default function TabLayout() {
                 borderTopWidth: 0,
                 height: styles.tabBarContainer.height + insets.bottom,
                 paddingHorizontal: theme.padding.xsmall,
-                paddingTop: 4,
+                paddingTop: 6,
                 paddingBottom: insets.bottom,
               },
               default: {
@@ -179,7 +179,7 @@ export default function TabLayout() {
                 borderTopWidth: 0,
                 height: styles.tabBarContainer.height + insets.bottom,
                 paddingHorizontal: theme.padding.xsmall,
-                paddingTop: 4,
+                paddingTop: 6,
               },
             }),
           }}

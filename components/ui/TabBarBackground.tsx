@@ -5,7 +5,7 @@ import { theme } from "@/style/ui/Theme";
 export default function TabBarBackground() {
   return (
     <LinearGradient
-      colors={[theme.colors.lightGrey, theme.colors.darkGrey]}
+      colors={[theme.colors.mediumGrey, theme.colors.darkGrey]}
       style={{ flex: 1 }}
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 0.6 }}

@@ -79,10 +79,9 @@ export default function HomeScreen() {
         savedDecks={savedDecks}
         isLoadingDecks={isLoadingDecks}
         deletingId={deletingId}
+        layout="view"
       />
-      <View style={{ paddingBottom: theme.padding.xlarge, backgroundColor: theme.colors.mediumGrey }}>
-        <WatchLists />
-      </View>
+      <WatchLists />
       <View>
         <ThemedText
           type="hintText"
@@ -94,6 +93,7 @@ export default function HomeScreen() {
       <View>
         <ThemedText
           type="default"
+          color={theme.colors.white}
           style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge * 1.5 }}
         >
           This app was created with ♥ by Pokémon nerd and developer{" "}

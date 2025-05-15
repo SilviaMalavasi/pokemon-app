@@ -8,7 +8,8 @@ export type ButtonStatus = "default" | "active" | "disabled";
 export function createButtonStyle(type: ButtonType, size: ButtonSize, status: ButtonStatus, hasIcon: boolean) {
   // Shared values
   const borderRadius = theme.borderRadius.large;
-  const paddingVertical = size === "large" ? theme.padding.medium : theme.padding.small;
+  const paddingVertical =
+    type === "alternative" ? "small" : size === "large" ? theme.padding.medium : theme.padding.small;
   const paddingHorizontal = size === "large" ? theme.padding.large : theme.padding.large;
   let iconSize = size === "large" ? theme.padding.medium : theme.padding.small;
   const textWithIconMargin = size === "large" ? theme.padding.small : theme.padding.xsmall;
@@ -49,37 +50,31 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
         : type === "outline"
         ? [
             {
-              color: theme.colors.shadowDark,
-              offsetX: 0,
-              offsetY: 2,
-              blurRadius: "4px",
+              color: theme.colors.shadowLight,
+              offsetX: -2,
+              offsetY: -2,
+              blurRadius: "12px",
+            },
+            {
+              color: theme.colors.darkGrey,
+              offsetX: 4,
+              offsetY: 4,
+              blurRadius: "12px",
             },
           ]
         : undefined,
   };
 
-  // Outline special case
-  if (type === "outline") {
-    container = {
-      ...container,
-      backgroundColor: "transparent",
-      borderWidth: 2,
-      borderColor:
-        status === "active"
-          ? theme.colors.purple
-          : status === "disabled"
-          ? theme.colors.lightGrey
-          : theme.colors.purple,
-      opacity: status === "disabled" ? 1 : 1,
-      paddingHorizontal: theme.padding.small,
-    };
-    iconSize = theme.padding.small;
-  }
-
   // Text color
   let textColor = theme.colors.grey;
-  if (type !== "outline") {
-    textColor = status !== "disabled" ? theme.colors.white : theme.colors.grey;
+  if (type === "outline") {
+    textColor = theme.colors.grey;
+  }
+  if (type === "main") {
+    textColor = status === "disabled" ? theme.colors.grey : theme.colors.white;
+  }
+  if (type === "alternative") {
+    textColor = status === "disabled" ? theme.colors.grey : theme.colors.green;
   }
 
   // Icon style

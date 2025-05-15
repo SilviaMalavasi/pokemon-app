@@ -108,6 +108,7 @@ export default function DeckBuilderScreen() {
         isLoadingDecks={isLoadingDecks}
         onDelete={handleDeleteDeck}
         deletingId={deletingId}
+        layout="edit"
       />
     </MainScrollView>
   );
