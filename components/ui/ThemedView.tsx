@@ -13,8 +13,8 @@ export default function ThemedView({ children }: ThemedViewProps) {
   return (
     <LinearGradient
       colors={[theme.colors.lightGrey, theme.colors.darkGrey]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 0.4, y: 1 }}
+      start={{ x: 0.2, y: 0 }}
+      end={{ x: 0.4, y: 0.7 }}
       style={styles.container}
     >
       <View style={styles.containerInner}>{children}</View>

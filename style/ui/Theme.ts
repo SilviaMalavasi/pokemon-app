@@ -13,9 +13,10 @@ export const purple = "#9142FF";
 export const green = "#4FFFCA";
 
 export const shadowLight = "#2E3644";
-export const shadowDark = "rgba(25, 26, 32, 0.5)";
+export const shadowDark = "rgb(5, 5, 12)";
 export const shadowLightPurlple = "#9D6AE3";
 export const shadowPurple = "rgba(61, 16, 124, 0.65)";
+export const shadowInsetLight = "rgba(255, 255, 255, 0.1)";
 
 export const theme = {
   colors: {
@@ -35,6 +36,7 @@ export const theme = {
     shadowDark: shadowDark,
     shadowLightPurlple: shadowLightPurlple,
     shadowPurple: shadowPurple,
+    shadowInsetLight: shadowInsetLight,
   },
   fontSizes: {
     font36: vw(9),

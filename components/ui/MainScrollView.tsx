@@ -48,14 +48,6 @@ export default function MainScrollView({ children, headerImage, headerTitle, scr
             source={headerImageSource}
             contentFit="cover"
           />
-          {/* Fake inner shadow using LinearGradient overlay */}
-          <LinearGradient
-            colors={[theme.colors.darkGrey + "99", "transparent"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={styles.headerInnerShadow}
-            pointerEvents="none"
-          />
         </View>
         <View style={styles.headerContainer}>
           <View style={styles.headerImageContainer}>
@@ -73,7 +65,7 @@ export default function MainScrollView({ children, headerImage, headerTitle, scr
                 headerTitle && headerTitle.toString().length > 30
                   ? vw(2)
                   : headerTitle && headerTitle.toString().length > 14
-                  ? vw(1.8)
+                  ? vw(2.5)
                   : undefined
               }
               style={[
