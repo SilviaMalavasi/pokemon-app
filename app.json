@@ -3,6 +3,7 @@
     "name": "Pokédeck Builder",
     "slug": "pokemon-deck-builder",
     "version": "1.0.0",
+    "newArchEnabled": true,
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "com.silviamalavasi.pokedeckbuilder",
@@ -30,10 +31,12 @@
         {
           "image": "./assets/images/splash-combined.png",
           "resizeMode": "cover",
+          "imageWidth": 418,
           "backgroundColor": "#4630EB",
           "dark": {
             "image": "./assets/images/splash-combined.png",
             "resizeMode": "cover",
+            "imageWidth": 418,
             "backgroundColor": "#4630EB"
           }
         }
