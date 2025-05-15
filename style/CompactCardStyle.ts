@@ -15,15 +15,6 @@ const CompactCardViewStyle = StyleSheet.create({
     width: cardWidth,
     paddingTop: theme.padding.xsmall,
     paddingBottom: theme.padding.small,
-    boxShadow: [
-      {
-        offsetX: 0,
-        offsetY: -12,
-        blurRadius: "15px",
-        spreadDistance: "10px",
-        color: theme.colors.darkGrey,
-      },
-    ],
   },
   imageContainer: {
     width: "100%",

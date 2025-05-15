@@ -13,15 +13,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: theme.colors.darkGrey,
-    boxShadow: [
-      {
-        offsetX: 0,
-        offsetY: -12,
-        blurRadius: "15px",
-        spreadDistance: "10px",
-        color: theme.colors.darkGrey,
-      },
-    ],
   },
   headerInnerShadow: {
     position: "absolute",
@@ -43,6 +34,14 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: theme.borderRadius.xlarge,
     borderBottomRightRadius: theme.borderRadius.xlarge,
     overflow: "hidden",
+    boxShadow: [
+      {
+        color: theme.colors.darkGrey,
+        offsetX: 0,
+        offsetY: 12,
+        blurRadius: "12px",
+      },
+    ],
   },
   headerBackgroundImage: {
     width: "100%",
