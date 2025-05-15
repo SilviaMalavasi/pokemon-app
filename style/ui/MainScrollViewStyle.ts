@@ -4,7 +4,6 @@ import { theme } from "@/style/ui/Theme";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.darkGrey,
   },
   header: {
     width: "100%",
@@ -13,16 +12,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: theme.colors.darkGrey,
-  },
-  headerInnerShadow: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    width: "100%",
-    height: "100%",
-    zIndex: 2,
-    borderBottomLeftRadius: theme.borderRadius.large,
-    borderBottomRightRadius: theme.borderRadius.large,
+    borderBottomLeftRadius: theme.borderRadius.xlarge,
+    borderBottomRightRadius: theme.borderRadius.xlarge,
+    overflow: "hidden",
+    marginBottom: theme.padding.large,
+    boxShadow: [
+      {
+        color: theme.colors.shadowDark,
+        offsetX: 0,
+        offsetY: 16,
+        blurRadius: "20px",
+      },
+    ],
   },
   headerBackground: {
     width: "100%",
@@ -86,6 +87,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    backgroundColor: theme.colors.background,
+
     minHeight: Dimensions.get("window").height - 150,
   },
 });

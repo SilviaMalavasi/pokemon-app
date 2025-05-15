@@ -3,14 +3,16 @@ import { theme } from "@/style/ui/Theme";
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: theme.borderRadius.xlarge,
+    borderTopLeftRadius: theme.borderRadius.xlarge,
+    borderTopRightRadius: theme.borderRadius.xlarge,
+    marginTop: theme.padding.large,
     overflow: "hidden",
     boxShadow: [
       {
         color: theme.colors.shadowDark,
         offsetX: 0,
         offsetY: -16,
-        blurRadius: "24px",
+        blurRadius: "20px",
       },
     ],
   },
@@ -18,12 +20,6 @@ const styles = StyleSheet.create({
     padding: theme.padding.medium,
     borderRadius: theme.borderRadius.xlarge,
     boxShadow: [
-      {
-        color: theme.colors.shadowDark,
-        offsetX: 0,
-        offsetY: -16,
-        blurRadius: "24px",
-      },
       {
         offsetX: 1,
         offsetY: 2,

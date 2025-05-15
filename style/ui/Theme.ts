@@ -1,20 +1,20 @@
 import { vw } from "@/helpers/viewport";
 
-export const white = "#ffffff";
-export const black = "#000000";
-export const grey = "#ABADB3";
+export const white = "rgb(255, 255, 255)";
+export const black = "rgb(0, 0, 0)";
+export const grey = "rgb(171, 173, 179)";
 
-export const background = "#252939";
-export const darkGrey = "#191A20";
-export const mediumGrey = "#242832";
-export const lightGrey = "#2B3141";
+export const background = "rgb(25, 29, 42)";
+export const darkGrey = "rgb(10, 13, 22)";
+export const mediumGrey = "rgb(36, 40, 50)";
+export const lightGrey = "rgb(48, 55, 78)";
 
-export const purple = "#9142FF";
-export const green = "#4FFFCA";
+export const purple = "rgb(145, 66, 255)";
+export const green = "rgb(79, 255, 202)";
 
-export const shadowLight = "#2E3644";
-export const shadowDark = "rgb(5, 5, 12)";
-export const shadowLightPurlple = "#9D6AE3";
+export const shadowLight = "rgb(46, 54, 68)";
+export const shadowDark = "rgba(5, 5, 12, 0.8)";
+export const shadowLightPurlple = "rgb(157, 106, 227)";
 export const shadowPurple = "rgba(61, 16, 124, 0.65)";
 export const shadowInsetLight = "rgba(255, 255, 255, 0.1)";
 
@@ -24,7 +24,7 @@ export const theme = {
     black: black,
     grey: grey,
 
-    background: darkGrey,
+    background: background,
     darkGrey: darkGrey,
     mediumGrey: mediumGrey,
     lightGrey: lightGrey,
@@ -60,7 +60,7 @@ export const theme = {
     small: 4,
     medium: 8,
     large: 12,
-    xlarge: 16,
+    xlarge: 24,
   },
   shadow: {
     shadowColor: green,

@@ -65,7 +65,7 @@ export default function HomeScreen() {
         <ThemedText
           type="default"
           color={theme.colors.white}
-          style={{ paddingTop: theme.padding.xlarge, paddingBottom: theme.padding.xlarge }}
+          style={{ paddingVertical: theme.padding.xsmall }}
         >
           <ThemedText
             fontWeight="bold"
