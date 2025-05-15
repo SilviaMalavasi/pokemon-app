@@ -2,34 +2,73 @@ import { StyleSheet } from "react-native";
 import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
 
-const containersPadding = theme.padding.medium;
-const gap = theme.padding.small;
-const columns = 2;
-const cardWidth = (vw(100) - containersPadding * 2 - gap * (columns - 1)) / columns;
-
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    width: cardWidth,
-    paddingTop: theme.padding.xsmall,
-    paddingBottom: theme.padding.small,
+    position: "relative",
+    flexDirection: "row",
+    width: "100%",
+    height: vw(48),
+    marginBottom: theme.padding.large,
+    backgroundColor: "red",
+    borderRadius: theme.borderRadius.large,
+    overflow: "hidden",
+    boxShadow: [
+      {
+        color: theme.colors.shadowDark,
+        offsetX: 8,
+        offsetY: 8,
+        blurRadius: "12px",
+      },
+    ],
   },
   imageContainer: {
-    position: "relative",
+    position: "absolute",
+    zIndex: 1,
+    top: 0,
+    left: 0,
+    width: vw(125) - theme.padding.medium * 2,
+    height: (vw(125) - theme.padding.medium * 2) * 1.395,
+  },
+  imageOverlay: {
+    position: "absolute",
     width: "100%",
-    height: cardWidth / 0.71,
+    height: "100%",
+    borderRadius: theme.borderRadius.large,
+    overflow: "hidden",
+    zIndex: 2,
+    top: 0,
+    left: 0,
   },
   image: {
-    width: "100%",
-    height: cardWidth / 0.71,
+    position: "absolute",
+    width: vw(125) - theme.padding.medium * 2,
+    height: (vw(125) - theme.padding.medium * 2) * 1.395,
+    top: -vw(27),
+    left: -vw(12.5),
   },
-  textContainer: {
+  mainContainer: {
+    position: "relative",
+    zIndex: 3,
     width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: theme.padding.xsmall,
+    flexDirection: "row",
+    padding: theme.padding.medium,
+  },
+  deckName: {
+    width: "50%",
+    maxWidth: "50%",
+    minWidth: "50%",
+    flexGrow: 0,
+    flexShrink: 0,
+  },
+  deckButtons: {
+    width: "50%",
+    maxWidth: "50%",
+    minWidth: "50%",
+    flexGrow: 0,
+    flexShrink: 0,
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    flexDirection: "column",
   },
   deleteButton: {
     position: "absolute",

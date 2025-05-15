@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 140,
+    height: 130,
     position: "relative",
     justifyContent: "space-between",
     alignItems: "center",
@@ -32,9 +32,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 1,
-    borderBottomLeftRadius: theme.borderRadius.xlarge,
-    borderBottomRightRadius: theme.borderRadius.xlarge,
-    overflow: "hidden",
   },
   headerBackgroundImage: {
     width: "100%",
@@ -46,16 +43,10 @@ const styles = StyleSheet.create({
     position: "relative",
     flexDirection: "row",
     alignItems: "center",
+    paddingTop: theme.padding.large,
+
     zIndex: 2,
-    borderBottomLeftRadius: theme.borderRadius.xlarge,
-    borderBottomRightRadius: theme.borderRadius.xlarge,
     boxShadow: [
-      {
-        color: theme.colors.shadowDark,
-        offsetX: 0,
-        offsetY: 16,
-        blurRadius: "24px",
-      },
       {
         offsetX: 4,
         offsetY: 15,
@@ -69,8 +60,7 @@ const styles = StyleSheet.create({
     flexBasis: 100,
     width: 100,
     height: "100%",
-    paddingHorizontal: theme.padding.medium,
-    paddingTop: theme.padding.xlarge,
+    paddingHorizontal: 26,
   },
   headerImageContainerImage: {
     width: "100%",
@@ -81,7 +71,6 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
   },
   headerTitle: {
-    paddingTop: 38,
     paddingRight: theme.padding.small,
     paddingBottom: 0,
   },

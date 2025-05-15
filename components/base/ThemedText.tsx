@@ -6,8 +6,9 @@ export type ThemedTextProps = TextProps & {
   type?:
     | "h1"
     | "h2"
-    | "default"
+    | "h3"
     | "h4"
+    | "default"
     | "link"
     | "button"
     | "buttonSmall"
@@ -39,8 +40,9 @@ export default function ThemedText({ style, type = "default", color, fontSize, f
   const textStyle = [
     type === "default" ? styles.default : undefined,
     type === "h1" ? styles.h1 : undefined,
-    type === "h4" ? styles.h4 : undefined,
     type === "h2" ? styles.h2 : undefined,
+    type === "h3" ? styles.h3 : undefined,
+    type === "h4" ? styles.h4 : undefined,
     type === "link" ? styles.link : undefined,
     type === "button" ? styles.button : undefined,
     type === "buttonSmall" ? styles.buttonSmall : undefined,

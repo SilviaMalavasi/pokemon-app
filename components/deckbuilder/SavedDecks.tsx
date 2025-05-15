@@ -24,7 +24,11 @@ export default function SavedDecks({ savedDecks, isLoadingDecks, deletingId }: S
     <ThemedView>
       <ThemedText
         type="h2"
-        style={{ paddingBottom: theme.padding.medium }}
+        color={theme.colors.white}
+        style={{
+          paddingBottom: theme.padding.medium,
+          paddingLeft: theme.padding.medium,
+        }}
       >
         Decks
       </ThemedText>
@@ -33,11 +37,12 @@ export default function SavedDecks({ savedDecks, isLoadingDecks, deletingId }: S
       ) : savedDecks.length === 0 ? (
         <ThemedText>No saved decks yet.</ThemedText>
       ) : (
-        <View style={SearchResultStyle.cardList}>
+        <View>
           {savedDecks.map((deck) => (
             <View key={deck.id + "-deck"}>
               <CompactDeck
                 deck={deck}
+                layout="view"
                 loading={deletingId === deck.id}
               />
             </View>
