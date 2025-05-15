@@ -13,13 +13,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: theme.colors.darkGrey,
-    shadowColor: theme.colors.darkGrey,
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 12,
+    boxShadow: [
+      {
+        offsetX: 0,
+        offsetY: -12,
+        blurRadius: "15px",
+        spreadDistance: "10px",
+        color: theme.colors.darkGrey,
+      },
+    ],
   },
   headerInnerShadow: {
     position: "absolute",
