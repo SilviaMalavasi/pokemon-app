@@ -17,6 +17,7 @@ interface ThemedModalProps {
   contentStyle?: any;
   onCancelText?: string;
   onCancel?: () => void;
+  onConfirm?: () => void;
 }
 
 export default function ThemedModal({
@@ -30,6 +31,7 @@ export default function ThemedModal({
   contentStyle,
   onCancelText,
   onCancel,
+  onConfirm,
 }: ThemedModalProps) {
   return (
     <Modal
@@ -81,7 +83,7 @@ export default function ThemedModal({
                       title={buttonText}
                       type={buttonType}
                       size={buttonSize}
-                      onPress={onClose}
+                      onPress={onConfirm ? onConfirm : onClose} // <-- use onConfirm if provided
                     />
                   </View>
                 </LinearGradient>

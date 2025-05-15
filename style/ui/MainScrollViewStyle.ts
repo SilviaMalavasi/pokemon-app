@@ -77,8 +77,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: theme.colors.background,
-
-    minHeight: Dimensions.get("window").height - 140,
+    minHeight: Dimensions.get("window").height - 280,
   },
 });
 

@@ -2,6 +2,7 @@ import React from "react";
 import ThemedText from "@/components/base/ThemedText";
 import CompactDeck from "@/components/deckbuilder/CompactDeck";
 import ThemedView from "@/components/ui/ThemedView";
+import NewDeck from "@/components/deckbuilder/NewDeck";
 import { View } from "react-native";
 import { theme } from "@/style/ui/Theme";
 
@@ -25,6 +26,7 @@ export default function SavedDecks({
   isLoadingDecks,
   deletingId,
   layout,
+  onDelete,
   ...props
 }: SavedDecksSectionProps & { style?: any }) {
   return (
@@ -47,7 +49,24 @@ export default function SavedDecks({
       {isLoadingDecks ? (
         <ThemedText>Loading decks...</ThemedText>
       ) : savedDecks.length === 0 ? (
-        <ThemedText>No saved decks yet.</ThemedText>
+        <>
+          <ThemedText
+            color={theme.colors.grey}
+            style={{
+              padding: theme.padding.small,
+            }}
+          >
+            No saved decks yet. Add a new deck to get started!
+          </ThemedText>
+          {/*           <NewDeck
+            deckName={deckName}
+            setDeckName={setDeckName}
+            deckThumbnail={deckThumbnail}
+            setDeckThumbnail={setDeckThumbnail}
+            handleSaveDeck={handleSaveDeck}
+            handleThumbnailSelect={handleThumbnailSelect}
+          /> */}
+        </>
       ) : (
         <View style={layout === "edit" ? { paddingTop: theme.padding.medium } : {}}>
           {savedDecks.map((deck) => (
@@ -56,6 +75,7 @@ export default function SavedDecks({
                 deck={deck}
                 layout={layout}
                 loading={deletingId === deck.id}
+                onDelete={onDelete}
               />
             </View>
           ))}

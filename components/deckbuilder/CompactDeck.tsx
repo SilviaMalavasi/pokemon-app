@@ -54,6 +54,38 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
     if (onDelete) onDelete(deck.id);
   };
 
+  const handleCloneDeck = async () => {
+    if (!deck) return;
+    // Find a new name: baseName#N
+    let baseName = deck.name.replace(/#\d+$/, "").trim();
+    let cloneNumber = 1;
+    let newName = `${baseName}#${cloneNumber}`;
+    if (typeof window !== "undefined") return; // Prevent running in SSR
+    try {
+      const { getSavedDecks, addDeck } = await import("@/lib/userDatabase");
+      const { db } = require("@/components/context/UserDatabaseContext").useUserDatabase();
+      if (!db) return;
+      const allDecks = await getSavedDecks(db);
+      // Find all decks with the same base name and #number
+      const regex = new RegExp(`^${baseName}#(\\d+)$`);
+      const usedNumbers = allDecks
+        .map((d) => {
+          const match = d.name.match(regex);
+          return match ? parseInt(match[1], 10) : null;
+        })
+        .filter((n) => n !== null);
+      while (usedNumbers.includes(cloneNumber)) {
+        cloneNumber++;
+        newName = `${baseName}#${cloneNumber}`;
+      }
+      // Defensive: get cards if present, else empty array
+      const cards = (deck as any).cards ? (deck as any).cards : "[]";
+      await addDeck(db, newName, deck.thumbnail || undefined, cards);
+    } catch (e) {
+      console.error("Failed to clone deck", e);
+    }
+  };
+
   if (loading) {
     return (
       <View style={[styles.container, { justifyContent: "center", alignItems: "center", minHeight: vw(68) }]}>
@@ -94,6 +126,7 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
                   type="outline"
                   size="small"
                   style={{ marginBottom: theme.padding.medium * 0.8 }}
+                  onPress={handleCloneDeck}
                 />
                 <ThemedButton
                   title="Edit"
@@ -154,7 +187,8 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
       </View>
       <ThemedModal
         visible={showModal}
-        onClose={handleConfirmDelete}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleConfirmDelete}
         buttonText="Delete"
         buttonType="main"
         buttonSize="large"
