@@ -9,11 +9,24 @@ const styles = StyleSheet.create({
   },
   suggestionsListContainer: {
     width: "100%",
-    marginBottom: theme.padding.xsmall,
-    backgroundColor: theme.colors.darkGrey,
+    marginVertical: theme.padding.small,
+    backgroundColor: theme.colors.mediumGrey,
     borderRadius: theme.borderRadius.medium,
-    borderWidth: 1,
-    borderColor: theme.colors.grey,
+    boxShadow: [
+      {
+        color: theme.colors.darkGrey,
+        offsetX: 4,
+        offsetY: 4,
+        blurRadius: "12px",
+      },
+      {
+        offsetX: 6,
+        offsetY: 8,
+        blurRadius: "30px",
+        color: theme.colors.darkGrey,
+        inset: true,
+      },
+    ],
   },
   suggestionLabel: {
     padding: theme.padding.small,
@@ -24,7 +37,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderBottomWidth: 1,
-    borderBottomColor: theme.colors.mediumGrey,
+    borderBottomColor: theme.colors.lightGrey,
     color: theme.colors.grey,
   },
 });

@@ -56,15 +56,15 @@ export default function ThemedModal({
               style={styles.modalView}
               pointerEvents="auto"
             >
-              <ScrollView
-                contentContainerStyle={{ alignItems: "center" }}
-                persistentScrollbar={true}
+              <LinearGradient
+                colors={[theme.colors.mediumGrey, theme.colors.darkGrey]}
+                start={{ x: 0.2, y: 0 }}
+                end={{ x: 0.4, y: 1 }}
+                style={styles.mainModal}
               >
-                <LinearGradient
-                  colors={[theme.colors.mediumGrey, theme.colors.darkGrey]}
-                  start={{ x: 0.2, y: 0 }}
-                  end={{ x: 0.4, y: 0.7 }}
-                  style={styles.mainModal}
+                <ScrollView
+                  contentContainerStyle={{ alignItems: "center" }}
+                  persistentScrollbar={true}
                 >
                   {children}
                   <View style={styles.buttonContainer}>
@@ -83,11 +83,11 @@ export default function ThemedModal({
                       title={buttonText}
                       type={buttonType}
                       size={buttonSize}
-                      onPress={onConfirm ? onConfirm : onClose} // <-- use onConfirm if provided
+                      onPress={onConfirm ? onConfirm : onClose}
                     />
                   </View>
-                </LinearGradient>
-              </ScrollView>
+                </ScrollView>
+              </LinearGradient>
             </View>
           </View>
         </View>

@@ -37,13 +37,15 @@ export function CardAutoCompleteProvider({ children }: { children: React.ReactNo
   const [inputFocused, setInputFocused] = useState(false);
   const selectingSuggestion = useRef(false);
   const inputRef = useRef<TextInput>(null);
-  const { db } = useCardDatabase();
+  const { db, isLoading: dbLoading } = useCardDatabase();
   const [selectedCardName, setSelectedCardName] = useState<string | null>(null);
 
   const handleSearch = async (text: string) => {
+    console.log("[CardAutoCompleteInput] handleSearch called", { text, db, dbLoading });
     setSearchTerm(text);
     setSelectedCardName(null);
-    if (!db) {
+    if (dbLoading || !db) {
+      console.log("[CardAutoCompleteInput] dbLoading or db is falsy", { dbLoading, db });
       setSuggestions([]);
       return;
     }
@@ -55,6 +57,7 @@ export function CardAutoCompleteProvider({ children }: { children: React.ReactNo
         );
         setSuggestions(results);
       } catch (error) {
+        console.error("[CardAutoCompleteInput] Error in handleSearch:", error, { db, dbLoading, text });
         setSuggestions([]);
       }
     } else {

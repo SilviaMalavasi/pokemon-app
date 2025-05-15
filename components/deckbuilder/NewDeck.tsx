@@ -1,7 +1,6 @@
 import React from "react";
 import { View } from "react-native";
 import ThemedView from "@/components/ui/ThemedView";
-import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import CardAutoCompleteInput, {
