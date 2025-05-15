@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import ThemedView from "@/components/ui/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
+import ThemedText from "@/components/base/ThemedText";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
@@ -18,6 +19,7 @@ interface NewDeckSectionProps {
   setWatchlistThumbnail: (url: string) => void;
   handleSaveWatchList: () => void;
   handleThumbnailSelect: (url: string) => void;
+  layout?: "titled" | "untitled";
 }
 
 export default function NewWatchlist({
@@ -26,6 +28,7 @@ export default function NewWatchlist({
   watchlistThumbnail,
   handleSaveWatchList,
   setWatchlistThumbnail,
+  layout = "untitled",
 }: NewDeckSectionProps) {
   const isNameMissing = !watchlistName.trim();
   const isSaveDisabled = isNameMissing;
@@ -57,6 +60,28 @@ export default function NewWatchlist({
   return (
     <ThemedView layout="big">
       <CardAutoCompleteProvider>
+        {layout === "titled" && (
+          <>
+            <ThemedText
+              type="h2"
+              color={theme.colors.white}
+              style={{
+                paddingBottom: theme.padding.medium,
+                paddingLeft: theme.padding.small,
+              }}
+            >
+              Watchlists
+            </ThemedText>
+            <ThemedText
+              color={theme.colors.grey}
+              style={{
+                padding: theme.padding.small,
+              }}
+            >
+              No watchlists yet. Create a watchlist to track cards for the next metabreaker!
+            </ThemedText>
+          </>
+        )}
         <View style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge }}>
           <ThemedTextInput
             value={watchlistName}

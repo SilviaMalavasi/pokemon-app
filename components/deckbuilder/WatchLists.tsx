@@ -50,7 +50,7 @@ export default function WatchLists({
           color={theme.colors.grey}
           style={{ padding: theme.padding.small }}
         >
-          No watchlists yet. Add a new watchlist to get started!
+          No watchlists yet. Create a watchlist to track cards for the next metabreaker!
         </ThemedText>
       ) : (
         <View style={layout === "edit" ? { paddingTop: theme.padding.medium } : {}}>

@@ -13,7 +13,6 @@ import AddCardToDeck from "@/components/deckbuilder/AddCardToDeck";
 import DeckCardList from "@/components/deckbuilder/DeckCardList";
 import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
-import FloatingEdit from "@/components/ui/FloatingEdit";
 import DeckThumbnailList from "@/components/deckbuilder/DeckThumbnailList";
 import { View } from "react-native";
 
@@ -114,13 +113,6 @@ export default function DeckScreen() {
             <ThemedText>Error loading deck: {error.message}</ThemedText>
           ) : deck ? (
             <>
-              <FloatingEdit
-                deck={deck}
-                db={db}
-                cardDb={cardDb}
-                setDeck={setDeck}
-                deckId={deckId}
-              />
               <AddCardToDeck
                 deck={deck}
                 db={db}

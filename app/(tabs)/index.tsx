@@ -7,11 +7,21 @@ import React, { useState, useEffect, useCallback } from "react";
 import SavedDecks from "@/components/deckbuilder/SavedDecks";
 import WatchLists from "@/components/deckbuilder/WatchLists";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
-import { getSavedDecks } from "@/lib/userDatabase";
+import { getSavedDecks, getWatchLists } from "@/lib/userDatabase";
 import { View } from "react-native";
+import NewDeck from "@/components/deckbuilder/NewDeck";
+import NewWatchlist from "@/components/deckbuilder/NewWatchlist";
+import ThemedView from "@/components/ui/ThemedView";
 import { theme } from "@/style/ui/Theme";
 
 interface SavedDeck {
+  id: number;
+  name: string;
+  thumbnail: string | null;
+  cards: string;
+}
+
+interface Watchlist {
   id: number;
   name: string;
   thumbnail: string | null;
@@ -24,6 +34,57 @@ export default function HomeScreen() {
   const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
   const [isLoadingDecks, setIsLoadingDecks] = useState(false);
   const [deletingId] = useState(null);
+  const [watchlists, setWatchlists] = useState<Watchlist[]>([]);
+  const [isLoadingWatchlists, setIsLoadingWatchlists] = useState(false);
+
+  // --- NewDeck state and handlers ---
+  const [deckName, setDeckName] = useState("");
+  const [deckThumbnail, setDeckThumbnail] = useState("");
+
+  // --- NewWatchlist state and handlers ---
+  const [watchlistName, setWatchlistName] = useState("");
+  const [watchlistThumbnail, setWatchlistThumbnail] = useState("");
+
+  const handleSaveDeck = async () => {
+    if (!db) {
+      console.warn("Error", "Database not available.");
+      return;
+    }
+    try {
+      // Import addDeck from userDatabase if not already
+      const { addDeck } = await import("@/lib/userDatabase");
+      await addDeck(db, deckName, deckThumbnail || undefined);
+      setDeckName("");
+      setDeckThumbnail("");
+      fetchSavedDecks();
+    } catch (error) {
+      console.error("Failed to save deck:", error);
+    }
+  };
+
+  const handleThumbnailSelect = (imagesLargeUrl: string) => {
+    setDeckThumbnail(imagesLargeUrl);
+  };
+
+  const handleSaveWatchList = async () => {
+    if (!db) {
+      console.warn("Error", "Database not available.");
+      return;
+    }
+    try {
+      const { addWatchList } = await import("@/lib/userDatabase");
+      await addWatchList(db, watchlistName, watchlistThumbnail || undefined);
+      setWatchlistName("");
+      setWatchlistThumbnail("");
+      fetchWatchlists();
+    } catch (error) {
+      console.error("Failed to save watchlist:", error);
+    }
+  };
+
+  const handleWatchlistThumbnailSelect = (imagesLargeUrl: string) => {
+    setWatchlistThumbnail(imagesLargeUrl);
+  };
 
   const fetchSavedDecks = useCallback(async () => {
     if (!db) return;
@@ -38,11 +99,25 @@ export default function HomeScreen() {
     }
   }, [db]);
 
+  const fetchWatchlists = useCallback(async () => {
+    if (!db) return;
+    setIsLoadingWatchlists(true);
+    try {
+      const lists = await getWatchLists(db);
+      setWatchlists(lists);
+    } catch (error) {
+      console.error("Failed to fetch watchlists:", error);
+    } finally {
+      setIsLoadingWatchlists(false);
+    }
+  }, [db]);
+
   useEffect(() => {
     if (db) {
       fetchSavedDecks();
+      fetchWatchlists();
     }
-  }, [db, decksVersion, fetchSavedDecks]);
+  }, [db, decksVersion, fetchSavedDecks, fetchWatchlists]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -51,8 +126,9 @@ export default function HomeScreen() {
       }
       if (db) {
         fetchSavedDecks();
+        fetchWatchlists();
       }
-    }, [db, fetchSavedDecks])
+    }, [db, fetchSavedDecks, fetchWatchlists])
   );
 
   return (
@@ -75,39 +151,76 @@ export default function HomeScreen() {
           25-05-2015
         </ThemedText>
       </View>
-      <SavedDecks
-        savedDecks={savedDecks}
-        isLoadingDecks={isLoadingDecks}
-        deletingId={deletingId}
-        layout="view"
-      />
-      <WatchLists />
-      <View>
-        <ThemedText
-          type="hintText"
-          color={theme.colors.grey}
-        >
-          This app is not produced, endorsed, supported, or affiliated with Nintendo or The Pokémon Company.
-        </ThemedText>
-      </View>
-      <View>
-        <ThemedText
-          type="default"
-          color={theme.colors.white}
-          style={{ paddingTop: theme.padding.medium, paddingBottom: theme.padding.xlarge * 1.5 }}
-        >
-          This app was created with ♥ by Pokémon nerd and developer{" "}
-          <ExternalLink
-            color="alternative"
-            href="https://www.linkedin.com/in/silvia-malavasi/"
+      {savedDecks.length > 0 && (
+        <SavedDecks
+          savedDecks={savedDecks}
+          isLoadingDecks={isLoadingDecks}
+          deletingId={deletingId}
+          layout="view"
+        />
+      )}
+      {savedDecks.length === 0 && (
+        <View style={{ marginBottom: theme.padding.large * -1.5 }}>
+          <NewDeck
+            deckName={deckName}
+            setDeckName={setDeckName}
+            deckThumbnail={deckThumbnail}
+            setDeckThumbnail={setDeckThumbnail}
+            handleSaveDeck={handleSaveDeck}
+            handleThumbnailSelect={handleThumbnailSelect}
+            layout="titled"
+          />
+        </View>
+      )}
+      {watchlists.length > 0 && (
+        <WatchLists
+          watchLists={watchlists}
+          isLoadingWatchLists={isLoadingWatchlists}
+          deletingId={deletingId}
+          layout="view"
+        />
+      )}
+      {watchlists.length === 0 && (
+        <View style={{ marginBottom: theme.padding.large * -1.5 }}>
+          <NewWatchlist
+            watchlistName={watchlistName}
+            setWatchlistName={setWatchlistName}
+            watchlistThumbnail={watchlistThumbnail}
+            setWatchlistThumbnail={setWatchlistThumbnail}
+            handleSaveWatchList={handleSaveWatchList}
+            handleThumbnailSelect={handleWatchlistThumbnailSelect}
+            layout="titled"
+          />
+        </View>
+      )}
+      <ThemedView layout="big">
+        <View>
+          <ThemedText
+            type="default"
+            color={theme.colors.white}
+            style={{ padding: theme.padding.medium }}
           >
-            Silvia Malavasi
-          </ExternalLink>{" "}
-          for the Pokémon TCG community. Credits goes to{" "}
-          <ExternalLink href="https://pokemontcg.io/">pokemontcg.io </ExternalLink>
-          for the Card Archive.
-        </ThemedText>
-      </View>
+            This app was created with ♥ by Pokémon nerd and developer{" "}
+            <ExternalLink
+              color="alternative"
+              href="https://www.linkedin.com/in/silvia-malavasi/"
+            >
+              Silvia Malavasi
+            </ExternalLink>{" "}
+            for the Pokémon TCG community. Credits goes to{" "}
+            <ExternalLink href="https://pokemontcg.io/">pokemontcg.io </ExternalLink>
+            for the Card Archive.
+          </ThemedText>
+        </View>
+        <View style={{ padding: theme.padding.medium }}>
+          <ThemedText
+            type="default"
+            color={theme.colors.grey}
+          >
+            This app is not produced, endorsed, supported, or affiliated with Nintendo or The Pokémon Company.
+          </ThemedText>
+        </View>
+      </ThemedView>
     </MainScrollView>
   );
 }

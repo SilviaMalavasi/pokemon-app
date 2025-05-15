@@ -49,24 +49,14 @@ export default function SavedDecks({
       {isLoadingDecks ? (
         <ThemedText>Loading decks...</ThemedText>
       ) : savedDecks.length === 0 ? (
-        <>
-          <ThemedText
-            color={theme.colors.grey}
-            style={{
-              padding: theme.padding.small,
-            }}
-          >
-            No saved decks yet. Add a new deck to get started!
-          </ThemedText>
-          {/*           <NewDeck
-            deckName={deckName}
-            setDeckName={setDeckName}
-            deckThumbnail={deckThumbnail}
-            setDeckThumbnail={setDeckThumbnail}
-            handleSaveDeck={handleSaveDeck}
-            handleThumbnailSelect={handleThumbnailSelect}
-          /> */}
-        </>
+        <ThemedText
+          color={theme.colors.grey}
+          style={{
+            padding: theme.padding.small,
+          }}
+        >
+          No saved decks yet. Add a new deck to get started!
+        </ThemedText>
       ) : (
         <View style={layout === "edit" ? { paddingTop: theme.padding.medium } : {}}>
           {savedDecks.map((deck) => (
