@@ -137,11 +137,23 @@ export default function ThemedButton({
             ? size === "large"
               ? "button"
               : "buttonOutlineSmall"
+            : type === "alternative"
+            ? size === "large"
+              ? "buttonOutline"
+              : "buttonOutlineSmall"
             : size === "large"
             ? "buttonOutline"
             : "buttonOutlineSmall"
         }
-        color={isDisabled ? theme.colors.grey : type === "main" ? theme.colors.white : theme.colors.grey}
+        color={
+          isDisabled
+            ? theme.colors.grey
+            : type === "main"
+            ? theme.colors.white
+            : type === "alternative"
+            ? theme.colors.green
+            : theme.colors.grey
+        }
       >
         {title}
       </ThemedText>

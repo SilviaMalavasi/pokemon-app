@@ -61,7 +61,7 @@ export default function HomeScreen() {
       headerTitle="PokéDeck Builder"
       scrollRef={scrollRef}
     >
-      <View style={{ paddingHorizontal: theme.padding.large }}>
+      <View style={{ paddingHorizontal: theme.padding.large, paddingBottom: theme.padding.medium }}>
         <ThemedText
           type="default"
           color={theme.colors.white}

@@ -6,6 +6,7 @@ import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { addDeck, getSavedDecks, deleteDeck } from "@/lib/userDatabase";
 import NewDeck from "@/components/deckbuilder/NewDeck";
 import SavedDecks from "@/components/deckbuilder/SavedDecks";
+import { theme } from "@/style/ui/Theme";
 
 interface SavedDeck {
   id: number;
@@ -109,6 +110,7 @@ export default function DeckBuilderScreen() {
         onDelete={handleDeleteDeck}
         deletingId={deletingId}
         layout="edit"
+        style={{ marginTop: theme.padding.large * -1 }}
       />
     </MainScrollView>
   );

@@ -3,8 +3,9 @@ import { theme } from "@/style/ui/Theme";
 
 const styles = StyleSheet.create({
   containerBig: {
-    borderRadius: theme.borderRadius.xlarge,
-    marginTop: theme.padding.large,
+    borderTopLeftRadius: theme.borderRadius.xlarge,
+    borderTopRightRadius: theme.borderRadius.xlarge,
+    marginTop: theme.padding.medium,
     overflow: "hidden",
     boxShadow: [
       {

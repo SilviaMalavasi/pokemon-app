@@ -26,6 +26,15 @@ export default function ThemedView({ children, layout, style }: ThemedViewProps)
   } else if (layout === "rounded") {
     return <View style={[styles.containerRounded, style]}>{children}</View>;
   } else {
-    return <View style={[styles.containerBox, style]}>{children}</View>;
+    return (
+      <LinearGradient
+        colors={[theme.colors.lightGrey, theme.colors.mediumGrey]}
+        start={{ x: 0.2, y: 0 }}
+        end={{ x: 0.4, y: 0.7 }}
+        style={[styles.containerBox, style]}
+      >
+        <View>{children}</View>
+      </LinearGradient>
+    );
   }
 }

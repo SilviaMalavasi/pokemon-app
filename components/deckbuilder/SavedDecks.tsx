@@ -24,27 +24,32 @@ export default function SavedDecks({
   savedDecks,
   isLoadingDecks,
   deletingId,
-  onDelete,
   layout,
-}: SavedDecksSectionProps) {
+  ...props
+}: SavedDecksSectionProps & { style?: any }) {
   return (
-    <ThemedView layout="big">
-      <ThemedText
-        type="h2"
-        color={theme.colors.white}
-        style={{
-          paddingBottom: theme.padding.medium,
-          paddingLeft: theme.padding.small,
-        }}
-      >
-        Decks
-      </ThemedText>
+    <ThemedView
+      layout="big"
+      {...props}
+    >
+      {layout === "view" && (
+        <ThemedText
+          type="h2"
+          color={theme.colors.white}
+          style={{
+            paddingBottom: theme.padding.medium,
+            paddingLeft: theme.padding.small,
+          }}
+        >
+          Decks
+        </ThemedText>
+      )}
       {isLoadingDecks ? (
         <ThemedText>Loading decks...</ThemedText>
       ) : savedDecks.length === 0 ? (
         <ThemedText>No saved decks yet.</ThemedText>
       ) : (
-        <View>
+        <View style={layout === "edit" ? { paddingTop: theme.padding.medium } : {}}>
           {savedDecks.map((deck) => (
             <View key={deck.id + "-deck"}>
               <CompactDeck
