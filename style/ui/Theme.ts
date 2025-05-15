@@ -39,9 +39,9 @@ export const theme = {
     shadowInsetLight: shadowInsetLight,
   },
   fontSizes: {
-    font36: vw(9),
-    font28: vw(7),
-    font24: vw(6),
+    font36: vw(10),
+    font28: vw(7.5),
+    font24: vw(6.5),
     font18: vw(4.5),
     font16: vw(4),
     font15: vw(3.8),

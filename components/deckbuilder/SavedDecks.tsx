@@ -27,7 +27,7 @@ export default function SavedDecks({ savedDecks, isLoadingDecks, deletingId }: S
         color={theme.colors.white}
         style={{
           paddingBottom: theme.padding.medium,
-          paddingLeft: theme.padding.medium,
+          paddingLeft: theme.padding.small,
         }}
       >
         Decks
