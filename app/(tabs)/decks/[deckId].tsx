@@ -19,6 +19,12 @@ import ThemedView from "@/components/ui/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
+import ThemedModal from "@/components/base/ThemedModal";
+import ThemedTextInput from "@/components/base/ThemedTextInput";
+import CardAutoCompleteInput, {
+  CardAutoCompleteProvider,
+  CardAutoCompleteSuggestions,
+} from "@/components/base/CardAutoCompleteInput";
 
 export default function DeckScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
@@ -26,10 +32,15 @@ export default function DeckScreen() {
   const [loading, setLoading] = useState(true);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const router = useRouter();
-  const { db, isLoading: dbLoading, error, decksVersion } = useUserDatabase();
+  const { db, isLoading: dbLoading, error, decksVersion, incrementDecksVersion } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
   const [viewMode, setViewMode] = useState<"list" | "thumbnails">("list");
   const [cardDetails, setCardDetails] = useState<any[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editThumbnail, setEditThumbnail] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const handleBack = () => {
     router.replace("/deckbuilder");
@@ -128,6 +139,87 @@ export default function DeckScreen() {
     await Sharing.shareAsync(fileUri, { mimeType: "text/plain", dialogTitle: "Export Deck" });
   };
 
+  // --- Deck Actions: Clone, Edit, Delete ---
+  const handleCloneDeck = async () => {
+    if (!deck) return;
+    let baseName = deck.name.replace(/#\d+$/, "").trim();
+    let cloneNumber = 1;
+    let newName = `${baseName} #${cloneNumber}`;
+    try {
+      const { getSavedDecks, addDeck } = await import("@/lib/userDatabase");
+      if (!db) return;
+      const allDecks = await getSavedDecks(db);
+      const regex = new RegExp(`^${baseName} #(\\d+)$`);
+      const usedNumbers = allDecks
+        .map((d) => {
+          const match = d.name.match(regex);
+          return match ? parseInt(match[1], 10) : null;
+        })
+        .filter((n) => n !== null);
+      while (usedNumbers.includes(cloneNumber)) {
+        cloneNumber++;
+        newName = `${baseName} #${cloneNumber}`;
+      }
+      const cards = (deck as any).cards ? (deck as any).cards : "[]";
+      await addDeck(db, newName, deck.thumbnail || undefined, cards);
+      if (typeof incrementDecksVersion === "function") incrementDecksVersion();
+      // Find the new deck by name and navigate to it
+      const updatedDecks = await getSavedDecks(db);
+      const newDeck = updatedDecks.find((d) => d.name === newName);
+      if (newDeck) {
+        router.replace(`/decks/${newDeck.id}`);
+      }
+    } catch (e) {
+      console.error("Failed to clone deck", e);
+    }
+  };
+
+  const handleDeletePress = () => {
+    setShowModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deckId || !db) return;
+    try {
+      await db.runAsync(`DELETE FROM Decks WHERE id = ?`, [Number(deckId)]);
+      router.replace("/deckbuilder");
+    } catch (error) {
+      console.error("Error deleting deck:", error);
+    } finally {
+      setShowModal(false);
+    }
+  };
+
+  const handleEditPress = () => {
+    if (!deck) return;
+    setEditName(deck.name);
+    setEditThumbnail(deck.thumbnail || "");
+    setEditModalVisible(true);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!deckId || !db || saving) return;
+    setSaving(true);
+    try {
+      await db.runAsync(`UPDATE Decks SET name = ?, thumbnail = ? WHERE id = ?`, [
+        editName,
+        editThumbnail,
+        Number(deckId),
+      ]);
+      const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
+      setDeck(updatedDeck);
+      setEditModalVisible(false);
+    } catch (error) {
+      console.error("Error updating deck:", error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleThumbnailSelect = (card: any) => {
+    setEditThumbnail(card.cardId);
+  };
+
   return (
     <>
       <MainScrollView
@@ -157,16 +249,14 @@ export default function DeckScreen() {
                   }
                 }}
               />
-              <ThemedView
-                style={{ marginBottom: theme.padding.large * -1.5, paddingBottom: theme.padding.large * 1.5 }}
-              >
+              <ThemedView style={{ marginBottom: theme.padding.large * -1.5 }}>
                 {/* Toggle Button */}
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    marginTop: theme.padding.medium,
+                    marginTop: theme.padding.small,
                     marginBottom: theme.padding.large,
                   }}
                 >
@@ -215,15 +305,91 @@ export default function DeckScreen() {
                     type="main"
                     size="small"
                     onPress={handleExportDeck}
-                    style={{ marginTop: theme.padding.large }}
+                    style={{ marginTop: theme.padding.large, marginBottom: theme.padding.large }}
                   />
                 </View>
               </ThemedView>
-              {/*               <ThemedView 
-              layout="rounded">
-
-
-              </ThemedView> */}
+              <ThemedView
+                layout="rounded"
+                style={{ marginBottom: theme.padding.large }}
+              >
+                <ThemedButton
+                  title="Clone"
+                  type="main"
+                  size="large"
+                  onPress={handleCloneDeck}
+                />
+                <ThemedButton
+                  title="Edit"
+                  type="main"
+                  size="large"
+                  onPress={handleEditPress}
+                />
+                <ThemedButton
+                  title="Delete"
+                  type="alternative"
+                  size="large"
+                  onPress={handleDeletePress}
+                />
+              </ThemedView>
+              <ThemedModal
+                visible={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={handleConfirmDelete}
+                buttonText="Delete"
+                buttonType="main"
+                buttonSize="large"
+                onCancelText="Cancel"
+                onCancel={() => setShowModal(false)}
+              >
+                <ThemedText
+                  type="h2"
+                  color={theme.colors.white}
+                  style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
+                >
+                  Delete Deck?
+                </ThemedText>
+                <ThemedText
+                  color={theme.colors.grey}
+                  style={{ textAlign: "center", paddingBottom: theme.padding.small }}
+                >
+                  Are you sure you want to delete '{deck?.name}'? This action cannot be undone.
+                </ThemedText>
+              </ThemedModal>
+              <ThemedModal
+                visible={editModalVisible}
+                onClose={handleSaveEdit}
+                buttonText={saving ? "Saving..." : "Save"}
+                buttonType="main"
+                buttonSize="large"
+                onCancelText="Cancel"
+                onCancel={() => setEditModalVisible(false)}
+              >
+                <CardAutoCompleteProvider>
+                  <ThemedText
+                    type="h2"
+                    color={theme.colors.white}
+                    style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
+                  >
+                    Edit Deck
+                  </ThemedText>
+                  <ThemedTextInput
+                    value={editName}
+                    onChange={setEditName}
+                    placeholder="Enter deck name"
+                    style={{ marginBottom: theme.padding.medium }}
+                  />
+                  <CardAutoCompleteInput
+                    key={deck?.id}
+                    value={editThumbnail}
+                    onCardSelect={handleThumbnailSelect}
+                    placeholder="Type card name (min 3 chars)"
+                    maxChars={25}
+                    resetKey={deck?.id}
+                  />
+                  <CardAutoCompleteSuggestions onCardSelect={handleThumbnailSelect} />
+                </CardAutoCompleteProvider>
+              </ThemedModal>
             </>
           ) : (
             <ThemedText>Deck not found.</ThemedText>

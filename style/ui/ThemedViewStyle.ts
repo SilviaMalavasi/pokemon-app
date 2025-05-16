@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     ],
   },
   containerRounded: {
-    borderRadius: theme.borderRadius.xlarge,
-    marginTop: theme.padding.large,
+    marginTop: theme.padding.medium,
+    borderRadius: theme.borderRadius.xlarge * 1.5,
     overflow: "hidden",
     boxShadow: [
       {
@@ -46,6 +46,12 @@ const styles = StyleSheet.create({
         blurRadius: "20px",
       },
     ],
+  },
+  containerRoundedInner: {
+    flexDirection: "row",
+    padding: theme.padding.medium,
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   containerBox: {
     borderRadius: theme.borderRadius.large,

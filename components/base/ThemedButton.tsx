@@ -117,7 +117,7 @@ export default function ThemedButton({
         </View>
       ) : null}
       <ThemedText
-        style={[textStyle]}
+        fontWeight={type === "alternative" ? "regular" : undefined}
         type={
           type === "main"
             ? size === "large"

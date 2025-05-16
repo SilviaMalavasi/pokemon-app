@@ -135,17 +135,15 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
       </ThemedText>
       <CardAutoCompleteProvider>
         <CardAutoCompleteSuggestions onCardSelect={handleCardSelect} />
-        <View style={styles.row}>
-          <View style={styles.cardInput}>
-            <CardAutoCompleteInput
-              key={`card-input-${resetCounter}`}
-              value={selectedCardId}
-              onCardSelect={handleCardSelect}
-              placeholder="Type card name (min 3 chars)"
-              maxChars={25}
-              resetKey={resetCounter}
-            />
-          </View>
+        <View style={styles.cardInput}>
+          <CardAutoCompleteInput
+            key={`card-input-${resetCounter}`}
+            value={selectedCardId}
+            onCardSelect={handleCardSelect}
+            placeholder="Type card name (min 3 chars)"
+            maxChars={25}
+            resetKey={resetCounter}
+          />
         </View>
       </CardAutoCompleteProvider>
 

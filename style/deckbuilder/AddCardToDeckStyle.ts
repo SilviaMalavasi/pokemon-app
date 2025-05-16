@@ -5,18 +5,13 @@ import { vw } from "@/helpers/viewport";
 const styles = StyleSheet.create({
   container: {
     marginBottom: theme.padding.large * -1.5,
-    paddingBottom: theme.padding.large * 1.5,
   },
   title: {
-    paddingBottom: theme.padding.xsmall,
-  },
-  row: {
-    flexDirection: "row",
-    gap: theme.padding.xsmall,
-    marginBottom: theme.padding.medium,
+    paddingTop: theme.padding.xsmall,
+    paddingBottom: theme.padding.medium,
   },
   cardInput: {
-    flex: 2,
+    marginBottom: theme.padding.xlarge,
   },
   numberInput: {
     width: vw(22),

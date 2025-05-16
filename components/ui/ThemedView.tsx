@@ -33,7 +33,17 @@ export default function ThemedView({ children, layout = "big", style }: ThemedVi
       </LinearGradient>
     );
   } else if (layout === "rounded") {
-    return <View style={[styles.containerRounded, style]}>{children}</View>;
+    return (
+      <LinearGradient
+        colors={[theme.colors.lightGrey, theme.colors.mediumGrey]}
+        start={{ x: 0.2, y: 0 }}
+        end={{ x: 0.4, y: 1 }}
+        style={[styles.containerRounded, style]}
+        onLayout={(e) => setContainerHeight(e.nativeEvent.layout.height)}
+      >
+        <View style={styles.containerRoundedInner}>{children}</View>
+      </LinearGradient>
+    );
   } else {
     const pixelStop = 400;
     const stop = containerHeight > 0 ? pixelStop / containerHeight : 0.5;
