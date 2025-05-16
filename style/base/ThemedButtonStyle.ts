@@ -32,7 +32,9 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
         : type === "alternative"
         ? "transparent"
         : type === "outline"
-        ? theme.colors.mediumGrey
+        ? status === "disabled"
+          ? theme.colors.lightGrey
+          : theme.colors.mediumGrey
         : undefined,
     boxShadow:
       type === "main"

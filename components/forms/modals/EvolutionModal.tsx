@@ -57,13 +57,11 @@ export default function EvolutionModal({
         onChange={setCardStage}
       />
       <ThemedTextInput
-        label="Evolves From"
         value={cardEvolvesFrom}
         onChange={setCardEvolvesFrom}
         placeholder="Evolves from"
       />
       <ThemedTextInput
-        label="Evolves To"
         value={cardEvolvesTo}
         onChange={setCardEvolvesTo}
         placeholder="Evolves to"

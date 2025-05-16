@@ -70,7 +70,7 @@ export default function SplashScreen({ isUpdatingDb, progress = 0 }: SplashScree
           {isUpdatingDb && (
             <>
               <ThemedText
-                type="buttonSmall"
+                type="default"
                 color="white"
                 style={styles.title}
               >
@@ -78,7 +78,7 @@ export default function SplashScreen({ isUpdatingDb, progress = 0 }: SplashScree
               </ThemedText>
               {/* Warning if update is interrupted */}
               <ThemedText
-                type="hintText"
+                type="default"
                 style={styles.warnigText}
               >
                 This may take few minutes the first time you open the app. Do not close or background the app until the

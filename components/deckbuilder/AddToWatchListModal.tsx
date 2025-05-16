@@ -257,7 +257,6 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
         </ThemedText>
         <ThemedTextInput
           value={newListName}
-          label="New Watchlist Name"
           onChange={setNewListName}
           placeholder="Watchlist name"
         />

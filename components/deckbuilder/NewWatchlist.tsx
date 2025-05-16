@@ -58,7 +58,7 @@ export default function NewWatchlist({
   };
 
   return (
-    <ThemedView layout="big">
+    <ThemedView>
       <CardAutoCompleteProvider>
         {layout === "titled" && (
           <>

@@ -103,22 +103,8 @@ export default function ThemedButton({
         typeof width === "number" ? { width } : {},
         isDisabled
           ? {
-              backgroundColor: theme.colors.lightGrey,
-              boxShadow: [
-                {
-                  color: theme.colors.shadowDark,
-                  offsetX: 6,
-                  offsetY: 6,
-                  blurRadius: "12px",
-                },
-                {
-                  offsetX: 1,
-                  offsetY: 2,
-                  blurRadius: "2px",
-                  color: theme.colors.shadowInsetLight,
-                  inset: true,
-                },
-              ],
+              backgroundColor: theme.colors.mediumGrey,
+              opacity: 0.7,
             }
           : {},
       ]}

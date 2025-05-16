@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
   CardAutoCompleteSuggestions,
 } from "@/components/base/CardAutoCompleteInput";
-import styles from "@/style/deckbuilder/AddCardToDeckStyle";
+import ThemedView from "@/components/ui/ThemedView";
 import ThemedText from "../base/ThemedText";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import ThemedModal from "@/components/base/ThemedModal";
-import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
+import styles from "@/style/deckbuilder/AddCardToDeckStyle";
+import { theme } from "@/style/ui/Theme";
+import ThemedButton from "@/components/base/ThemedButton";
 
 interface AddCardToDeckProps {
   deck: any;
@@ -124,7 +126,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
   };
 
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
       <ThemedText
         type="h2"
         style={styles.title}
@@ -137,7 +139,6 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
           <View style={styles.cardInput}>
             <CardAutoCompleteInput
               key={`card-input-${resetCounter}`}
-              label="Card"
               value={selectedCardId}
               onCardSelect={handleCardSelect}
               placeholder="Type card name (min 3 chars)"
@@ -150,64 +151,60 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
 
       <ThemedModal
         visible={modalVisible}
-        onClose={handleConfirm}
+        onClose={() => setModalVisible(false)}
         buttonText="Set in deck"
         buttonType="main"
         buttonSize="large"
         onCancelText="Cancel"
         onCancel={() => setModalVisible(false)}
+        onConfirm={handleConfirm}
       >
         <ThemedText
           type="h4"
-          style={{ marginBottom: 16, textAlign: "center" }}
+          style={{ paddingVertical: theme.padding.medium, textAlign: "center" }}
         >
-          Set Quantity for <ThemedText color={theme.colors.green}>{selectedCardName}</ThemedText>
+          Set Quantity for{" "}
+          <ThemedText
+            type="h4"
+            color={theme.colors.green}
+          >
+            {selectedCardName}
+          </ThemedText>
         </ThemedText>
         <View style={styles.numbersModalContainer}>
           {isBasicEnergy ? (
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-              <TouchableOpacity
+              <ThemedButton
+                title="-"
+                type="outline"
+                size="large"
                 onPress={() => setStagedQty((q) => Math.max(1, q - 1))}
-                style={[styles.numbersModal, { marginRight: 8 }]}
+                style={[styles.numbersModal, { paddingBottom: theme.padding.xsmall }]}
                 disabled={stagedQty === 1}
-              >
-                <ThemedText
-                  type="h4"
-                  style={{ color: stagedQty === 1 ? theme.colors.grey : theme.colors.grey }}
-                >
-                  -
-                </ThemedText>
-              </TouchableOpacity>
-              <ThemedText style={{ marginHorizontal: 12, fontWeight: "bold", fontSize: 20 }}>{stagedQty}</ThemedText>
-              <TouchableOpacity
+              />
+              <ThemedText style={styles.energyNumber}>{stagedQty}</ThemedText>
+              <ThemedButton
+                title="+"
+                type="outline"
+                size="large"
                 onPress={() => setStagedQty((q) => q + 1)}
-                style={[styles.numbersModal, { marginLeft: 8 }]}
-              >
-                <ThemedText type="h4">+</ThemedText>
-              </TouchableOpacity>
+                style={[styles.numbersModal, { paddingBottom: theme.padding.xsmall }]}
+              />
             </View>
           ) : (
             [1, 2, 3, 4].map((qty) => (
-              <TouchableOpacity
+              <ThemedButton
                 key={qty}
+                title={qty.toString()}
+                type={"outline"}
+                size="large"
                 onPress={() => handleQtyChange(qty)}
-                style={[
-                  {
-                    backgroundColor: stagedQty === qty ? theme.colors.green : theme.colors.mediumGrey,
-                  },
-                  styles.numbersModal,
-                ]}
-              >
-                <ThemedText
-                  style={{ color: stagedQty === qty ? theme.colors.darkGrey : theme.colors.grey, fontWeight: "bold" }}
-                >
-                  {qty}
-                </ThemedText>
-              </TouchableOpacity>
+                style={stagedQty === qty ? styles.numbersModalActive : styles.numbersModal}
+              />
             ))
           )}
         </View>
       </ThemedModal>
-    </View>
+    </ThemedView>
   );
 }

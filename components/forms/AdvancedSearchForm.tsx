@@ -500,7 +500,6 @@ export default function AdvancedSearchForm({
         />
       </View>
       <ThemedTextInput
-        label="Name"
         value={cardName}
         onChange={setCardName}
         placeholder="Card name"

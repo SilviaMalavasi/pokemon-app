@@ -71,7 +71,6 @@ export default function EditionModal({
         onChange={setCardSetName}
       />
       <ThemedTextInput
-        label="Pokédex number"
         value={cardSetNumber}
         onChange={setCardSetNumber}
         placeholder="Pokédex number"

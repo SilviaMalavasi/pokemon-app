@@ -337,7 +337,6 @@ export default function FreeSearchForm({
         />
       </View>
       <ThemedTextInput
-        label="Free Search"
         value={cardSearch}
         onChange={setCardSearch}
         placeholder="Free text"

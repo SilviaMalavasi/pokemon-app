@@ -50,13 +50,11 @@ export default function AbilitiesModal({
         Abilities
       </ThemedText>
       <ThemedTextInput
-        label="Ability Name"
         value={abilitiesName}
         onChange={setAbilitiesName}
         placeholder="Ability Name"
       />
       <AutoCompleteInput
-        label="Abilitiy Text"
         value={abilitiesText}
         onChange={setAbilitiesText}
         suggestions={["search", "discard pile", "attach", "energy"]}

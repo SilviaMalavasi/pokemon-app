@@ -4,7 +4,8 @@ import { vw } from "@/helpers/viewport";
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: theme.padding.medium,
+    marginBottom: theme.padding.large * -1.5,
+    paddingBottom: theme.padding.large * 1.5,
   },
   title: {
     paddingBottom: theme.padding.xsmall,
@@ -27,7 +28,6 @@ const styles = StyleSheet.create({
     paddingLeft: theme.padding.small,
   },
   numbersModalContainer: {
-    backgroundColor: "transparent",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -36,12 +36,35 @@ const styles = StyleSheet.create({
     gap: theme.padding.small,
   },
   numbersModal: {
-    borderRadius: theme.borderRadius.large,
-    borderWidth: 1,
-    borderColor: theme.colors.green,
-    paddingHorizontal: theme.padding.small,
-    paddingVertical: theme.padding.xsmall * 1.2,
+    width: theme.padding.medium * 2.5,
+    height: theme.padding.medium * 2.5,
+    borderRadius: theme.borderRadius.xlarge,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
     marginHorizontal: 4,
+  },
+  numbersModalActive: {
+    width: theme.padding.medium * 2.5,
+    height: theme.padding.medium * 2.5,
+    borderRadius: theme.borderRadius.xlarge,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    marginHorizontal: 4,
+    backgroundColor: theme.colors.purple,
+  },
+  numbersModalDisabled: {
+    width: theme.padding.medium * 2.5,
+    height: theme.padding.medium * 2.5,
+    borderRadius: theme.borderRadius.xlarge,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    marginHorizontal: 4,
+    backgroundColor: theme.colors.lightGrey,
+  },
+  energyNumber: {
+    width: theme.padding.xlarge,
+    textAlign: "center",
+    paddingBottom: theme.padding.xsmall,
   },
 });
 

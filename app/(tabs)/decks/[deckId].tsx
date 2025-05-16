@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, TouchableOpacity } from "react-native";
+import { ActivityIndicator } from "react-native";
 import MainScrollView from "@/components/ui/MainScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -15,6 +15,10 @@ import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import DeckThumbnailList from "@/components/deckbuilder/DeckThumbnailList";
 import { View } from "react-native";
+import ThemedView from "@/components/ui/ThemedView";
+import ThemedButton from "@/components/base/ThemedButton";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 
 export default function DeckScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
@@ -95,6 +99,23 @@ export default function DeckScreen() {
   // Calculate total number of cards in the deck
   const totalCardCount = getCardsArray().reduce((sum: number, card: any) => sum + (card.quantity || 1), 0);
 
+  // Export deck to txt file
+  const handleExportDeck = async () => {
+    if (!deck) return;
+    const cardsArr = getCardsArray();
+    let deckText = `Deck: ${deck.name || "Unnamed Deck"}"\n\n`;
+    deckText += cardsArr
+      .map((c: any) => {
+        const card = cardDetails.find((cd) => cd.cardId === c.cardId);
+        const name = card?.name || c.cardId;
+        return `${c.quantity || 1}x ${name}`;
+      })
+      .join("\n");
+    const fileUri = FileSystem.cacheDirectory + `${deck.name || "deck"}.txt`;
+    await FileSystem.writeAsStringAsync(fileUri, deckText, { encoding: FileSystem.EncodingType.UTF8 });
+    await Sharing.shareAsync(fileUri, { mimeType: "text/plain", dialogTitle: "Export Deck" });
+  };
+
   return (
     <>
       <MainScrollView
@@ -124,60 +145,67 @@ export default function DeckScreen() {
                   }
                 }}
               />
-              {/* Toggle Button */}
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: theme.padding.medium,
-                  marginBottom: theme.padding.large,
-                }}
+              <ThemedView
+                style={{ marginBottom: theme.padding.large * -1.5, paddingBottom: theme.padding.large * 1.5 }}
               >
-                <ThemedText type="h2">Cards ({totalCardCount})</ThemedText>
-                <TouchableOpacity
-                  activeOpacity={0.85}
-                  onPress={() => setViewMode(viewMode === "list" ? "thumbnails" : "list")}
+                {/* Toggle Button */}
+                <View
                   style={{
-                    backgroundColor: theme.colors.mediumGrey,
-                    borderWidth: 1,
-                    borderColor: theme.colors.green,
-                    borderRadius: theme.borderRadius.large,
-                    paddingHorizontal: theme.padding.small,
-                    ...theme.shadowSmall,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginTop: theme.padding.medium,
+                    marginBottom: theme.padding.large,
                   }}
                 >
-                  <ThemedText
-                    type="chip"
-                    style={{ color: theme.colors.grey, textTransform: "uppercase" }}
-                  >
-                    {viewMode === "list" ? "Thumb View" : "List View"}
-                  </ThemedText>
-                </TouchableOpacity>
-              </View>
-              {viewMode === "list" ? (
-                <DeckCardList
-                  cards={getCardsArray()}
-                  deckId={Number(deckId)}
-                  onCardsChanged={async () => {
-                    if (db) {
-                      const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
-                      setDeck(updatedDeck);
-                    }
+                  <ThemedText type="h2">Cards ({totalCardCount})</ThemedText>
+                  <ThemedButton
+                    title={viewMode === "list" ? "Thumb View" : "List View"}
+                    type="outline"
+                    size="small"
+                    onPress={() => setViewMode(viewMode === "list" ? "thumbnails" : "list")}
+                  />
+                </View>
+                {viewMode === "list" ? (
+                  <DeckCardList
+                    cards={getCardsArray()}
+                    deckId={Number(deckId)}
+                    onCardsChanged={async () => {
+                      if (db) {
+                        const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
+                        setDeck(updatedDeck);
+                      }
+                    }}
+                  />
+                ) : (
+                  <DeckThumbnailList
+                    cards={cardDetails}
+                    deckId={Number(deckId)}
+                    onCardsChanged={async () => {
+                      if (db) {
+                        const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
+                        setDeck(updatedDeck);
+                      }
+                    }}
+                  />
+                )}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    marginTop: theme.padding.medium,
+                    marginBottom: theme.padding.large,
                   }}
-                />
-              ) : (
-                <DeckThumbnailList
-                  cards={cardDetails}
-                  deckId={Number(deckId)}
-                  onCardsChanged={async () => {
-                    if (db) {
-                      const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
-                      setDeck(updatedDeck);
-                    }
-                  }}
-                />
-              )}
+                >
+                  <ThemedButton
+                    title="Export Deck"
+                    type="main"
+                    size="small"
+                    onPress={handleExportDeck}
+                  />
+                </View>
+              </ThemedView>
             </>
           ) : (
             <ThemedText>Deck not found.</ThemedText>

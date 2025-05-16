@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { theme } from "@/style/ui/Theme";
+import { vw } from "@/helpers/viewport";
 
 const styles = StyleSheet.create({
   container: {
@@ -7,7 +8,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 140,
+    height: vw(40),
     position: "relative",
     justifyContent: "space-between",
     alignItems: "center",
@@ -43,24 +44,14 @@ const styles = StyleSheet.create({
     position: "relative",
     flexDirection: "row",
     alignItems: "center",
-    paddingTop: 38,
-
+    paddingTop: vw(10),
     zIndex: 2,
-    boxShadow: [
-      {
-        offsetX: 4,
-        offsetY: 15,
-        blurRadius: "24px",
-        color: theme.colors.shadowDark,
-        inset: true,
-      },
-    ],
   },
   headerImageContainer: {
     flexBasis: 100,
     width: 100,
     height: "100%",
-    paddingHorizontal: 26,
+    paddingHorizontal: vw(5),
   },
   headerImageContainerImage: {
     width: "100%",

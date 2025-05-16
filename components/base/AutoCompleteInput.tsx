@@ -68,7 +68,6 @@ export default function AutoCompleteInput({
       )}
       <ThemedTextInput
         ref={inputRef}
-        label={label}
         value={value}
         onChange={onChange}
         placeholder={placeholder || ""}

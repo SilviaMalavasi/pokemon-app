@@ -193,7 +193,7 @@ export default function HomeScreen() {
           />
         </View>
       )}
-      <ThemedView layout="big">
+      <ThemedView>
         <View>
           <ThemedText
             type="default"

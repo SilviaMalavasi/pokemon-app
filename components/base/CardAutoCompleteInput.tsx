@@ -176,35 +176,32 @@ export default function CardAutoCompleteInput({
   }, [resetKey]);
 
   return (
-    <View style={styles.container}>
-      <ThemedTextInput
-        ref={inputRef}
-        label={label}
-        value={searchTerm}
-        maxChars={maxChars}
-        onChange={(text) => {
-          setSearchTerm(text);
+    <ThemedTextInput
+      ref={inputRef}
+      value={searchTerm}
+      maxChars={maxChars}
+      onChange={(text) => {
+        setSearchTerm(text);
+        setSelectedCardName(null);
+        handleSearch(text);
+      }}
+      placeholder={placeholder || ""}
+      labelHint={labelHint}
+      onFocus={() => {
+        selectingSuggestion.current = false;
+        setInputFocused(true);
+        if (selectedCardName) {
+          setSearchTerm("");
           setSelectedCardName(null);
-          handleSearch(text);
-        }}
-        placeholder={placeholder || ""}
-        labelHint={labelHint}
-        onFocus={() => {
-          selectingSuggestion.current = false;
-          setInputFocused(true);
-          if (selectedCardName) {
-            setSearchTerm("");
-            setSelectedCardName(null);
+        }
+      }}
+      onBlur={() => {
+        setTimeout(() => {
+          if (!selectingSuggestion.current) {
+            setInputFocused(false);
           }
-        }}
-        onBlur={() => {
-          setTimeout(() => {
-            if (!selectingSuggestion.current) {
-              setInputFocused(false);
-            }
-          }, 250);
-        }}
-      />
-    </View>
+        }, 250);
+      }}
+    />
   );
 }

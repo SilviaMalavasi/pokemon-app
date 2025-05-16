@@ -80,7 +80,6 @@ export default function AttacksModal({
         Attacks
       </ThemedText>
       <ThemedTextInput
-        label="Attack Name"
         value={attacksName}
         onChange={setAttacksName}
         placeholder="Attack Name"
@@ -98,7 +97,6 @@ export default function AttacksModal({
         showOperatorSelect={"advanced"}
       />
       <AutoCompleteInput
-        label="Attack Text"
         value={attacksText}
         onChange={setAttacksText}
         suggestions={["search", "discard pile", "attach", "energy"]}
@@ -120,7 +118,6 @@ export default function AttacksModal({
         !attacksConvertedEnergyCost ||
         attacksConvertedEnergyCostOperator !== "=") && (
         <ThemedMultiSelect
-          label="Attack Cost Energy Type"
           value={attacksCost}
           options={energyTypesOptions}
           onChange={setAttacksCost}

@@ -7,11 +7,11 @@ import styles from "@/style/ui/ThemedViewStyle";
 
 type ThemedViewProps = {
   children: ReactNode;
-  layout: "big" | "box" | "rounded";
+  layout?: "big" | "box" | "rounded";
   style?: ViewStyle | ViewStyle[];
 };
 
-export default function ThemedView({ children, layout, style }: ThemedViewProps) {
+export default function ThemedView({ children, layout = "big", style }: ThemedViewProps) {
   const [containerHeight, setContainerHeight] = useState(0);
 
   if (layout === "big") {

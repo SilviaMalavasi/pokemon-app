@@ -58,7 +58,7 @@ export default function NewDeck({
   };
 
   return (
-    <ThemedView layout="big">
+    <ThemedView>
       <CardAutoCompleteProvider>
         {layout === "titled" && (
           <>

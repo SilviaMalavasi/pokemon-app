@@ -379,7 +379,6 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
         </ThemedText>
         <CardAutoCompleteProvider>
           <ThemedTextInput
-            label="Deck Name"
             value={newDeckName}
             onChange={setNewDeckName}
             placeholder="Enter deck name"
@@ -390,7 +389,6 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
             <>
               <CardAutoCompleteInput
                 key={autoCompleteKey}
-                label="Deck Thumbnail"
                 value={newDeckThumbnail}
                 onCardSelect={handleThumbnailSelect}
                 placeholder="Type card name (min 3 chars)"

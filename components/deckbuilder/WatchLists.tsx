@@ -30,10 +30,7 @@ export default function WatchLists({
   ...props
 }: WatchListsSectionProps) {
   return (
-    <ThemedView
-      layout="big"
-      {...props}
-    >
+    <ThemedView {...props}>
       {layout === "view" && (
         <ThemedText
           type="h2"
