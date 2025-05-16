@@ -7,7 +7,7 @@ const gap = theme.padding.small;
 const columns = 2;
 const cardWidth = (vw(100) - containersPadding * 2 - gap * (columns - 1)) / columns;
 
-const CompactCardViewStyle = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     alignItems: "center",
@@ -19,6 +19,21 @@ const CompactCardViewStyle = StyleSheet.create({
   imageContainer: {
     width: "100%",
     height: cardWidth / 0.71,
+    boxShadow: [
+      {
+        color: theme.colors.shadowDark,
+        offsetX: 6,
+        offsetY: 6,
+        blurRadius: "12px",
+      },
+      {
+        color: theme.colors.darkGrey,
+        offsetX: -2,
+        offsetY: -2,
+        blurRadius: "4px",
+        inset: true,
+      },
+    ],
   },
   image: {
     width: "100%",
@@ -26,10 +41,9 @@ const CompactCardViewStyle = StyleSheet.create({
   },
   textContainer: {
     width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: theme.padding.xsmall,
+    paddingTop: theme.padding.small,
+    paddingBottom: theme.padding.medium,
   },
 });
 
-export default CompactCardViewStyle;
+export default styles;

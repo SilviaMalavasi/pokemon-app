@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Image, ActivityIndicator } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import { CardType } from "@/types/PokemonCardType";
-import CompactCardStyle from "@/style/CompactCardStyle";
+import styles from "@/style/CompactCardStyle";
 import cardImages from "@/helpers/cardImageMapping";
 import { Link } from "expo-router";
 import { vw } from "@/helpers/viewport";
@@ -27,7 +27,7 @@ export default function CompactCard({ card, onImageLoad, loading, disableLink }:
 
   if (loading) {
     return (
-      <View style={[CompactCardStyle.container, { justifyContent: "center", alignItems: "center", minHeight: vw(68) }]}>
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center", minHeight: vw(68) }]}>
         <ActivityIndicator
           size="large"
           color={theme.colors.purple}
@@ -37,13 +37,13 @@ export default function CompactCard({ card, onImageLoad, loading, disableLink }:
   }
 
   const cardContent = (
-    <View style={CompactCardStyle.container}>
-      <View style={CompactCardStyle.imageContainer}>
+    <View style={styles.container}>
+      <View style={styles.imageContainer}>
         {imageSource ? (
-          <View style={{ position: "relative", justifyContent: "center", alignItems: "center" }}>
+          <View>
             <Image
               source={imageSource}
-              style={CompactCardStyle.image}
+              style={styles.image}
               resizeMode="contain"
               onLoadStart={() => setImageLoading(true)}
               onLoadEnd={() => {
@@ -61,12 +61,16 @@ export default function CompactCard({ card, onImageLoad, loading, disableLink }:
           </View>
         ) : null}
       </View>
-      <View style={CompactCardStyle.textContainer}>
-        <ThemedText
-          type="default"
-          style={{ textAlign: "center" }}
-        >
-          {card.name}
+      <View style={styles.textContainer}>
+        <ThemedText type="h4">
+          {card.name}{" "}
+          <ThemedText
+            type="default"
+            style={{ textTransform: "uppercase" }}
+            color={theme.colors.purple}
+          >
+            {card.cardId}
+          </ThemedText>
         </ThemedText>
       </View>
     </View>

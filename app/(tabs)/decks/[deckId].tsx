@@ -103,14 +103,26 @@ export default function DeckScreen() {
   const handleExportDeck = async () => {
     if (!deck) return;
     const cardsArr = getCardsArray();
-    let deckText = `Deck: ${deck.name || "Unnamed Deck"}"\n\n`;
-    deckText += cardsArr
-      .map((c: any) => {
-        const card = cardDetails.find((cd) => cd.cardId === c.cardId);
-        const name = card?.name || c.cardId;
-        return `${c.quantity || 1}x ${name}`;
-      })
-      .join("\n");
+    // Group cards by supertype
+    const pokemon = [];
+    const trainer = [];
+    const energy = [];
+    for (const c of cardsArr) {
+      const card = cardDetails.find((cd) => cd.cardId === c.cardId);
+      const name = card?.name || c.cardId;
+      const supertype = card?.supertype || "";
+      const line = `${c.quantity || 1} ${name} ${c.cardId}`;
+      if (supertype === "Pokémon") pokemon.push(line);
+      else if (supertype === "Trainer") trainer.push(line);
+      else if (supertype === "Energy") energy.push(line);
+    }
+    let deckText = `Deck: ${deck.name || "Unnamed Deck"}\n\n`;
+    deckText += `Pokémon: ${pokemon.length}\n`;
+    deckText += pokemon.join("\n") + (pokemon.length ? "\n\n" : "");
+    deckText += `Trainer: ${trainer.length}\n`;
+    deckText += trainer.join("\n") + (trainer.length ? "\n\n" : "");
+    deckText += `Energy: ${energy.length}\n`;
+    deckText += energy.join("\n") + (energy.length ? "\n" : "");
     const fileUri = FileSystem.cacheDirectory + `${deck.name || "deck"}.txt`;
     await FileSystem.writeAsStringAsync(fileUri, deckText, { encoding: FileSystem.EncodingType.UTF8 });
     await Sharing.shareAsync(fileUri, { mimeType: "text/plain", dialogTitle: "Export Deck" });
@@ -203,9 +215,15 @@ export default function DeckScreen() {
                     type="main"
                     size="small"
                     onPress={handleExportDeck}
+                    style={{ marginTop: theme.padding.large }}
                   />
                 </View>
               </ThemedView>
+              {/*               <ThemedView 
+              layout="rounded">
+
+
+              </ThemedView> */}
             </>
           ) : (
             <ThemedText>Deck not found.</ThemedText>

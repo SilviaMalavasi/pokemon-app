@@ -7,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
+import ThemedButton from "@/components/base/ThemedButton";
 
 interface DeckCardListProps {
   cards: any[];
@@ -187,12 +188,8 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
       if (cardsArr[idx].quantity > 1) {
         cardsArr[idx].quantity -= 1;
       } else {
-        // Only remove if not basic energy, otherwise keep at 1
-        if (!isBasicEnergy) {
-          cardsArr.splice(idx, 1);
-        } else {
-          cardsArr[idx].quantity = 1;
-        }
+        // Remove the card entry when quantity reaches 0, regardless of type
+        cardsArr.splice(idx, 1);
       }
       await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(cardsArr), deckId]);
     }
@@ -221,64 +218,44 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
     return <ThemedText>No cards in this deck.</ThemedText>;
   }
 
-  const renderGroup = (groupName: string, groupCards: any[]) => {
+  const renderGroup = (groupName: string, groupCards: any[], index: number) => {
     if (!groupCards.length) return null;
     return (
-      <View
-        style={styles.summaryContainer}
-        key={groupName}
-      >
-        <LinearGradient
-          colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
-          locations={[0, 0.4, 0.4, 1]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={styles.summaryLabel}
+      <View key={groupName}>
+        <ThemedText
+          type="h4"
+          style={{
+            marginTop: index > 0 ? theme.padding.large : theme.padding.small,
+            marginBottom: theme.padding.medium,
+          }}
         >
-          <ThemedText type="label">{`${groupName} (${groupCards.reduce(
-            (sum, item) => sum + (item.quantity || 1),
-            0
-          )})`}</ThemedText>
-        </LinearGradient>
+          {groupName} ({groupCards.reduce((sum, item) => sum + (item.quantity || 1), 0)})
+        </ThemedText>
         {groupCards.map((item, idx) => (
           <View
             style={styles.summaryItemContainer}
             key={item.cardId || item.id || idx}
           >
-            <View style={styles.summaryDotCol}>
-              <Svg
-                height={theme.padding.xsmall}
-                width={theme.padding.xsmall}
-              >
-                <Circle
-                  cx={3}
-                  cy={3}
-                  r={3}
-                  fill={theme.colors.green}
-                />
-              </Svg>
-            </View>
-            <View style={styles.summaryitemQuantity}>
-              <ThemedText color={theme.colors.green}>{item.quantity || 1}</ThemedText>
-            </View>
             <View style={styles.summaryTextCol}>
               <ThemedText>
-                {cardDataMap[item.cardId]?.name}{" "}
-                <ThemedText
-                  type="hintText"
-                  style={styles.cardId}
-                >
-                  {item.cardId}
-                </ThemedText>
+                <ThemedText color={theme.colors.green}>{item.quantity || 1}</ThemedText>{" "}
+                {cardDataMap[item.cardId]?.name} <ThemedText style={styles.cardId}>{item.cardId}</ThemedText>
               </ThemedText>
               <View style={styles.qtyCol}>
-                <TouchableOpacity onPress={() => handleChangeQuantity(item.cardId, "dec")}>
-                  <ThemedText style={styles.qtyOperator}>-</ThemedText>
-                </TouchableOpacity>
-                <ThemedText> </ThemedText>
-                <TouchableOpacity onPress={() => handleChangeQuantity(item.cardId, "inc")}>
-                  <ThemedText style={styles.qtyOperator}>+</ThemedText>
-                </TouchableOpacity>
+                <ThemedButton
+                  title="-"
+                  type="outline"
+                  size="small"
+                  onPress={() => handleChangeQuantity(item.cardId, "dec")}
+                  style={styles.qtyOperator}
+                />
+                <ThemedButton
+                  title="+"
+                  type="outline"
+                  size="small"
+                  onPress={() => handleChangeQuantity(item.cardId, "inc")}
+                  style={styles.qtyOperator}
+                />
               </View>
             </View>
           </View>
@@ -289,9 +266,9 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
 
   return (
     <>
-      {renderGroup("Pokémon", grouped["Pokémon"])}
-      {renderGroup("Trainer", grouped["Trainer"])}
-      {renderGroup("Energy", grouped["Energy"])}
+      {renderGroup("Pokémon", grouped["Pokémon"], 0)}
+      {renderGroup("Trainer", grouped["Trainer"], 1)}
+      {renderGroup("Energy", grouped["Energy"], 2)}
     </>
   );
 };

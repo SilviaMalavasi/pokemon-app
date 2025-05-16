@@ -3,61 +3,34 @@ import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
 
 const styles = StyleSheet.create({
-  title: {
-    paddingBottom: theme.padding.small,
-  },
-  summaryContainer: {
-    position: "relative",
-    backgroundColor: "transparent",
-    borderWidth: 1,
-    borderColor: theme.colors.purple,
-    borderRadius: theme.borderRadius.small,
-    paddingHorizontal: theme.padding.small,
-    paddingTop: theme.padding.medium,
-    paddingBottom: theme.padding.small,
-    marginTop: theme.padding.small,
-    marginBottom: theme.padding.xsmall,
-  },
-  summaryLabel: {
-    position: "absolute",
-    top: theme.padding.xsmall * -1.25,
-    left: 0,
-    zIndex: 2,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    marginLeft: theme.padding.xsmall,
-    paddingHorizontal: theme.padding.xsmall,
-  },
   summaryItemContainer: {
     flexDirection: "row",
     alignItems: "flex-start",
     marginBottom: 4,
   },
-  summaryDotCol: {
-    width: theme.padding.xsmall,
-    marginTop: theme.padding.xsmall,
-  },
-  summaryitemQuantity: {
-    width: theme.padding.small,
-    alignItems: "center",
-    marginRight: 4,
-  },
+
   cardId: {
     textTransform: "uppercase",
+    color: theme.colors.purple,
+    fontSize: theme.fontSizes.font14,
   },
   summaryTextCol: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    flex: vw(100) - theme.padding.medium - theme.padding.xlarge * 2,
-    minWidth: vw(100) - theme.padding.medium - theme.padding.xlarge * 2,
+    width: "100%",
+    paddingBottom: theme.padding.xsmall,
   },
   qtyCol: { flexDirection: "row", alignItems: "center" },
   qtyOperator: {
-    fontSize: theme.fontSizes.font24,
-    paddingHorizontal: 4,
-    marginTop: theme.padding.xsmall * -0.5,
+    width: theme.padding.large,
+    height: theme.padding.large,
+    borderRadius: theme.borderRadius.xlarge,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    paddingBottom: theme.padding.xsmall,
+    marginLeft: theme.padding.medium,
+    marginTop: theme.padding.xsmall * -1,
   },
 });
 

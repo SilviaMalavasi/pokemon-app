@@ -116,7 +116,10 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
         {/* Add extra margin if not the first group and previous group is not empty */}
         <ThemedText
           type="h4"
-          style={{ marginTop: index > 0 ? theme.padding.large : 0, marginBottom: theme.padding.xsmall }}
+          style={{
+            marginTop: index > 0 ? theme.padding.large : theme.padding.small,
+            marginBottom: theme.padding.medium,
+          }}
         >
           {groupName} ({groupCards.reduce((sum, item) => sum + (item.quantity || 1), 0)})
         </ThemedText>
