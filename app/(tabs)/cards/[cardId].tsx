@@ -52,7 +52,6 @@ export default function FullCardScreen() {
           return;
         }
 
-        console.log("[FullCardScreen] cardData.id:", cardData.id, "cardData.cardId:", cardData.cardId);
         // 3. Fetch Abilities using SQLite (Join approach)
         const abilitiesData = await db.getAllAsync<Ability>(
           `SELECT DISTINCT a.*
@@ -61,7 +60,6 @@ export default function FullCardScreen() {
            WHERE ca.cardId = ?`,
           [cardData.id]
         );
-        console.log("[FullCardScreen] abilitiesData:", abilitiesData);
         const abilities: Ability[] = abilitiesData || [];
 
         // 4. Fetch Attacks using SQLite (Join approach)
