@@ -54,7 +54,8 @@ function getSubtypesBySupertype() {
       subArr = [];
     }
     subArr.forEach((sub) => {
-      if (["Basic", "Stage 1", "Stage 2"].includes(sub)) return; // skip stages
+      // Only skip "Basic", "Stage 1", "Stage 2" for Pokémon
+      if (supertype === "Pokémon" && ["Basic", "Stage 1", "Stage 2"].includes(sub)) return;
       if (subtypeMap[supertype]) {
         subtypeMap[supertype].add(sub);
       }

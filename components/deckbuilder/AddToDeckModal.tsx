@@ -12,6 +12,7 @@ import CardAutoCompleteInput, {
 } from "@/components/base/CardAutoCompleteInput";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import ThemedButton from "@/components/base/ThemedButton";
+import ThemedSelect from "@/components/base/ThemedSelect";
 import { theme } from "@/style/ui/Theme";
 import styles from "@/style/deckbuilder/AddToDeckModalStyle";
 
@@ -155,6 +156,9 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
       setNewDeckThumbnail("");
       setAutoCompleteKey((k) => k + 1);
       incrementDecksVersion();
+      // Set the new deck as default/last opened
+      setWorkingDeckId(String(newDeck.id));
+      setSelectedDeckId(String(newDeck.id));
     } catch (e) {
       console.error("Error creating new deck:", e);
     }
@@ -180,6 +184,8 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
   const deckIdStr = workingDeckId || selectedDeckId;
   const workingDeck = decks.find((deck) => String(deck.id) === deckIdStr);
   const selectOptions = decks.map((deck: any) => ({ label: deck.name, value: String(deck.id) }));
+  // Add a 'New Deck' option to the select options
+  const selectOptionsWithNew = [...selectOptions, { label: "- New Deck -", value: "__new__" }];
 
   return (
     <>
@@ -193,11 +199,9 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
       <ThemedModal
         visible={modalVisible}
         onClose={handleConfirmAndClose}
-        buttonText="Add to Deck"
-        buttonType="main"
-        buttonSize="large"
         onCancelText="Cancel"
         onCancel={handleCancel}
+        buttonText={"Add to Deck"}
       >
         <ThemedText
           type="h4"
@@ -229,118 +233,59 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
           <>
             {/* Deck Picker Pressable and Modal */}
             <View style={styles.deckPickerContainer}>
-              <ThemedLabelWithHint
-                style={styles.deckPickerLabel}
-                labelHint="Select a Deck"
-              />
-              <Pressable
-                onPress={() => setDeckPickerVisible(true)}
-                style={styles.pickerWrapper}
-              >
-                <ThemedText color={theme.colors.purple}>
-                  {(() => {
-                    const selected = selectOptions.find((o: any) => o.value === deckIdStr);
-                    return selected ? selected.label : "Select";
-                  })()}
-                </ThemedText>
-              </Pressable>
-              <Modal
-                visible={deckPickerVisible}
-                animationType="fade"
-                transparent={true}
-                onRequestClose={() => setDeckPickerVisible(false)}
-              >
-                <Pressable
-                  style={styles.modalOverlay}
-                  onPress={() => setDeckPickerVisible(false)}
-                >
-                  <Pressable
-                    style={styles.modalContainer}
-                    onPress={(e) => e.stopPropagation()}
-                  >
-                    <View style={{ paddingBottom: theme.padding.xsmall }}>
-                      {/* Render deck options as rows */}
-                      {decks.map((deck) => (
-                        <Pressable
-                          key={deck.id}
-                          onPress={async () => {
-                            setSelectedDeckId(String(deck.id));
-                            setWorkingDeckId(String(deck.id));
-                            setDeckPickerVisible(false);
-                          }}
-                        >
-                          <ThemedText
-                            style={
-                              workingDeckId === String(deck.id) || selectedDeckId === String(deck.id)
-                                ? styles.selectedOperator
-                                : styles.operator
-                            }
-                          >
-                            {deck.name}
-                          </ThemedText>
-                        </Pressable>
-                      ))}
-                      <Pressable
-                        key={-1}
-                        onPress={() => {
-                          setNewDeckModalVisible(true);
-                        }}
-                      >
-                        <ThemedText style={styles.operator}>- New Deck -</ThemedText>
-                      </Pressable>
-                    </View>
-                    <Pressable
-                      onPress={() => setDeckPickerVisible(false)}
-                      style={styles.modalCancel}
-                    >
-                      <ThemedText style={{ color: theme.colors.grey }}>Cancel</ThemedText>
-                    </Pressable>
-                  </Pressable>
-                </Pressable>
-              </Modal>
+              {selectOptions.length > 0 ? (
+                <ThemedSelect
+                  value={deckIdStr || ""}
+                  options={selectOptionsWithNew}
+                  onChange={(val) => {
+                    if (val === "__new__") {
+                      setNewDeckModalVisible(true);
+                    } else if (typeof val === "string") {
+                      setSelectedDeckId(val);
+                      setWorkingDeckId(val);
+                    }
+                  }}
+                  {...(!deckIdStr ? { label: "Select a Deck" } : {})}
+                  labelHint="Select a Deck"
+                />
+              ) : (
+                <ThemedButton
+                  title="Create a Deck"
+                  type="outline"
+                  size="small"
+                  onPress={() => setNewDeckModalVisible(true)}
+                />
+              )}
             </View>
             {/* End Deck Picker */}
             {workingDeck ? (
               <View style={styles.deckRow}>
                 <ThemedText style={styles.deckName}>{workingDeck.name}</ThemedText>
                 <View style={styles.qtyBox}>
-                  <TouchableOpacity
+                  <ThemedButton
+                    title="-"
+                    type="outline"
+                    size="small"
                     onPress={() => setStagedQuantity((q) => Math.max(q - 1, 0))}
                     disabled={stagedQuantity <= 0 || addingDeckId === workingDeck.id}
-                    style={{
-                      opacity: stagedQuantity <= 0 || addingDeckId === workingDeck.id ? 0.5 : 1,
-                      marginRight: 8,
-                    }}
+                    style={styles.qtyOperator}
                     accessibilityLabel={`Remove from ${workingDeck.name}`}
-                  >
-                    <ThemedText
-                      style={styles.qtyOperator}
-                      type="h4"
-                    >
-                      -
-                    </ThemedText>
-                  </TouchableOpacity>
+                  />
                   <ThemedText style={[styles.qtyText, { textAlign: "center" }]}>
                     {stagedQuantity}
                     {!(supertype === "Energy" && Array.isArray(subtypes) && subtypes.includes("Basic")) && (
                       <>/{maxQuantity}</>
                     )}
                   </ThemedText>
-                  <TouchableOpacity
+                  <ThemedButton
+                    title="+"
+                    type="outline"
+                    size="small"
                     onPress={() => setStagedQuantity((q) => Math.min(q + 1, maxQuantity))}
                     disabled={stagedQuantity >= maxQuantity || addingDeckId === workingDeck.id}
-                    style={{
-                      opacity: stagedQuantity >= maxQuantity || addingDeckId === workingDeck.id ? 0.5 : 1,
-                    }}
+                    style={styles.qtyOperator}
                     accessibilityLabel={`Add to ${workingDeck.name}`}
-                  >
-                    <ThemedText
-                      style={styles.qtyOperator}
-                      type="h4"
-                    >
-                      +
-                    </ThemedText>
-                  </TouchableOpacity>
+                  />
                 </View>
               </View>
             ) : null}
