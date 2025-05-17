@@ -30,7 +30,18 @@ export default function SavedDecks({
   ...props
 }: SavedDecksSectionProps & { style?: any }) {
   return (
-    <ThemedView {...props}>
+    <ThemedView
+      {...props}
+      style={[
+        props.style,
+        savedDecks.length > 0
+          ? {
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
+            }
+          : null,
+      ]}
+    >
       {layout === "view" && (
         <ThemedText
           type="h2"

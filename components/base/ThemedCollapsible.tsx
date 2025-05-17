@@ -10,8 +10,8 @@ import styles from "@/style/base/ThemedCollapsibleStyle";
 function ChevronRightIcon({ color }: { color: string }) {
   return (
     <Svg
-      width={theme.padding.medium}
-      height={theme.padding.medium}
+      width={theme.padding.large}
+      height={theme.padding.large}
       viewBox="0 0 24 24"
     >
       <Path
@@ -61,12 +61,7 @@ export default function ThemedCollapsible({
         <View style={{ transform: [{ rotate: actualOpen ? "90deg" : "0deg" }] }}>
           <ChevronRightIcon color={theme.colors.purple} />
         </View>
-        <ThemedText
-          type="buttonSmall"
-          color={theme.colors.grey}
-        >
-          {title}
-        </ThemedText>
+        <ThemedText color={theme.colors.grey}>{title}</ThemedText>
       </TouchableOpacity>
       {actualOpen && <View style={styles.content}>{children}</View>}
     </View>

@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
   },
   checkboxInner: {
     position: "absolute",
-    top: -1,
-    left: 3,
+    top: 4,
+    left: 4,
     zIndex: 2,
     width: theme.padding.medium,
     height: theme.padding.medium,
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   },
 
   label: {
+    fontSize: theme.fontSizes.font14,
     color: theme.colors.grey,
     paddingLeft: theme.padding.medium,
     paddingRight: theme.padding.small,

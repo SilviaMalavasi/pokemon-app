@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: theme.padding.xsmall,
-    paddingVertical: theme.padding.xsmall,
+    paddingBottom: theme.padding.xsmall,
   },
   content: {
     marginTop: theme.padding.small,

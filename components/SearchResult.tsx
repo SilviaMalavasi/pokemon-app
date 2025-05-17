@@ -3,13 +3,13 @@ import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import CompactCard from "@/components/CompactCard";
 import { CardType } from "@/types/PokemonCardType";
-import SearchResultStyle from "@/style/SearchResultStyle";
+import ThemedView from "@/components/ui/ThemedView";
+import styles from "@/style/SearchResultStyle";
 import { View } from "react-native";
 
 interface SearchResultProps {
   cardIds: string[];
   cards?: Pick<CardType, "cardId" | "name" | "imagesLarge">[];
-  query?: string;
   loading?: boolean;
   currentPage?: number;
   itemsPerPage?: number;
@@ -20,7 +20,6 @@ interface SearchResultProps {
 export default function SearchResult({
   cardIds,
   cards,
-  query,
   loading,
   currentPage = 1,
   itemsPerPage = 20,
@@ -45,8 +44,8 @@ export default function SearchResult({
   }, [imagesLoaded, paginatedIds.length, onAllImagesLoaded]);
 
   return (
-    <View>
-      <View style={SearchResultStyle.cardList}>
+    <ThemedView style={styles.wrapper}>
+      <View style={styles.cardList}>
         {paginatedIds.map((item, idx) => {
           const cardData = cards?.find((c) => c.cardId === item);
           return (
@@ -61,29 +60,29 @@ export default function SearchResult({
         })}
       </View>
       {totalPages > 1 && (
-        <View style={SearchResultStyle.paginationContainer}>
+        <ThemedView layout="rounded">
           <ThemedButton
-            type="alternative"
             title="Prev"
+            type="main"
             size="small"
             status={currentPage <= 1 ? "disabled" : undefined}
             onPress={() => onPageChange && currentPage > 1 && onPageChange(currentPage - 1)}
           />
           <ThemedText
             type="default"
-            style={SearchResultStyle.paginationText}
+            style={styles.paginationText}
           >
             Page {currentPage} of {totalPages}
           </ThemedText>
           <ThemedButton
-            type="alternative"
             title="Next"
+            type="main"
             size="small"
             status={currentPage >= totalPages ? "disabled" : undefined}
             onPress={() => onPageChange && currentPage < totalPages && onPageChange(currentPage + 1)}
           />
-        </View>
+        </ThemedView>
       )}
-    </View>
+    </ThemedView>
   );
 }

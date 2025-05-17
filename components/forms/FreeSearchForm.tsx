@@ -565,7 +565,7 @@ export default function FreeSearchForm({
           size="small"
           width={vw(40)}
           onPress={handleToggleAll}
-          style={{ marginTop: theme.padding.medium, marginBottom: theme.padding.medium }}
+          style={{ marginTop: theme.padding.large, marginBottom: theme.padding.large }}
         />
         <ThemedSwitch
           value={removeDuplicates}
@@ -600,9 +600,9 @@ export default function FreeSearchForm({
       {cardSearch.trim() !== "" && checkedFields.length > 0 && (
         <View>
           <LinearGradient
-            colors={[theme.colors.darkGrey, theme.colors.lightGrey]}
-            start={{ x: 0.2, y: 0 }}
-            end={{ x: 0.4, y: 0.7 }}
+            colors={[theme.colors.darkGrey, theme.colors.mediumGrey]}
+            start={{ x: 0.4, y: 0 }}
+            end={{ x: 0.5, y: 1 }}
             style={styles.summaryContainer}
           >
             <ThemedText

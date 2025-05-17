@@ -193,7 +193,7 @@ export default function HomeScreen() {
           />
         </View>
       )}
-      <ThemedView>
+      <ThemedView style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
         <View>
           <ThemedText
             type="default"

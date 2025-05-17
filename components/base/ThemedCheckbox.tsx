@@ -19,9 +19,8 @@ export default function ThemedCheckbox({ checked, label, onPress, style }: Theme
       accessibilityState={{ checked }}
     >
       <View style={styles.fakeInnerShadow} />
-      <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
-        {checked && <View style={styles.checkboxInner} />}
-      </View>
+      {checked && <View style={styles.checkboxInner} />}
+      <View style={[styles.checkbox, checked && styles.checkboxChecked]}></View>
       <ThemedText style={styles.label}>{label}</ThemedText>
     </Pressable>
   );

@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
   },
   containerBigInner: {
     padding: theme.padding.medium,
-    borderRadius: theme.borderRadius.xlarge,
     boxShadow: [
       {
         offsetX: 1,

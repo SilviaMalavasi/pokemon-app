@@ -30,7 +30,18 @@ export default function WatchLists({
   ...props
 }: WatchListsSectionProps) {
   return (
-    <ThemedView {...props}>
+    <ThemedView
+      {...props}
+      style={[
+        props.style,
+        watchLists.length > 0
+          ? {
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
+            }
+          : null,
+      ]}
+    >
       {layout === "view" && (
         <ThemedText
           type="h2"

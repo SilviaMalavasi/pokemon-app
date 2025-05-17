@@ -3,10 +3,6 @@ import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
 
 const styles = StyleSheet.create({
-  switchContainer: {
-    marginTop: theme.padding.medium,
-    marginBottom: theme.padding.xlarge,
-  },
   instructions: {
     paddingTop: theme.padding.medium,
     paddingBottom: theme.padding.large,
@@ -19,6 +15,10 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     marginTop: theme.padding.xsmall,
     marginBottom: theme.padding.xsmall,
+  },
+  switchContainer: {
+    marginTop: theme.padding.medium,
+    marginBottom: theme.padding.large,
   },
   mainButtonsRowSummary: {
     flexDirection: "row",
