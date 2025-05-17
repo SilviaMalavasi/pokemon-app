@@ -411,6 +411,11 @@ export default function AdvancedSearchForm({
             title="Card Type"
             onPress={() => setCardTypeModalVisible(true)}
             style={styles.halfButton}
+            color={
+              cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0
+                ? theme.colors.green
+                : undefined
+            }
           />
           <ThemedButton
             type="outline"
@@ -420,6 +425,7 @@ export default function AdvancedSearchForm({
             title="Rules"
             onPress={() => setRulesModalVisible(true)}
             style={styles.halfButton}
+            color={cardRules ? theme.colors.green : undefined}
           />
         </View>
         <View style={styles.buttonRow}>
@@ -440,6 +446,16 @@ export default function AdvancedSearchForm({
             title="Attacks"
             onPress={() => setAttacksModalVisible(true)}
             style={styles.halfButton}
+            color={
+              attacksName ||
+              attacksDamage !== "" ||
+              attacksText ||
+              attacksCost.length > 0 ||
+              attacksConvertedEnergyCost !== "" ||
+              (attacksCostSlots && attacksCostSlots.some((v) => v))
+                ? theme.colors.green
+                : undefined
+            }
           />
           <ThemedButton
             type="outline"
@@ -449,6 +465,7 @@ export default function AdvancedSearchForm({
             title="Abilities"
             onPress={() => setAbilitiesModalVisible(true)}
             style={styles.halfButton}
+            color={abilitiesName || abilitiesText || hasAnyAbility ? theme.colors.green : undefined}
           />
         </View>
         <View style={styles.buttonRow}>
@@ -460,6 +477,7 @@ export default function AdvancedSearchForm({
             title="Stats"
             onPress={() => setStatsModalVisible(true)}
             style={styles.halfButton}
+            color={cardHp !== "" || cardConvertedRetreatCost !== "" ? theme.colors.green : undefined}
           />
           <ThemedButton
             type="outline"
@@ -469,6 +487,7 @@ export default function AdvancedSearchForm({
             title="Evolution"
             onPress={() => setEvolutionModalVisible(true)}
             style={styles.halfButton}
+            color={cardStage.length > 0 || cardEvolvesFrom || cardEvolvesTo ? theme.colors.green : undefined}
           />
         </View>
         <View style={styles.buttonRow}>
@@ -480,6 +499,7 @@ export default function AdvancedSearchForm({
             title="Weak/Res"
             onPress={() => setWeakResModalVisible(true)}
             style={styles.halfButton}
+            color={cardWeaknessesType.length > 0 || cardResistancesType.length > 0 ? theme.colors.green : undefined}
           />
           <ThemedButton
             type="outline"
@@ -493,6 +513,11 @@ export default function AdvancedSearchForm({
             title="Edition"
             onPress={() => setEditionModalVisible(true)}
             style={styles.halfButton}
+            color={
+              cardRegulationMark.length > 0 || cardSetName.length > 0 || cardNumber !== "" || cardSetNumber
+                ? theme.colors.green
+                : undefined
+            }
           />
         </View>
         <ThemedSwitch

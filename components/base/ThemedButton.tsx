@@ -14,6 +14,7 @@ export type ThemedButtonProps = ButtonProps & {
   width?: number;
   icon?: string | "void";
   style?: any;
+  color?: string; // <-- add color prop
 };
 
 // Icons
@@ -84,6 +85,7 @@ export default function ThemedButton({
   width,
   title,
   style,
+  color, // <-- accept color prop
   ...rest
 }: ThemedButtonProps & { title: string }) {
   const IconComponent = icon !== "void" && icons[icon] ? icons[icon] : null;
@@ -147,7 +149,9 @@ export default function ThemedButton({
             : "button"
         }
         color={
-          isDisabled
+          color !== undefined
+            ? color
+            : isDisabled
             ? theme.colors.grey
             : type === "main"
             ? theme.colors.white
