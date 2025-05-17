@@ -42,9 +42,17 @@ interface CompactDeckProps {
   loading?: boolean;
   layout: "view" | "edit";
   onDelete?: (id: number) => void;
+  onPressDeck?: (id: number) => void; // Ensure this line is present
 }
 
-export default function CompactDeck({ deck, onImageLoad, layout, loading, onDelete }: CompactDeckProps) {
+export default function CompactDeck({
+  deck,
+  onImageLoad,
+  layout,
+  loading,
+  onDelete,
+  onPressDeck, // Ensure this line is present
+}: CompactDeckProps) {
   const [imageLoading, setImageLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -52,7 +60,7 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
   const [editThumbnail, setEditThumbnail] = useState(deck.thumbnail || "");
   const [saving, setSaving] = useState(false);
   const imageSource = getDeckImage(deck.thumbnail || "");
-  const router = useRouter();
+  const router = useRouter(); // Ensure router is initialized
   const { incrementDecksVersion, db: userDb } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
 
@@ -139,6 +147,15 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
     }
   };
 
+  const handlePress = () => {
+    if (onPressDeck) {
+      onPressDeck(deck.id);
+    } else {
+      // Default navigation if onPressDeck is not provided
+      router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id, from: "deckbuilder" } });
+    }
+  };
+
   if (loading) {
     return (
       <View style={[styles.container, { justifyContent: "center", alignItems: "center", minHeight: vw(68) }]}>
@@ -154,19 +171,21 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
     <View style={styles.container}>
       <View style={styles.mainContainer}>
         <View style={styles.deckName}>
-          <ThemedText
-            type="h3"
-            color={theme.colors.white}
-            style={{ paddingTop: theme.padding.medium }}
-          >
-            {deck.name}
-          </ThemedText>
+          <TouchableOpacity onPress={handlePress}>
+            <ThemedText
+              type="h3"
+              color={theme.colors.white}
+              style={{ paddingTop: theme.padding.medium }}
+            >
+              {deck.name}
+            </ThemedText>
+          </TouchableOpacity>
           {layout === "edit" && (
             <ThemedButton
               title="View"
               type="main"
               size="small"
-              onPress={() => router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id } })}
+              onPress={handlePress} // Use handlePress
             />
           )}
         </View>
@@ -203,7 +222,7 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
                 title="View"
                 type="main"
                 size="small"
-                onPress={() => router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id } })}
+                onPress={handlePress} // Use handlePress
                 style={{ marginBottom: theme.padding.medium }}
               />
             </View>
@@ -216,7 +235,10 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
         end={{ x: 1, y: 0 }}
         style={styles.imageOverlay}
       />
-      <View style={styles.imageContainer}>
+      <TouchableOpacity
+        onPress={handlePress}
+        style={styles.imageContainer}
+      >
         {imageSource ? (
           <>
             <Image
@@ -238,7 +260,7 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
             )}
           </>
         ) : null}
-      </View>
+      </TouchableOpacity>
       <ThemedModal
         visible={showModal}
         onClose={() => setShowModal(false)}

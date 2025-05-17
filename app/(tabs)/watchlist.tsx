@@ -6,6 +6,8 @@ import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { addWatchList, getWatchLists, deleteWatchList } from "@/lib/userDatabase";
 import NewWatchlist from "@/components/deckbuilder/NewWatchlist";
 import WatchLists from "@/components/deckbuilder/WatchLists";
+import { BackHandler } from "react-native";
+import { useRouter } from "expo-router";
 
 interface Watchlist {
   id: number;
@@ -17,6 +19,7 @@ interface Watchlist {
 export default function WatchlistScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const { db, isLoading: dbLoading, error: dbError, decksVersion } = useUserDatabase();
+  const router = useRouter();
 
   const [watchlistName, setWatchlistName] = useState("");
   const [watchlistThumbnail, setWatchlistThumbnail] = useState("");
@@ -88,6 +91,19 @@ export default function WatchlistScreen() {
   const handleThumbnailSelect = (imagesLargeUrl: string) => {
     setWatchlistThumbnail(imagesLargeUrl);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        router.replace("/");
+        return true;
+      };
+
+      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => subscription.remove();
+    }, [router])
+  );
 
   return (
     <MainScrollView

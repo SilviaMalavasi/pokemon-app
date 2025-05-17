@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState, useCallback } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { BackHandler, ActivityIndicator, View } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import MainScrollView from "@/components/ui/MainScrollView";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
-import { ActivityIndicator, View } from "react-native";
 import AddCardToWatchList from "@/components/deckbuilder/AddCardToWatchlist";
 import WatchlistThumbnailList from "@/components/deckbuilder/WatchlistThumbnailList";
 import ThemedView from "@/components/ui/ThemedView";
 import { theme } from "@/style/ui/Theme";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
-import { useRouter } from "expo-router";
 import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
   CardAutoCompleteSuggestions,
@@ -20,7 +20,8 @@ import CardAutoCompleteInput, {
 import cardImages from "@/helpers/cardImageMapping";
 
 export default function WatchListDetailScreen() {
-  const { watchlistId } = useLocalSearchParams<{ watchlistId: string }>();
+  const router = useRouter();
+  const { watchlistId, from } = useLocalSearchParams<{ watchlistId: string; from?: string }>();
   const { db, isLoading: dbLoading, error, watchLists, watchListsVersion } = useUserDatabase();
   const { db: cardDb, isLoading: cardDbLoading } = useCardDatabase();
   const [watchList, setWatchList] = useState<any | null>(null);
@@ -31,7 +32,6 @@ export default function WatchListDetailScreen() {
   const [editName, setEditName] = useState("");
   const [editThumbnail, setEditThumbnail] = useState("");
   const [saving, setSaving] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     if (!watchlistId || !db || !cardDb) return;
@@ -168,6 +168,27 @@ export default function WatchListDetailScreen() {
       setShowModal(false);
     }
   };
+
+  // Handler for Android back button
+  const handleBack = useCallback(() => {
+    if (from === "home") {
+      router.replace("/"); // Navigate to HomeScreen
+    } else {
+      router.replace("/watchlist"); // Default to WatchlistScreen
+    }
+    return true; // Indicate event was handled
+  }, [from, router]);
+
+  // Effect to attach and detach back button listener
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return handleBack();
+      };
+      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () => subscription.remove();
+    }, [handleBack])
+  );
 
   return (
     <MainScrollView

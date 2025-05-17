@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
+import { useEffect, useState, useCallback } from "react";
+import { ActivityIndicator, View, BackHandler } from "react-native";
 import MainScrollView from "@/components/ui/MainScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -12,7 +12,6 @@ import DeckCardList from "@/components/deckbuilder/DeckCardList";
 import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import DeckThumbnailList from "@/components/deckbuilder/DeckThumbnailList";
-import { View } from "react-native";
 import ThemedView from "@/components/ui/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import * as FileSystem from "expo-file-system";
@@ -25,11 +24,11 @@ import CardAutoCompleteInput, {
 } from "@/components/base/CardAutoCompleteInput";
 
 export default function DeckScreen() {
-  const { deckId } = useLocalSearchParams<{ deckId: string }>();
+  const router = useRouter();
+  const { deckId, from } = useLocalSearchParams<{ deckId: string; from?: string }>();
   const [deck, setDeck] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const router = useRouter();
   const { db, isLoading: dbLoading, error, decksVersion, incrementDecksVersion } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
   const [viewMode, setViewMode] = useState<"list" | "thumbnails">("list");
@@ -224,6 +223,27 @@ export default function DeckScreen() {
       console.error("Error fetching card image for thumbnail:", e);
     }
   };
+
+  // Handler for Android back button
+  const handleBack = useCallback(() => {
+    if (from === "home") {
+      router.replace("/"); // Navigate to HomeScreen
+    } else {
+      router.replace("/deckbuilder"); // Default to DeckBuilderScreen
+    }
+    return true; // Indicate event was handled
+  }, [from, router]);
+
+  // Effect to attach and detach back button listener
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return handleBack();
+      };
+      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () => subscription.remove();
+    }, [handleBack])
+  );
 
   return (
     <>

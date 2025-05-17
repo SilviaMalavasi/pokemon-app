@@ -13,6 +13,7 @@ import NewDeck from "@/components/deckbuilder/NewDeck";
 import NewWatchlist from "@/components/deckbuilder/NewWatchlist";
 import ThemedView from "@/components/ui/ThemedView";
 import { theme } from "@/style/ui/Theme";
+import { useRouter } from "expo-router";
 
 interface SavedDeck {
   id: number;
@@ -131,6 +132,17 @@ export default function HomeScreen() {
     }, [db, fetchSavedDecks, fetchWatchlists])
   );
 
+  const router = useRouter();
+
+  // Navigation handlers that pass the 'from' parameter
+  const navigateToDeck = (deckId: number) => {
+    router.push({ pathname: `/decks/${deckId}` as any, params: { from: "home" } });
+  };
+
+  const navigateToWatchlist = (watchlistId: number) => {
+    router.push({ pathname: `/watchlists/${watchlistId}` as any, params: { from: "home" } });
+  };
+
   return (
     <MainScrollView
       headerImage="home-bkg"
@@ -157,6 +169,7 @@ export default function HomeScreen() {
           isLoadingDecks={isLoadingDecks}
           deletingId={deletingId}
           layout="view"
+          onPressDeck={navigateToDeck} // Pass navigation handler
         />
       )}
       {savedDecks.length === 0 && (
@@ -178,6 +191,7 @@ export default function HomeScreen() {
           isLoadingWatchLists={isLoadingWatchlists}
           deletingId={deletingId}
           layout="view"
+          onPressWatchlist={navigateToWatchlist} // Pass navigation handler
         />
       )}
       {watchlists.length === 0 && (

@@ -17,6 +17,7 @@ interface WatchListsSectionProps {
   isLoadingWatchLists: boolean;
   deletingId: number | null;
   onDelete?: (id: number) => void;
+  onPressWatchlist?: (id: number) => void; // Add this line
   layout: "view" | "edit";
   style?: any;
 }
@@ -27,6 +28,7 @@ export default function WatchLists({
   deletingId,
   layout,
   onDelete,
+  onPressWatchlist, // Add this line
   ...props
 }: WatchListsSectionProps) {
   return (
@@ -69,6 +71,7 @@ export default function WatchLists({
                 layout={layout}
                 loading={deletingId === watchlist.id}
                 onDelete={onDelete}
+                onPressWatchlist={onPressWatchlist} // Add this line
               />
             </View>
           ))}

@@ -7,6 +7,8 @@ import { addDeck, getSavedDecks, deleteDeck } from "@/lib/userDatabase";
 import NewDeck from "@/components/deckbuilder/NewDeck";
 import SavedDecks from "@/components/deckbuilder/SavedDecks";
 import { theme } from "@/style/ui/Theme";
+import { BackHandler } from "react-native"; // Add this import
+import { useRouter } from "expo-router"; // Add this import
 
 interface SavedDeck {
   id: number;
@@ -18,6 +20,7 @@ interface SavedDeck {
 export default function DeckBuilderScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const { db, isLoading: dbLoading, error: dbError, decksVersion } = useUserDatabase();
+  const router = useRouter(); // Initialize router
 
   const [deckName, setDeckName] = useState("");
   const [deckThumbnail, setDeckThumbnail] = useState("");
@@ -89,6 +92,19 @@ export default function DeckBuilderScreen() {
   const handleThumbnailSelect = (imagesLargeUrl: string) => {
     setDeckThumbnail(imagesLargeUrl);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        router.replace("/");
+        return true; // Prevent default behavior (closing app)
+      };
+
+      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => subscription.remove();
+    }, [router])
+  );
 
   return (
     <MainScrollView

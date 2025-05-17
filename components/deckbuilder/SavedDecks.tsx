@@ -18,6 +18,7 @@ interface SavedDecksSectionProps {
   isLoadingDecks: boolean;
   deletingId: number | null;
   onDelete?: (id: number) => void;
+  onPressDeck?: (id: number) => void; // Add this line
   layout: "view" | "edit";
 }
 
@@ -27,6 +28,7 @@ export default function SavedDecks({
   deletingId,
   layout,
   onDelete,
+  onPressDeck, // Add this line
   ...props
 }: SavedDecksSectionProps & { style?: any }) {
   return (
@@ -74,6 +76,7 @@ export default function SavedDecks({
                 layout={layout}
                 loading={deletingId === deck.id}
                 onDelete={onDelete}
+                onPressDeck={onPressDeck} // Add this line
               />
             </View>
           ))}

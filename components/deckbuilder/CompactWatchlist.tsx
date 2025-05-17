@@ -43,9 +43,17 @@ interface CompactWatchlistProps {
   loading?: boolean;
   layout: "view" | "edit";
   onDelete?: (id: number) => void;
+  onPressWatchlist?: (id: number) => void; // Add this line
 }
 
-export default function CompactWatchlist({ watchlist, onImageLoad, layout, loading, onDelete }: CompactWatchlistProps) {
+export default function CompactWatchlist({
+  watchlist,
+  onImageLoad,
+  layout,
+  loading,
+  onDelete,
+  onPressWatchlist, // Add this line
+}: CompactWatchlistProps) {
   const [imageLoading, setImageLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -56,6 +64,14 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
   const router = useRouter();
   const { incrementDecksVersion, db: userDb } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
+
+  const handlePress = () => {
+    if (onPressWatchlist) {
+      onPressWatchlist(watchlist.id);
+    } else {
+      router.push({ pathname: `/watchlists/${watchlist.id}` as any, params: { from: "watchlist" } });
+    }
+  };
 
   const handleDeletePress = (e: any) => {
     e.preventDefault();
@@ -69,12 +85,11 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
   };
 
   const handleCloneWatchlist = async () => {
-    if (!watchlist) return;
+    if (!watchlist || !userDb) return;
     let baseName = watchlist.name.replace(/#\d+$/, "").trim();
     let cloneNumber = 1;
     let newName = `${baseName} #${cloneNumber}`;
     try {
-      if (!userDb) return;
       const allWatchlists = await getWatchLists(userDb);
       const regex = new RegExp(`^${baseName} #(\\d+)$`);
       const usedNumbers = allWatchlists
@@ -153,21 +168,21 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
     <View style={styles.container}>
       <View style={styles.mainContainer}>
         <View style={styles.watchlistName}>
-          <ThemedText
-            type="h3"
-            color={theme.colors.white}
-            style={{ paddingTop: theme.padding.medium }}
-          >
-            {watchlist.name}
-          </ThemedText>
+          <TouchableOpacity onPress={handlePress}>
+            <ThemedText
+              type="h3"
+              color={theme.colors.white}
+              style={{ paddingTop: theme.padding.medium }}
+            >
+              {watchlist.name}
+            </ThemedText>
+          </TouchableOpacity>
           {layout === "edit" && (
             <ThemedButton
               title="View"
               type="main"
               size="small"
-              onPress={() =>
-                router.push({ pathname: "/watchlists/[watchlistId]", params: { watchlistId: watchlist.id } })
-              }
+              onPress={handlePress} // Modified this line
             />
           )}
         </View>
@@ -204,9 +219,7 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
                 title="View"
                 type="main"
                 size="small"
-                onPress={() =>
-                  router.push({ pathname: "/watchlists/[watchlistId]", params: { watchlistId: watchlist.id } })
-                }
+                onPress={handlePress} // Modified this line
                 style={{ marginBottom: theme.padding.medium }}
               />
             </View>
@@ -219,7 +232,10 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
         end={{ x: 1, y: 0 }}
         style={styles.imageOverlay}
       />
-      <View style={styles.imageContainer}>
+      <TouchableOpacity
+        onPress={handlePress}
+        style={styles.imageContainer}
+      >
         {imageSource ? (
           <>
             <Image
@@ -241,7 +257,7 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
             )}
           </>
         ) : null}
-      </View>
+      </TouchableOpacity>
       <ThemedModal
         visible={showModal}
         onClose={() => setShowModal(false)}
