@@ -3,22 +3,40 @@ import { theme } from "@/style/ui/Theme";
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingBottom: theme.padding.small,
+    marginBottom: theme.padding.small,
     width: "100%",
-    backgroundColor: "transparent",
   },
-  container: {
-    paddingTop: theme.padding.small,
-    borderRadius: theme.borderRadius.small,
-    backgroundColor: "transparent",
+  fakeInnerShadow: {
+    position: "absolute",
+    zIndex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: theme.borderRadius.medium,
+    backgroundColor: theme.colors.lightGrey,
+    boxShadow: [
+      {
+        offsetX: 6,
+        offsetY: 8,
+        blurRadius: "30px",
+        color: theme.colors.darkGrey,
+        inset: true,
+      },
+    ],
   },
   selectPressable: {
-    paddingTop: theme.padding.small,
-    paddingBottom: theme.padding.small * 0.9,
-    paddingHorizontal: theme.padding.small,
+    borderRadius: theme.borderRadius.medium,
+    paddingVertical: theme.padding.medium * 0.8,
+    paddingHorizontal: theme.padding.medium,
+    fontSize: theme.fontSizes.font15,
+    lineHeight: theme.fontSizes.font15 * 1.25,
     color: theme.colors.grey,
-    borderRadius: theme.borderRadius.small,
-    backgroundColor: theme.colors.darkGrey,
+  },
+  pickerWrapper: {
+    position: "relative",
+    zIndex: 2,
+    width: "100%",
   },
   modalOverlay: {
     flex: 1,
@@ -34,12 +52,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.padding.medium,
     paddingVertical: theme.padding.large,
     ...theme.shadowAlternative,
-  },
-  pickerWrapper: {
-    borderRadius: theme.borderRadius.small,
-    borderWidth: 1,
-    borderColor: theme.colors.grey,
-    width: "100%",
   },
   modalActions: {
     flexDirection: "row",
@@ -63,7 +75,7 @@ const styles = StyleSheet.create({
     paddingTop: theme.padding.small,
   },
   labelHint: {
-    paddingTop: theme.padding.xsmall,
+    paddingTop: theme.padding.small,
   },
 });
 

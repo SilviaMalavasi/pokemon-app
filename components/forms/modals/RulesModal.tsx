@@ -21,13 +21,13 @@ export default function RulesModal({ visible, onClose, cardRules, setCardRules }
     <ThemedModal
       visible={visible}
       onClose={onClose}
-      buttonText="set filters"
+      buttonText="Set Filters"
       buttonType="main"
       buttonSize="large"
       onCancel={handleCancel}
     >
       <ThemedText
-        type="h2"
+        type="h3"
         style={{ width: "100%", paddingBottom: theme.padding.medium }}
       >
         Rules/Rule Box

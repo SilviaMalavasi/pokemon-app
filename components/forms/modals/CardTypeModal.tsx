@@ -51,13 +51,13 @@ export default function CardTypeModal({
     <ThemedModal
       visible={visible}
       onClose={onClose}
-      buttonText="set filters"
+      buttonText="Set Filters"
       buttonType="main"
       buttonSize="large"
       onCancel={handleCancel}
     >
       <ThemedText
-        type="h2"
+        type="h3"
         style={{ width: "100%", paddingBottom: theme.padding.medium }}
       >
         Card Type
@@ -79,6 +79,7 @@ export default function CardTypeModal({
         value={cardTypes}
         options={cardTypesOptions}
         onChange={setCardTypes}
+        style={{ marginBottom: theme.padding.medium }}
       />
     </ThemedModal>
   );

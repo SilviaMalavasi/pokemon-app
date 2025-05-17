@@ -20,7 +20,7 @@ const ThemedSwitchStyle = StyleSheet.create({
     gap: theme.padding.xsmall,
   },
   label: {
-    paddingLeft: theme.padding.xsmall,
+    paddingLeft: theme.padding.small,
   },
   row: {
     flexDirection: "row",

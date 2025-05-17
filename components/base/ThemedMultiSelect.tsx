@@ -13,9 +13,17 @@ interface ThemedMultiSelectProps {
   options: { value: string; label: string }[];
   onChange: (value: string[]) => void;
   labelHint?: string;
+  style?: any;
 }
 
-export default function ThemedMultiSelect({ label, value, options, onChange, labelHint }: ThemedMultiSelectProps) {
+export default function ThemedMultiSelect({
+  label,
+  value,
+  options,
+  onChange,
+  labelHint,
+  style,
+}: ThemedMultiSelectProps) {
   const [showHint, setShowHint] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [tempSelected, setTempSelected] = useState<string[]>(value);
@@ -44,68 +52,68 @@ export default function ThemedMultiSelect({ label, value, options, onChange, lab
   }, [value]);
 
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.container}>
-        {label && (
-          <ThemedLabelWithHint
-            label={label}
-            labelHint={labelHint}
-            showHint={showHint}
-            setShowHint={setShowHint}
-          />
-        )}
-        {/* Modal-based multi-select */}
-        <Pressable
-          onPress={() => setModalVisible(true)}
-          style={styles.pickerWrapper}
-        >
-          <ThemedText style={styles.selectPressable}>Select</ThemedText>
-        </Pressable>
-        <Modal
-          visible={modalVisible}
-          animationType="fade"
-          transparent={true}
-          onRequestClose={cancelSelection}
-        >
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContainer}>
-              <ScrollView>
-                {options.map((option) => (
-                  <ThemedCheckbox
-                    key={option.value}
-                    checked={tempSelected.includes(option.value)}
-                    label={option.label}
-                    onPress={() => handleSelect(option.value)}
-                  />
-                ))}
-                <View style={styles.modalActions}>
-                  <Pressable
-                    onPress={cancelSelection}
-                    style={styles.modalActionCancel}
+    <View style={[styles.wrapper, style]}>
+      <View style={styles.fakeInnerShadow} />
+      <Pressable
+        onPress={() => setModalVisible(true)}
+        style={styles.pickerWrapper}
+      >
+        <ThemedText style={styles.selectPressable}>
+          {label}
+          {labelHint && (
+            <ThemedLabelWithHint
+              label={label || ""}
+              labelHint={labelHint}
+              setShowHint={setShowHint}
+              showHint={showHint}
+            />
+          )}
+        </ThemedText>
+      </Pressable>
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={cancelSelection}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <ScrollView>
+              {options.map((option) => (
+                <ThemedCheckbox
+                  key={option.value}
+                  checked={tempSelected.includes(option.value)}
+                  label={option.label}
+                  onPress={() => handleSelect(option.value)}
+                />
+              ))}
+              <View style={styles.modalActions}>
+                <Pressable
+                  onPress={cancelSelection}
+                  style={styles.modalActionCancel}
+                >
+                  <ThemedText
+                    style={{
+                      color: theme.colors.grey,
+                      paddingVertical: theme.padding.medium,
+                    }}
                   >
-                    <ThemedText
-                      style={{
-                        color: theme.colors.grey,
-                        paddingVertical: theme.padding.medium,
-                      }}
-                    >
-                      Cancel
-                    </ThemedText>
-                  </Pressable>
-                  <Pressable onPress={confirmSelection}>
-                    <ThemedText
-                      type="h4"
-                      style={{ paddingVertical: theme.padding.medium, paddingHorizontal: theme.padding.small }}
-                    >
-                      OK
-                    </ThemedText>
-                  </Pressable>
-                </View>
-              </ScrollView>
-            </View>
+                    Cancel
+                  </ThemedText>
+                </Pressable>
+                <Pressable onPress={confirmSelection}>
+                  <ThemedText
+                    type="h4"
+                    style={{ paddingVertical: theme.padding.medium, paddingHorizontal: theme.padding.small }}
+                  >
+                    OK
+                  </ThemedText>
+                </Pressable>
+              </View>
+            </ScrollView>
           </View>
-        </Modal>
-      </View>
+        </View>
+      </Modal>
       <View style={styles.selectedAndHintWrapper}>
         {/* Show selected items */}
         {value.length > 0 && (
