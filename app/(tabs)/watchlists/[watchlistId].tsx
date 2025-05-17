@@ -171,7 +171,7 @@ export default function WatchListDetailScreen() {
 
   return (
     <MainScrollView
-      headerImage="deck-bkg"
+      headerImage="watchlist-bkg"
       headerTitle={watchList?.name || "WatchList Details"}
     >
       <View>

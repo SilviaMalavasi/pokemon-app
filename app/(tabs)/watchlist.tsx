@@ -91,7 +91,7 @@ export default function WatchlistScreen() {
 
   return (
     <MainScrollView
-      headerImage="deck-builder-bkg"
+      headerImage="watchlist-bkg"
       headerTitle="Watchlists"
       scrollRef={scrollRef}
     >

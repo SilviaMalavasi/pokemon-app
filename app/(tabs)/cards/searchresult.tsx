@@ -120,7 +120,7 @@ export default function SearchResultScreen() {
   return (
     <>
       <MainScrollView
-        headerImage="search-results-bkg"
+        headerImage="card-bkg"
         headerTitle="Search Results"
         scrollRef={scrollRef}
       >
@@ -129,7 +129,6 @@ export default function SearchResultScreen() {
           <SearchResult
             cardIds={cardIds}
             cards={cards}
-            query={query}
             loading={loading}
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}

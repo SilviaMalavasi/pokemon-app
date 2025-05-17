@@ -1,8 +1,7 @@
 import { SQLiteDatabase, SQLiteStatement } from "expo-sqlite";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // ----> INCREMENT THIS WHEN JSON CHANGES <----
-const DATABASE_VERSION = 28;
+const DATABASE_VERSION = 39;
 
 // Data types for JSON imports
 interface CardSet {
@@ -73,10 +72,11 @@ const cardAbilitiesData: CardAbility[] = require("@/assets/database/CardAbilitie
 const cardAttacksData: CardAttack[] = require("@/assets/database/CardAttacks.json");
 
 // Batch size for large operations
-const BATCH_SIZE = 100;
+const BATCH_SIZE = 1000;
 
 // --- Helper function to process data in batches with better error handling ---
 async function processBatch<T>(
+  db: SQLiteDatabase,
   items: T[],
   processFn: (batch: T[]) => Promise<void>,
   batchSize: number = BATCH_SIZE,
@@ -88,8 +88,10 @@ async function processBatch<T>(
   for (let i = 0; i < items.length; i += batchSize) {
     try {
       const batch = items.slice(i, i + batchSize);
-      await processFn(batch);
-
+      // WRAP THE BATCH IN A TRANSACTION
+      await db.withTransactionAsync(async () => {
+        await processFn(batch);
+      });
       // Log progress for large datasets (but not too frequently)
       const batchEnd = Math.min(i + batchSize, items.length);
       if (items.length > 500 && (i + batchSize) % 500 === 0) {
@@ -99,7 +101,7 @@ async function processBatch<T>(
       }
     } catch (error) {
       console.error(`Error processing batch ${i}/${items.length} of ${itemName}:`, error);
-      throw error; // Re-throw to handle at a higher level if needed
+      throw error;
     }
   }
   console.log(`Finished processing all ${items.length} ${itemName}`);
@@ -113,39 +115,6 @@ async function safeExecuteAsync(stmt: SQLiteStatement, params: any[], itemType: 
     console.error(`Error executing statement for ${itemType} with ID ${itemId}:`, error);
     // Don't throw, allow the process to continue with other items
   }
-}
-
-// --- Helper function to get and set DB update checkpoint ---
-const CHECKPOINT_KEY = "dbUpdateCheckpointV1";
-
-interface DbUpdateCheckpoint {
-  processedCards: number;
-  processedAbilities: number;
-  processedAttacks: number;
-}
-
-async function saveCheckpoint(checkpoint: DbUpdateCheckpoint) {
-  try {
-    await AsyncStorage.setItem(CHECKPOINT_KEY, JSON.stringify(checkpoint));
-  } catch (e) {
-    console.warn("Failed to save DB update checkpoint:", e);
-  }
-}
-
-async function loadCheckpoint(): Promise<DbUpdateCheckpoint | null> {
-  try {
-    const data = await AsyncStorage.getItem(CHECKPOINT_KEY);
-    if (data) return JSON.parse(data);
-  } catch (e) {
-    console.warn("Failed to load DB update checkpoint:", e);
-  }
-  return null;
-}
-
-async function clearCheckpoint() {
-  try {
-    await AsyncStorage.removeItem(CHECKPOINT_KEY);
-  } catch {}
 }
 
 // --- Helper function to populate data ---
@@ -170,9 +139,6 @@ async function populateDataFromJSON(
       "DELETE FROM sqlite_sequence WHERE name IN ('CardSet', 'Abilities', 'Attacks', 'Card', 'CardAbilities', 'CardAttacks');"
     );
     console.log("Existing data cleared.");
-
-    // Ensure foreign key constraints are enabled
-    await db.execAsync("PRAGMA foreign_keys = ON;");
 
     // ---- CardSet Population ----
     console.log(`Populating CardSet (${cardSetData.length} items)...`);
@@ -215,6 +181,7 @@ async function populateDataFromJSON(
 
     try {
       await processBatch(
+        db,
         abilitiesData,
         async (batch) => {
           for (const item of batch) {
@@ -240,6 +207,7 @@ async function populateDataFromJSON(
 
     try {
       await processBatch(
+        db,
         attacksData,
         async (batch) => {
           for (const item of batch) {
@@ -287,6 +255,7 @@ async function populateDataFromJSON(
     // --- Card Population ---
     try {
       await processBatch(
+        db,
         uniqueCardData,
         async (batch) => {
           for (const item of batch) {
@@ -353,22 +322,6 @@ async function populateDataFromJSON(
     const total = totalCards + totalCardAbilities + totalCardAttacks;
     let processed = 0;
 
-    // --- Load checkpoint if available ---
-    let checkpoint = await loadCheckpoint();
-    let startCard = 0,
-      startAbility = 0,
-      startAttack = 0;
-    if (checkpoint) {
-      startCard = checkpoint.processedCards || 0;
-      startAbility = checkpoint.processedAbilities || 0;
-      startAttack = checkpoint.processedAttacks || 0;
-      processed = startCard + startAbility + startAttack;
-      if (setProgress) setProgress(processed / total);
-      console.log(
-        `Resuming DB update from checkpoint: cards=${startCard}, abilities=${startAbility}, attacks=${startAttack}`
-      );
-    }
-
     // --- CardAbilities Population ---
     console.log(`Populating CardAbilities (${cardAbilitiesData.length} items)...`);
 
@@ -379,32 +332,19 @@ async function populateDataFromJSON(
       } with missing cards)`
     );
 
-    const insertCardAbilityStmt = await db.prepareAsync(
-      "INSERT OR IGNORE INTO CardAbilities (id, cardId, abilityId) VALUES (?, ?, ?)"
-    );
-
-    // --- CardAbilities Population ---
+    // --- CardAbilities Population (BULK INSERT) ---
     try {
       await processBatch(
-        filteredCardAbilitiesData.slice(startAbility),
+        db,
+        filteredCardAbilitiesData,
         async (batch) => {
-          for (const item of batch) {
-            await safeExecuteAsync(
-              insertCardAbilityStmt,
-              [item.id, item.cardId, item.abilityId],
-              "CardAbility",
-              item.id
-            );
-            processed++;
-            startAbility++;
-            if (setProgress) setProgress(processed / total);
-            if (processed % 100 === 0)
-              await saveCheckpoint({
-                processedCards: startCard,
-                processedAbilities: startAbility,
-                processedAttacks: startAttack,
-              });
-          }
+          if (batch.length === 0) return;
+          // Build bulk insert statement with inlined values
+          const values = batch.map((item) => `(${item.id}, ${item.cardId}, ${item.abilityId})`).join(", ");
+          const sql = `INSERT OR IGNORE INTO CardAbilities (id, cardId, abilityId) VALUES ${values}`;
+          await db.execAsync(sql);
+          processed += batch.length;
+          if (setProgress) setProgress(processed / total);
         },
         BATCH_SIZE,
         "card abilities"
@@ -412,8 +352,6 @@ async function populateDataFromJSON(
       console.log("CardAbilities populated successfully.");
     } catch (error) {
       console.error("Error populating CardAbilities:", error);
-    } finally {
-      await insertCardAbilityStmt.finalizeAsync();
     }
 
     // ---- CardAttacks Population ----
@@ -426,32 +364,28 @@ async function populateDataFromJSON(
       } with missing cards)`
     );
 
-    const insertCardAttackStmt = await db.prepareAsync(
-      "INSERT OR IGNORE INTO CardAttacks (id, cardId, attackId, cost, convertedEnergyCost, damage) VALUES (?, ?, ?, ?, ?, ?)"
-    );
-
-    // --- CardAttacks Population ---
+    // --- CardAttacks Population (BULK INSERT) ---
     try {
       await processBatch(
-        filteredCardAttacksData.slice(startAttack),
+        db,
+        filteredCardAttacksData,
         async (batch) => {
-          for (const item of batch) {
-            await safeExecuteAsync(
-              insertCardAttackStmt,
-              [item.id, item.cardId, item.attackId, item.cost, item.convertedEnergyCost, item.damage],
-              "CardAttack",
-              item.id
-            );
-            processed++;
-            startAttack++;
-            if (setProgress) setProgress(processed / total);
-            if (processed % 100 === 0)
-              await saveCheckpoint({
-                processedCards: startCard,
-                processedAbilities: startAbility,
-                processedAttacks: startAttack,
-              });
-          }
+          if (batch.length === 0) return;
+          // Improved escape function to handle null/undefined and strings
+          const escape = (val: string | null | undefined) =>
+            val == null ? "NULL" : `'${String(val).replace(/'/g, "''")}'`;
+          const values = batch
+            .map(
+              (item) =>
+                `(${item.id}, ${item.cardId}, ${item.attackId}, ${escape(item.cost)}, ${
+                  item.convertedEnergyCost == null ? "NULL" : item.convertedEnergyCost
+                }, ${escape(item.damage)})`
+            )
+            .join(", ");
+          const sql = `INSERT OR IGNORE INTO CardAttacks (id, cardId, attackId, cost, convertedEnergyCost, damage) VALUES ${values}`;
+          await db.execAsync(sql);
+          processed += batch.length;
+          if (setProgress) setProgress(processed / total);
         },
         BATCH_SIZE,
         "card attacks"
@@ -459,17 +393,15 @@ async function populateDataFromJSON(
       console.log("CardAttacks populated successfully.");
     } catch (error) {
       console.error("Error populating CardAttacks:", error);
-    } finally {
-      await insertCardAttackStmt.finalizeAsync();
     }
 
-    // Clear checkpoint on success
-    await clearCheckpoint();
     console.log("Data population complete.");
   } catch (error) {
     console.error("Fatal error during data population:", error);
     throw error; // Re-throw to handle in the migration function
   } finally {
+    // Always re-enable foreign key checks
+    await db.execAsync("PRAGMA foreign_keys = ON;");
     setIsUpdating(false); // Indicate update end, even if error occurs
     if (setProgress) setProgress(1);
   }

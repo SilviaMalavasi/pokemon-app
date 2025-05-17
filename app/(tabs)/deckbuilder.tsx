@@ -92,7 +92,7 @@ export default function DeckBuilderScreen() {
 
   return (
     <MainScrollView
-      headerImage="deck-builder-bkg"
+      headerImage="deck-bkg"
       headerTitle="Deck Builder"
       scrollRef={scrollRef}
     >

@@ -12,11 +12,9 @@ import { LinearGradient } from "expo-linear-gradient";
 // Mapping of header image filenames to require statements
 const headerImages: Record<string, any> = {
   "home-bkg": require("@/assets/images/home.webp"),
-  "deck-builder-bkg": require("@/assets/images/deck-builder.webp"),
   "deck-bkg": require("@/assets/images/deck.webp"),
   "advanced-search-bkg": require("@/assets/images/advanced-search.webp"),
   "free-search-bkg": require("@/assets/images/free-search.webp"),
-  "search-results-bkg": require("@/assets/images/search-results.webp"),
   "card-bkg": require("@/assets/images/card.webp"),
   "watchlist-bkg": require("@/assets/images/watchlist.webp"),
 };

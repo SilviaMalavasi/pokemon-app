@@ -81,8 +81,8 @@ export default function SplashScreen({ isUpdatingDb, progress = 0 }: SplashScree
                 type="default"
                 style={styles.warnigText}
               >
-                This may take few minutes the first time you open the app. Do not close or background the app until the
-                update is complete. If interrupted, the update will resume next time you open the app.
+                This may take few minutes the first time you open the app or when new cards are added. Please, do not
+                close or background the app until the update is complete.
               </ThemedText>
               {/* Loading bar */}
               {typeof progress === "number" && (
