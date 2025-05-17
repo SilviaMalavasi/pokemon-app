@@ -10,8 +10,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    padding: 0,
-    gap: 0,
   },
   paginationText: {
     marginHorizontal: theme.padding.small,

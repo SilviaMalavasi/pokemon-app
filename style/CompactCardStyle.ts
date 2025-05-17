@@ -3,7 +3,7 @@ import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
 
 const containersPadding = theme.padding.medium;
-const gap = theme.padding.small;
+const gap = theme.padding.medium;
 const columns = 2;
 const cardWidth = (vw(100) - containersPadding * 2 - gap * (columns - 1)) / columns;
 
