@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { TextInput, TouchableOpacity, Modal, Pressable, View } from "react-native";
+import { TextInput, TouchableOpacity, Pressable, View } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
 import { Svg, Rect, Path } from "react-native-svg";
 import styles from "@/style/base/ThemedNumberInputStyle";
 import { theme } from "@/style/ui/Theme";
+import ThemedModal from "@/components/base/ThemedModal";
+import ThemedButton from "@/components/base/ThemedButton";
 
 interface ThemedNumberInputProps {
   label?: string;
@@ -63,7 +65,7 @@ export default function ThemedNumberInput({
 
   return (
     <View style={styles.container}>
-      {labelHint && (
+      {labelHint && value === "" && (
         <ThemedLabelWithHint
           labelHint={labelHint}
           showHint={showHint}
@@ -90,48 +92,36 @@ export default function ThemedNumberInput({
                 })()}
               </ThemedText>
             </Pressable>
-            <Modal
+            <ThemedModal
               visible={modalVisible}
-              animationType="fade"
-              transparent={true}
-              onRequestClose={() => setModalVisible(false)}
+              onClose={() => setModalVisible(false)}
+              buttonText="Cancel"
+              buttonType="alternative"
+              buttonSize="small"
+              onConfirm={() => setModalVisible(false)}
             >
-              <Pressable
-                style={styles.modalOverlay}
-                onPress={() => setModalVisible(false)}
-              >
-                <Pressable
-                  style={styles.modalContainer}
-                  onPress={(e) => e.stopPropagation()}
-                >
-                  {/* Render operator rows */}
-                  {operatorRows.map((row, rowIdx) => (
-                    <View
-                      key={rowIdx}
-                      style={{ flexDirection: "row", justifyContent: "center" }}
-                    >
-                      {row.map((op) => (
-                        <Pressable
-                          key={op.value}
-                          onPress={() => handleOperatorSelect(op)}
-                          style={[styles.modalOption]}
-                        >
-                          <ThemedText style={operator === op.value ? styles.selectedOperator : styles.operator}>
-                            {op.label}
-                          </ThemedText>
-                        </Pressable>
-                      ))}
-                    </View>
-                  ))}
-                  <Pressable
-                    onPress={() => setModalVisible(false)}
-                    style={styles.modalCancel}
+              <View style={styles.numbersModalContainer}>
+                {/* Render operator rows */}
+                {operatorRows.map((row, rowIdx) => (
+                  <View
+                    key={rowIdx}
+                    style={{ flexDirection: "row", justifyContent: "center" }}
                   >
-                    <ThemedText style={{ color: theme.colors.grey }}>Cancel</ThemedText>
-                  </Pressable>
-                </Pressable>
-              </Pressable>
-            </Modal>
+                    {row.map((op) => (
+                      <View key={op.value}>
+                        <ThemedButton
+                          title={op.label}
+                          type="outline"
+                          size="large"
+                          onPress={() => handleOperatorSelect(op)}
+                          style={[styles.numbersModal, { paddingBottom: theme.padding.xsmall }]}
+                        />
+                      </View>
+                    ))}
+                  </View>
+                ))}
+              </View>
+            </ThemedModal>
           </>
         )}
         <TextInput
@@ -198,14 +188,7 @@ export default function ThemedNumberInput({
           </TouchableOpacity>
         )}
       </View>
-      {showHint && labelHint && (
-        <ThemedText
-          type="hintText"
-          style={styles.labelHint}
-        >
-          {labelHint}
-        </ThemedText>
-      )}
+      {showHint && labelHint && <ThemedText type="hintText">{labelHint}</ThemedText>}
     </View>
   );
 }

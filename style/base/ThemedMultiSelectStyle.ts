@@ -25,18 +25,18 @@ const styles = StyleSheet.create({
       },
     ],
   },
-  selectPressable: {
-    borderRadius: theme.borderRadius.medium,
-    paddingVertical: theme.padding.medium * 0.8,
-    paddingHorizontal: theme.padding.medium,
-    fontSize: theme.fontSizes.font15,
-    lineHeight: theme.fontSizes.font15 * 1.25,
-    color: theme.colors.grey,
-  },
   pickerWrapper: {
     position: "relative",
     zIndex: 2,
     width: "100%",
+    height: theme.fontSizes.font15 * 1.25 + theme.padding.medium * 2,
+  },
+  selectPressable: {
+    borderRadius: theme.borderRadius.medium,
+    padding: theme.padding.medium,
+    fontSize: theme.fontSizes.font15,
+    lineHeight: theme.fontSizes.font15 * 1.25,
+    color: theme.colors.grey,
   },
   modalOverlay: {
     flex: 1,

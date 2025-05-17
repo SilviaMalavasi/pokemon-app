@@ -49,7 +49,6 @@ interface ThemedChipProps {
   textStyle?: TextStyle;
   disabled?: boolean;
   icon?: string | "void";
-  iconColor?: string;
   chipBackgroundColor?: string;
   chipTextColor?: string;
 }
@@ -61,7 +60,6 @@ export default function ThemedChip({
   style,
   disabled = false,
   icon = "void",
-  iconColor,
   chipBackgroundColor,
   chipTextColor,
 }: ThemedChipProps) {

@@ -4,27 +4,20 @@ import { vw } from "@/helpers/viewport";
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: theme.padding.small,
-    marginBottom: theme.padding.small,
     width: "100%",
-    backgroundColor: "transparent",
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
   input: {
-    flex: 1,
-    borderRadius: theme.borderRadius.small,
-    paddingLeft: theme.padding.small,
-    paddingRight: theme.padding.small,
-    paddingTop: theme.padding.small,
-    paddingBottom: theme.padding.small * 0.9,
-    fontSize: theme.fontSizes.font18,
-    lineHeight: theme.fontSizes.font18 * 1.25,
+    position: "relative",
+    zIndex: 2,
+    borderRadius: theme.borderRadius.medium,
+    padding: theme.padding.medium,
+    fontSize: theme.fontSizes.font15,
+    lineHeight: theme.fontSizes.font15 * 1.25,
     color: theme.colors.green,
-    borderWidth: 1,
-    borderColor: theme.colors.grey,
   },
   clearIcon: {
     position: "absolute",
@@ -35,9 +28,6 @@ const styles = StyleSheet.create({
     height: "100%",
     width: theme.fontSizes.font18,
     zIndex: 2,
-  },
-  labelHint: {
-    paddingTop: theme.padding.small,
   },
   fakeInnerShadow: {
     position: "absolute",
@@ -59,17 +49,12 @@ const styles = StyleSheet.create({
     ],
   },
   pickerWrapper: {
+    position: "relative",
+    zIndex: 2,
     width: vw(12),
-    height: vw(13.8),
-    borderRadius: theme.borderRadius.small,
-    borderWidth: 1,
-    borderColor: theme.colors.grey,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-    borderRightWidth: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: theme.colors.darkGrey,
+    paddingBottom: theme.padding.xsmall,
   },
   selectPressable: {
     fontSize: theme.fontSizes.font24,
@@ -79,40 +64,23 @@ const styles = StyleSheet.create({
     color: theme.colors.grey,
     borderRadius: theme.borderRadius.small,
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.7)",
+  numbersModalContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "center",
-  },
-  modalContainer: {
-    marginHorizontal: theme.padding.large,
-    backgroundColor: theme.colors.mediumGrey,
-    borderRadius: theme.borderRadius.medium,
-    borderWidth: 1,
-    borderColor: theme.colors.purple,
-    paddingHorizontal: theme.padding.medium,
-    paddingVertical: theme.padding.large,
-    ...theme.shadowAlternative,
-  },
-  modalOption: {
-    paddingVertical: theme.padding.small,
-    paddingHorizontal: theme.padding.small,
     alignItems: "center",
+    marginTop: theme.padding.medium,
+    marginBottom: theme.padding.medium,
+    gap: theme.padding.small,
+    width: vw(40),
   },
-  modalCancel: {
-    marginTop: theme.padding.small,
-    alignItems: "center",
-  },
-  operator: {
-    color: theme.colors.grey,
-    fontSize: theme.fontSizes.font24,
-    marginHorizontal: theme.padding.xsmall,
-  },
-  selectedOperator: {
-    color: theme.colors.purple,
-    fontSize: theme.fontSizes.font24,
-    marginHorizontal: theme.padding.xsmall,
-    fontWeight: "bold",
+  numbersModal: {
+    width: theme.padding.medium * 2.5,
+    height: theme.padding.medium * 2.5,
+    borderRadius: theme.borderRadius.xlarge,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    marginHorizontal: 4,
   },
 });
 

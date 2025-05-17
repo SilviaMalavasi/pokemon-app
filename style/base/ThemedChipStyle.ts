@@ -8,13 +8,13 @@ export default StyleSheet.create({
     borderRadius: theme.borderRadius.xlarge,
     backgroundColor: theme.colors.mediumGrey,
     paddingHorizontal: theme.padding.small,
-    paddingVertical: theme.padding.xsmall * 0.5,
+    paddingVertical: theme.padding.xsmall,
     marginBottom: theme.padding.xsmall,
     boxShadow: [
       {
         color: theme.colors.shadowLight,
-        offsetX: -2,
-        offsetY: -2,
+        offsetX: -1,
+        offsetY: -1,
         blurRadius: "12px",
       },
       {
@@ -30,12 +30,6 @@ export default StyleSheet.create({
   },
   chipDisabled: {
     opacity: 0.5,
-  },
-  chipText: {
-    color: theme.colors.green,
-  },
-  chipTextSelected: {
-    color: theme.colors.green,
   },
   icon: {
     width: theme.padding.medium,

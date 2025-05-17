@@ -61,7 +61,7 @@ export default function ThemedMultiSelect({
             labelHint={labelHint}
             setShowHint={setShowHint}
             showHint={showHint}
-            style={{ top: theme.padding.medium - 4 }}
+            style={{ top: theme.padding.medium }}
           />
         )}
         <Pressable

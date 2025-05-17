@@ -1,4 +1,5 @@
 import React from "react";
+import { View } from "react-native";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import ThemedNumberInput from "@/components/base/ThemedNumberInput";
 import AutoCompleteInput from "@/components/base/AutoCompleteInput";
@@ -60,8 +61,9 @@ export default function AttacksModal({
     setAttacksText("");
     setAttacksCost([]);
     setAttacksConvertedEnergyCost("");
-    setAttacksConvertedEnergyCostOperator("");
+    setAttacksConvertedEnergyCostOperator("="); // Set to '=' after reset
     setAttacksCostSlots([]);
+    onClose(); // Ensures modal closes and UI resets
   };
 
   return (
@@ -83,7 +85,6 @@ export default function AttacksModal({
         value={attacksName}
         onChange={setAttacksName}
         placeholder="Attack Name"
-        labelHint="Ability Name"
       />
       <ThemedNumberInput
         label="Attack Damage"
@@ -119,30 +120,39 @@ export default function AttacksModal({
         !attacksConvertedEnergyCost ||
         attacksConvertedEnergyCostOperator !== "=") && (
         <ThemedMultiSelect
+          label="Attack Energy Type"
           value={attacksCost}
           options={energyTypesOptions}
           onChange={setAttacksCost}
+          labelHint="Select energy types for this attack."
+          style={{ marginTop: theme.padding.small }}
         />
       )}
       {attacksConvertedEnergyCostOperator === "=" &&
         attacksConvertedEnergyCost &&
         Number(attacksConvertedEnergyCost) > 0 && (
-          <>
+          <View style={{ width: "100%", marginTop: theme.padding.small }}>
             {Array.from({ length: Number(attacksConvertedEnergyCost) }).map((_, idx) => (
               <ThemedSelect
                 key={idx}
-                label={`Attack Cost ${idx + 1}`}
+                label={`Attack Energy Type ${idx + 1}`}
                 value={attacksCostSlots[idx] || ""}
                 options={energyTypesOptions}
+                labelHint="Select energy type for this attack cost slot."
                 onChange={(selected) => {
                   const newSlots = [...attacksCostSlots];
-                  newSlots[idx] = selected || "";
+                  let selectedValue = "";
+                  if (Array.isArray(selected)) {
+                    selectedValue = selected[0] || "";
+                  } else if (typeof selected === "string") {
+                    selectedValue = selected;
+                  }
+                  newSlots[idx] = selectedValue;
                   setAttacksCostSlots(newSlots);
                 }}
-                labelHint="Select energy type for this slot."
               />
             ))}
-          </>
+          </View>
         )}
     </ThemedModal>
   );
