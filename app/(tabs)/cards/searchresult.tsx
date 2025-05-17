@@ -5,7 +5,7 @@ import SearchResult from "@/components/SearchResult";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import { useRouter } from "expo-router";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
-import { View } from "react-native";
+import { View, BackHandler } from "react-native"; // Added BackHandler
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -100,11 +100,11 @@ export default function SearchResultScreen() {
 
   const handleAllImagesLoaded = useCallback(() => {}, [cardIds]);
 
-  // Back button handler
-  const handleBack = () => {
+  // Back button handler - wrapped with useCallback
+  const handleBack = useCallback(() => {
     if (loading || !cardIds) {
       // Optionally, show a message or do nothing while loading or cardIds not loaded
-      return;
+      return true; // Return true to indicate handled
     }
     if (lastSearchPage === "advanced") {
       router.replace("/advancedsearch");
@@ -114,7 +114,21 @@ export default function SearchResultScreen() {
       clearAdvancedForm();
       router.replace("/advancedsearch");
     }
-  };
+    return true; // Return true to indicate handled
+  }, [loading, cardIds, lastSearchPage, router, clearAdvancedForm]);
+
+  // Effect to handle Android back button
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return handleBack(); // Call handleBack and return its result
+      };
+
+      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => subscription.remove(); // Call the remove method on the subscription
+    }, [handleBack])
+  );
 
   // Show loading indicator or nothing while loading, or if cardIds is undefined/null
   if (loading || !cardIds) {
