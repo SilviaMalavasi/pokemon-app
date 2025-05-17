@@ -1,37 +1,52 @@
 import { StyleSheet } from "react-native";
-import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
 
-const containersPadding = theme.padding.medium;
-const cardWidth = vw(100) - containersPadding;
-
 const styles = StyleSheet.create({
-  container: {
-    position: "relative",
-    flexDirection: "column",
-    paddingBottom: theme.padding.large * 2,
-  },
   imageContainer: {
     position: "relative",
     justifyContent: "center",
-    width: vw(100) - theme.padding.medium * 2,
-    height: cardWidth / 0.71,
-    marginBottom: theme.padding.large,
+    width: "100%",
+    marginBottom: theme.padding.xlarge,
+    borderRadius: theme.borderRadius.large,
+    boxShadow: [
+      {
+        color: theme.colors.shadowDark,
+        offsetX: 6,
+        offsetY: 6,
+        blurRadius: "12px",
+      },
+      {
+        color: theme.colors.darkGrey,
+        offsetX: -2,
+        offsetY: -2,
+        blurRadius: "4px",
+        inset: true,
+      },
+    ],
   },
   image: {
     width: "100%",
-    height: cardWidth / 0.71,
+  },
+  summaryContainer: {
+    position: "relative",
+    zIndex: 1,
+    marginTop: theme.padding.large * -1,
+    paddingTop: theme.padding.xlarge,
+    paddingBottom: theme.padding.large,
+    paddingHorizontal: theme.padding.medium,
+    borderBottomLeftRadius: theme.borderRadius.xlarge,
+    borderBottomRightRadius: theme.borderRadius.xlarge,
+    marginBottom: theme.padding.large,
   },
   cardDetailsContainer: {
     position: "relative",
-    borderWidth: 1,
-    borderColor: theme.colors.purple,
-    borderRadius: theme.borderRadius.small,
-    paddingHorizontal: theme.padding.small,
     paddingTop: theme.padding.medium,
     paddingBottom: theme.padding.small,
-    marginBottom: theme.padding.large,
   },
+  title: {
+    paddingBottom: theme.padding.small,
+  },
+
   cardDetailsLabel: {
     position: "absolute",
     top: theme.padding.xsmall * -1,

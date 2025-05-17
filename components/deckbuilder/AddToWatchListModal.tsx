@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity, View, Modal } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import ThemedButton from "@/components/base/ThemedButton";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
@@ -8,7 +8,6 @@ import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { addWatchList } from "@/lib/userDatabase";
 import { Pressable } from "react-native";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
-
 import styles from "@/style/deckbuilder/AddToWatchListModalStyle";
 import { theme } from "@/style/ui/Theme";
 
@@ -113,27 +112,13 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
 
   return (
     <>
-      <TouchableOpacity
+      <ThemedButton
+        type="main"
+        size="small"
+        title="Add to WatchList"
         onPress={() => setModalVisible(true)}
         accessibilityLabel="Add to WatchList"
-        style={styles.addButtonTrigger}
-      >
-        <View style={styles.iconContainerStyle}>
-          <Svg
-            width="100%"
-            height="100%"
-            viewBox="0 0 392.83 393.19"
-          >
-            <Path
-              d="M314.38,246.32c-2.92,3.32-4.28,7.74-3.73,12.13l11.06,93.3c1.19,10.07-3.2,19.98-11.46,25.86-4.69,3.28-10.27,5.04-15.99,5.06-4.22,0-8.37-1.01-12.13-2.93l-78.77-38.92c-4.23-1.92-9.09-1.92-13.33,0l-79.04,39.45c-9.05,4.56-19.87,3.74-28.12-2.13-8.26-5.88-12.66-15.79-11.46-25.86l11.06-93.3c.55-4.39-.81-8.81-3.73-12.13L17.02,176.88c-10.18-11.43-9.17-28.96,2.26-39.14,3.63-3.23,8.04-5.45,12.8-6.44l87.03-17.59c4.62-.81,8.6-3.72,10.8-7.86L172.3,24.8c7.14-13.54,23.91-18.74,37.45-11.6,4.95,2.61,8.99,6.65,11.6,11.6l41.85,81.04c2.14,4.08,6.01,6.97,10.53,7.86l86.9,17.59c15,3.05,24.69,17.69,21.64,32.69-.97,4.79-3.2,9.24-6.44,12.89l-61.44,69.44Z"
-              stroke="#fff"
-              strokeMiterlimit={10}
-              strokeWidth={20}
-            />
-          </Svg>
-        </View>
-        <ThemedText type="h4">WatchList</ThemedText>
-      </TouchableOpacity>
+      />
       <ThemedModal
         visible={modalVisible}
         onClose={handleAddToWatchListAndClose}
@@ -169,7 +154,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
             <View style={styles.deckPickerContainer}>
               <ThemedLabelWithHint
                 style={styles.deckPickerLabel}
-                label="Select a WatchList"
+                labelHint="Select a WatchList"
               />
               <Pressable
                 onPress={() => setWatchListPickerVisible(true)}
@@ -249,7 +234,6 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
         buttonSize="large"
         onCancelText="Cancel"
         onCancel={() => !isSaving && setShowNewListModal(false)}
-        buttonStyle={isSaving ? { opacity: 0.5 } : undefined}
       >
         <ThemedText style={{ marginBottom: theme.padding.small, marginTop: theme.padding.small, textAlign: "center" }}>
           Enter a name for your new watchlist

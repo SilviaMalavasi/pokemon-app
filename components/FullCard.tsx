@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Image, ScrollView } from "react-native";
+import { View, Image } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import { Ability, Attack, CardSet } from "@/types/PokemonCardType";
 import { LinearGradient } from "expo-linear-gradient";
@@ -60,6 +60,8 @@ interface FullCardProps {
 }
 
 export default function FullCard(props: FullCardProps) {
+  console.log("Abilities prop:", props.abilities);
+
   const [loading, setLoading] = useState(true);
   const imageSource = getCardImage(props.imagesLarge);
 
@@ -77,8 +79,8 @@ export default function FullCard(props: FullCardProps) {
     return (
       <ThemedText style={{ paddingBottom: 4 }}>
         <ThemedText
-          type="h4"
-          color={theme.colors.purple}
+          fontWeight="bold"
+          color={theme.colors.white}
         >
           Energy Type:{" "}
         </ThemedText>
@@ -88,8 +90,10 @@ export default function FullCard(props: FullCardProps) {
   };
 
   return (
-    <ThemedView>
-      <View style={styles.container}>
+    <>
+      <ThemedView
+        style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0, marginBottom: theme.padding.xlarge * -1 }}
+      >
         {imageSource ? (
           <View style={styles.imageContainer}>
             <Image
@@ -99,142 +103,210 @@ export default function FullCard(props: FullCardProps) {
               onLoadStart={() => setLoading(true)}
               onLoadEnd={() => setLoading(false)}
             />
-            {/* Add to Deck Button */}
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: theme.padding.small,
-              }}
-            >
-              <AddToDeckModal
-                cardId={props.cardId}
-                cardName={props.name}
-                supertype={props.supertype}
-                subtypes={subtypes}
-              />
-              <AddToWatchListModal
-                cardId={props.cardId}
-                cardName={props.name}
-              />
-            </View>
           </View>
         ) : null}
+      </ThemedView>
 
-        {/* Card Types */}
-        <View style={styles.cardDetailsContainer}>
-          <LinearGradient
-            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
-            locations={[0, 0.4, 0.4, 1]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={styles.cardDetailsLabel}
-          >
-            <ThemedText type="label">Card Type</ThemedText>
-          </LinearGradient>
-          <ThemedText style={{ paddingBottom: 4 }}>
+      <ThemedView
+        layout="rounded"
+        style={{ position: "relative", zIndex: 2 }}
+      >
+        <AddToDeckModal
+          cardId={props.cardId}
+          cardName={props.name}
+          supertype={props.supertype}
+          subtypes={subtypes}
+        />
+        <AddToWatchListModal
+          cardId={props.cardId}
+          cardName={props.name}
+        />
+      </ThemedView>
+
+      <View>
+        <LinearGradient
+          colors={[theme.colors.darkGrey, theme.colors.mediumGrey]}
+          start={{ x: 0.4, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+          style={styles.summaryContainer}
+        >
+          {/* Card Types */}
+          <View style={styles.cardDetailsContainer}>
             <ThemedText
-              type="h4"
-              color={theme.colors.purple}
+              type="h3"
+              style={styles.title}
             >
-              Type:{" "}
+              Card Type
             </ThemedText>
-            {props.supertype}
-          </ThemedText>
-          {filteredSubtypes.length > 0 && (
             <ThemedText style={{ paddingBottom: 4 }}>
               <ThemedText
-                type="h4"
-                color={theme.colors.purple}
+                fontWeight="bold"
+                color={theme.colors.white}
               >
-                Label:{" "}
+                Type:{" "}
               </ThemedText>
-              {filteredSubtypes.join(", ")}
+              {props.supertype}
             </ThemedText>
-          )}
-
-          {renderCardTypes()}
-        </View>
-
-        {/* Rules */}
-        {props.rules &&
-          ((Array.isArray(props.rules) && props.rules.length > 0) ||
-            (props.rules && typeof props.rules === "string" && (props.rules as string).trim() !== "")) && (
-            <View style={styles.cardDetailsContainer}>
-              <LinearGradient
-                colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
-                locations={[0, 0.4, 0.4, 1]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0, y: 1 }}
-                style={styles.cardDetailsLabel}
-              >
-                <ThemedText type="label">{props.supertype === "Pokémon" ? "Rule Box" : "Rules"}</ThemedText>
-              </LinearGradient>
-
-              {/* Display each rule in its own block if there are multiple rules */}
-              {Array.isArray(props.rules) && props.rules.length > 0 ? (
-                props.rules.map((rule, index) => (
-                  <ThemedText
-                    key={`rule-${index}`}
-                    style={{ paddingBottom: 4 }}
-                  >
-                    {rule.replace(/[\[\]"]+/g, "").trim()}
-                  </ThemedText>
-                ))
-              ) : (
-                <ThemedText style={{ paddingBottom: 4 }}>
-                  {typeof props.rules === "string" ? props.rules.replace(/[\[\]"]+/g, "").trim() : "-"}
+            {filteredSubtypes.length > 0 && (
+              <ThemedText style={{ paddingBottom: 4 }}>
+                <ThemedText
+                  fontWeight="bold"
+                  color={theme.colors.white}
+                >
+                  Label:{" "}
                 </ThemedText>
-              )}
+                {filteredSubtypes.join(", ")}
+              </ThemedText>
+            )}
+
+            {renderCardTypes()}
+          </View>
+
+          {/* Rules */}
+          {props.rules &&
+            ((Array.isArray(props.rules) && props.rules.length > 0) ||
+              (props.rules && typeof props.rules === "string" && (props.rules as string).trim() !== "")) && (
+              <View style={styles.cardDetailsContainer}>
+                <ThemedText
+                  type="h4"
+                  style={styles.title}
+                >
+                  {props.supertype === "Pokémon" ? "Rule Box" : "Rules"}
+                </ThemedText>
+
+                {/* Display each rule in its own block if there are multiple rules */}
+                {Array.isArray(props.rules) && props.rules.length > 0 ? (
+                  props.rules.map((rule, index) => (
+                    <ThemedText
+                      key={`rule-${index}`}
+                      style={{ paddingBottom: 4 }}
+                    >
+                      {rule.replace(/[\[\]"]+/g, "").trim()}
+                    </ThemedText>
+                  ))
+                ) : (
+                  <ThemedText style={{ paddingBottom: 4 }}>
+                    {typeof props.rules === "string" ? props.rules.replace(/[\[\]"]+/g, "").trim() : "-"}
+                  </ThemedText>
+                )}
+              </View>
+            )}
+
+          {/* Attacks */}
+          {props.attacks && props.attacks.length > 0 && (
+            <View style={styles.cardDetailsContainer}>
+              <ThemedText
+                type="h3"
+                style={styles.title}
+              >
+                Attacks
+              </ThemedText>
+              {props.attacks.map((atk, index) => (
+                <View
+                  key={`attack-${atk.name}-${atk.id}`}
+                  style={{
+                    marginBottom: index === (props.attacks ?? []).length - 1 ? 0 : theme.padding.medium,
+                  }}
+                >
+                  <ThemedText
+                    style={{ paddingBottom: 4 }}
+                    color={theme.colors.green}
+                  >
+                    <ThemedText
+                      fontWeight="bold"
+                      color={theme.colors.white}
+                    >
+                      Name:{" "}
+                    </ThemedText>
+                    {atk.name}
+                  </ThemedText>
+
+                  {atk.damage && (
+                    <ThemedText style={{ paddingBottom: 4 }}>
+                      <ThemedText
+                        fontWeight="bold"
+                        color={theme.colors.white}
+                      >
+                        Damage:{" "}
+                      </ThemedText>
+                      {atk.damage}
+                    </ThemedText>
+                  )}
+
+                  {atk.text && (
+                    <ThemedText style={{ paddingBottom: 4 }}>
+                      <ThemedText
+                        fontWeight="bold"
+                        color={theme.colors.white}
+                      >
+                        Text:{" "}
+                      </ThemedText>
+                      {atk.text}
+                    </ThemedText>
+                  )}
+
+                  {atk.convertedEnergyCost !== undefined && (
+                    <ThemedText style={{ paddingBottom: 4 }}>
+                      <ThemedText
+                        fontWeight="bold"
+                        color={theme.colors.white}
+                      >
+                        Cost:{" "}
+                      </ThemedText>
+                      {atk.convertedEnergyCost}
+                    </ThemedText>
+                  )}
+
+                  {(() => {
+                    const costArr = parseJsonStringArray(atk.cost);
+                    if (costArr.length > 0) {
+                      return (
+                        <ThemedText style={{ paddingBottom: 4 }}>
+                          <ThemedText
+                            fontWeight="bold"
+                            color={theme.colors.white}
+                          >
+                            Energy Cost:{" "}
+                          </ThemedText>
+                          {costArr.join(", ")}
+                        </ThemedText>
+                      );
+                    }
+                    return null;
+                  })()}
+                </View>
+              ))}
             </View>
           )}
 
-        {/* Attacks */}
-        {props.attacks && props.attacks.length > 0 && (
-          <View style={styles.cardDetailsContainer}>
-            <LinearGradient
-              colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
-              locations={[0, 0.4, 0.4, 1]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 0, y: 1 }}
-              style={styles.cardDetailsLabel}
-            >
-              <ThemedText type="label">Attacks</ThemedText>
-            </LinearGradient>
-            {props.attacks.map((atk, index) => (
-              <View
-                key={`attack-${atk.name}-${atk.id}`}
-                style={{
-                  marginBottom: index === (props.attacks ?? []).length - 1 ? 0 : theme.padding.medium,
-                }}
+          {/* Abilities */}
+          {props.abilities && props.abilities.length > 0 && (
+            <View style={styles.cardDetailsContainer}>
+              <ThemedText
+                type="h3"
+                style={styles.title}
               >
-                <ThemedText
-                  style={{ paddingBottom: 4 }}
-                  color={theme.colors.green}
+                Abilities
+              </ThemedText>
+              {props.abilities.map((ability, index) => (
+                <View
+                  key={`ability-${ability.name}`}
+                  style={{
+                    marginBottom: index === (props.abilities ?? []).length - 1 ? 0 : theme.padding.medium,
+                  }}
                 >
                   <ThemedText
-                    type="h4"
+                    style={{ paddingBottom: 4 }}
                     color={theme.colors.green}
                   >
-                    Name:{" "}
-                  </ThemedText>
-                  {atk.name}
-                </ThemedText>
-
-                {atk.damage && (
-                  <ThemedText style={{ paddingBottom: 4 }}>
                     <ThemedText
                       type="h4"
-                      color={theme.colors.purple}
+                      color={theme.colors.green}
                     >
-                      Damage:{" "}
+                      Name:{" "}
                     </ThemedText>
-                    {atk.damage}
+                    {ability.name}
                   </ThemedText>
-                )}
-
-                {atk.text && (
                   <ThemedText style={{ paddingBottom: 4 }}>
                     <ThemedText
                       type="h4"
@@ -242,164 +314,100 @@ export default function FullCard(props: FullCardProps) {
                     >
                       Text:{" "}
                     </ThemedText>
-                    {atk.text}
+                    {ability.text}
                   </ThemedText>
-                )}
+                </View>
+              ))}
+            </View>
+          )}
 
-                {atk.convertedEnergyCost !== undefined && (
+          {/* Only shown for Pokémon cards */}
+          {props.supertype === "Pokémon" && (
+            <>
+              <View style={styles.cardDetailsContainer}>
+                <LinearGradient
+                  colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
+                  locations={[0, 0.4, 0.4, 1]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 0, y: 1 }}
+                  style={styles.cardDetailsLabel}
+                >
+                  <ThemedText type="label">Stats</ThemedText>
+                </LinearGradient>
+
+                <ThemedText style={{ paddingBottom: 4 }}>
+                  <ThemedText
+                    type="h4"
+                    color={theme.colors.purple}
+                  >
+                    Pokémon HP:
+                  </ThemedText>{" "}
+                  {props.hp || "-"}
+                </ThemedText>
+
+                {props.convertedRetreatCost && (
                   <ThemedText style={{ paddingBottom: 4 }}>
                     <ThemedText
                       type="h4"
                       color={theme.colors.purple}
                     >
-                      Cost:{" "}
-                    </ThemedText>
-                    {atk.convertedEnergyCost}
+                      Retreat Cost:
+                    </ThemedText>{" "}
+                    {props.convertedRetreatCost}
                   </ThemedText>
                 )}
+              </View>
 
+              <View style={styles.cardDetailsContainer}>
+                <LinearGradient
+                  colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
+                  locations={[0, 0.4, 0.4, 1]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 0, y: 1 }}
+                  style={styles.cardDetailsLabel}
+                >
+                  <ThemedText type="label">Evolution</ThemedText>
+                </LinearGradient>
+                <ThemedText style={{ paddingBottom: 4 }}>
+                  <ThemedText
+                    type="h4"
+                    color={theme.colors.purple}
+                  >
+                    Stage:
+                  </ThemedText>{" "}
+                  {stage || "-"}
+                </ThemedText>
                 {(() => {
-                  const costArr = parseJsonStringArray(atk.cost);
-                  if (costArr.length > 0) {
+                  let value = props.evolvesFrom;
+                  if (Array.isArray(value) && value.length > 0) {
                     return (
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
                           type="h4"
                           color={theme.colors.purple}
                         >
-                          Energy Cost:{" "}
-                        </ThemedText>
-                        {costArr.join(", ")}
+                          Evolves From:
+                        </ThemedText>{" "}
+                        {value.join(", ")}
                       </ThemedText>
                     );
                   }
-                  return null;
-                })()}
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Abilities */}
-        {props.abilities && props.abilities.length > 0 && (
-          <View style={styles.cardDetailsContainer}>
-            <LinearGradient
-              colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
-              locations={[0, 0.4, 0.4, 1]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 0, y: 1 }}
-              style={styles.cardDetailsLabel}
-            >
-              <ThemedText type="label">Abilities</ThemedText>
-            </LinearGradient>
-            {props.abilities.map((ability, index) => (
-              <View
-                key={`ability-${ability.name}`}
-                style={{
-                  marginBottom: index === (props.abilities ?? []).length - 1 ? 0 : theme.padding.medium,
-                }}
-              >
-                <ThemedText
-                  style={{ paddingBottom: 4 }}
-                  color={theme.colors.green}
-                >
-                  <ThemedText
-                    type="h4"
-                    color={theme.colors.green}
-                  >
-                    Name:{" "}
-                  </ThemedText>
-                  {ability.name}
-                </ThemedText>
-                <ThemedText style={{ paddingBottom: 4 }}>
-                  <ThemedText
-                    type="h4"
-                    color={theme.colors.purple}
-                  >
-                    Text:{" "}
-                  </ThemedText>
-                  {ability.text}
-                </ThemedText>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Only shown for Pokémon cards */}
-        {props.supertype === "Pokémon" && (
-          <>
-            <View style={styles.cardDetailsContainer}>
-              <LinearGradient
-                colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
-                locations={[0, 0.4, 0.4, 1]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0, y: 1 }}
-                style={styles.cardDetailsLabel}
-              >
-                <ThemedText type="label">Stats</ThemedText>
-              </LinearGradient>
-
-              <ThemedText style={{ paddingBottom: 4 }}>
-                <ThemedText
-                  type="h4"
-                  color={theme.colors.purple}
-                >
-                  Pokémon HP:
-                </ThemedText>{" "}
-                {props.hp || "-"}
-              </ThemedText>
-
-              {props.convertedRetreatCost && (
-                <ThemedText style={{ paddingBottom: 4 }}>
-                  <ThemedText
-                    type="h4"
-                    color={theme.colors.purple}
-                  >
-                    Retreat Cost:
-                  </ThemedText>{" "}
-                  {props.convertedRetreatCost}
-                </ThemedText>
-              )}
-            </View>
-
-            <View style={styles.cardDetailsContainer}>
-              <LinearGradient
-                colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
-                locations={[0, 0.4, 0.4, 1]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0, y: 1 }}
-                style={styles.cardDetailsLabel}
-              >
-                <ThemedText type="label">Evolution</ThemedText>
-              </LinearGradient>
-              <ThemedText style={{ paddingBottom: 4 }}>
-                <ThemedText
-                  type="h4"
-                  color={theme.colors.purple}
-                >
-                  Stage:
-                </ThemedText>{" "}
-                {stage || "-"}
-              </ThemedText>
-              {(() => {
-                let value = props.evolvesFrom;
-                if (Array.isArray(value) && value.length > 0) {
-                  return (
-                    <ThemedText style={{ paddingBottom: 4 }}>
-                      <ThemedText
-                        type="h4"
-                        color={theme.colors.purple}
-                      >
-                        Evolves From:
-                      </ThemedText>{" "}
-                      {value.join(", ")}
-                    </ThemedText>
-                  );
-                }
-                if (typeof value === "string" && (value as string).trim() !== "") {
-                  try {
-                    const parsed = JSON.parse(value);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
+                  if (typeof value === "string" && (value as string).trim() !== "") {
+                    try {
+                      const parsed = JSON.parse(value);
+                      if (Array.isArray(parsed) && parsed.length > 0) {
+                        return (
+                          <ThemedText style={{ paddingBottom: 4 }}>
+                            <ThemedText
+                              type="h4"
+                              color={theme.colors.purple}
+                            >
+                              Evolves From:
+                            </ThemedText>{" "}
+                            {parsed.join(", ")}
+                          </ThemedText>
+                        );
+                      }
                       return (
                         <ThemedText style={{ paddingBottom: 4 }}>
                           <ThemedText
@@ -408,56 +416,56 @@ export default function FullCard(props: FullCardProps) {
                           >
                             Evolves From:
                           </ThemedText>{" "}
-                          {parsed.join(", ")}
+                          {value}
+                        </ThemedText>
+                      );
+                    } catch {
+                      return (
+                        <ThemedText style={{ paddingBottom: 4 }}>
+                          <ThemedText
+                            type="h4"
+                            color={theme.colors.purple}
+                          >
+                            Evolves From:
+                          </ThemedText>{" "}
+                          {value}
                         </ThemedText>
                       );
                     }
+                  }
+                  return null;
+                })()}
+                {(() => {
+                  let value = props.evolvesTo;
+                  if (Array.isArray(value) && value.length > 0) {
                     return (
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
                           type="h4"
                           color={theme.colors.purple}
                         >
-                          Evolves From:
+                          Evolves To:
                         </ThemedText>{" "}
-                        {value}
-                      </ThemedText>
-                    );
-                  } catch {
-                    return (
-                      <ThemedText style={{ paddingBottom: 4 }}>
-                        <ThemedText
-                          type="h4"
-                          color={theme.colors.purple}
-                        >
-                          Evolves From:
-                        </ThemedText>{" "}
-                        {value}
+                        {value.join(", ")}
                       </ThemedText>
                     );
                   }
-                }
-                return null;
-              })()}
-              {(() => {
-                let value = props.evolvesTo;
-                if (Array.isArray(value) && value.length > 0) {
-                  return (
-                    <ThemedText style={{ paddingBottom: 4 }}>
-                      <ThemedText
-                        type="h4"
-                        color={theme.colors.purple}
-                      >
-                        Evolves To:
-                      </ThemedText>{" "}
-                      {value.join(", ")}
-                    </ThemedText>
-                  );
-                }
-                if (typeof value === "string" && (value as string).trim() !== "") {
-                  try {
-                    const parsed = JSON.parse(value);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
+                  if (typeof value === "string" && (value as string).trim() !== "") {
+                    try {
+                      const parsed = JSON.parse(value);
+                      if (Array.isArray(parsed) && parsed.length > 0) {
+                        return (
+                          <ThemedText style={{ paddingBottom: 4 }}>
+                            <ThemedText
+                              type="h4"
+                              color={theme.colors.purple}
+                            >
+                              Evolves To:
+                            </ThemedText>{" "}
+                            {parsed.join(", ")}
+                          </ThemedText>
+                        );
+                      }
                       return (
                         <ThemedText style={{ paddingBottom: 4 }}>
                           <ThemedText
@@ -466,146 +474,77 @@ export default function FullCard(props: FullCardProps) {
                           >
                             Evolves To:
                           </ThemedText>{" "}
-                          {parsed.join(", ")}
+                          {value}
+                        </ThemedText>
+                      );
+                    } catch {
+                      return (
+                        <ThemedText style={{ paddingBottom: 4 }}>
+                          <ThemedText
+                            type="h4"
+                            color={theme.colors.purple}
+                          >
+                            Evolves To:
+                          </ThemedText>{" "}
+                          {value}
                         </ThemedText>
                       );
                     }
+                  }
+                  return null;
+                })()}
+              </View>
+
+              <View style={styles.cardDetailsContainer}>
+                <LinearGradient
+                  colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
+                  locations={[0, 0.4, 0.4, 1]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 0, y: 1 }}
+                  style={styles.cardDetailsLabel}
+                >
+                  <ThemedText type="label">Weaknesses & Resistances</ThemedText>
+                </LinearGradient>
+                {(() => {
+                  let weaknesses = parseJsonStringArray(props.weaknesses);
+                  if (weaknesses.length > 0) {
                     return (
                       <ThemedText style={{ paddingBottom: 4 }}>
                         <ThemedText
                           type="h4"
                           color={theme.colors.purple}
                         >
-                          Evolves To:
+                          Weakness:
                         </ThemedText>{" "}
-                        {value}
-                      </ThemedText>
-                    );
-                  } catch {
-                    return (
-                      <ThemedText style={{ paddingBottom: 4 }}>
-                        <ThemedText
-                          type="h4"
-                          color={theme.colors.purple}
-                        >
-                          Evolves To:
-                        </ThemedText>{" "}
-                        {value}
+                        {weaknesses.join(", ")}
                       </ThemedText>
                     );
                   }
-                }
-                return null;
-              })()}
-            </View>
+                  return null;
+                })()}
+                {(() => {
+                  let resistances = parseJsonStringArray(props.resistances);
+                  if (resistances.length > 0) {
+                    return (
+                      <ThemedText style={{ paddingBottom: 4 }}>
+                        <ThemedText
+                          type="h4"
+                          color={theme.colors.purple}
+                        >
+                          Resistance:
+                        </ThemedText>{" "}
+                        {resistances.join(", ")}
+                      </ThemedText>
+                    );
+                  }
+                  return null;
+                })()}
+              </View>
+            </>
+          )}
 
-            <View style={styles.cardDetailsContainer}>
-              <LinearGradient
-                colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
-                locations={[0, 0.4, 0.4, 1]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0, y: 1 }}
-                style={styles.cardDetailsLabel}
-              >
-                <ThemedText type="label">Weaknesses & Resistances</ThemedText>
-              </LinearGradient>
-              {(() => {
-                let weaknesses = parseJsonStringArray(props.weaknesses);
-                if (weaknesses.length > 0) {
-                  return (
-                    <ThemedText style={{ paddingBottom: 4 }}>
-                      <ThemedText
-                        type="h4"
-                        color={theme.colors.purple}
-                      >
-                        Weakness:
-                      </ThemedText>{" "}
-                      {weaknesses.join(", ")}
-                    </ThemedText>
-                  );
-                }
-                return null;
-              })()}
-              {(() => {
-                let resistances = parseJsonStringArray(props.resistances);
-                if (resistances.length > 0) {
-                  return (
-                    <ThemedText style={{ paddingBottom: 4 }}>
-                      <ThemedText
-                        type="h4"
-                        color={theme.colors.purple}
-                      >
-                        Resistance:
-                      </ThemedText>{" "}
-                      {resistances.join(", ")}
-                    </ThemedText>
-                  );
-                }
-                return null;
-              })()}
-            </View>
-          </>
-        )}
+          {/* Card Set */}
 
-        {/* Card Set */}
-
-        <View style={styles.cardDetailsContainer}>
-          <LinearGradient
-            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
-            locations={[0, 0.4, 0.4, 1]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={styles.cardDetailsLabel}
-          >
-            <ThemedText type="label">Card Set</ThemedText>
-          </LinearGradient>
-          {props.cardId && (
-            <ThemedText style={{ paddingBottom: 4 }}>
-              <ThemedText
-                type="h4"
-                color={theme.colors.purple}
-              >
-                Pokédex Number:
-              </ThemedText>{" "}
-              {props.cardId.toUpperCase()}
-            </ThemedText>
-          )}
-          {props.regulationMark && (
-            <ThemedText style={{ paddingBottom: 4 }}>
-              <ThemedText
-                type="h4"
-                color={theme.colors.purple}
-              >
-                Regulation Mark:
-              </ThemedText>{" "}
-              {props.regulationMark}
-            </ThemedText>
-          )}
-          {props.cardSet && props.cardSet.name && (
-            <ThemedText style={{ paddingBottom: 4 }}>
-              <ThemedText
-                type="h4"
-                color={theme.colors.purple}
-              >
-                Name:
-              </ThemedText>{" "}
-              {props.cardSet.name}
-            </ThemedText>
-          )}
-          {props.cardSet && props.cardSet.series && (
-            <ThemedText style={{ paddingBottom: 4 }}>
-              <ThemedText
-                type="h4"
-                color={theme.colors.purple}
-              >
-                Series:
-              </ThemedText>{" "}
-              {props.cardSet.series}
-            </ThemedText>
-          )}
-        </View>
-        {/* Other Details */}
-        {props.rarity || props.artist || props.flavorText ? (
           <View style={styles.cardDetailsContainer}>
             <LinearGradient
               colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
@@ -614,44 +553,102 @@ export default function FullCard(props: FullCardProps) {
               end={{ x: 0, y: 1 }}
               style={styles.cardDetailsLabel}
             >
-              <ThemedText type="label">Other Details</ThemedText>
+              <ThemedText type="label">Card Set</ThemedText>
             </LinearGradient>
-            {props.rarity && (
+            {props.cardId && (
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
-                  type="h4"
-                  color={theme.colors.purple}
+                  fontWeight="bold"
+                  color={theme.colors.white}
                 >
-                  Rarity:
+                  Pokédex Number:
                 </ThemedText>{" "}
-                {props.rarity}
+                {props.cardId.toUpperCase()}
               </ThemedText>
             )}
-            {props.artist && (
+            {props.regulationMark && (
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
-                  type="h4"
-                  color={theme.colors.purple}
+                  fontWeight="bold"
+                  color={theme.colors.white}
                 >
-                  Artist:
+                  Regulation Mark:
                 </ThemedText>{" "}
-                {props.artist}
+                {props.regulationMark}
               </ThemedText>
             )}
-            {props.flavorText && (
+            {props.cardSet && props.cardSet.name && (
               <ThemedText style={{ paddingBottom: 4 }}>
                 <ThemedText
-                  type="h4"
-                  color={theme.colors.purple}
+                  fontWeight="bold"
+                  color={theme.colors.white}
                 >
-                  Flavor Text:
+                  Name:
                 </ThemedText>{" "}
-                {props.flavorText}
+                {props.cardSet.name}
+              </ThemedText>
+            )}
+            {props.cardSet && props.cardSet.series && (
+              <ThemedText style={{ paddingBottom: 4 }}>
+                <ThemedText
+                  fontWeight="bold"
+                  color={theme.colors.white}
+                >
+                  Series:
+                </ThemedText>{" "}
+                {props.cardSet.series}
               </ThemedText>
             )}
           </View>
-        ) : null}
+          {/* Other Details */}
+          {props.rarity || props.artist || props.flavorText ? (
+            <View style={styles.cardDetailsContainer}>
+              <LinearGradient
+                colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
+                locations={[0, 0.4, 0.4, 1]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+                style={styles.cardDetailsLabel}
+              >
+                <ThemedText type="label">Other Details</ThemedText>
+              </LinearGradient>
+              {props.rarity && (
+                <ThemedText style={{ paddingBottom: 4 }}>
+                  <ThemedText
+                    type="h4"
+                    color={theme.colors.purple}
+                  >
+                    Rarity:
+                  </ThemedText>{" "}
+                  {props.rarity}
+                </ThemedText>
+              )}
+              {props.artist && (
+                <ThemedText style={{ paddingBottom: 4 }}>
+                  <ThemedText
+                    type="h4"
+                    color={theme.colors.purple}
+                  >
+                    Artist:
+                  </ThemedText>{" "}
+                  {props.artist}
+                </ThemedText>
+              )}
+              {props.flavorText && (
+                <ThemedText style={{ paddingBottom: 4 }}>
+                  <ThemedText
+                    type="h4"
+                    color={theme.colors.purple}
+                  >
+                    Flavor Text:
+                  </ThemedText>{" "}
+                  {props.flavorText}
+                </ThemedText>
+              )}
+            </View>
+          ) : null}
+        </LinearGradient>
       </View>
-    </ThemedView>
+    </>
   );
 }
