@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
   },
   instructions: {
     paddingTop: theme.padding.medium,
-    paddingBottom: theme.padding.small,
+    paddingBottom: theme.padding.large,
+    color: theme.colors.grey,
   },
   mainButtonsRow: {
     flexDirection: "row",
@@ -41,15 +42,18 @@ const styles = StyleSheet.create({
   },
   summaryContainer: {
     position: "relative",
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: theme.colors.green,
-    borderRadius: theme.borderRadius.small,
-    paddingHorizontal: theme.padding.small,
-    paddingTop: theme.padding.medium,
-    paddingBottom: theme.padding.medium,
-    marginTop: theme.padding.small,
-    marginBottom: theme.padding.small,
+    zIndex: 1,
+    marginTop: theme.padding.large * -1,
+    paddingTop: theme.padding.xlarge,
+    paddingBottom: theme.padding.large,
+    paddingHorizontal: theme.padding.medium,
+    borderBottomLeftRadius: theme.borderRadius.xlarge,
+    borderBottomRightRadius: theme.borderRadius.xlarge,
+    marginBottom: theme.padding.large,
+  },
+  summaryTitle: {
+    paddingBottom: theme.padding.small,
+    paddingTop: theme.padding.small,
   },
   summaryLabel: {
     position: "absolute",
@@ -67,26 +71,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginBottom: 4,
   },
-  summaryDotCol: {
-    width: theme.padding.xsmall,
-    marginRight: theme.padding.xsmall,
-    marginTop: theme.padding.xsmall,
-  },
-  summaryTextCol: {
-    flex: vw(100) - theme.padding.medium - theme.padding.xlarge * 2,
-    minWidth: vw(100) - theme.padding.medium - theme.padding.xlarge * 2,
-  },
   summaryArrayText: {
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "flex-start",
   },
-  summaryText: {
-    fontSize: theme.fontSizes.font16,
-  },
   summaryArrayTextSeparator: {
     color: theme.colors.green,
-    fontSize: theme.fontSizes.font15,
+    fontSize: theme.fontSizes.font14,
   },
 });
 
