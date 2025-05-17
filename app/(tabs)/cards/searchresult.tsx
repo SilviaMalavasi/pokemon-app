@@ -16,24 +16,31 @@ export default function SearchResultScreen() {
   const { lastSearchPage, clearAdvancedForm, fromCardId, setFromCardId } = useSearchFormContext();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const skipNextScroll = useRef(false);
-  // Get SQLite DB instance
   const { db } = useCardDatabase();
 
   useFocusEffect(
     React.useCallback(() => {
+      console.log(`[FocusEffect] fromCardId: ${fromCardId}, skipNextScroll: ${skipNextScroll.current}`);
+
       if (fromCardId) {
         setFromCardId(false);
+
         skipNextScroll.current = true;
+        console.log(`[FocusEffect] Condition 1: fromCardId was true. Setting skipNextScroll = true. Returning.`);
         return;
       }
+
       if (skipNextScroll.current) {
         skipNextScroll.current = false;
-        return;
+        console.log(`[FocusEffect] Condition 2: skipNextScroll was true. Setting skipNextScroll = false. Returning.`);
+        return; // Exit without scrolling.
       }
+
+      console.log(`[FocusEffect] Conditions not met. Scrolling to top.`);
       if (scrollRef.current) {
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
-    }, [cardIds, currentPage, fromCardId, setFromCardId])
+    }, [fromCardId, setFromCardId, scrollRef])
   );
 
   // Fetch paginated card data when cardIds or currentPage changes
