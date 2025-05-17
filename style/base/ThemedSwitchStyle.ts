@@ -40,7 +40,8 @@ const ThemedSwitchStyle = StyleSheet.create({
   labelHintIcon: {
     width: theme.fontSizes.font16,
     height: theme.fontSizes.font16,
-    marginLeft: theme.padding.xsmall,
+    marginLeft: theme.padding.small,
+    marginTop: theme.padding.xsmall,
   },
   hintText: {
     marginTop: theme.padding.small,

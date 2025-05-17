@@ -51,8 +51,8 @@ export default function ThemedSwitch({
                 {label}
               </ThemedText>
               <Svg
-                width={theme.fontSizes.font16}
-                height={theme.fontSizes.font16}
+                width={theme.fontSizes.font14}
+                height={theme.fontSizes.font14}
                 viewBox="0 0 17 17"
                 fill="none"
                 style={styles.labelHintIcon}

@@ -73,9 +73,10 @@ const styles = StyleSheet.create({
   },
   hintText: {
     fontFamily: "Inter-Regular",
-    fontSize: theme.fontSizes.font16,
-    lineHeight: theme.fontSizes.font16 * 1.15,
+    fontSize: theme.fontSizes.font14,
+    lineHeight: theme.fontSizes.font14 * 1.15,
     color: theme.colors.purple,
+    paddingTop: theme.padding.xsmall,
   },
   label: {
     fontFamily: "Inter-Medium",

@@ -102,17 +102,15 @@ export default function FullFormScreen() {
         headerTitle="Advanced Search"
         scrollRef={scrollRef}
       >
-        <ThemedView>
-          <AdvancedSearchForm
-            onSearchResults={handleSearchResults}
-            setLoading={() => {}}
-            resetKey={resetKey}
-            removeDuplicates={removeDuplicates}
-            onRemoveDuplicatesChange={setRemoveDuplicates}
-            currentPage={1}
-            itemsPerPage={ITEMS_PER_PAGE}
-          />
-        </ThemedView>
+        <AdvancedSearchForm
+          onSearchResults={handleSearchResults}
+          setLoading={() => {}}
+          resetKey={resetKey}
+          removeDuplicates={removeDuplicates}
+          onRemoveDuplicatesChange={setRemoveDuplicates}
+          currentPage={1}
+          itemsPerPage={ITEMS_PER_PAGE}
+        />
 
         <ThemedModal
           visible={modalVisible}

@@ -6,6 +6,7 @@ import ThemedText from "@/components/base/ThemedText";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
+import ThemedView from "@/components/ui/ThemedView";
 
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { queryBuilder } from "@/helpers/queryBuilder";
@@ -367,9 +368,9 @@ export default function AdvancedSearchForm({
       value:
         attacksConvertedEnergyCost !== "" ? `${attacksConvertedEnergyCostOperator} ${attacksConvertedEnergyCost}` : "",
     },
-    { label: "Attack Cost Energy Type", value: attacksCost.length ? interleaveWithOr(attacksCost) : "" },
+    { label: "Attack Energy Type", value: attacksCost.length ? interleaveWithOr(attacksCost) : "" },
     {
-      label: "Attack Cost Energy Type",
+      label: "AttackEnergy Type for Slots",
       value: attacksCostSlots.filter(Boolean).length ? interleaveWithAnd(attacksCostSlots.filter(Boolean)) : "",
     },
     { label: "Ability Name", value: abilitiesName },
@@ -395,63 +396,184 @@ export default function AdvancedSearchForm({
 
   return (
     <View>
+      <ThemedView style={{ marginBottom: theme.padding.large * -1 }}>
+        <ThemedTextInput
+          value={cardName}
+          onChange={setCardName}
+          placeholder="Card name"
+          style={{ marginBottom: theme.padding.large }}
+        />
+        <View style={styles.buttonRow}>
+          <ThemedButton
+            type="outline"
+            size="small"
+            disabled={false}
+            status={cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 ? "active" : "default"}
+            title="Card Type"
+            onPress={() => setCardTypeModalVisible(true)}
+            style={styles.halfButton}
+          />
+          <ThemedButton
+            type="outline"
+            size="small"
+            disabled={false}
+            status={cardRules ? "active" : "default"}
+            title="Rules"
+            onPress={() => setRulesModalVisible(true)}
+            style={styles.halfButton}
+          />
+        </View>
+        <View style={styles.buttonRow}>
+          <ThemedButton
+            type="outline"
+            size="small"
+            disabled={false}
+            status={
+              attacksName ||
+              attacksDamage !== "" ||
+              attacksText ||
+              attacksCost.length > 0 ||
+              attacksConvertedEnergyCost !== "" ||
+              (attacksCostSlots && attacksCostSlots.some((v) => v))
+                ? "active"
+                : "default"
+            }
+            title="Attacks"
+            onPress={() => setAttacksModalVisible(true)}
+            style={styles.halfButton}
+          />
+          <ThemedButton
+            type="outline"
+            size="small"
+            disabled={false}
+            status={abilitiesName || abilitiesText || hasAnyAbility ? "active" : "default"}
+            title="Abilities"
+            onPress={() => setAbilitiesModalVisible(true)}
+            style={styles.halfButton}
+          />
+        </View>
+        <View style={styles.buttonRow}>
+          <ThemedButton
+            type="outline"
+            size="small"
+            disabled={false}
+            status={cardHp !== "" || cardConvertedRetreatCost !== "" ? "active" : "default"}
+            title="Stats"
+            onPress={() => setStatsModalVisible(true)}
+            style={styles.halfButton}
+          />
+          <ThemedButton
+            type="outline"
+            size="small"
+            disabled={false}
+            status={cardStage.length > 0 || cardEvolvesFrom || cardEvolvesTo ? "active" : "default"}
+            title="Evolution"
+            onPress={() => setEvolutionModalVisible(true)}
+            style={styles.halfButton}
+          />
+        </View>
+        <View style={styles.buttonRow}>
+          <ThemedButton
+            type="outline"
+            size="small"
+            disabled={false}
+            status={cardWeaknessesType.length > 0 || cardResistancesType.length > 0 ? "active" : "default"}
+            title="Weak/Res"
+            onPress={() => setWeakResModalVisible(true)}
+            style={styles.halfButton}
+          />
+          <ThemedButton
+            type="outline"
+            size="small"
+            disabled={false}
+            status={
+              cardRegulationMark.length > 0 || cardSetName.length > 0 || cardNumber !== "" || cardSetNumber
+                ? "active"
+                : "default"
+            }
+            title="Edition"
+            onPress={() => setEditionModalVisible(true)}
+            style={styles.halfButton}
+          />
+        </View>
+        <ThemedSwitch
+          value={removeDuplicates}
+          label="Hide duplicates"
+          onValueChange={onRemoveDuplicatesChange}
+          hint="If enabled, cards with same stats but different images or sets will be displayed only once."
+          style={styles.switchContainer}
+        />
+      </ThemedView>
+      <ThemedView
+        layout="rounded"
+        style={{ paddingHorizontal: theme.padding.medium, position: "relative", zIndex: 2 }}
+      >
+        <ThemedButton
+          title="Reset"
+          size="small"
+          width={summaryFields.filter((f: { value: any }) => f.value && f.value !== "").length > 0 ? vw(28) : vw(32)}
+          type="alternative"
+          onPress={handleReset}
+        />
+        <ThemedButton
+          title={"Search"}
+          type="main"
+          width={vw(42)}
+          size="large"
+          onPress={handleSubmit}
+          status={!isAnyFilterSet || loading ? "disabled" : "default"}
+          disabled={!isAnyFilterSet || loading}
+        />
+      </ThemedView>
       {summaryFields.filter((f) => f.value && f.value !== "").length > 0 && (
-        <View style={styles.summaryContainer}>
+        <View>
           <LinearGradient
-            colors={["rgba(255,255,255,0)", "rgba(255,255,255,0)", theme.colors.darkGrey, theme.colors.darkGrey]}
-            locations={[0, 0.4, 0.4, 1]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={styles.summaryLabel}
+            colors={[theme.colors.darkGrey, theme.colors.lightGrey]}
+            start={{ x: 0.2, y: 0 }}
+            end={{ x: 0.4, y: 0.7 }}
+            style={styles.summaryContainer}
           >
-            <ThemedText type="label">You are searching for</ThemedText>
-          </LinearGradient>
-          <View>
-            {summaryFields
-              .filter((f) => f.value && f.value !== "")
-              .map((f) => {
-                let valueStr = typeof f.value === "string" ? f.value.trim() : null;
-                // Replace ">=" with "≥" and "<=" with "≤" for display
-                if (valueStr && valueStr.startsWith(">=")) valueStr = valueStr.replace(/^>=/, "≥");
-                if (valueStr && valueStr.startsWith("<=")) valueStr = valueStr.replace(/^<=/, "≤");
-                const operatorMatch = valueStr ? valueStr.match(/^(=|≥|≤|>|<|\+|×)\s?/) : null;
-                let operator = "";
-                let restOfValue = valueStr;
+            <ThemedText
+              type="h4"
+              style={styles.summaryTitle}
+            >
+              You are searching for
+            </ThemedText>
+            <View>
+              {summaryFields
+                .filter((f) => f.value && f.value !== "")
+                .map((f) => {
+                  let valueStr = typeof f.value === "string" ? f.value.trim() : null;
+                  // Replace ">=" with "≥" and "<=" with "≤" for display
+                  if (valueStr && valueStr.startsWith(">=")) valueStr = valueStr.replace(/^>=/, "≥");
+                  if (valueStr && valueStr.startsWith("<=")) valueStr = valueStr.replace(/^<=/, "≤");
+                  const operatorMatch = valueStr ? valueStr.match(/^(=|≥|≤|>|<|\+|×)\s?/) : null;
+                  let operator = "";
+                  let restOfValue = valueStr;
 
-                if (operatorMatch && valueStr) {
-                  operator = operatorMatch[0]; // The operator and potential space
-                  restOfValue = valueStr.substring(operator.length);
-                }
+                  if (operatorMatch && valueStr) {
+                    operator = operatorMatch[0]; // The operator and potential space
+                    restOfValue = valueStr.substring(operator.length);
+                  }
 
-                // Special handling for Attack Damage with + or ×
-                const isAttackDamageSpecialCase =
-                  f.label === "Attack Damage" && (operator.trim() === "+" || operator.trim() === "×");
+                  // Special handling for Attack Damage with + or ×
+                  const isAttackDamageSpecialCase =
+                    f.label === "Attack Damage" && (operator.trim() === "+" || operator.trim() === "×");
 
-                return (
-                  <View
-                    style={styles.summaryItemContainer}
-                    key={f.label}
-                  >
-                    <View style={styles.summaryDotCol}>
-                      <Svg
-                        height={theme.padding.xsmall}
-                        width={theme.padding.xsmall}
-                      >
-                        <Circle
-                          cx={3}
-                          cy={3}
-                          r={3}
-                          fill={theme.colors.green}
-                        />
-                      </Svg>
-                    </View>
-                    <View style={styles.summaryTextCol}>
+                  return (
+                    <View
+                      style={styles.summaryItemContainer}
+                      key={f.label}
+                    >
                       <ThemedText>
-                        <Text style={{ fontWeight: "bold" }}>
+                        <ThemedText
+                          color={theme.colors.white}
+                          fontWeight="bold"
+                        >
                           {f.label}
                           {/* Adjust separator based on operator type and special case */}
                           {isAttackDamageSpecialCase ? " = " : operator ? " " : ": "}
-                        </Text>
+                        </ThemedText>
                         {/* Show the correct value, string or React element */}
                         {isAttackDamageSpecialCase ? (
                           <>
@@ -470,142 +592,13 @@ export default function AdvancedSearchForm({
                         )}
                       </ThemedText>
                     </View>
-                  </View>
-                );
-              })}
-          </View>
+                  );
+                })}
+            </View>
+          </LinearGradient>
         </View>
       )}
-      <View
-        style={
-          summaryFields.filter((f: { value: any }) => f.value && f.value !== "").length > 0
-            ? styles.mainButtonsRowSummary
-            : styles.mainButtonsRow
-        }
-      >
-        <ThemedButton
-          title="Reset"
-          size="small"
-          width={summaryFields.filter((f: { value: any }) => f.value && f.value !== "").length > 0 ? vw(28) : vw(32)}
-          type="alternative"
-          onPress={handleReset}
-        />
-        <ThemedButton
-          title={"Search"}
-          width={summaryFields.filter((f: { value: any }) => f.value && f.value !== "").length > 0 ? vw(48) : vw(52)}
-          icon="search"
-          onPress={handleSubmit}
-          status={!isAnyFilterSet || loading ? "disabled" : "default"}
-          disabled={!isAnyFilterSet || loading}
-        />
-      </View>
-      <ThemedTextInput
-        value={cardName}
-        onChange={setCardName}
-        placeholder="Card name"
-        style={{ marginBottom: theme.padding.medium }}
-      />
-      <View style={styles.buttonRow}>
-        <ThemedButton
-          type="outline"
-          size="large"
-          disabled={false}
-          icon="arrow"
-          status={cardSupertype.length > 0 || cardSubtypes.length > 0 || cardTypes.length > 0 ? "active" : "default"}
-          title="card type"
-          onPress={() => setCardTypeModalVisible(true)}
-          style={styles.halfButton}
-        />
-        <ThemedButton
-          type="outline"
-          size="large"
-          disabled={false}
-          icon="arrow"
-          status={cardRules ? "active" : "default"}
-          title="rules"
-          onPress={() => setRulesModalVisible(true)}
-          style={styles.halfButton}
-        />
-      </View>
-      <View style={styles.buttonRow}>
-        <ThemedButton
-          type="outline"
-          size="large"
-          disabled={false}
-          icon="arrow"
-          status={
-            attacksName ||
-            attacksDamage !== "" ||
-            attacksText ||
-            attacksCost.length > 0 ||
-            attacksConvertedEnergyCost !== "" ||
-            (attacksCostSlots && attacksCostSlots.some((v) => v))
-              ? "active"
-              : "default"
-          }
-          title="attacks"
-          onPress={() => setAttacksModalVisible(true)}
-          style={styles.halfButton}
-        />
-        <ThemedButton
-          type="outline"
-          size="large"
-          disabled={false}
-          icon="arrow"
-          status={abilitiesName || abilitiesText || hasAnyAbility ? "active" : "default"}
-          title="abilities"
-          onPress={() => setAbilitiesModalVisible(true)}
-          style={styles.halfButton}
-        />
-      </View>
-      <View style={styles.buttonRow}>
-        <ThemedButton
-          type="outline"
-          size="large"
-          disabled={false}
-          icon="arrow"
-          status={cardHp !== "" || cardConvertedRetreatCost !== "" ? "active" : "default"}
-          title="stats"
-          onPress={() => setStatsModalVisible(true)}
-          style={styles.halfButton}
-        />
-        <ThemedButton
-          type="outline"
-          size="large"
-          disabled={false}
-          icon="arrow"
-          status={cardStage.length > 0 || cardEvolvesFrom || cardEvolvesTo ? "active" : "default"}
-          title="evolution"
-          onPress={() => setEvolutionModalVisible(true)}
-          style={styles.halfButton}
-        />
-      </View>
-      <View style={styles.buttonRow}>
-        <ThemedButton
-          type="outline"
-          size="large"
-          disabled={false}
-          icon="arrow"
-          status={cardWeaknessesType.length > 0 || cardResistancesType.length > 0 ? "active" : "default"}
-          title="weak/res"
-          onPress={() => setWeakResModalVisible(true)}
-          style={styles.halfButton}
-        />
-        <ThemedButton
-          type="outline"
-          size="large"
-          disabled={false}
-          icon="arrow"
-          status={
-            cardRegulationMark.length > 0 || cardSetName.length > 0 || cardNumber !== "" || cardSetNumber
-              ? "active"
-              : "default"
-          }
-          title="edition"
-          onPress={() => setEditionModalVisible(true)}
-          style={styles.halfButton}
-        />
-      </View>
+
       <CardTypeModal
         visible={cardTypeModalVisible}
         onClose={() => setCardTypeModalVisible(false)}
@@ -693,13 +686,6 @@ export default function AdvancedSearchForm({
         setCardNumber={setCardNumber}
         cardSetNumber={cardSetNumber}
         setCardSetNumber={setCardSetNumber}
-      />
-      <ThemedSwitch
-        value={removeDuplicates}
-        label="Hide duplicates"
-        onValueChange={onRemoveDuplicatesChange}
-        hint="If enabled, cards with same stats but different images or sets will be displayed only once."
-        style={styles.switchContainer}
       />
     </View>
   );
