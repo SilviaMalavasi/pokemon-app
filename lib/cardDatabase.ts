@@ -113,7 +113,7 @@ async function safeExecuteAsync(stmt: SQLiteStatement, params: any[], itemType: 
     await stmt.executeAsync(params);
   } catch (error) {
     console.error(`Error executing statement for ${itemType} with ID ${itemId}:`, error);
-    // Don't throw, allow the process to continue with other items
+    throw error; // Re-throw the error to ensure it's handled upstream
   }
 }
 
@@ -167,8 +167,6 @@ async function populateDataFromJSON(
         );
       }
       console.log("CardSet populated successfully.");
-    } catch (error) {
-      console.error("Error populating CardSet:", error);
     } finally {
       await insertSetStmt.finalizeAsync();
     }
@@ -192,8 +190,6 @@ async function populateDataFromJSON(
         "abilities"
       );
       console.log("Abilities populated successfully.");
-    } catch (error) {
-      console.error("Error populating Abilities:", error);
     } finally {
       await insertAbilityStmt.finalizeAsync();
     }
@@ -218,8 +214,6 @@ async function populateDataFromJSON(
         "attacks"
       );
       console.log("Attacks populated successfully.");
-    } catch (error) {
-      console.error("Error populating Attacks:", error);
     } finally {
       await insertAttackStmt.finalizeAsync();
     }
@@ -294,8 +288,6 @@ async function populateDataFromJSON(
         "cards"
       );
       console.log("Card data populated successfully.");
-    } catch (error) {
-      console.error("Error populating Card table:", error);
     } finally {
       await insertCardStmt.finalizeAsync();
     }
@@ -333,26 +325,23 @@ async function populateDataFromJSON(
     );
 
     // --- CardAbilities Population (BULK INSERT) ---
-    try {
-      await processBatch(
-        db,
-        filteredCardAbilitiesData,
-        async (batch) => {
-          if (batch.length === 0) return;
-          // Build bulk insert statement with inlined values
-          const values = batch.map((item) => `(${item.id}, ${item.cardId}, ${item.abilityId})`).join(", ");
-          const sql = `INSERT OR IGNORE INTO CardAbilities (id, cardId, abilityId) VALUES ${values}`;
-          await db.execAsync(sql);
-          processed += batch.length;
-          if (setProgress) setProgress(processed / total);
-        },
-        BATCH_SIZE,
-        "card abilities"
-      );
-      console.log("CardAbilities populated successfully.");
-    } catch (error) {
-      console.error("Error populating CardAbilities:", error);
-    }
+    // No specific try-catch here, errors from processBatch will propagate to the main try-catch
+    await processBatch(
+      db,
+      filteredCardAbilitiesData,
+      async (batch) => {
+        if (batch.length === 0) return;
+        // Build bulk insert statement with inlined values
+        const values = batch.map((item) => `(${item.id}, ${item.cardId}, ${item.abilityId})`).join(", ");
+        const sql = `INSERT OR IGNORE INTO CardAbilities (id, cardId, abilityId) VALUES ${values}`;
+        await db.execAsync(sql);
+        processed += batch.length;
+        if (setProgress) setProgress(processed / total);
+      },
+      BATCH_SIZE,
+      "card abilities"
+    );
+    console.log("CardAbilities populated successfully.");
 
     // ---- CardAttacks Population ----
     console.log(`Populating CardAttacks (${cardAttacksData.length} items)...`);
@@ -365,35 +354,32 @@ async function populateDataFromJSON(
     );
 
     // --- CardAttacks Population (BULK INSERT) ---
-    try {
-      await processBatch(
-        db,
-        filteredCardAttacksData,
-        async (batch) => {
-          if (batch.length === 0) return;
-          // Improved escape function to handle null/undefined and strings
-          const escape = (val: string | null | undefined) =>
-            val == null ? "NULL" : `'${String(val).replace(/'/g, "''")}'`;
-          const values = batch
-            .map(
-              (item) =>
-                `(${item.id}, ${item.cardId}, ${item.attackId}, ${escape(item.cost)}, ${
-                  item.convertedEnergyCost == null ? "NULL" : item.convertedEnergyCost
-                }, ${escape(item.damage)})`
-            )
-            .join(", ");
-          const sql = `INSERT OR IGNORE INTO CardAttacks (id, cardId, attackId, cost, convertedEnergyCost, damage) VALUES ${values}`;
-          await db.execAsync(sql);
-          processed += batch.length;
-          if (setProgress) setProgress(processed / total);
-        },
-        BATCH_SIZE,
-        "card attacks"
-      );
-      console.log("CardAttacks populated successfully.");
-    } catch (error) {
-      console.error("Error populating CardAttacks:", error);
-    }
+    // No specific try-catch here, errors from processBatch will propagate to the main try-catch
+    await processBatch(
+      db,
+      filteredCardAttacksData,
+      async (batch) => {
+        if (batch.length === 0) return;
+        // Improved escape function to handle null/undefined and strings
+        const escape = (val: string | null | undefined) =>
+          val == null ? "NULL" : `'${String(val).replace(/'/g, "''")}'`;
+        const values = batch
+          .map(
+            (item) =>
+              `(${item.id}, ${item.cardId}, ${item.attackId}, ${escape(item.cost)}, ${
+                item.convertedEnergyCost == null ? "NULL" : item.convertedEnergyCost
+              }, ${escape(item.damage)})`
+          )
+          .join(", ");
+        const sql = `INSERT OR IGNORE INTO CardAttacks (id, cardId, attackId, cost, convertedEnergyCost, damage) VALUES ${values}`;
+        await db.execAsync(sql);
+        processed += batch.length;
+        if (setProgress) setProgress(processed / total);
+      },
+      BATCH_SIZE,
+      "card attacks"
+    );
+    console.log("CardAttacks populated successfully.");
 
     console.log("Data population complete.");
   } catch (error) {
