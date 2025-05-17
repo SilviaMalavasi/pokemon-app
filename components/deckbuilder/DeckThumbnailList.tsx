@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import CompactCard from "@/components/CompactCard";
-import styles from "@/style/deckbuilder/DeckThumbnailListStyle";
 import { TouchableOpacity } from "react-native";
 import ThemedModal from "@/components/base/ThemedModal";
-import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
+import styles from "@/style/deckbuilder/DeckThumbnailListStyle";
+import { theme } from "@/style/ui/Theme";
+import ThemedButton from "@/components/base/ThemedButton";
 
 interface DeckThumbnailListProps {
   cards: Array<{ cardId: string; quantity: number; name?: string; imagesLarge?: string; supertype?: string }>;
@@ -22,6 +23,9 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
   const { db } = require("@/components/context/UserDatabaseContext").useUserDatabase();
   const { db: cardDb } = useCardDatabase();
   const [cardDataMap, setCardDataMap] = useState<{ [id: string]: { name: string; supertype: string } }>({});
+  // Add state for supertype and subtypes
+  const [selectedCardSupertype, setSelectedCardSupertype] = useState<string>("");
+  const [selectedCardSubtypes, setSelectedCardSubtypes] = useState<string[]>([]);
 
   React.useEffect(() => {
     if (!cardDb || !cards || cards.length === 0) {
@@ -49,15 +53,50 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
     return <ThemedText>No cards in this deck.</ThemedText>;
   }
 
-  const handleQtyPress = (card: any) => {
+  // Update handleQtyPress to fetch supertype and subtypes
+  const handleQtyPress = async (card: any) => {
     setSelectedCard(card);
     setStagedQty(card.quantity || 1);
+    let supertype = "";
+    let subtypes: string[] = [];
+    if (cardDb) {
+      try {
+        // Use a type assertion for dbCard
+        const dbCard = (await cardDb.getFirstAsync?.("SELECT supertype, subtypes FROM Card WHERE cardId = ?", [
+          card.cardId,
+        ])) as { supertype?: string; subtypes?: string | string[] } | undefined;
+        if (dbCard && typeof dbCard === "object") {
+          if (typeof dbCard.supertype === "string") {
+            supertype = dbCard.supertype;
+          }
+          if (dbCard.subtypes !== undefined) {
+            let raw = dbCard.subtypes;
+            if (typeof raw === "string") {
+              try {
+                const parsed = JSON.parse(raw || "[]");
+                if (Array.isArray(parsed)) subtypes = parsed;
+                else if (parsed) subtypes = [parsed];
+              } catch {
+                if (raw.trim() !== "") subtypes = [raw];
+              }
+            } else if (Array.isArray(raw)) {
+              subtypes = raw;
+            }
+          }
+        }
+      } catch {}
+    }
+    setSelectedCardSupertype(supertype);
+    setSelectedCardSubtypes(subtypes);
     setModalVisible(true);
   };
 
   const handleQtyChange = (qty: number) => {
     setStagedQty(qty);
   };
+
+  // isBasicEnergy logic
+  const isBasicEnergy = selectedCardSupertype === "Energy" && selectedCardSubtypes.includes("Basic");
 
   const handleConfirm = async () => {
     if (!db || !selectedCard) return;
@@ -70,6 +109,8 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
     await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(cardsArr), deckId]);
     setModalVisible(false);
     setSelectedCard(null);
+    setSelectedCardSupertype("");
+    setSelectedCardSubtypes([]);
     if (onCardsChanged) onCardsChanged();
   };
 
@@ -152,7 +193,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
   };
 
   return (
-    <View style={{ backgroundColor: "transparent" }}>
+    <View>
       {(["Pokémon", "Trainer", "Energy"] as const).map((group, idx) => renderGroup(group, grouped[group], idx))}
       {/* Modal for quantity selection */}
       <ThemedModal
@@ -166,30 +207,52 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
       >
         <ThemedText
           type="h4"
-          style={{ marginBottom: 16, textAlign: "center" }}
+          style={{ paddingVertical: theme.padding.medium, textAlign: "center" }}
         >
           Set Quantity for{" "}
-          <ThemedText color={theme.colors.green}>{selectedCard?.name || selectedCard?.cardId}</ThemedText>
+          <ThemedText
+            type="h4"
+            color={theme.colors.green}
+          >
+            {selectedCard?.name || selectedCard?.cardId}
+          </ThemedText>
         </ThemedText>
         <View style={styles.numbersModalContainer}>
-          {[0, 1, 2, 3, 4].map((qty) => (
-            <TouchableOpacity
-              key={qty}
-              onPress={() => handleQtyChange(qty)}
-              style={[
-                {
-                  backgroundColor: stagedQty === qty ? theme.colors.green : theme.colors.mediumGrey,
-                },
-                styles.numbersModal,
-              ]}
-            >
-              <ThemedText
-                style={{ color: stagedQty === qty ? theme.colors.darkGrey : theme.colors.grey, fontWeight: "bold" }}
-              >
-                {qty}
-              </ThemedText>
-            </TouchableOpacity>
-          ))}
+          {isBasicEnergy ? (
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+              <ThemedButton
+                title="-"
+                type="outline"
+                size="large"
+                onPress={() => setStagedQty((q) => Math.max(0, q - 1))}
+                style={[styles.numbersModal, { paddingBottom: theme.padding.xsmall }]}
+                disabled={stagedQty === 0}
+              />
+              <ThemedText style={{ fontSize: 22, marginHorizontal: 16, fontWeight: "bold" }}>{stagedQty}</ThemedText>
+              <ThemedButton
+                title="+"
+                type="outline"
+                size="large"
+                onPress={() => setStagedQty((q) => q + 1)}
+                style={[styles.numbersModal, { paddingBottom: theme.padding.xsmall }]}
+              />
+            </View>
+          ) : (
+            [0, 1, 2, 3, 4].map((qty) => (
+              <ThemedButton
+                key={qty}
+                title={qty.toString()}
+                type="outline"
+                size="large"
+                onPress={() => handleQtyChange(qty)}
+                style={
+                  stagedQty === qty
+                    ? [styles.numbersModal, { backgroundColor: theme.colors.green }]
+                    : styles.numbersModal
+                }
+              />
+            ))
+          )}
         </View>
       </ThemedModal>
     </View>

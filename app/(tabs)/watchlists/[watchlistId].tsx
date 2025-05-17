@@ -5,9 +5,10 @@ import MainScrollView from "@/components/ui/MainScrollView";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import { ActivityIndicator, View } from "react-native";
+import AddCardToWatchList from "@/components/deckbuilder/AddCardToWatchlist";
+import WatchlistThumbnailList from "@/components/deckbuilder/WatchlistThumbnailList";
+import ThemedView from "@/components/ui/ThemedView";
 import { theme } from "@/style/ui/Theme";
-import CompactCard from "@/components/CompactCard";
-import WatchlistStyle from "@/style/WatchlistStyle";
 
 export default function WatchListDetailScreen() {
   const { watchlistId } = useLocalSearchParams<{ watchlistId: string }>();
@@ -83,25 +84,68 @@ export default function WatchListDetailScreen() {
           <ThemedText>Error loading watchlist: {error.message}</ThemedText>
         ) : watchList ? (
           <>
-            <ThemedText type="h2">Cards ({getCardsArray().length})</ThemedText>
-            {getCardsArray().length === 0 ? (
-              <ThemedText>No cards in this watchlist.</ThemedText>
-            ) : (
-              <View style={WatchlistStyle.cardList}>
-                {cardDetails.map((card: any, idx: number) => (
-                  <View key={card.cardId || idx}>
-                    <CompactCard
-                      card={card}
-                      onImageLoad={() => {}}
-                      loading={false}
-                    />
-                  </View>
-                ))}
+            <AddCardToWatchList
+              watchlist={watchList}
+              db={db}
+              onCardAdded={async () => {
+                // Refresh watchlist after card is added
+                if (db) {
+                  const updatedWatchList = await db.getFirstAsync<any>(`SELECT * FROM WatchedCards WHERE id = ?`, [
+                    watchlistId,
+                  ]);
+                  setWatchList(updatedWatchList);
+                  // Optionally refresh card details
+                  let cardsArr = [];
+                  try {
+                    cardsArr = Array.isArray(updatedWatchList?.cards)
+                      ? updatedWatchList.cards
+                      : JSON.parse(updatedWatchList?.cards || "[]");
+                  } catch {
+                    cardsArr = [];
+                  }
+                  if (cardsArr.length > 0 && cardDb) {
+                    const ids = cardsArr.map((c: any) => c.cardId);
+                    const placeholders = ids.map(() => "?").join(",");
+                    const details = await cardDb.getAllAsync<any>(
+                      `SELECT cardId, name, imagesLarge FROM Card WHERE cardId IN (${placeholders})`,
+                      ids
+                    );
+                    setCardDetails(details);
+                  } else {
+                    setCardDetails([]);
+                  }
+                }
+              }}
+            />
+            <ThemedView style={{ marginBottom: theme.padding.large * -1.5 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginTop: theme.padding.small,
+                  marginBottom: theme.padding.large,
+                }}
+              >
+                <ThemedText type="h2">Cards ({cardDetails.length})</ThemedText>
               </View>
-            )}
+              <WatchlistThumbnailList cards={cardDetails} />
+              {cardDetails.length === 0 ? (
+                <ThemedText style={{ paddingBottom: theme.padding.medium }}>No cards in this watchlist.</ThemedText>
+              ) : (
+                cardDetails.map((card) => (
+                  <View
+                    key={card.cardId}
+                    style={{ marginBottom: theme.padding.small }}
+                  >
+                    <ThemedText>{card.name}</ThemedText>
+                  </View>
+                ))
+              )}
+            </ThemedView>
           </>
         ) : (
-          <ThemedText>WatchList not found.</ThemedText>
+          <ThemedText>Watchlist not found.</ThemedText>
         )}
       </View>
     </MainScrollView>

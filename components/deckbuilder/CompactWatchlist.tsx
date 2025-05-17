@@ -165,6 +165,7 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
               title="View Watchlist"
               type="main"
               size="small"
+              width={vw(34)}
               onPress={() =>
                 router.push({ pathname: "/watchlists/[watchlistId]", params: { watchlistId: watchlist.id } })
               }

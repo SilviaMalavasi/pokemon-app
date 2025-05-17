@@ -67,7 +67,6 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
           return;
         }
       } else {
-        setError("Please select or create a watchlist.");
         setIsSaving(false);
         return;
       }
