@@ -505,7 +505,7 @@ export default function AdvancedSearchForm({
       </ThemedView>
       <ThemedView
         layout="rounded"
-        style={{ paddingHorizontal: theme.padding.medium, position: "relative", zIndex: 2 }}
+        style={{ position: "relative", zIndex: 2 }}
       >
         <ThemedButton
           title="Reset"
@@ -513,6 +513,7 @@ export default function AdvancedSearchForm({
           width={summaryFields.filter((f: { value: any }) => f.value && f.value !== "").length > 0 ? vw(28) : vw(32)}
           type="alternative"
           onPress={handleReset}
+          style={{ marginLeft: theme.padding.medium }}
         />
         <ThemedButton
           title={"Search"}
@@ -522,6 +523,7 @@ export default function AdvancedSearchForm({
           onPress={handleSubmit}
           status={!isAnyFilterSet || loading ? "disabled" : "default"}
           disabled={!isAnyFilterSet || loading}
+          style={{ marginRight: theme.padding.medium }}
         />
       </ThemedView>
       {summaryFields.filter((f) => f.value && f.value !== "").length > 0 && (

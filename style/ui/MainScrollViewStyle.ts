@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
       {
         color: theme.colors.shadowDark,
         offsetX: 0,
-        offsetY: 16,
-        blurRadius: "20px",
+        offsetY: 8,
+        blurRadius: "8px",
       },
     ],
   },

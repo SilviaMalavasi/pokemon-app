@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
   },
   content: {
     marginTop: theme.padding.small,
-    marginLeft: theme.padding.large,
   },
 });
 

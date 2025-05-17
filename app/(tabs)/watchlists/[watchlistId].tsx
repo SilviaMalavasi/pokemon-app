@@ -272,19 +272,19 @@ export default function WatchListDetailScreen() {
               <ThemedButton
                 title="Clone"
                 type="main"
-                size="large"
+                size="small"
                 onPress={handleCloneWatchlist}
               />
               <ThemedButton
                 title="Edit"
                 type="main"
-                size="large"
+                size="small"
                 onPress={handleEditWatchlist}
               />
               <ThemedButton
                 title="Delete"
                 type="alternative"
-                size="large"
+                size="small"
                 onPress={handleDeleteWatchlist}
               />
             </ThemedView>

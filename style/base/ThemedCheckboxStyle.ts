@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { theme } from "@/style/ui/Theme";
+import { vw } from "@/helpers/viewport";
 
 const styles = StyleSheet.create({
   container: {
@@ -19,15 +20,15 @@ const styles = StyleSheet.create({
     zIndex: 1,
     top: 0,
     left: 0,
-    width: theme.padding.medium + 6,
-    height: theme.padding.medium + 6,
+    width: theme.padding.medium * 1.5 + 6,
+    height: theme.padding.medium * 1.5 + 6,
     borderRadius: theme.borderRadius.small,
     backgroundColor: theme.colors.lightGrey,
     boxShadow: [
       {
         offsetX: 6,
-        offsetY: 8,
-        blurRadius: "5px",
+        offsetY: 6,
+        blurRadius: "8px",
         color: theme.colors.darkGrey,
         inset: true,
       },
@@ -39,11 +40,11 @@ const styles = StyleSheet.create({
   },
   checkboxInner: {
     position: "absolute",
-    top: 4,
-    left: 4,
+    top: 5,
+    left: 5,
     zIndex: 2,
-    width: theme.padding.medium,
-    height: theme.padding.medium,
+    width: theme.padding.medium * 1.5 - 2,
+    height: theme.padding.medium * 1.5 - 2,
     backgroundColor: theme.colors.green,
     borderRadius: theme.borderRadius.small,
   },
@@ -51,7 +52,8 @@ const styles = StyleSheet.create({
   label: {
     fontSize: theme.fontSizes.font14,
     color: theme.colors.grey,
-    paddingLeft: theme.padding.medium,
+    paddingTop: vw(1),
+    paddingLeft: theme.padding.medium * 1.5,
     paddingRight: theme.padding.small,
   },
 });

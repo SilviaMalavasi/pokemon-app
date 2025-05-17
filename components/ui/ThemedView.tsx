@@ -35,9 +35,9 @@ export default function ThemedView({ children, layout = "big", style }: ThemedVi
   } else if (layout === "rounded") {
     return (
       <LinearGradient
-        colors={[theme.colors.lightGrey, theme.colors.mediumGrey]}
-        start={{ x: 0.2, y: 0 }}
-        end={{ x: 0.4, y: 1 }}
+        colors={[theme.colors.lightGrey, theme.colors.darkGrey]}
+        start={{ x: 0.35, y: 0 }}
+        end={{ x: 0.4, y: 1.8 }}
         style={[styles.containerRounded, style]}
         onLayout={(e) => setContainerHeight(e.nativeEvent.layout.height)}
       >

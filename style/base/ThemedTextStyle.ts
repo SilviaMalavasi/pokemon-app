@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
   },
   buttonOutlineSmall: {
     fontFamily: "Inter-Medium",
-    fontSize: theme.fontSizes.font14,
-    lineHeight: theme.fontSizes.font14 * 1.15,
+    fontSize: theme.fontSizes.font15,
+    lineHeight: theme.fontSizes.font15 * 1.15,
   },
   chip: {
     fontFamily: "Inter-Medium",

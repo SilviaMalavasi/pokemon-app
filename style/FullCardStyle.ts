@@ -1,11 +1,15 @@
 import { StyleSheet } from "react-native";
 import { theme } from "@/style/ui/Theme";
+import { vw } from "@/helpers/viewport";
+
+const containersPadding = theme.padding.medium;
+const cardWidth = vw(100) - containersPadding * 2;
 
 const styles = StyleSheet.create({
   imageContainer: {
     position: "relative",
     justifyContent: "center",
-    width: "100%",
+    width: cardWidth,
     marginBottom: theme.padding.xlarge,
     borderRadius: theme.borderRadius.large,
     boxShadow: [
@@ -26,17 +30,26 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
+    height: cardWidth / 0.71,
   },
   summaryContainer: {
     position: "relative",
     zIndex: 1,
     marginTop: theme.padding.large * -1,
-    paddingTop: theme.padding.xlarge,
+    paddingTop: theme.padding.xlarge * 0.75,
     paddingBottom: theme.padding.large,
     paddingHorizontal: theme.padding.medium,
     borderBottomLeftRadius: theme.borderRadius.xlarge,
     borderBottomRightRadius: theme.borderRadius.xlarge,
     marginBottom: theme.padding.large,
+    boxShadow: [
+      {
+        color: theme.colors.shadowDark,
+        offsetX: 0,
+        offsetY: 16,
+        blurRadius: "20px",
+      },
+    ],
   },
   cardDetailsContainer: {
     position: "relative",

@@ -322,19 +322,19 @@ export default function DeckScreen() {
                 <ThemedButton
                   title="Clone"
                   type="main"
-                  size="large"
+                  size="small"
                   onPress={handleCloneDeck}
                 />
                 <ThemedButton
                   title="Edit"
                   type="main"
-                  size="large"
+                  size="small"
                   onPress={handleEditPress}
                 />
                 <ThemedButton
                   title="Delete"
                   type="alternative"
-                  size="large"
+                  size="small"
                   onPress={handleDeletePress}
                 />
               </ThemedView>

@@ -59,12 +59,12 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
               color: theme.colors.shadowLight,
               offsetX: -2,
               offsetY: -2,
-              blurRadius: "12px",
+              blurRadius: "6px",
             },
             {
               color: theme.colors.darkGrey,
-              offsetX: 4,
-              offsetY: 4,
+              offsetX: 6,
+              offsetY: 6,
               blurRadius: "12px",
             },
           ]

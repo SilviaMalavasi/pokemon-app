@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     marginTop: theme.padding.medium,
     borderRadius: theme.borderRadius.xlarge * 1.5,
     overflow: "hidden",
+    width: "100%",
     boxShadow: [
       {
         color: theme.colors.shadowDark,
@@ -44,13 +45,30 @@ const styles = StyleSheet.create({
         offsetY: -16,
         blurRadius: "20px",
       },
+      {
+        color: theme.colors.shadowDark,
+        offsetX: 0,
+        offsetY: 16,
+        blurRadius: "20px",
+      },
     ],
   },
   containerRoundedInner: {
     flexDirection: "row",
+    width: "100%",
     padding: theme.padding.medium,
+    borderRadius: theme.borderRadius.xlarge * 1.5,
     justifyContent: "space-between",
     alignItems: "center",
+    boxShadow: [
+      {
+        offsetX: 1,
+        offsetY: 2,
+        blurRadius: "2px",
+        color: theme.colors.shadowInsetLight,
+        inset: true,
+      },
+    ],
   },
   containerBox: {
     borderRadius: theme.borderRadius.large,

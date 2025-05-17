@@ -577,7 +577,7 @@ export default function FreeSearchForm({
       </ThemedView>
       <ThemedView
         layout="rounded"
-        style={{ paddingHorizontal: theme.padding.medium, position: "relative", zIndex: 2 }}
+        style={{ position: "relative", zIndex: 2 }}
       >
         <ThemedButton
           title="Reset"
@@ -585,6 +585,7 @@ export default function FreeSearchForm({
           width={showFullSummary ? vw(28) : vw(32)}
           type="alternative"
           onPress={handleReset}
+          style={{ marginLeft: theme.padding.medium }}
         />
         <ThemedButton
           title={"Search"}
@@ -594,6 +595,7 @@ export default function FreeSearchForm({
           onPress={handleSubmit}
           status={loading || cardSearch.trim() === "" ? "disabled" : "default"}
           disabled={loading || cardSearch.trim() === ""}
+          style={{ marginRight: theme.padding.medium }}
         />
       </ThemedView>
       {/* Summary of checked fields styled as in AdvancedSearchForm */}
