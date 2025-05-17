@@ -63,15 +63,16 @@ export default function ThemedNumberInput({
 
   return (
     <View style={styles.container}>
-      {label && (
+      {labelHint && (
         <ThemedLabelWithHint
-          label={label}
           labelHint={labelHint}
           showHint={showHint}
           setShowHint={setShowHint}
         />
       )}
       <View style={styles.inputContainer}>
+        <View style={styles.fakeInnerShadow} />
+
         {/* Modal-based single operator select */}
         {showOperatorSelect !== "none" && (
           <>

@@ -33,9 +33,8 @@ export default function ThemedSelect({ label, value, options, onChange, labelHin
     <View style={styles.wrapper}>
       {!value && (
         <View style={styles.container}>
-          {label && (
+          {labelHint && (
             <ThemedLabelWithHint
-              label={label}
               labelHint={labelHint}
               showHint={showHint}
               setShowHint={setShowHint}

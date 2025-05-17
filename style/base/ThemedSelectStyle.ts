@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     paddingTop: theme.padding.xsmall,
   },
   labelHint: {
-    paddingTop: theme.padding.xsmall,
+    paddingTop: theme.padding.small,
   },
 });
 

@@ -33,12 +33,30 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "center",
     height: "100%",
-    width: theme.fontSizes.font24,
-    padding: 4,
+    width: theme.fontSizes.font18,
     zIndex: 2,
   },
   labelHint: {
     paddingTop: theme.padding.small,
+  },
+  fakeInnerShadow: {
+    position: "absolute",
+    zIndex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: theme.borderRadius.medium,
+    backgroundColor: theme.colors.lightGrey,
+    boxShadow: [
+      {
+        offsetX: 6,
+        offsetY: 8,
+        blurRadius: "30px",
+        color: theme.colors.darkGrey,
+        inset: true,
+      },
+    ],
   },
   pickerWrapper: {
     width: vw(12),

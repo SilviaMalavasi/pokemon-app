@@ -13,7 +13,6 @@ interface ThemedModalProps {
   buttonText?: string;
   buttonType?: import("@/style/base/ThemedButtonStyle").ButtonType;
   buttonSize?: "small" | "large";
-  buttonStyle?: any;
   contentStyle?: any;
   onCancelText?: string;
   onCancel?: () => void;
@@ -28,7 +27,6 @@ export default function ThemedModal({
   buttonText = "Close",
   buttonType = "main",
   buttonSize = "large",
-  buttonStyle,
   contentStyle,
   onCancelText,
   onCancel,
@@ -74,7 +72,7 @@ export default function ThemedModal({
                       <ThemedButton
                         title={onCancelText || "Reset"}
                         type="alternative"
-                        size="large"
+                        size="small"
                         onPress={() => {
                           onCancel();
                           onClose();

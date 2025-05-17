@@ -131,7 +131,6 @@ export default function ThemedButton({
         </View>
       ) : null}
       <ThemedText
-        fontWeight={type === "alternative" ? "regular" : undefined}
         type={
           type === "main"
             ? size === "large"
@@ -139,11 +138,13 @@ export default function ThemedButton({
               : "buttonOutlineSmall"
             : type === "alternative"
             ? size === "large"
+              ? "buttonAlternative"
+              : "buttonAlternativeSmall"
+            : type === "outline"
+            ? size === "large"
               ? "buttonOutline"
               : "buttonOutlineSmall"
-            : size === "large"
-            ? "buttonOutline"
-            : "buttonOutlineSmall"
+            : "button"
         }
         color={
           isDisabled

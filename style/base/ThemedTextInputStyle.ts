@@ -46,12 +46,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "center",
     height: "100%",
-    width: theme.fontSizes.font24,
-    padding: 4,
+    width: theme.fontSizes.font18,
     zIndex: 2,
   },
   labelHint: {
-    paddingTop: theme.padding.small,
+    paddingTop: theme.padding.medium,
   },
 });
 

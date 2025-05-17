@@ -4,17 +4,17 @@ import { Svg, Rect, Path } from "react-native-svg";
 import { theme } from "@/style/ui/Theme";
 
 export interface ThemedLabelWithHintProps {
-  label: string;
-  labelHint?: string;
+  labelHint: string;
   showHint?: boolean;
   setShowHint?: (show: boolean) => void;
   style?: any;
 }
 
 export default function ThemedLabelWithHint({
-  label,
+  labelHint,
   showHint: showHintProp,
   setShowHint: setShowHintProp,
+  style,
 }: ThemedLabelWithHintProps) {
   const [showHint, setShowHint] = useState(false);
   const actualShowHint = showHintProp !== undefined ? showHintProp : showHint;
@@ -24,12 +24,21 @@ export default function ThemedLabelWithHint({
     <>
       <TouchableOpacity
         onPress={() => actualSetShowHint(!actualShowHint)}
-        accessibilityLabel={`Hint for ${label}`}
+        accessibilityLabel={`Hint for ${labelHint}`}
         activeOpacity={1}
+        style={[
+          {
+            position: "absolute",
+            zIndex: 4,
+            top: theme.padding.medium,
+            right: theme.padding.small,
+          },
+          style,
+        ]}
       >
         <Svg
-          width={theme.fontSizes.font14}
-          height={theme.fontSizes.font14}
+          width={theme.fontSizes.font18}
+          height={theme.fontSizes.font18}
           viewBox="0 0 17 17"
           fill="none"
           style={{ marginLeft: theme.padding.small, transform: [{ translateY: theme.padding.xsmall * 0.5 }] }}

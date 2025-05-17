@@ -43,6 +43,16 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSizes.font16,
     lineHeight: theme.fontSizes.font16 * 1.15,
   },
+  buttonAlternative: {
+    fontFamily: "Inter-Regular",
+    fontSize: theme.fontSizes.font16,
+    lineHeight: theme.fontSizes.font16 * 1.15,
+  },
+  buttonAlternativeSmall: {
+    fontFamily: "Inter-Regular",
+    fontSize: theme.fontSizes.font14,
+    lineHeight: theme.fontSizes.font14 * 1.15,
+  },
   buttonOutline: {
     fontFamily: "Inter-Medium",
     fontSize: theme.fontSizes.font16,
@@ -54,10 +64,9 @@ const styles = StyleSheet.create({
     lineHeight: theme.fontSizes.font14 * 1.15,
   },
   chip: {
-    fontFamily: "Inter-Bold",
-    fontSize: theme.fontSizes.font16,
-    lineHeight: theme.fontSizes.font16 * 2,
-    textTransform: "uppercase",
+    fontFamily: "Inter-Medium",
+    fontSize: theme.fontSizes.font14,
+    lineHeight: theme.fontSizes.font14 * 1.15,
   },
   hintIcon: {
     fontFamily: "Inter-Medium",

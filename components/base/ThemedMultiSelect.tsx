@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, Modal, ScrollView, Pressable } from "react-native";
+import { View, ScrollView, Pressable } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedChip from "@/components/base/ThemedChip";
 import ThemedCheckbox from "@/components/base/ThemedCheckbox";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
+import ThemedModal from "@/components/base/ThemedModal";
 import { theme } from "@/style/ui/Theme";
 import styles from "@/style/base/ThemedMultiSelectStyle";
 
@@ -52,68 +53,45 @@ export default function ThemedMultiSelect({
   }, [value]);
 
   return (
-    <View style={[styles.wrapper, style]}>
-      <View style={styles.fakeInnerShadow} />
-      <Pressable
-        onPress={() => setModalVisible(true)}
-        style={styles.pickerWrapper}
-      >
-        <ThemedText style={styles.selectPressable}>
-          {label}
-          {labelHint && (
-            <ThemedLabelWithHint
-              label={label || ""}
-              labelHint={labelHint}
-              setShowHint={setShowHint}
-              showHint={showHint}
-            />
-          )}
-        </ThemedText>
-      </Pressable>
-      <Modal
-        visible={modalVisible}
-        animationType="fade"
-        transparent={true}
-        onRequestClose={cancelSelection}
-      >
-        <View style={styles.modalOverlay}>
+    <>
+      <View style={[styles.wrapper, style]}>
+        <View style={styles.fakeInnerShadow} />
+        {labelHint && (
+          <ThemedLabelWithHint
+            labelHint={labelHint}
+            setShowHint={setShowHint}
+            showHint={showHint}
+            style={{ top: theme.padding.medium - 4 }}
+          />
+        )}
+        <Pressable
+          onPress={() => setModalVisible(true)}
+          style={styles.pickerWrapper}
+        >
+          <ThemedText style={styles.selectPressable}>{label}</ThemedText>
+        </Pressable>
+        <ThemedModal
+          visible={modalVisible}
+          onClose={cancelSelection}
+          buttonText="Set"
+          buttonType="main"
+          buttonSize="small"
+          onCancelText="Cancel"
+          onCancel={cancelSelection}
+          onConfirm={confirmSelection}
+        >
           <View style={styles.modalContainer}>
-            <ScrollView>
-              {options.map((option) => (
-                <ThemedCheckbox
-                  key={option.value}
-                  checked={tempSelected.includes(option.value)}
-                  label={option.label}
-                  onPress={() => handleSelect(option.value)}
-                />
-              ))}
-              <View style={styles.modalActions}>
-                <Pressable
-                  onPress={cancelSelection}
-                  style={styles.modalActionCancel}
-                >
-                  <ThemedText
-                    style={{
-                      color: theme.colors.grey,
-                      paddingVertical: theme.padding.medium,
-                    }}
-                  >
-                    Cancel
-                  </ThemedText>
-                </Pressable>
-                <Pressable onPress={confirmSelection}>
-                  <ThemedText
-                    type="h4"
-                    style={{ paddingVertical: theme.padding.medium, paddingHorizontal: theme.padding.small }}
-                  >
-                    OK
-                  </ThemedText>
-                </Pressable>
-              </View>
-            </ScrollView>
+            {options.map((option) => (
+              <ThemedCheckbox
+                key={option.value}
+                checked={tempSelected.includes(option.value)}
+                label={option.label}
+                onPress={() => handleSelect(option.value)}
+              />
+            ))}
           </View>
-        </View>
-      </Modal>
+        </ThemedModal>
+      </View>
       <View style={styles.selectedAndHintWrapper}>
         {/* Show selected items */}
         {value.length > 0 && (
@@ -140,6 +118,6 @@ export default function ThemedMultiSelect({
           </ThemedText>
         )}
       </View>
-    </View>
+    </>
   );
 }

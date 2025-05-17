@@ -44,14 +44,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   modalContainer: {
-    marginHorizontal: theme.padding.large,
-    backgroundColor: theme.colors.mediumGrey,
-    borderRadius: theme.borderRadius.medium,
-    borderWidth: 1,
-    borderColor: theme.colors.purple,
+    width: "100%",
     paddingHorizontal: theme.padding.medium,
-    paddingVertical: theme.padding.large,
-    ...theme.shadowAlternative,
+    paddingTop: theme.padding.medium,
   },
   modalActions: {
     flexDirection: "row",
@@ -62,20 +57,19 @@ const styles = StyleSheet.create({
     marginRight: theme.padding.small,
   },
   selectedAndHintWrapper: {
-    backgroundColor: "transparent",
-    alignItems: "flex-start",
+    width: "100%",
   },
   selectedWrapper: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "flex-start",
     alignItems: "center",
-    gap: theme.padding.xsmall,
-    backgroundColor: "transparent",
+    gap: theme.padding.small,
     paddingTop: theme.padding.small,
+    paddingBottom: theme.padding.medium,
   },
   labelHint: {
-    paddingTop: theme.padding.small,
+    paddingBottom: theme.padding.medium,
   },
 });
 

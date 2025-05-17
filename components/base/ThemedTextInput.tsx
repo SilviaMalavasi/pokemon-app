@@ -8,7 +8,6 @@ import { theme } from "@/style/ui/Theme";
 import styles from "@/style/base/ThemedTextInputStyle";
 
 export interface ThemedTextInputProps {
-  label?: string;
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -20,7 +19,7 @@ export interface ThemedTextInputProps {
 }
 
 export default forwardRef<TextInput, ThemedTextInputProps>(function ThemedTextInput(
-  { label, value, onChange, placeholder, labelHint, style, onFocus, onBlur, maxChars },
+  { value, onChange, placeholder, labelHint, style, onFocus, onBlur, maxChars },
   ref
 ) {
   const [showHint, setShowHint] = useState(false);
@@ -33,15 +32,14 @@ export default forwardRef<TextInput, ThemedTextInputProps>(function ThemedTextIn
 
   return (
     <View style={[styles.container, style]}>
-      {label && (
-        <ThemedLabelWithHint
-          label={label}
-          labelHint={labelHint}
-          showHint={showHint}
-          setShowHint={setShowHint}
-        />
-      )}
       <View style={{ position: "relative" }}>
+        {labelHint && value.length === 0 && (
+          <ThemedLabelWithHint
+            labelHint={labelHint}
+            setShowHint={setShowHint}
+            showHint={showHint}
+          />
+        )}
         <TextInput
           ref={ref}
           style={[styles.input, { flex: 1 }]}
@@ -56,7 +54,7 @@ export default forwardRef<TextInput, ThemedTextInputProps>(function ThemedTextIn
         {value.length > 0 && (
           <TouchableOpacity
             onPress={() => onChange("")}
-            accessibilityLabel={`Clear ${label || "input"}`}
+            accessibilityLabel={`Clear ${placeholder || "input"}`}
             style={styles.clearIcon}
           >
             <Svg

@@ -25,7 +25,6 @@ import EditionModal, { getEditionFilters } from "@/components/forms/modals/Editi
 import styles from "@/style/forms/AdvancedSearchFormStyle";
 import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
-import { Svg, Circle } from "react-native-svg";
 
 export default function AdvancedSearchForm({
   onSearchResults,

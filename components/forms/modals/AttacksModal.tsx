@@ -83,6 +83,7 @@ export default function AttacksModal({
         value={attacksName}
         onChange={setAttacksName}
         placeholder="Attack Name"
+        labelHint="Ability Name"
       />
       <ThemedNumberInput
         label="Attack Damage"
