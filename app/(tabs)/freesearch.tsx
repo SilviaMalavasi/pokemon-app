@@ -98,7 +98,7 @@ export default function FreeSearchScreen() {
       headerTitle="Free Search"
       scrollRef={scrollRef}
     >
-      <View>
+      <View style={{ paddingBottom: theme.padding.large }}>
         <FreeSearchForm
           key={resetKey}
           onSearchResults={handleSearchResults}

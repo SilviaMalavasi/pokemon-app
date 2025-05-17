@@ -6,7 +6,7 @@ import MainScrollView from "@/components/ui/MainScrollView";
 import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import ThemedModal from "@/components/base/ThemedModal";
-import ThemedView from "@/components/ui/ThemedView";
+import { View } from "react-native";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
 import ThemedText from "@/components/base/ThemedText";
@@ -102,16 +102,17 @@ export default function FullFormScreen() {
         headerTitle="Advanced Search"
         scrollRef={scrollRef}
       >
-        <AdvancedSearchForm
-          onSearchResults={handleSearchResults}
-          setLoading={() => {}}
-          resetKey={resetKey}
-          removeDuplicates={removeDuplicates}
-          onRemoveDuplicatesChange={setRemoveDuplicates}
-          currentPage={1}
-          itemsPerPage={ITEMS_PER_PAGE}
-        />
-
+        <View style={{ paddingBottom: theme.padding.large }}>
+          <AdvancedSearchForm
+            onSearchResults={handleSearchResults}
+            setLoading={() => {}}
+            resetKey={resetKey}
+            removeDuplicates={removeDuplicates}
+            onRemoveDuplicatesChange={setRemoveDuplicates}
+            currentPage={1}
+            itemsPerPage={ITEMS_PER_PAGE}
+          />
+        </View>
         <ThemedModal
           visible={modalVisible}
           buttonType="main"

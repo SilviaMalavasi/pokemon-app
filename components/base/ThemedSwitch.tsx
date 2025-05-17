@@ -73,12 +73,20 @@ export default function ThemedSwitch({
               </Svg>
             </TouchableOpacity>
           ) : (
-            <ThemedText
-              type="default"
-              style={styles.label}
+            <TouchableOpacity
+              onPress={() => {
+                if (!disabled) onValueChange(!value);
+              }}
+              disabled={disabled}
+              style={styles.labelHintTouchable}
             >
-              {label}
-            </ThemedText>
+              <ThemedText
+                type="default"
+                style={styles.label}
+              >
+                {label}
+              </ThemedText>
+            </TouchableOpacity>
           )}
         </View>
       </View>

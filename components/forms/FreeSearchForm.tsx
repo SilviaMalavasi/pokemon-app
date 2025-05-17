@@ -559,21 +559,22 @@ export default function FreeSearchForm({
           </View>
         </View>
         {/* End collapsibles row */}
-        <ThemedButton
-          title={toggleAllState === "uncheck" ? "Uncheck all" : allChecked ? "Uncheck all" : "Check all"}
-          type="outline"
-          size="small"
-          width={vw(40)}
-          onPress={handleToggleAll}
-          style={{ marginTop: theme.padding.large, marginBottom: theme.padding.large }}
-        />
-        <ThemedSwitch
-          value={removeDuplicates}
-          label="Hide duplicates"
-          onValueChange={onRemoveDuplicatesChange}
-          hint="If enabled, cards with same stats but different images or sets will be displayed only once."
-          style={styles.switchContainer}
-        />
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+          <ThemedButton
+            title={toggleAllState === "uncheck" ? "Uncheck all" : allChecked ? "Uncheck all" : "Check all"}
+            type="outline"
+            size="small"
+            width={vw(40)}
+            onPress={handleToggleAll}
+            style={{ marginTop: theme.padding.medium, marginBottom: theme.padding.large }}
+          />
+          <ThemedSwitch
+            value={removeDuplicates}
+            label="Hide duplicates"
+            onValueChange={onRemoveDuplicatesChange}
+            style={styles.switchContainer}
+          />
+        </View>
       </ThemedView>
       <ThemedView
         layout="rounded"

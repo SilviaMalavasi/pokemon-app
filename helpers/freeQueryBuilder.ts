@@ -45,6 +45,9 @@ export async function freeQueryBuilder(
   let searchNormalized = trimmed.replace(/pok[eèé]mon/gi, "Pokémon");
   // Normalize numbers followed by x or × (e.g., 100x, 100 x, 100×) to "100×"
   searchNormalized = searchNormalized.replace(/(\d+)\s*[x×]/gi, "$1×");
+
+  // Split search into words for AND logic
+  const searchWords = searchNormalized.split(/\s+/).filter(Boolean);
   const cardIdSet = new Set<string>();
 
   // Helper to resolve Card.id to Card.cardId
@@ -134,18 +137,24 @@ export async function freeQueryBuilder(
     try {
       if (field.type === "text" || field.type === "json-string-array") {
         if (field.table === "Card" && field.column === "cardId") {
-          const cardResults = await db.getAllAsync<{ cardId: string }>(
-            `SELECT cardId FROM Card WHERE cardId LIKE ? COLLATE NOCASE`,
-            [`%${searchNormalized}%`]
-          );
-          // Add directly to set as they are already cardIds
+          // For cardId, match all words (AND logic)
+          let query = `SELECT cardId FROM Card WHERE 1=1`;
+          let params: string[] = [];
+          for (const word of searchWords) {
+            query += ` AND cardId LIKE ? COLLATE NOCASE`;
+            params.push(`%${word}%`);
+          }
+          const cardResults = await db.getAllAsync<{ cardId: string }>(query, params);
           cardResults.forEach((row) => cardIdSet.add(row.cardId));
         } else {
-          // For other text/json fields, query the respective table
-          results = await db.getAllAsync<{ id: number }>(
-            `SELECT id FROM ${field.table} WHERE ${field.column} LIKE ? COLLATE NOCASE`,
-            [`%${searchNormalized}%`]
-          );
+          // For other text/json fields, match all words (AND logic)
+          let query = `SELECT id FROM ${field.table} WHERE 1=1`;
+          let params: string[] = [];
+          for (const word of searchWords) {
+            query += ` AND ${field.column} LIKE ? COLLATE NOCASE`;
+            params.push(`%${word}%`);
+          }
+          results = await db.getAllAsync<{ id: number }>(query, params);
           const ids = results.map((row) => row.id).filter(Boolean);
           if (ids.length > 0) {
             // Only proceed if we found IDs

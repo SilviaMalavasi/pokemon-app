@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
   switchContainer: {
     marginTop: theme.padding.medium,
     marginBottom: theme.padding.large,
+    marginLeft: theme.padding.medium,
   },
   mainButtonsRowSummary: {
     flexDirection: "row",

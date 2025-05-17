@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     marginBottom: theme.padding.small,
   },
   switchContainer: {
-    marginTop: theme.padding.large,
-    marginBottom: theme.padding.large,
+    marginTop: theme.padding.medium,
+    marginBottom: theme.padding.medium * 1.5,
   },
   summaryContainer: {
     position: "relative",
