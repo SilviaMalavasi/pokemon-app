@@ -306,6 +306,7 @@ export default function DeckScreen() {
                     size="small"
                     onPress={handleExportDeck}
                     style={{ marginTop: theme.padding.large, marginBottom: theme.padding.large }}
+                    disabled={totalCardCount === 0}
                   />
                 </View>
               </ThemedView>

@@ -162,10 +162,9 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
           </ThemedText>
           {layout === "edit" && (
             <ThemedButton
-              title="View Watchlist"
+              title="View"
               type="main"
               size="small"
-              width={vw(34)}
               onPress={() =>
                 router.push({ pathname: "/watchlists/[watchlistId]", params: { watchlistId: watchlist.id } })
               }
@@ -202,7 +201,7 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
           {layout === "view" && (
             <View style={[styles.watchlistButtons, { justifyContent: "flex-end", alignItems: "flex-end" }]}>
               <ThemedButton
-                title="View Watchlist"
+                title="View"
                 type="main"
                 size="small"
                 onPress={() =>

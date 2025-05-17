@@ -42,9 +42,10 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
+    paddingBottom: theme.padding.xsmall,
   },
   numberStyle: {
-    fontSize: theme.fontSizes.font18,
+    fontSize: theme.fontSizes.font24,
     textAlign: "center",
     color: theme.colors.green,
   },

@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import CompactCard from "@/components/CompactCard";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
@@ -8,10 +8,18 @@ import { theme } from "@/style/ui/Theme";
 
 interface WatchlistThumbnailListProps {
   cards: Array<{ cardId: string; name?: string; imagesLarge?: string; supertype?: string }>;
+  watchlistId: number;
+  db: any;
+  onCardsChanged?: () => void;
 }
 
 // This component displays deck cards as thumbnails, similar to SearchResult, but with quantity overlay
-export default function WatchlistThumbnailList({ cards }: WatchlistThumbnailListProps) {
+export default function WatchlistThumbnailList({
+  cards,
+  watchlistId,
+  db,
+  onCardsChanged,
+}: WatchlistThumbnailListProps) {
   const { db: cardDb } = useCardDatabase();
   const [cardDataMap, setCardDataMap] = React.useState<{ [id: string]: { name: string; supertype: string } }>({});
 
@@ -37,9 +45,13 @@ export default function WatchlistThumbnailList({ cards }: WatchlistThumbnailList
     fetchData();
   }, [cardDb, cards]);
 
-  if (!cards || cards.length === 0) {
-    return <ThemedText>No cards in this watchlist.</ThemedText>;
-  }
+  // Delete card handler: update DB and call onCardsChanged
+  const handleDeleteCard = async (cardId: string) => {
+    if (!db || !watchlistId) return;
+    const newCards = cards.filter((c) => c.cardId !== cardId);
+    await db.runAsync("UPDATE WatchedCards SET cards = ? WHERE id = ?", [JSON.stringify(newCards), watchlistId]);
+    if (onCardsChanged) onCardsChanged();
+  };
 
   // Group cards by supertype using DB data
   const grouped = React.useMemo(() => {
@@ -98,6 +110,18 @@ export default function WatchlistThumbnailList({ cards }: WatchlistThumbnailList
                 card={{ cardId: item.cardId, name: item.name || item.cardId, imagesLarge: item.imagesLarge || "" }}
                 disableLink={true}
               />
+              {/* Overlay delete button in top right */}
+              <TouchableOpacity
+                onPress={() => handleDeleteCard(item.cardId)}
+                accessibilityLabel="Remove card"
+                style={styles.numberButton}
+              >
+                <View style={styles.button}>
+                  <View style={styles.iconContainerStyle}>
+                    <ThemedText style={styles.numberStyle}>×</ThemedText>
+                  </View>
+                </View>
+              </TouchableOpacity>
             </View>
           ))}
         </View>
@@ -105,9 +129,14 @@ export default function WatchlistThumbnailList({ cards }: WatchlistThumbnailList
     );
   };
 
+  // Always call all hooks, render empty state in returned JSX
   return (
     <View>
-      {(["Pokémon", "Trainer", "Energy"] as const).map((group, idx) => renderGroup(group, grouped[group], idx))}
+      {cards.length === 0 ? (
+        <ThemedText>No cards in this watchlist.</ThemedText>
+      ) : (
+        (["Pokémon", "Trainer", "Energy"] as const).map((group, idx) => renderGroup(group, grouped[group], idx))
+      )}
     </View>
   );
 }

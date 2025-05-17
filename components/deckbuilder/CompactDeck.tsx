@@ -163,7 +163,7 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
           </ThemedText>
           {layout === "edit" && (
             <ThemedButton
-              title="View Deck"
+              title="View"
               type="main"
               size="small"
               onPress={() => router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id } })}
@@ -200,7 +200,7 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
           {layout === "view" && (
             <View style={[styles.deckButtons, { justifyContent: "flex-end", alignItems: "flex-end" }]}>
               <ThemedButton
-                title="View Deck"
+                title="View"
                 type="main"
                 size="small"
                 onPress={() => router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id } })}

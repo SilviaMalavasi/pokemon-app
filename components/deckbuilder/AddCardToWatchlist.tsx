@@ -42,7 +42,7 @@ export default function AddCardToWatchlist({ watchlist, db, onCardAdded }: AddCa
       // Only add if not already present
       if (!cardsArr.some((c: any) => c.cardId === cardId)) {
         cardsArr.push({ cardId });
-        await db.runAsync("UPDATE Watchlists SET cards = ? WHERE id = ?", [JSON.stringify(cardsArr), watchlist.id]);
+        await db.runAsync("UPDATE WatchedCards SET cards = ? WHERE id = ?", [JSON.stringify(cardsArr), watchlist.id]);
         incrementDecksVersion();
         if (onCardAdded) onCardAdded();
       }

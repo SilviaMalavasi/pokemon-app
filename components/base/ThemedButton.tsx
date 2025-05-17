@@ -101,10 +101,24 @@ export default function ThemedButton({
       style={[
         containerStyle,
         typeof width === "number" ? { width } : {},
-        isDisabled
+        isDisabled ? { opacity: 0.4 } : {},
+        isDisabled && type !== "outline"
           ? {
               backgroundColor: theme.colors.mediumGrey,
-              opacity: 0.7,
+              boxShadow: [
+                {
+                  color: theme.colors.shadowLight,
+                  offsetX: -2,
+                  offsetY: -2,
+                  blurRadius: "4px",
+                },
+                {
+                  color: theme.colors.shadowLight,
+                  offsetX: 2,
+                  offsetY: 2,
+                  blurRadius: "4px",
+                },
+              ],
             }
           : {},
       ]}

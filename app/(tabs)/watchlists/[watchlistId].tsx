@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import ThemedText from "@/components/base/ThemedText";
+import ThemedButton from "@/components/base/ThemedButton";
 import MainScrollView from "@/components/ui/MainScrollView";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
@@ -68,6 +69,18 @@ export default function WatchListDetailScreen() {
     }
   };
 
+  const handleCloneWatchlist = async () => {
+    // Implement clone functionality here
+  };
+
+  const handleEditWatchlist = async () => {
+    // Implement edit functionality here
+  };
+
+  const handleDeleteWatchlist = async () => {
+    // Implement delete functionality here
+  };
+
   return (
     <MainScrollView
       headerImage="deck-bkg"
@@ -129,19 +142,63 @@ export default function WatchListDetailScreen() {
               >
                 <ThemedText type="h2">Cards ({cardDetails.length})</ThemedText>
               </View>
-              <WatchlistThumbnailList cards={cardDetails} />
-              {cardDetails.length === 0 ? (
-                <ThemedText style={{ paddingBottom: theme.padding.medium }}>No cards in this watchlist.</ThemedText>
-              ) : (
-                cardDetails.map((card) => (
-                  <View
-                    key={card.cardId}
-                    style={{ marginBottom: theme.padding.small }}
-                  >
-                    <ThemedText>{card.name}</ThemedText>
-                  </View>
-                ))
-              )}
+              <WatchlistThumbnailList
+                cards={cardDetails}
+                watchlistId={Number(watchlistId)}
+                db={db}
+                onCardsChanged={async () => {
+                  if (db) {
+                    const updatedWatchList = await db.getFirstAsync<any>(`SELECT * FROM WatchedCards WHERE id = ?`, [
+                      watchlistId,
+                    ]);
+                    setWatchList(updatedWatchList);
+                    // Optionally refresh card details
+                    let cardsArr = [];
+                    try {
+                      cardsArr = Array.isArray(updatedWatchList?.cards)
+                        ? updatedWatchList.cards
+                        : JSON.parse(updatedWatchList?.cards || "[]");
+                    } catch {
+                      cardsArr = [];
+                    }
+                    if (cardsArr.length > 0 && cardDb) {
+                      const ids = cardsArr.map((c: any) => c.cardId);
+                      const placeholders = ids.map(() => "?").join(",");
+                      const details = await cardDb.getAllAsync<any>(
+                        `SELECT cardId, name, imagesLarge FROM Card WHERE cardId IN (${placeholders})`,
+                        ids
+                      );
+                      setCardDetails(details);
+                    } else {
+                      setCardDetails([]);
+                    }
+                  }
+                }}
+              />
+              <View style={{ marginBottom: theme.padding.xlarge }} />
+            </ThemedView>
+            <ThemedView
+              layout="rounded"
+              style={{ marginBottom: theme.padding.large }}
+            >
+              <ThemedButton
+                title="Clone"
+                type="main"
+                size="large"
+                onPress={handleCloneWatchlist}
+              />
+              <ThemedButton
+                title="Edit"
+                type="main"
+                size="large"
+                onPress={handleEditWatchlist}
+              />
+              <ThemedButton
+                title="Delete"
+                type="alternative"
+                size="large"
+                onPress={handleDeleteWatchlist}
+              />
             </ThemedView>
           </>
         ) : (

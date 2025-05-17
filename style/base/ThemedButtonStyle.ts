@@ -49,7 +49,7 @@ export function createButtonStyle(type: ButtonType, size: ButtonSize, status: Bu
               offsetX: 1,
               offsetY: 2,
               blurRadius: "2px",
-              color: theme.colors.shadowLightPurlple,
+              color: status === "disabled" ? theme.colors.shadowLight : theme.colors.shadowLightPurlple,
               inset: true,
             },
           ]
