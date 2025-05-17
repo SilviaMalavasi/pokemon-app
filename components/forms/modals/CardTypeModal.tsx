@@ -36,7 +36,14 @@ export default function CardTypeModal({
     ])
   );
 
-  const cardSubtypesOptions = allSubtypes.map((v) => ({ value: v, label: v }));
+  // Map subtype labels: show "Basic Energy" for Energy subtype "Basic"
+  const cardSubtypesOptions = allSubtypes.map((v) => {
+    // If the subtype is "Basic" and it exists in cardSubtypeEnergy, label as "Basic Energy"
+    if (v === "Basic" && (uniqueIdentifiers.cardSubtypeEnergy ?? []).includes("Basic")) {
+      return { value: v, label: "Basic Energy" };
+    }
+    return { value: v, label: v };
+  });
 
   const cardTypesOptions = uniqueIdentifiers.cardTypes.map((v: string) => ({ value: v, label: v }));
 

@@ -1,9 +1,34 @@
 {
-  "cardSupertype": ["Pokémon", "Trainer", "Energy"],
-  "cardStagePokémon": ["Basic", "Stage 1", "Stage 2"],
-  "cardSubtypePokémon": ["ex", "Tera", "Future", "Ancient"],
-  "cardSubtypeTrainer": ["Supporter", "Stadium", "Item", "Pokémon Tool", "Ancient", "Future", "ACE SPEC"],
-  "cardSubtypeEnergy": ["Special", "ACE SPEC"],
+  "cardSupertype": [
+    "Pokémon",
+    "Trainer",
+    "Energy"
+  ],
+  "cardStagePokémon": [
+    "Basic",
+    "Stage 1",
+    "Stage 2"
+  ],
+  "cardSubtypePokémon": [
+    "ex",
+    "Tera",
+    "Future",
+    "Ancient"
+  ],
+  "cardSubtypeTrainer": [
+    "Supporter",
+    "Stadium",
+    "Item",
+    "Pokémon Tool",
+    "Ancient",
+    "Future",
+    "ACE SPEC"
+  ],
+  "cardSubtypeEnergy": [
+    "Special",
+    "ACE SPEC",
+    "Basic"
+  ],
   "cardTypes": [
     "Grass",
     "Water",
@@ -16,7 +41,11 @@
     "Colorless",
     "Dragon"
   ],
-  "cardRegulationMark": ["G", "H", "I"],
+  "cardRegulationMark": [
+    "G",
+    "H",
+    "I"
+  ],
   "cardSetNames": [
     "Scarlet & Violet",
     "Scarlet & Violet Black Star Promos",
@@ -34,8 +63,31 @@
     "Journey Together",
     "Scarlet & Violet Energies"
   ],
-  "cardSetSeries": ["Scarlet & Violet"],
-  "cardWeaknessTypes": ["Fire", "Lightning", "Water", "Metal", "Fighting", "Darkness", "Psychic", "Grass"],
-  "cardResistanceTypes": ["Fighting", "Grass"],
-  "energyTypes": ["Grass", "Fire", "Water", "Lightning", "Psychic", "Fighting", "Darkness", "Metal"]
+  "cardSetSeries": [
+    "Scarlet & Violet"
+  ],
+  "cardWeaknessTypes": [
+    "Fire",
+    "Lightning",
+    "Water",
+    "Metal",
+    "Fighting",
+    "Darkness",
+    "Psychic",
+    "Grass"
+  ],
+  "cardResistanceTypes": [
+    "Fighting",
+    "Grass"
+  ],
+  "energyTypes": [
+    "Grass",
+    "Fire",
+    "Water",
+    "Lightning",
+    "Psychic",
+    "Fighting",
+    "Darkness",
+    "Metal"
+  ]
 }

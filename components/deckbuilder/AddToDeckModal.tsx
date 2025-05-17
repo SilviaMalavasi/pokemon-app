@@ -156,9 +156,6 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
       setNewDeckThumbnail("");
       setAutoCompleteKey((k) => k + 1);
       incrementDecksVersion();
-      // Set the new deck as default/last opened
-      setWorkingDeckId(String(newDeck.id));
-      setSelectedDeckId(String(newDeck.id));
     } catch (e) {
       console.error("Error creating new deck:", e);
     }
@@ -198,10 +195,12 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
       />
       <ThemedModal
         visible={modalVisible}
-        onClose={handleConfirmAndClose}
-        onCancelText="Cancel"
+        onClose={() => setModalVisible(false)}
         onCancel={handleCancel}
-        buttonText={"Add to Deck"}
+        onConfirm={handleConfirmAndClose}
+        buttonText="Add"
+        disabled={addingDeckId !== null}
+        onCancelText="Cancel"
       >
         <ThemedText
           type="h4"
@@ -246,7 +245,6 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
                     }
                   }}
                   {...(!deckIdStr ? { label: "Select a Deck" } : {})}
-                  labelHint="Select a Deck"
                 />
               ) : (
                 <ThemedButton

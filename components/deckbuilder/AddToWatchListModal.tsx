@@ -8,6 +8,7 @@ import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { addWatchList } from "@/lib/userDatabase";
 import { Pressable } from "react-native";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
+import ThemedSelect from "@/components/base/ThemedSelect";
 import styles from "@/style/deckbuilder/AddToWatchListModalStyle";
 import { theme } from "@/style/ui/Theme";
 
@@ -121,12 +122,14 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
       />
       <ThemedModal
         visible={modalVisible}
-        onClose={handleAddToWatchListAndClose}
-        buttonText={"Add"}
+        onClose={() => setModalVisible(false)}
+        onCancel={() => setModalVisible(false)}
+        onConfirm={handleAddToWatchListAndClose}
+        buttonText="Add"
         buttonType="main"
         buttonSize="large"
         onCancelText="Cancel"
-        onCancel={() => setModalVisible(false)}
+        disabled={isSaving || !!error}
       >
         <ThemedText
           type="h4"
@@ -152,75 +155,23 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
         ) : (
           <>
             <View style={styles.deckPickerContainer}>
-              <ThemedLabelWithHint
-                style={styles.deckPickerLabel}
-                labelHint="Select a WatchList"
-              />
-              <Pressable
-                onPress={() => setWatchListPickerVisible(true)}
-                style={styles.pickerWrapper}
-              >
-                <ThemedText
-                  color={
-                    watchLists.length === 0 || !watchLists.find((wl) => wl.id === selectedWatchListId)
-                      ? theme.colors.grey
-                      : theme.colors.purple
+              <ThemedSelect
+                value={selectedWatchListId ? String(selectedWatchListId) : ""}
+                options={[
+                  ...watchLists.map((wl) => ({ label: wl.name, value: String(wl.id) })),
+                  { label: "- New Watchlist -", value: "__new__" },
+                ]}
+                onChange={(val) => {
+                  if (val === "__new__") {
+                    setShowNewListModal(true);
+                  } else if (typeof val === "string") {
+                    setSelectedWatchListId(Number(val));
+                    setLastWatchListId(Number(val));
                   }
-                >
-                  {(() => {
-                    const selected = watchLists.find((wl) => wl.id === selectedWatchListId);
-                    return selected ? selected.name : "Select";
-                  })()}
-                </ThemedText>
-              </Pressable>
-              <Modal
-                visible={watchListPickerVisible}
-                animationType="fade"
-                transparent={true}
-                onRequestClose={() => setWatchListPickerVisible(false)}
-              >
-                <Pressable
-                  style={styles.modalOverlay}
-                  onPress={() => setWatchListPickerVisible(false)}
-                >
-                  <Pressable
-                    style={styles.modalContainer}
-                    onPress={(e) => e.stopPropagation()}
-                  >
-                    <View style={{ paddingBottom: theme.padding.xsmall }}>
-                      {watchLists.map((wl) => (
-                        <Pressable
-                          key={wl.id}
-                          onPress={() => {
-                            setSelectedWatchListId(wl.id);
-                            setLastWatchListId(wl.id);
-                            setWatchListPickerVisible(false);
-                          }}
-                        >
-                          <ThemedText style={selectedWatchListId === wl.id ? styles.selectedOperator : styles.operator}>
-                            {wl.name}
-                          </ThemedText>
-                        </Pressable>
-                      ))}
-                      <Pressable
-                        key={-1}
-                        onPress={() => {
-                          setShowNewListModal(true);
-                          setWatchListPickerVisible(false);
-                        }}
-                      >
-                        <ThemedText style={styles.operator}>- New Watchlist -</ThemedText>
-                      </Pressable>
-                    </View>
-                    <Pressable
-                      onPress={() => setWatchListPickerVisible(false)}
-                      style={styles.modalCancel}
-                    >
-                      <ThemedText style={{ color: theme.colors.grey }}>Cancel</ThemedText>
-                    </Pressable>
-                  </Pressable>
-                </Pressable>
-              </Modal>
+                }}
+                labelHint="Select a WatchList"
+                {...(!selectedWatchListId ? { label: "Select a WatchList" } : {})}
+              />
             </View>
           </>
         )}
