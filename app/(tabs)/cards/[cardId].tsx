@@ -5,13 +5,11 @@ import FullCard from "@/components/FullCard";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import { CardType, Ability, Attack } from "@/types/PokemonCardType";
-import FloatingButton from "@/components/ui/FloatingButton";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useSearchFormContext } from "@/components/context/SearchFormContext";
+
 import { View } from "react-native";
 
 export default function FullCardScreen() {
@@ -19,15 +17,8 @@ export default function FullCardScreen() {
   const [card, setCard] = useState<CardType | null>(null);
   const [loading, setLoading] = useState(true);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const router = useRouter();
   const navigation = useNavigation();
   const { db } = useCardDatabase();
-  const { setFromCardId } = useSearchFormContext();
-
-  const handleBack = () => {
-    setFromCardId(true);
-    router.back();
-  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -156,23 +147,6 @@ export default function FullCardScreen() {
           ) : null}
         </View>
       </MainScrollView>
-      <SafeAreaView
-        pointerEvents="box-none"
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          alignItems: "center",
-          paddingBottom: 16,
-          zIndex: 100,
-        }}
-      >
-        <FloatingButton
-          title="Back to search"
-          onPress={handleBack}
-        />
-      </SafeAreaView>
     </>
   );
 }

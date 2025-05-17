@@ -4,11 +4,9 @@ import MainScrollView from "@/components/ui/MainScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
-import FloatingButton from "@/components/ui/FloatingButton";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import AddCardToDeck from "@/components/deckbuilder/AddCardToDeck";
 import DeckCardList from "@/components/deckbuilder/DeckCardList";
 import { theme } from "@/style/ui/Theme";
@@ -41,10 +39,6 @@ export default function DeckScreen() {
   const [editName, setEditName] = useState("");
   const [editThumbnail, setEditThumbnail] = useState("");
   const [saving, setSaving] = useState(false);
-
-  const handleBack = () => {
-    router.replace("/deckbuilder");
-  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -410,23 +404,6 @@ export default function DeckScreen() {
           )}
         </View>
       </MainScrollView>
-      <SafeAreaView
-        pointerEvents="box-none"
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          alignItems: "center",
-          paddingBottom: 16,
-          zIndex: 100,
-        }}
-      >
-        <FloatingButton
-          title="Back to deckbuilder"
-          onPress={handleBack}
-        />
-      </SafeAreaView>
     </>
   );
 }
