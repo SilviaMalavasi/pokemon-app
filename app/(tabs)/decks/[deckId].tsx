@@ -216,8 +216,19 @@ export default function DeckScreen() {
     }
   };
 
-  const handleThumbnailSelect = (card: any) => {
-    setEditThumbnail(card.cardId);
+  const handleThumbnailSelect = async (cardId: string) => {
+    if (!cardDb) return;
+    try {
+      const card = await cardDb.getFirstAsync<{ imagesLarge: string }>(
+        "SELECT imagesLarge FROM Card WHERE cardId = ?",
+        [cardId]
+      );
+      if (card && card.imagesLarge) {
+        setEditThumbnail(card.imagesLarge);
+      }
+    } catch (e) {
+      console.error("Error fetching card image for thumbnail:", e);
+    }
   };
 
   return (
@@ -359,12 +370,14 @@ export default function DeckScreen() {
               </ThemedModal>
               <ThemedModal
                 visible={editModalVisible}
-                onClose={handleSaveEdit}
+                onClose={() => setEditModalVisible(false)}
+                onConfirm={handleSaveEdit}
                 buttonText={saving ? "Saving..." : "Save"}
                 buttonType="main"
                 buttonSize="large"
                 onCancelText="Cancel"
                 onCancel={() => setEditModalVisible(false)}
+                disabled={!editName.trim() || saving}
               >
                 <CardAutoCompleteProvider>
                   <ThemedText

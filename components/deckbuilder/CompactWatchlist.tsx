@@ -268,12 +268,14 @@ export default function CompactWatchlist({ watchlist, onImageLoad, layout, loadi
       </ThemedModal>
       <ThemedModal
         visible={editModalVisible}
-        onClose={handleSaveEdit}
+        onClose={() => setEditModalVisible(false)}
+        onConfirm={handleSaveEdit}
         buttonText={saving ? "Saving..." : "Save"}
         buttonType="main"
         buttonSize="large"
         onCancelText="Cancel"
         onCancel={() => setEditModalVisible(false)}
+        disabled={!editName.trim() || saving}
       >
         <CardAutoCompleteProvider>
           <ThemedText

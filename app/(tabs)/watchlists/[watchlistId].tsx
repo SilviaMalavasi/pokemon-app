@@ -10,6 +10,14 @@ import AddCardToWatchList from "@/components/deckbuilder/AddCardToWatchlist";
 import WatchlistThumbnailList from "@/components/deckbuilder/WatchlistThumbnailList";
 import ThemedView from "@/components/ui/ThemedView";
 import { theme } from "@/style/ui/Theme";
+import ThemedModal from "@/components/base/ThemedModal";
+import ThemedTextInput from "@/components/base/ThemedTextInput";
+import { useRouter } from "expo-router";
+import CardAutoCompleteInput, {
+  CardAutoCompleteProvider,
+  CardAutoCompleteSuggestions,
+} from "@/components/base/CardAutoCompleteInput";
+import cardImages from "@/helpers/cardImageMapping";
 
 export default function WatchListDetailScreen() {
   const { watchlistId } = useLocalSearchParams<{ watchlistId: string }>();
@@ -18,6 +26,12 @@ export default function WatchListDetailScreen() {
   const [watchList, setWatchList] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [cardDetails, setCardDetails] = useState<any[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editThumbnail, setEditThumbnail] = useState("");
+  const [saving, setSaving] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (!watchlistId || !db || !cardDb) return;
@@ -70,15 +84,89 @@ export default function WatchListDetailScreen() {
   };
 
   const handleCloneWatchlist = async () => {
-    // Implement clone functionality here
+    if (!watchList || !db) return;
+    let baseName = watchList.name.replace(/#\d+$/, "").trim();
+    let cloneNumber = 1;
+    let newName = `${baseName} #${cloneNumber}`;
+    try {
+      const allLists = await db.getAllAsync<any>("SELECT * FROM WatchedCards");
+      const regex = new RegExp(`^${baseName} #(\\d+)$`);
+      const usedNumbers = allLists
+        .map((d: any) => {
+          const match = d.name.match(regex);
+          return match ? parseInt(match[1], 10) : null;
+        })
+        .filter((n: any) => n !== null);
+      while (usedNumbers.includes(cloneNumber)) {
+        cloneNumber++;
+        newName = `${baseName} #${cloneNumber}`;
+      }
+      const cards = watchList.cards ? watchList.cards : "[]";
+      await db.runAsync("INSERT INTO WatchedCards (name, cards) VALUES (?, ?)", [
+        newName,
+        typeof cards === "string" ? cards : JSON.stringify(cards),
+      ]);
+      // Optionally: refresh UI or navigate to new watchlist
+    } catch (e) {
+      console.error("Failed to clone watchlist", e);
+    }
   };
 
-  const handleEditWatchlist = async () => {
-    // Implement edit functionality here
+  const handleEditWatchlist = () => {
+    if (!watchList) return;
+    setEditName(watchList.name);
+    setEditThumbnail(watchList.thumbnail || "");
+    setEditModalVisible(true);
   };
 
-  const handleDeleteWatchlist = async () => {
-    // Implement delete functionality here
+  const handleSaveEdit = async () => {
+    if (!watchList || !db || saving) return;
+    setSaving(true);
+    try {
+      await db.runAsync("UPDATE WatchedCards SET name = ?, thumbnail = ? WHERE id = ?", [
+        editName,
+        editThumbnail,
+        watchList.id,
+      ]);
+      const updated = await db.getFirstAsync<any>(`SELECT * FROM WatchedCards WHERE id = ?`, [watchList.id]);
+      setWatchList(updated);
+      setEditModalVisible(false);
+    } catch (e) {
+      console.error("Error updating watchlist:", e);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleThumbnailSelect = async (cardId: string) => {
+    if (!cardDb) return;
+    try {
+      const card = await cardDb.getFirstAsync<{ imagesLarge: string }>(
+        "SELECT imagesLarge FROM Card WHERE cardId = ?",
+        [cardId]
+      );
+      if (card && card.imagesLarge) {
+        setEditThumbnail(card.imagesLarge);
+      }
+    } catch (e) {
+      console.error("Error fetching card image for thumbnail:", e);
+    }
+  };
+
+  const handleDeleteWatchlist = () => {
+    setShowModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!watchList || !db) return;
+    try {
+      await db.runAsync("DELETE FROM WatchedCards WHERE id = ?", [watchList.id]);
+      router.replace("/watchlist");
+    } catch (e) {
+      console.error("Error deleting watchlist:", e);
+    } finally {
+      setShowModal(false);
+    }
   };
 
   return (
@@ -200,6 +288,66 @@ export default function WatchListDetailScreen() {
                 onPress={handleDeleteWatchlist}
               />
             </ThemedView>
+            <ThemedModal
+              visible={showModal}
+              onClose={() => setShowModal(false)}
+              onConfirm={handleConfirmDelete}
+              buttonText="Delete"
+              buttonType="main"
+              buttonSize="large"
+              onCancelText="Cancel"
+              onCancel={() => setShowModal(false)}
+            >
+              <ThemedText
+                type="h2"
+                color={theme.colors.white}
+                style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
+              >
+                Delete Watchlist?
+              </ThemedText>
+              <ThemedText
+                color={theme.colors.grey}
+                style={{ textAlign: "center", paddingBottom: theme.padding.small }}
+              >
+                Are you sure you want to delete '{watchList?.name}'? This action cannot be undone.
+              </ThemedText>
+            </ThemedModal>
+            <ThemedModal
+              visible={editModalVisible}
+              onClose={() => setEditModalVisible(false)}
+              onConfirm={handleSaveEdit}
+              buttonText={saving ? "Saving..." : "Save"}
+              buttonType="main"
+              buttonSize="large"
+              onCancelText="Cancel"
+              onCancel={() => setEditModalVisible(false)}
+              disabled={!editName.trim() || saving}
+            >
+              <CardAutoCompleteProvider>
+                <ThemedText
+                  type="h2"
+                  color={theme.colors.white}
+                  style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
+                >
+                  Edit Watchlist
+                </ThemedText>
+                <ThemedTextInput
+                  value={editName}
+                  onChange={setEditName}
+                  placeholder="Enter watchlist name"
+                  style={{ marginBottom: theme.padding.medium }}
+                />
+                <CardAutoCompleteInput
+                  key={watchList?.id}
+                  value={editThumbnail}
+                  onCardSelect={handleThumbnailSelect}
+                  placeholder="Type card name (min 3 chars)"
+                  maxChars={25}
+                  resetKey={watchList?.id}
+                />
+                <CardAutoCompleteSuggestions onCardSelect={handleThumbnailSelect} />
+              </CardAutoCompleteProvider>
+            </ThemedModal>
           </>
         ) : (
           <ThemedText>Watchlist not found.</ThemedText>

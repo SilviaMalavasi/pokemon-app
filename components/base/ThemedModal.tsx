@@ -18,6 +18,7 @@ interface ThemedModalProps {
   onCancelText?: string;
   onCancel?: () => void;
   onConfirm?: () => void;
+  disabled?: boolean; // <-- add this line
 }
 
 export default function ThemedModal({
@@ -32,6 +33,7 @@ export default function ThemedModal({
   onCancelText,
   onCancel,
   onConfirm,
+  disabled = false, // <-- add this line
 }: ThemedModalProps) {
   return (
     <Modal
@@ -84,6 +86,7 @@ export default function ThemedModal({
                       type={buttonType}
                       size={buttonSize}
                       onPress={onConfirm ? onConfirm : onClose}
+                      disabled={disabled}
                     />
                   </View>
                 </ScrollView>

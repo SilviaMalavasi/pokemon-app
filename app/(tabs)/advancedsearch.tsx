@@ -6,13 +6,13 @@ import MainScrollView from "@/components/ui/MainScrollView";
 import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import ThemedModal from "@/components/base/ThemedModal";
+import ThemedView from "@/components/ui/ThemedView";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
-import { View } from "react-native";
 
 export default function FullFormScreen() {
   const [resetKey, setResetKey] = useState(0);
@@ -102,7 +102,7 @@ export default function FullFormScreen() {
         headerTitle="Advanced Search"
         scrollRef={scrollRef}
       >
-        <View>
+        <ThemedView>
           <AdvancedSearchForm
             onSearchResults={handleSearchResults}
             setLoading={() => {}}
@@ -112,18 +112,18 @@ export default function FullFormScreen() {
             currentPage={1}
             itemsPerPage={ITEMS_PER_PAGE}
           />
-        </View>
+        </ThemedView>
 
         <ThemedModal
           visible={modalVisible}
           buttonType="main"
-          buttonSize="small"
+          buttonSize="large"
           onClose={() => setModalVisible(false)}
           contentStyle={{ width: "85%" }}
         >
           <ThemedText
             type="h4"
-            style={{ paddingTop: theme.padding.small, paddingBottom: theme.padding.xsmall }}
+            style={{ paddingTop: theme.padding.small, paddingBottom: theme.padding.small }}
           >
             No cards found
           </ThemedText>
