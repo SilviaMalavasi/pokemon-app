@@ -6,7 +6,6 @@ import ThemedTextInput from "@/components/base/ThemedTextInput";
 import styles from "@/style/base/AutoCompleteInputStyle";
 
 interface AutoCompleteInputProps {
-  label?: string;
   value: string;
   onChange: (value: string) => void;
   suggestions: string[];
@@ -15,7 +14,6 @@ interface AutoCompleteInputProps {
 }
 
 export default function AutoCompleteInput({
-  label,
   value,
   onChange,
   suggestions,
@@ -76,13 +74,12 @@ export default function AutoCompleteInput({
           selectingSuggestion.current = false;
           setInputFocused(true);
         }}
-        // Delay blur check and respect the flag
         onBlur={() => {
           setTimeout(() => {
             if (!selectingSuggestion.current) {
               setInputFocused(false);
             }
-          }, 250); // Keep delay for now
+          }, 250);
         }}
       />
     </View>

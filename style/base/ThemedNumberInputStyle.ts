@@ -5,6 +5,7 @@ import { vw } from "@/helpers/viewport";
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    marginBottom: theme.padding.small,
   },
   inputContainer: {
     flexDirection: "row",

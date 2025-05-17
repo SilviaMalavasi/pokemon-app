@@ -125,7 +125,6 @@ export default function AttacksModal({
           options={energyTypesOptions}
           onChange={setAttacksCost}
           labelHint="Select energy types for this attack."
-          style={{ marginTop: theme.padding.small }}
         />
       )}
       {attacksConvertedEnergyCostOperator === "=" &&

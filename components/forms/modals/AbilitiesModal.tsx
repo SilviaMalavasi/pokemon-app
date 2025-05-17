@@ -64,6 +64,7 @@ export default function AbilitiesModal({
         value={hasAnyAbility}
         label="Has any ability"
         onValueChange={setHasAnyAbility}
+        style={{ marginVertical: theme.padding.medium }}
       />
     </ThemedModal>
   );

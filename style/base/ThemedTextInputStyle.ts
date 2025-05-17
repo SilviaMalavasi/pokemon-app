@@ -3,7 +3,6 @@ import { theme } from "@/style/ui/Theme";
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: theme.padding.small,
     marginBottom: theme.padding.small,
     width: "100%",
     backgroundColor: "transparent",

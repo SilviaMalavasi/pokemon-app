@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
   container: {
     position: "relative",
     width: "100%",
-    backgroundColor: "transparent",
   },
   suggestionsListContainer: {
     width: "100%",
