@@ -116,9 +116,9 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
       <ThemedButton
         type="main"
         size="small"
-        title="Add to WatchList"
+        title="Add to Watched"
         onPress={() => setModalVisible(true)}
-        accessibilityLabel="Add to WatchList"
+        accessibilityLabel="Add to Watched"
       />
       <ThemedModal
         visible={modalVisible}
