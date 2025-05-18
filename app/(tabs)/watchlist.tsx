@@ -18,7 +18,7 @@ interface Watchlist {
 
 export default function WatchlistScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const { db, isLoading: dbLoading, error: dbError, decksVersion } = useUserDatabase();
+  const { db, isLoading: dbLoading, error: dbError, decksVersion, incrementWatchListsVersion } = useUserDatabase();
   const router = useRouter();
 
   const [watchlistName, setWatchlistName] = useState("");
@@ -79,13 +79,14 @@ export default function WatchlistScreen() {
       try {
         await deleteWatchList(db, id);
         await fetchWatchLists();
+        await incrementWatchListsVersion(); // Ensure context is updated after deletion
       } catch (e) {
         console.error("Failed to delete watchlist", e);
       } finally {
         setDeletingId(null);
       }
     },
-    [db, fetchWatchLists]
+    [db, fetchWatchLists, incrementWatchListsVersion]
   );
 
   const handleThumbnailSelect = (imagesLargeUrl: string) => {

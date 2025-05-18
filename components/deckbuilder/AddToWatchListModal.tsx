@@ -152,6 +152,13 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
           <ThemedText style={{ textAlign: "center", marginTop: theme.padding.large, color: theme.colors.green }}>
             Database not available. Please try again later.
           </ThemedText>
+        ) : watchLists.length === 0 ? (
+          <ThemedButton
+            title="Create a Watchlist"
+            type="outline"
+            size="small"
+            onPress={() => setShowNewListModal(true)}
+          />
         ) : (
           <>
             <View style={styles.deckPickerContainer}>
