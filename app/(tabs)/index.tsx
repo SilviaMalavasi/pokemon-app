@@ -158,9 +158,9 @@ export default function HomeScreen() {
             fontWeight="bold"
             color={theme.colors.grey}
           >
-            LAST DATABASE UPDATE:{" "}
+            LAST UPDATE:{" "}
           </ThemedText>
-          25-05-2015
+          Journey Together
         </ThemedText>
       </View>
       {savedDecks.length > 0 && (
