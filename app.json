@@ -15,7 +15,7 @@
       "package": "com.silviamalavasi.pokedeckbuilder",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#00000000"
+        "backgroundColor": "#212635"
       }
     },
     "web": {
