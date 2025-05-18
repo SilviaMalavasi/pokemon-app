@@ -326,6 +326,7 @@ export default function FreeSearchForm({
           value={cardSearch}
           onChange={setCardSearch}
           placeholder="Free text"
+          style={{ marginTop: theme.padding.medium }}
         />
         <ThemedText
           type="hintText"

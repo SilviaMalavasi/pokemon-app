@@ -400,7 +400,7 @@ export default function AdvancedSearchForm({
           value={cardName}
           onChange={setCardName}
           placeholder="Card name"
-          style={{ marginBottom: theme.padding.large }}
+          style={{ marginBottom: theme.padding.large, marginTop: theme.padding.medium }}
         />
         <View style={styles.buttonRow}>
           <ThemedButton
