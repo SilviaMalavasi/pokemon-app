@@ -340,7 +340,7 @@ export default function FullCard(props: FullCardProps) {
                   {props.hp || "-"}
                 </ThemedText>
 
-                {props.convertedRetreatCost && (
+                {props.convertedRetreatCost !== undefined && props.convertedRetreatCost !== null && (
                   <ThemedText style={{ paddingBottom: 4 }}>
                     <ThemedText
                       fontWeight="bold"
@@ -348,7 +348,7 @@ export default function FullCard(props: FullCardProps) {
                     >
                       Retreat Cost:
                     </ThemedText>{" "}
-                    {props.convertedRetreatCost}
+                    {String(props.convertedRetreatCost)}
                   </ThemedText>
                 )}
               </View>
