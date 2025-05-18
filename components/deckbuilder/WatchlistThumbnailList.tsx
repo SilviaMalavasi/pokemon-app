@@ -5,6 +5,7 @@ import CompactCard from "@/components/CompactCard";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import styles from "@/style/deckbuilder/WatchlistThumbnailListStyle";
 import { theme } from "@/style/ui/Theme";
+import { useRouter } from "expo-router";
 
 interface WatchlistThumbnailListProps {
   cards: Array<{ cardId: string; name?: string; imagesLarge?: string; supertype?: string }>;
@@ -22,6 +23,7 @@ export default function WatchlistThumbnailList({
 }: WatchlistThumbnailListProps) {
   const { db: cardDb } = useCardDatabase();
   const [cardDataMap, setCardDataMap] = React.useState<{ [id: string]: { name: string; supertype: string } }>({});
+  const router = useRouter();
 
   React.useEffect(() => {
     if (!cardDb || !cards || cards.length === 0) {
@@ -102,9 +104,12 @@ export default function WatchlistThumbnailList({
         </ThemedText>
         <View style={styles.cardList}>
           {groupCards.map((item, idx) => (
-            <View
+            <TouchableOpacity
               key={item.cardId || idx}
               style={{ position: "relative" }}
+              activeOpacity={0.85}
+              onPress={() => router.push({ pathname: "/cards/[cardId]", params: { cardId: item.cardId } })}
+              accessibilityLabel={`View details for ${item.name || item.cardId}`}
             >
               <CompactCard
                 card={{ cardId: item.cardId, name: item.name || item.cardId, imagesLarge: item.imagesLarge || "" }}
@@ -112,7 +117,10 @@ export default function WatchlistThumbnailList({
               />
               {/* Overlay delete button in top right */}
               <TouchableOpacity
-                onPress={() => handleDeleteCard(item.cardId)}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  handleDeleteCard(item.cardId);
+                }}
                 accessibilityLabel="Remove card"
                 style={styles.numberButton}
               >
@@ -122,7 +130,7 @@ export default function WatchlistThumbnailList({
                   </View>
                 </View>
               </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       </React.Fragment>
