@@ -93,19 +93,6 @@ export default function WatchlistScreen() {
     setWatchlistThumbnail(imagesLargeUrl);
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        router.replace("/");
-        return true;
-      };
-
-      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
-
-      return () => subscription.remove();
-    }, [router])
-  );
-
   return (
     <MainScrollView
       headerImage="watchlist-bkg"
