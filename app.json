@@ -30,12 +30,7 @@
         {
           "image": "./assets/images/splash-combined.png",
           "resizeMode": "cover",
-          "backgroundColor": "#212635",
-          "dark": {
-            "image": "./assets/images/splash-combined.png",
-            "resizeMode": "cover",
-            "backgroundColor": "#212635"
-          }
+          "backgroundColor": "#212635"
         }
       ],
       "expo-sqlite",
