@@ -15,7 +15,7 @@
       "package": "com.silviamalavasi.pokedeckbuilder",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#8249F2"
+        "backgroundColor": "#00000000"
       }
     },
     "web": {
@@ -30,13 +30,11 @@
         {
           "image": "./assets/images/splash-combined.png",
           "resizeMode": "cover",
-          "imageWidth": 418,
-          "backgroundColor": "#4630EB",
+          "backgroundColor": "#212635",
           "dark": {
             "image": "./assets/images/splash-combined.png",
             "resizeMode": "cover",
-            "imageWidth": 418,
-            "backgroundColor": "#4630EB"
+            "backgroundColor": "#212635"
           }
         }
       ],
