@@ -108,7 +108,12 @@ export default function WatchlistThumbnailList({
               key={item.cardId || idx}
               style={{ position: "relative" }}
               activeOpacity={0.85}
-              onPress={() => router.push({ pathname: "/cards/[cardId]", params: { cardId: item.cardId } })}
+              onPress={() =>
+                router.push({
+                  pathname: "/cards/[cardId]",
+                  params: { cardId: item.cardId, watchlistId: watchlistId, from: "watchlistDetail" },
+                })
+              }
               accessibilityLabel={`View details for ${item.name || item.cardId}`}
             >
               <CompactCard
