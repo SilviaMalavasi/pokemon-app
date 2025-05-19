@@ -22,6 +22,7 @@ import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
   CardAutoCompleteSuggestions,
 } from "@/components/base/CardAutoCompleteInput";
+import DeckImportExport from "@/components/deckbuilder/DeckImportExport";
 
 export default function DeckScreen() {
   const router = useRouter();
@@ -40,6 +41,9 @@ export default function DeckScreen() {
   const [editName, setEditName] = useState("");
   const [editThumbnail, setEditThumbnail] = useState("");
   const [saving, setSaving] = useState(false);
+  const [importModalVisible, setImportModalVisible] = useState(false);
+  const [importText, setImportText] = useState("");
+  const [importing, setImporting] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -333,7 +337,12 @@ export default function DeckScreen() {
                   }
                 }}
               />
-              <ThemedView style={{ marginBottom: theme.padding.large * -1.5 }}>
+              <ThemedView
+                style={{
+                  marginBottom: getCardsArray().length > 0 ? theme.padding.large * -1.5 : theme.padding.large,
+                  paddingBottom: getCardsArray().length > 0 ? theme.padding.xlarge : undefined,
+                }}
+              >
                 {/* Toggle Button */}
                 <View
                   style={{
@@ -375,48 +384,56 @@ export default function DeckScreen() {
                     }}
                   />
                 )}
-                <View
+                {/* Import/Export Buttons and Modal */}
+              </ThemedView>
+              {deck && cardDb && db && (
+                <ThemedView
                   style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                    marginTop: theme.padding.medium,
+                    marginTop: getCardsArray().length > 0 ? undefined : theme.padding.medium,
                     marginBottom: theme.padding.large,
                   }}
                 >
-                  <ThemedButton
-                    title="Export Deck"
-                    type="main"
-                    size="small"
-                    onPress={handleExportDeck}
-                    style={{ marginTop: theme.padding.large, marginBottom: theme.padding.large }}
-                    disabled={totalCardCount === 0}
-                  />
-                </View>
-              </ThemedView>
-              <ThemedView
-                layout="rounded"
-                style={{ marginBottom: theme.padding.large }}
-              >
-                <ThemedButton
-                  title="Clone"
-                  type="main"
-                  size="small"
-                  onPress={handleCloneDeck}
-                />
-                <ThemedButton
-                  title="Edit"
-                  type="main"
-                  size="small"
-                  onPress={handleEditPress}
-                />
-                <ThemedButton
-                  title="Delete"
-                  type="alternative"
-                  size="small"
-                  onPress={handleDeletePress}
-                />
-              </ThemedView>
+                  <View
+                    style={{
+                      flexWrap: "wrap",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      paddingVertical: theme.padding.medium,
+                    }}
+                  >
+                    <DeckImportExport
+                      deck={deck}
+                      cardDb={cardDb}
+                      db={db}
+                      getCardsArray={getCardsArray}
+                      setDeck={setDeck}
+                      decksVersion={decksVersion}
+                      deckId={deckId}
+                    />
+                    <ThemedButton
+                      title="Clone"
+                      type="main"
+                      size="small"
+                      onPress={handleCloneDeck}
+                      style={{ marginHorizontal: theme.padding.xsmall }}
+                    />
+                    <ThemedButton
+                      title="Edit"
+                      type="main"
+                      size="small"
+                      onPress={handleEditPress}
+                      style={{ marginHorizontal: theme.padding.xsmall }}
+                    />
+                    <ThemedButton
+                      title="Delete"
+                      type="alternative"
+                      size="small"
+                      onPress={handleDeletePress}
+                      style={{ marginHorizontal: theme.padding.xsmall }}
+                    />
+                  </View>
+                </ThemedView>
+              )}
               <ThemedModal
                 visible={showModal}
                 onClose={() => setShowModal(false)}
@@ -476,6 +493,36 @@ export default function DeckScreen() {
                   />
                   <CardAutoCompleteSuggestions onCardSelect={handleThumbnailSelect} />
                 </CardAutoCompleteProvider>
+              </ThemedModal>
+              <ThemedModal
+                visible={importModalVisible}
+                onClose={() => setImportModalVisible(false)}
+                onConfirm={async () => {
+                  setImporting(true);
+                  // TODO: implement import logic here
+                  setImporting(false);
+                  setImportModalVisible(false);
+                }}
+                buttonText={importing ? "Importing..." : "Import"}
+                buttonType="main"
+                buttonSize="large"
+                onCancelText="Cancel"
+                onCancel={() => setImportModalVisible(false)}
+                disabled={importing}
+              >
+                <ThemedText
+                  type="h2"
+                  color={theme.colors.white}
+                  style={{ marginTop: theme.padding.small, marginBottom: theme.padding.medium, textAlign: "center" }}
+                >
+                  Import Deck
+                </ThemedText>
+                <ThemedTextInput
+                  value={importText}
+                  onChange={setImportText}
+                  placeholder="Paste deck text here"
+                  style={{ minHeight: 120, marginBottom: theme.padding.medium, textAlignVertical: "top" }}
+                />
               </ThemedModal>
             </>
           ) : (

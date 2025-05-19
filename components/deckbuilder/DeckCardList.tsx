@@ -226,7 +226,7 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
   };
 
   if (!cards || cards.length === 0) {
-    return <ThemedText>No cards in this deck.</ThemedText>;
+    return <ThemedText style={{ paddingVertical: theme.padding.medium }}>No cards in this deck.</ThemedText>;
   }
 
   const renderGroup = (groupName: string, groupCards: any[], index: number) => {

@@ -158,7 +158,7 @@ export default function WatchlistThumbnailList({
   return (
     <View>
       {cards.length === 0 ? (
-        <ThemedText>No cards in this watchlist.</ThemedText>
+        <ThemedText style={{ paddingVertical: theme.padding.medium }}>No cards in this watchlist.</ThemedText>
       ) : (
         (["Pokémon", "Trainer", "Energy"] as const).map((group, idx) => renderGroup(group, grouped[group], idx))
       )}

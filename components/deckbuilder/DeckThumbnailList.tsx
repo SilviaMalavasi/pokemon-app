@@ -109,7 +109,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
   const db = userDb;
 
   if (!cards || cards.length === 0) {
-    return <ThemedText>No cards in this deck.</ThemedText>;
+    return <ThemedText style={{ paddingVertical: theme.padding.medium }}>No cards in this deck.</ThemedText>;
   }
 
   // Update handleQtyPress to fetch supertype and subtypes
