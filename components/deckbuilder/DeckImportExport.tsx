@@ -158,7 +158,7 @@ const DeckImportExport: React.FC<DeckImportExportProps> = ({
           value={importText}
           onChange={setImportText}
           placeholder="Paste deck text here"
-          style={{ minHeight: screenHeight * 0.7, marginBottom: theme.padding.medium, textAlignVertical: "top" }}
+          multiline={20}
         />
       </ThemedModal>
     </>

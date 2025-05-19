@@ -48,6 +48,15 @@ const styles = StyleSheet.create({
     width: theme.fontSizes.font18,
     zIndex: 2,
   },
+  clearIconMultiline: {
+    position: "absolute",
+    right: theme.padding.small,
+    top: theme.padding.small,
+    justifyContent: "flex-start",
+    height: theme.fontSizes.font18 * 1.5,
+    width: theme.fontSizes.font18,
+    zIndex: 2,
+  },
   labelHint: {
     paddingTop: theme.padding.medium,
   },

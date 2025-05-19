@@ -16,10 +16,12 @@ export interface ThemedTextInputProps {
   onFocus?: () => void;
   onBlur?: () => void;
   maxChars?: number;
+  multiline?: number | boolean; // Accepts number for lines or boolean for default
+  lineNumber?: number; // Deprecated, use multiline as number
 }
 
 export default forwardRef<TextInput, ThemedTextInputProps>(function ThemedTextInput(
-  { value, onChange, placeholder, labelHint, style, onFocus, onBlur, maxChars },
+  { value, onChange, placeholder, labelHint, style, onFocus, onBlur, maxChars, multiline = false, lineNumber },
   ref
 ) {
   const [showHint, setShowHint] = useState(false);
@@ -28,6 +30,24 @@ export default forwardRef<TextInput, ThemedTextInputProps>(function ThemedTextIn
   let displayValue = value;
   if (typeof maxChars === "number" && value.length > maxChars) {
     displayValue = value.slice(0, maxChars) + "...";
+  }
+
+  // Determine multiline and numberOfLines
+  let isMultiline = false;
+  let numberOfLines = undefined;
+  let inputHeight = undefined;
+  if (typeof multiline === "number") {
+    isMultiline = true;
+    numberOfLines = multiline;
+    if (theme?.fontSizes?.font15) {
+      inputHeight = theme.fontSizes.font15 * multiline;
+    }
+  } else if (multiline === true) {
+    isMultiline = true;
+    numberOfLines = lineNumber;
+    if (theme?.fontSizes?.font15 && lineNumber) {
+      inputHeight = theme.fontSizes.font15 * lineNumber;
+    }
   }
 
   return (
@@ -42,20 +62,27 @@ export default forwardRef<TextInput, ThemedTextInputProps>(function ThemedTextIn
         )}
         <TextInput
           ref={ref}
-          style={[styles.input, { flex: 1 }]}
+          style={[
+            styles.input,
+            { flex: 1 },
+            isMultiline ? { textAlignVertical: "top" } : null,
+            inputHeight ? { height: inputHeight } : null,
+          ]}
           value={displayValue}
           onChangeText={onChange}
           placeholder={placeholder}
           placeholderTextColor={styles.placeholder.color}
           onFocus={onFocus}
           onBlur={onBlur}
+          multiline={isMultiline}
+          numberOfLines={numberOfLines}
         />
         <View style={styles.fakeInnerShadow} />
         {value.length > 0 && (
           <TouchableOpacity
             onPress={() => onChange("")}
             accessibilityLabel={`Clear ${placeholder || "input"}`}
-            style={styles.clearIcon}
+            style={[styles.clearIcon, isMultiline ? styles.clearIconMultiline : null]}
           >
             <Svg
               width="100%"
