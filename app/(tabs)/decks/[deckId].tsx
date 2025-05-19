@@ -6,7 +6,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
-import React from "react";
+import React, { useRef } from "react";
 import AddCardToDeck from "@/components/deckbuilder/AddCardToDeck";
 import DeckCardList from "@/components/deckbuilder/DeckCardList";
 import { theme } from "@/style/ui/Theme";
@@ -44,12 +44,15 @@ export default function DeckScreen() {
   const [importModalVisible, setImportModalVisible] = useState(false);
   const [importText, setImportText] = useState("");
   const [importing, setImporting] = useState(false);
+  const prevDeckIdRef = useRef<string | undefined>(undefined);
 
   useFocusEffect(
     React.useCallback(() => {
-      if (scrollRef.current) {
+      // Only scroll to top if deckId has changed
+      if (prevDeckIdRef.current !== deckId && scrollRef.current) {
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
+      prevDeckIdRef.current = deckId;
     }, [deckId])
   );
 
