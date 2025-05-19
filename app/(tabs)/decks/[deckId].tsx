@@ -31,7 +31,9 @@ export default function DeckScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const { db, isLoading: dbLoading, error, decksVersion, incrementDecksVersion } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
-  const [viewMode, setViewMode] = useState<"list" | "thumbnails">("list");
+  const [viewMode, setViewMode] = useState<"list" | "thumbnails">(() => {
+    return "thumbnails";
+  });
   const [cardDetails, setCardDetails] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);

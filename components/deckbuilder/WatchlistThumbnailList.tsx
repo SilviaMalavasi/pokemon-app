@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, ActivityIndicator } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import CompactCard from "@/components/CompactCard";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
@@ -24,6 +24,18 @@ export default function WatchlistThumbnailList({
   const { db: cardDb } = useCardDatabase();
   const [cardDataMap, setCardDataMap] = React.useState<{ [id: string]: { name: string; supertype: string } }>({});
   const router = useRouter();
+
+  // Add loading indicator for cardDb
+  if (!cardDb) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.purple}
+        />
+      </View>
+    );
+  }
 
   React.useEffect(() => {
     if (!cardDb || !cards || cards.length === 0) {

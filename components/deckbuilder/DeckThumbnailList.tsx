@@ -17,42 +17,96 @@ interface DeckThumbnailListProps {
 
 export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: DeckThumbnailListProps) {
   const { db: userDb, isLoading, error } = require("@/components/context/UserDatabaseContext").useUserDatabase();
-  // Wait for userDb to be ready before rendering anything
-  if (!userDb || isLoading || error) return null;
-
+  const { db: cardDb } = useCardDatabase();
+  // Always call all hooks, even if DB is not ready
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState<any>(null);
   const [stagedQty, setStagedQty] = useState(1);
   const [buttonGroupHeight, setButtonGroupHeight] = useState<number | undefined>(undefined);
-  // Use userDb for all user DB operations
-  const db = userDb;
-  const { db: cardDb } = useCardDatabase();
   const [cardDataMap, setCardDataMap] = useState<{ [id: string]: { name: string; supertype: string } }>({});
-  // Add state for supertype and subtypes
   const [selectedCardSupertype, setSelectedCardSupertype] = useState<string>("");
   const [selectedCardSubtypes, setSelectedCardSubtypes] = useState<string[]>([]);
 
-  React.useEffect(() => {
-    if (!cardDb || !cards || cards.length === 0) {
-      setCardDataMap({});
-      return;
-    }
-    const fetchData = async () => {
-      const ids = cards.map((c) => c.cardId).filter(Boolean);
-      if (!ids.length) return;
-      const placeholders = ids.map(() => "?").join(", ");
-      const results = await cardDb.getAllAsync?.<{ cardId: string; name: string; supertype: string }>(
-        `SELECT cardId, name, supertype FROM Card WHERE cardId IN (${placeholders})`,
-        ids
-      );
-      const dataMap: { [id: string]: { name: string; supertype: string } } = {};
-      results?.forEach((row) => {
-        dataMap[row.cardId] = { name: row.name, supertype: row.supertype };
-      });
-      setCardDataMap(dataMap);
+  // Group cards by supertype using DB data (like DeckCardList)
+  const grouped = React.useMemo(() => {
+    const groups: { [key: string]: any[] } = {
+      Pokémon: [],
+      Trainer: [],
+      Energy: [],
     };
-    fetchData();
+    (cards || []).forEach((card) => {
+      const dbData = cardDataMap[card.cardId];
+      let supertype: string | undefined = undefined;
+      if (dbData) {
+        if (Array.isArray(dbData.supertype)) {
+          supertype = dbData.supertype[0];
+        } else if (typeof dbData.supertype === "string") {
+          try {
+            const arr = JSON.parse(dbData.supertype);
+            if (Array.isArray(arr) && arr.length > 0) {
+              supertype = arr[0];
+            } else {
+              supertype = dbData.supertype;
+            }
+          } catch {
+            supertype = dbData.supertype;
+          }
+        }
+      }
+      if (supertype === "Pokémon") groups["Pokémon"].push(card);
+      else if (supertype === "Trainer") groups["Trainer"].push(card);
+      else if (supertype === "Energy") groups["Energy"].push(card);
+      // Ignore others
+    });
+    return groups;
+  }, [cards, cardDataMap]);
+
+  // Fetch card data for all cards in the deck and populate cardDataMap
+  React.useEffect(() => {
+    let isMounted = true;
+    async function fetchCardData() {
+      if (!cardDb || !cards || cards.length === 0) return;
+      const newMap: { [id: string]: { name: string; supertype: string } } = {};
+      for (const card of cards) {
+        try {
+          const dbCard = await cardDb.getFirstAsync?.("SELECT name, supertype FROM Card WHERE cardId = ?", [
+            card.cardId,
+          ]);
+          const dbName = dbCard && typeof dbCard === "object" && "name" in dbCard ? (dbCard as any).name : undefined;
+          const dbSupertype =
+            dbCard && typeof dbCard === "object" && "supertype" in dbCard ? (dbCard as any).supertype : undefined;
+          newMap[card.cardId] = {
+            name: dbName || card.name || card.cardId,
+            supertype: dbSupertype || card.supertype || "",
+          };
+        } catch {
+          newMap[card.cardId] = {
+            name: card.name || card.cardId,
+            supertype: card.supertype || "",
+          };
+        }
+      }
+      if (isMounted) setCardDataMap(newMap);
+    }
+    fetchCardData();
+    return () => {
+      isMounted = false;
+    };
   }, [cardDb, cards]);
+
+  // Render loading or error state if needed
+  if (isLoading || !userDb || !cardDb) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.purple}
+        />
+      </View>
+    );
+  }
+  // Use userDb for all user DB operations
+  const db = userDb;
 
   if (!cards || cards.length === 0) {
     return <ThemedText>No cards in this deck.</ThemedText>;
@@ -119,40 +173,6 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
     if (onCardsChanged) onCardsChanged();
   };
 
-  // Group cards by supertype using DB data (like DeckCardList)
-  const grouped = React.useMemo(() => {
-    const groups: { [key: string]: any[] } = {
-      Pokémon: [],
-      Trainer: [],
-      Energy: [],
-    };
-    (cards || []).forEach((card) => {
-      const dbData = cardDataMap[card.cardId];
-      let supertype: string | undefined = undefined;
-      if (dbData) {
-        if (Array.isArray(dbData.supertype)) {
-          supertype = dbData.supertype[0];
-        } else if (typeof dbData.supertype === "string") {
-          try {
-            const arr = JSON.parse(dbData.supertype);
-            if (Array.isArray(arr) && arr.length > 0) {
-              supertype = arr[0];
-            } else {
-              supertype = dbData.supertype;
-            }
-          } catch {
-            supertype = dbData.supertype;
-          }
-        }
-      }
-      if (supertype === "Pokémon") groups["Pokémon"].push(card);
-      else if (supertype === "Trainer") groups["Trainer"].push(card);
-      else if (supertype === "Energy") groups["Energy"].push(card);
-      // Ignore others
-    });
-    return groups;
-  }, [cards, cardDataMap]);
-
   const renderGroup = (groupName: string, groupCards: any[], index: number) => {
     // Always render the group title, even if the group is not the first and follows another group
     // Only skip rendering if the group is empty
@@ -196,17 +216,6 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
       </React.Fragment>
     );
   };
-
-  if (isLoading || !userDb) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator
-          size="large"
-          color={theme.colors.purple}
-        />
-      </View>
-    );
-  }
 
   return (
     <View>
