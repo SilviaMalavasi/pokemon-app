@@ -72,10 +72,13 @@ export default function DeckScreen() {
       const ids = cardsArr.map((c: any) => c.cardId).filter(Boolean);
       if (!ids.length) return setCardDetails([]);
       const placeholders = ids.map(() => "?").join(", ");
-      const results = await cardDb.getAllAsync<{ cardId: string; name: string; imagesLarge: string }>(
-        `SELECT cardId, name, imagesLarge FROM Card WHERE cardId IN (${placeholders})`,
-        ids
-      );
+      // Fetch supertype as well
+      const results = await cardDb.getAllAsync<{
+        cardId: string;
+        name: string;
+        imagesLarge: string;
+        supertype: string;
+      }>(`SELECT cardId, name, imagesLarge, supertype FROM Card WHERE cardId IN (${placeholders})`, ids);
       // Merge quantity from deck
       const merged = cardsArr.map((c: any) => {
         const found = results.find((r: any) => r.cardId === c.cardId);
@@ -84,6 +87,7 @@ export default function DeckScreen() {
           quantity: c.quantity || 1,
           name: found?.name || c.cardId,
           imagesLarge: found?.imagesLarge || "",
+          supertype: found?.supertype || "",
         };
       });
       setCardDetails(merged);
@@ -111,21 +115,32 @@ export default function DeckScreen() {
     const pokemon = [];
     const trainer = [];
     const energy = [];
+    let pokemonCount = 0;
+    let trainerCount = 0;
+    let energyCount = 0;
     for (const c of cardsArr) {
       const card = cardDetails.find((cd) => cd.cardId === c.cardId);
       const name = card?.name || c.cardId;
       const supertype = card?.supertype || "";
-      const line = `${c.quantity || 1} ${name} ${c.cardId}`;
-      if (supertype === "Pokémon") pokemon.push(line);
-      else if (supertype === "Trainer") trainer.push(line);
-      else if (supertype === "Energy") energy.push(line);
+      const quantity = c.quantity || 1;
+      const line = `${quantity} ${name} ${c.cardId}`;
+      if (supertype === "Pokémon") {
+        pokemon.push(line);
+        pokemonCount += quantity;
+      } else if (supertype === "Trainer") {
+        trainer.push(line);
+        trainerCount += quantity;
+      } else if (supertype === "Energy") {
+        energy.push(line);
+        energyCount += quantity;
+      }
     }
     let deckText = `Deck: ${deck.name || "Unnamed Deck"}\n\n`;
-    deckText += `Pokémon: ${pokemon.length}\n`;
+    deckText += `Pokémon: ${pokemonCount}\n`;
     deckText += pokemon.join("\n") + (pokemon.length ? "\n\n" : "");
-    deckText += `Trainer: ${trainer.length}\n`;
+    deckText += `Trainer: ${trainerCount}\n`;
     deckText += trainer.join("\n") + (trainer.length ? "\n\n" : "");
-    deckText += `Energy: ${energy.length}\n`;
+    deckText += `Energy: ${energyCount}\n`;
     deckText += energy.join("\n") + (energy.length ? "\n" : "");
     const fileUri = FileSystem.cacheDirectory + `${deck.name || "deck"}.txt`;
     await FileSystem.writeAsStringAsync(fileUri, deckText, { encoding: FileSystem.EncodingType.UTF8 });
