@@ -8,6 +8,7 @@ import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import styles from "@/style/deckbuilder/DeckThumbnailListStyle";
 import { theme } from "@/style/ui/Theme";
 import ThemedButton from "@/components/base/ThemedButton";
+import { orderCardsInDeck } from "@/helpers/orderCardsInDeck";
 
 interface DeckThumbnailListProps {
   cards: Array<{ cardId: string; quantity: number; name?: string; imagesLarge?: string; supertype?: string }>;
@@ -31,71 +32,28 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
   const [selectedCardSubtypes, setSelectedCardSubtypes] = useState<string[]>([]);
 
   // Group cards by supertype using DB data (like DeckCardList)
-  const grouped = React.useMemo(() => {
-    const groups: { [key: string]: any[] } = {
-      Pokémon: [],
-      Trainer: [],
-      Energy: [],
-    };
-    (cards || []).forEach((card) => {
-      const dbData = cardDataMap[card.cardId];
-      let supertype: string | undefined = undefined;
-      let subtypes: string[] = [];
-      if (dbData) {
-        // Parse supertype
-        if (Array.isArray(dbData.supertype)) {
-          supertype = dbData.supertype[0];
-        } else if (typeof dbData.supertype === "string") {
-          try {
-            const arr = JSON.parse(dbData.supertype);
-            if (Array.isArray(arr) && arr.length > 0) {
-              supertype = arr[0];
-            } else {
-              supertype = dbData.supertype;
-            }
-          } catch {
-            supertype = dbData.supertype;
-          }
-        }
-        // Parse subtypes
-        if (Array.isArray(dbData.subtypes)) {
-          subtypes = dbData.subtypes;
-        } else if (typeof dbData.subtypes === "string") {
-          try {
-            const arr = JSON.parse(dbData.subtypes);
-            if (Array.isArray(arr)) subtypes = arr;
-            else if (arr) subtypes = [arr];
-          } catch {
-            if (typeof dbData.subtypes === "string" && String(dbData.subtypes).trim() !== "")
-              subtypes = [String(dbData.subtypes)];
-          }
+  // Build a cardDbMap for fast lookup of evolvesFrom/evolvesTo
+  const [cardDbMap, setCardDbMap] = useState<any>({});
+  React.useEffect(() => {
+    if (!cardDb) return;
+    // Preload all evolvesFrom/evolvesTo for all cards in the deck
+    (async () => {
+      const map: any = {};
+      for (const card of cards) {
+        try {
+          const dbCard = await cardDb.getFirstAsync?.("SELECT evolvesFrom, evolvesTo FROM Card WHERE cardId = ?", [
+            card.cardId,
+          ]);
+          map[card.cardId] = dbCard || {};
+        } catch {
+          map[card.cardId] = {};
         }
       }
-      // Attach subtypes for sorting
-      const cardWithSubtypes = { ...card, subtypes };
-      if (supertype === "Pokémon") groups["Pokémon"].push(cardWithSubtypes);
-      else if (supertype === "Trainer") groups["Trainer"].push(cardWithSubtypes);
-      else if (supertype === "Energy") groups["Energy"].push(cardWithSubtypes);
-      // Ignore others
-    });
-    // Sort Trainer by first subtype alphabetically
-    groups["Trainer"].sort((a, b) => {
-      const aSub = a.subtypes?.[0] || "";
-      const bSub = b.subtypes?.[0] || "";
-      return aSub.localeCompare(bSub);
-    });
-    // Sort Energy: non-Basic first (by subtype), then Basic at the end
-    groups["Energy"].sort((a, b) => {
-      const aIsBasic = a.subtypes?.includes("Basic");
-      const bIsBasic = b.subtypes?.includes("Basic");
-      if (aIsBasic && !bIsBasic) return 1;
-      if (!aIsBasic && bIsBasic) return -1;
-      const aSub = a.subtypes?.[0] || "";
-      const bSub = b.subtypes?.[0] || "";
-      return aSub.localeCompare(bSub);
-    });
-    return groups;
-  }, [cards, cardDataMap]);
+      setCardDbMap(map);
+    })();
+  }, [cardDb, cards]);
+
+  const grouped = React.useMemo(() => orderCardsInDeck(cards, cardDataMap, cardDbMap), [cards, cardDataMap, cardDbMap]);
 
   // Fetch card data for all cards in the deck and populate cardDataMap
   React.useEffect(() => {
@@ -226,13 +184,11 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
     if (onCardsChanged) onCardsChanged();
   };
 
-  const renderGroup = (groupName: string, groupCards: any[], index: number) => {
-    // Always render the group title, even if the group is not the first and follows another group
-    // Only skip rendering if the group is empty
+  // Helper to render a flat group (Trainer or Energy)
+  const renderFlatGroup = (groupName: string, groupCards: any[], index: number) => {
     if (!groupCards || groupCards.length === 0) return null;
     return (
       <React.Fragment key={groupName}>
-        {/* Add extra margin if not the first group and previous group is not empty */}
         <ThemedText
           type="h4"
           style={{
@@ -270,9 +226,53 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
     );
   };
 
+  // Helper to render Pokémon group (flat, not by evolution line)
+  const renderPokemonGroup = (groupCards: any[], index: number) => {
+    if (!groupCards || groupCards.length === 0) return null;
+    return (
+      <React.Fragment key="Pokémon">
+        <ThemedText
+          type="h4"
+          style={{
+            marginTop: index > 0 ? theme.padding.large : theme.padding.small,
+            marginBottom: theme.padding.medium,
+          }}
+        >
+          Pokémon ({groupCards.reduce((sum, item) => sum + (item.quantity || 1), 0)})
+        </ThemedText>
+        <View style={styles.cardList}>
+          {groupCards.map((item, idx) => (
+            <View
+              key={item.cardId || idx}
+              style={{ position: "relative" }}
+            >
+              <CompactCard
+                card={{ cardId: item.cardId, name: item.name || item.cardId, imagesLarge: item.imagesLarge || "" }}
+                disableLink={true}
+              />
+              <TouchableOpacity
+                onPress={() => handleQtyPress(item)}
+                accessibilityLabel="Change number"
+                style={styles.numberButton}
+              >
+                <View style={styles.button}>
+                  <View style={styles.iconContainerStyle}>
+                    <ThemedText style={styles.numberStyle}>{item.quantity}</ThemedText>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      </React.Fragment>
+    );
+  };
+
   return (
     <View>
-      {(["Pokémon", "Trainer", "Energy"] as const).map((group, idx) => renderGroup(group, grouped[group], idx))}
+      {renderPokemonGroup(grouped["Pokémon"], 0)}
+      {renderFlatGroup("Trainer", grouped["Trainer"], 1)}
+      {renderFlatGroup("Energy", grouped["Energy"], 2)}
       {/* Modal for quantity selection */}
       <ThemedModal
         visible={modalVisible}
@@ -282,7 +282,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
         buttonSize="large"
         onCancelText="Cancel"
         onCancel={() => setModalVisible(false)}
-        contentStyle={buttonGroupHeight ? { minHeight: buttonGroupHeight + 120 } : undefined} // 120 for header/buttons
+        contentStyle={buttonGroupHeight ? { minHeight: buttonGroupHeight + 120 } : undefined}
       >
         <ThemedText
           type="h4"

@@ -6,6 +6,7 @@ import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import ThemedButton from "@/components/base/ThemedButton";
+import { orderCardsInDeck } from "@/helpers/orderCardsInDeck";
 
 interface DeckCardListProps {
   cards: any[];
@@ -30,7 +31,9 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
   }
 
   const [cardNames, setCardNames] = useState<{ [id: string]: string }>({});
-  const [cardDataMap, setCardDataMap] = useState<{ [id: string]: { name: string; supertype: string } }>({});
+  const [cardDataMap, setCardDataMap] = useState<{
+    [id: string]: { name: string; supertype: string; subtypes: string[] };
+  }>({});
 
   useEffect(() => {
     if (!db || !cards || cards.length === 0) {
@@ -42,15 +45,27 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
       const ids = cards.map((c) => c.cardId || c.id).filter(Boolean);
       if (!ids.length) return;
       const placeholders = ids.map(() => "?").join(", ");
-      const results = await db.getAllAsync<{ cardId: string; name: string; supertype: string }>(
-        `SELECT cardId, name, supertype FROM Card WHERE cardId IN (${placeholders})`,
+      const results = await db.getAllAsync<{ cardId: string; name: string; supertype: string; subtypes: string }>(
+        `SELECT cardId, name, supertype, subtypes FROM Card WHERE cardId IN (${placeholders})`,
         ids
       );
       const nameMap: { [id: string]: string } = {};
-      const dataMap: { [id: string]: { name: string; supertype: string } } = {};
+      const dataMap: { [id: string]: { name: string; supertype: string; subtypes: string[] } } = {};
       results.forEach((row) => {
+        let subtypesArr: string[] = [];
+        if (Array.isArray(row.subtypes)) {
+          subtypesArr = row.subtypes;
+        } else if (typeof row.subtypes === "string") {
+          try {
+            const arr = JSON.parse(row.subtypes);
+            if (Array.isArray(arr)) subtypesArr = arr;
+            else if (arr) subtypesArr = [arr];
+          } catch {
+            if (row.subtypes) subtypesArr = [row.subtypes];
+          }
+        }
         nameMap[row.cardId] = row.name;
-        dataMap[row.cardId] = { name: row.name, supertype: row.supertype };
+        dataMap[row.cardId] = { name: row.name, supertype: row.supertype, subtypes: subtypesArr };
       });
       setCardNames(nameMap);
       setCardDataMap(dataMap);
@@ -58,39 +73,8 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
     fetchData();
   }, [db, cards, decksVersion]);
 
-  // Group cards by supertype (handle string or JSON array)
-  const grouped = React.useMemo(() => {
-    const groups: { [key: string]: any[] } = {
-      Pokémon: [],
-      Trainer: [],
-      Energy: [],
-    };
-    (cards || []).forEach((card) => {
-      const dbData = cardDataMap[card.cardId];
-      let supertype: string | undefined = undefined;
-      if (dbData) {
-        if (Array.isArray(dbData.supertype)) {
-          supertype = dbData.supertype[0];
-        } else if (typeof dbData.supertype === "string") {
-          try {
-            const arr = JSON.parse(dbData.supertype);
-            if (Array.isArray(arr) && arr.length > 0) {
-              supertype = arr[0];
-            } else {
-              supertype = dbData.supertype;
-            }
-          } catch {
-            supertype = dbData.supertype;
-          }
-        }
-      }
-      if (supertype === "Pokémon") groups["Pokémon"].push(card);
-      else if (supertype === "Trainer") groups["Trainer"].push(card);
-      else if (supertype === "Energy") groups["Energy"].push(card);
-      // Ignore others
-    });
-    return groups;
-  }, [cards, cardDataMap]);
+  // Group and sort cards by supertype and evolution using orderCardsInDeck
+  const grouped = React.useMemo(() => orderCardsInDeck(cards, cardDataMap, db), [cards, cardDataMap, db]);
 
   // Helper to trigger quantity change and refresh UI
   const increaseCardQuantity = async (

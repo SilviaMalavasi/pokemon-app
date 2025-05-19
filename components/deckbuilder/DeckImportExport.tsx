@@ -221,6 +221,10 @@ const DeckImportExport: React.FC<DeckImportExportProps & { incrementDecksVersion
             // Build new deck object (structure may need to match your app)
             const newDeck = { ...deck, cards: deckCards };
             setDeck(newDeck);
+            // Persist imported cards to user DB
+            if (db && deckId) {
+              await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(deckCards), Number(deckId)]);
+            }
             // Also update decksVersion if available (for parent sync)
             if (typeof decksVersion === "number" && typeof incrementDecksVersion === "function") {
               incrementDecksVersion();
