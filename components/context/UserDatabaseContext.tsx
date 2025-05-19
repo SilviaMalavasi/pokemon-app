@@ -135,7 +135,8 @@ export const UserDatabaseProvider = ({
         setLastWatchListId,
       }}
     >
-      {children}
+      {/* Prevent rendering children until DB is ready */}
+      {!isLoading && db ? children : null}
     </UserDatabaseContext.Provider>
   );
 };
