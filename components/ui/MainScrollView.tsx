@@ -60,18 +60,18 @@ export default function MainScrollView({ children, headerImage, headerTitle, scr
               type="h1"
               color={theme.colors.white}
               fontSize={
-                headerTitle && headerTitle.toString().length > 30
-                  ? vw(2)
-                  : headerTitle && headerTitle.toString().length > 20
+                headerTitle && headerTitle.toString().length > 25
+                  ? vw(2.3)
+                  : headerTitle && headerTitle.toString().length > 16
                   ? vw(2.5)
                   : undefined
               }
               style={[
                 styles.headerTitle,
-                headerTitle && headerTitle.toString().length > 30
-                  ? { lineHeight: vw(10) }
-                  : headerTitle && headerTitle.toString().length > 14
-                  ? { lineHeight: vw(9.3) }
+                headerTitle && headerTitle.toString().length > 25
+                  ? { lineHeight: vw(9.5) }
+                  : headerTitle && headerTitle.toString().length > 16
+                  ? { lineHeight: vw(10.5) }
                   : null,
               ]}
             >
