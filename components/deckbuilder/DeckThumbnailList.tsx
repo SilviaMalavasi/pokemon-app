@@ -23,7 +23,10 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
   const [selectedCard, setSelectedCard] = useState<any>(null);
   const [stagedQty, setStagedQty] = useState(1);
   const [buttonGroupHeight, setButtonGroupHeight] = useState<number | undefined>(undefined);
-  const [cardDataMap, setCardDataMap] = useState<{ [id: string]: { name: string; supertype: string } }>({});
+  // Add subtypes to cardDataMap for sorting
+  const [cardDataMap, setCardDataMap] = useState<{
+    [id: string]: { name: string; supertype: string; subtypes: string[] };
+  }>({});
   const [selectedCardSupertype, setSelectedCardSupertype] = useState<string>("");
   const [selectedCardSubtypes, setSelectedCardSubtypes] = useState<string[]>([]);
 
@@ -37,7 +40,9 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
     (cards || []).forEach((card) => {
       const dbData = cardDataMap[card.cardId];
       let supertype: string | undefined = undefined;
+      let subtypes: string[] = [];
       if (dbData) {
+        // Parse supertype
         if (Array.isArray(dbData.supertype)) {
           supertype = dbData.supertype[0];
         } else if (typeof dbData.supertype === "string") {
@@ -52,11 +57,42 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
             supertype = dbData.supertype;
           }
         }
+        // Parse subtypes
+        if (Array.isArray(dbData.subtypes)) {
+          subtypes = dbData.subtypes;
+        } else if (typeof dbData.subtypes === "string") {
+          try {
+            const arr = JSON.parse(dbData.subtypes);
+            if (Array.isArray(arr)) subtypes = arr;
+            else if (arr) subtypes = [arr];
+          } catch {
+            if (typeof dbData.subtypes === "string" && String(dbData.subtypes).trim() !== "")
+              subtypes = [String(dbData.subtypes)];
+          }
+        }
       }
-      if (supertype === "Pokémon") groups["Pokémon"].push(card);
-      else if (supertype === "Trainer") groups["Trainer"].push(card);
-      else if (supertype === "Energy") groups["Energy"].push(card);
+      // Attach subtypes for sorting
+      const cardWithSubtypes = { ...card, subtypes };
+      if (supertype === "Pokémon") groups["Pokémon"].push(cardWithSubtypes);
+      else if (supertype === "Trainer") groups["Trainer"].push(cardWithSubtypes);
+      else if (supertype === "Energy") groups["Energy"].push(cardWithSubtypes);
       // Ignore others
+    });
+    // Sort Trainer by first subtype alphabetically
+    groups["Trainer"].sort((a, b) => {
+      const aSub = a.subtypes?.[0] || "";
+      const bSub = b.subtypes?.[0] || "";
+      return aSub.localeCompare(bSub);
+    });
+    // Sort Energy: non-Basic first (by subtype), then Basic at the end
+    groups["Energy"].sort((a, b) => {
+      const aIsBasic = a.subtypes?.includes("Basic");
+      const bIsBasic = b.subtypes?.includes("Basic");
+      if (aIsBasic && !bIsBasic) return 1;
+      if (!aIsBasic && bIsBasic) return -1;
+      const aSub = a.subtypes?.[0] || "";
+      const bSub = b.subtypes?.[0] || "";
+      return aSub.localeCompare(bSub);
     });
     return groups;
   }, [cards, cardDataMap]);
@@ -66,23 +102,40 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
     let isMounted = true;
     async function fetchCardData() {
       if (!cardDb || !cards || cards.length === 0) return;
-      const newMap: { [id: string]: { name: string; supertype: string } } = {};
+      const newMap: { [id: string]: { name: string; supertype: string; subtypes: string[] } } = {};
       for (const card of cards) {
         try {
-          const dbCard = await cardDb.getFirstAsync?.("SELECT name, supertype FROM Card WHERE cardId = ?", [
+          const dbCard = await cardDb.getFirstAsync?.("SELECT name, supertype, subtypes FROM Card WHERE cardId = ?", [
             card.cardId,
           ]);
           const dbName = dbCard && typeof dbCard === "object" && "name" in dbCard ? (dbCard as any).name : undefined;
           const dbSupertype =
             dbCard && typeof dbCard === "object" && "supertype" in dbCard ? (dbCard as any).supertype : undefined;
+          let dbSubtypes: string[] = [];
+          if (dbCard && typeof dbCard === "object" && "subtypes" in dbCard) {
+            const raw = (dbCard as any).subtypes;
+            if (typeof raw === "string") {
+              try {
+                const parsed = JSON.parse(raw || "[]");
+                if (Array.isArray(parsed)) dbSubtypes = parsed;
+                else if (parsed) dbSubtypes = [parsed];
+              } catch {
+                if (raw.trim() !== "") dbSubtypes = [raw];
+              }
+            } else if (Array.isArray(raw)) {
+              dbSubtypes = raw;
+            }
+          }
           newMap[card.cardId] = {
             name: dbName || card.name || card.cardId,
             supertype: dbSupertype || card.supertype || "",
+            subtypes: dbSubtypes,
           };
         } catch {
           newMap[card.cardId] = {
             name: card.name || card.cardId,
             supertype: card.supertype || "",
+            subtypes: [],
           };
         }
       }
