@@ -111,33 +111,75 @@ export default function DeckScreen() {
 
   // Export deck to txt file
   const handleExportDeck = async () => {
-    if (!deck) return;
+    if (!deck || !cardDb) return;
     const cardsArr = getCardsArray();
+    if (!cardsArr.length) return;
+    // Get all cardIds
+    const ids = cardsArr.map((c: any) => c.cardId).filter(Boolean);
+    if (!ids.length) return;
+    const placeholders = ids.map(() => "?").join(", ");
+    // Fetch all needed info in one query (join Card and CardSet)
+    const cardRows = await cardDb.getAllAsync<any>(
+      `SELECT Card.cardId, Card.name, Card.supertype, Card.number, Card.setId, Card.subtypes, CardSet.ptcgoCode
+       FROM Card
+       LEFT JOIN CardSet ON Card.setId = CardSet.id
+       WHERE Card.cardId IN (${placeholders})`,
+      ids
+    );
+    // Build a map for quick lookup
+    const cardMap: Record<string, any> = {};
+    for (const row of cardRows) {
+      cardMap[row.cardId] = row;
+    }
     // Group cards by supertype
-    const pokemon = [];
-    const trainer = [];
-    const energy = [];
+    const pokemon: string[] = [];
+    const trainer: string[] = [];
+    const energy: string[] = [];
     let pokemonCount = 0;
     let trainerCount = 0;
     let energyCount = 0;
     for (const c of cardsArr) {
-      const card = cardDetails.find((cd) => cd.cardId === c.cardId);
-      const name = card?.name || c.cardId;
-      const supertype = card?.supertype || "";
+      const card = cardMap[c.cardId];
+      if (!card) continue;
+      const name = card.name || c.cardId;
+      const supertype = card.supertype || "";
       const quantity = c.quantity || 1;
-      const line = `${quantity} ${name} ${c.cardId}`;
-      if (supertype === "Pokémon") {
+      const ptcgoCode = card.ptcgoCode || "";
+      const number = card.number || "";
+      // For basic energy, use correct name and set code
+      let line = "";
+      if (supertype === "Energy") {
+        // Try to parse subtypes for 'Basic'
+        let isBasic = false;
+        if (card.subtypes) {
+          try {
+            const arr = typeof card.subtypes === "string" ? JSON.parse(card.subtypes) : card.subtypes;
+            if (Array.isArray(arr) && arr.includes("Basic")) isBasic = true;
+          } catch {
+            if (typeof card.subtypes === "string" && card.subtypes.includes("Basic")) isBasic = true;
+          }
+        }
+        if (isBasic) {
+          // Use e.g. 'Psychic Energy SVE 5'
+          line = `${quantity} ${name} ${ptcgoCode} ${number}`;
+        } else {
+          // Special energy, just use name and code
+          line = `${quantity} ${name} ${ptcgoCode} ${number}`;
+        }
+        energy.push(line);
+        energyCount += quantity;
+      } else if (supertype === "Pokémon") {
+        line = `${quantity} ${name} ${ptcgoCode} ${number}`;
         pokemon.push(line);
         pokemonCount += quantity;
       } else if (supertype === "Trainer") {
+        line = `${quantity} ${name} ${ptcgoCode} ${number}`;
         trainer.push(line);
         trainerCount += quantity;
-      } else if (supertype === "Energy") {
-        energy.push(line);
-        energyCount += quantity;
       }
     }
-    let deckText = `Deck: ${deck.name || "Unnamed Deck"}\n\n`;
+    // No deck name, just the groups
+    let deckText = "";
     deckText += `Pokémon: ${pokemonCount}\n`;
     deckText += pokemon.join("\n") + (pokemon.length ? "\n\n" : "");
     deckText += `Trainer: ${trainerCount}\n`;
