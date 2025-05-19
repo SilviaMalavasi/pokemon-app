@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: vw(12),
     height: vw(12),
-    right: theme.padding.small,
+    right: vw(1),
     top: vw(50),
     zIndex: 10,
     borderRadius: theme.borderRadius.medium,

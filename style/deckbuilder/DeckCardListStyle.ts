@@ -21,6 +21,16 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingBottom: theme.padding.xsmall,
   },
+  summaryTextCardNameCols: {
+    flexDirection: "row",
+  },
+  summaryTextCardQtyCol: {
+    color: theme.colors.green,
+    width: theme.padding.medium,
+  },
+  summaryTextCardName: {
+    flex: vw(100) - theme.padding.medium * 2 - theme.padding.large - theme.padding.medium,
+  },
   qtyCol: { flexDirection: "row", alignItems: "center" },
   qtyOperator: {
     width: theme.padding.large,

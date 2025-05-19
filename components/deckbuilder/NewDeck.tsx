@@ -111,7 +111,7 @@ export default function NewDeck({
 
           <ThemedButton
             title="Add New Deck"
-            width={vw(54)}
+            width={vw(56)}
             onPress={handleSavePress}
             disabled={isSaveDisabled}
             style={{ marginTop: theme.padding.medium }}

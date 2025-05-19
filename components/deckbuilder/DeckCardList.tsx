@@ -237,10 +237,14 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
             key={item.cardId || item.id || idx}
           >
             <View style={styles.summaryTextCol}>
-              <ThemedText>
-                <ThemedText color={theme.colors.green}>{item.quantity || 1}</ThemedText>{" "}
-                {cardDataMap[item.cardId]?.name} <ThemedText style={styles.cardId}>{item.cardId}</ThemedText>
-              </ThemedText>
+              <View style={styles.summaryTextCardName}>
+                <View style={styles.summaryTextCardNameCols}>
+                  <ThemedText style={styles.summaryTextCardQtyCol}>{item.quantity || 1}</ThemedText>
+                  <ThemedText>
+                    {cardDataMap[item.cardId]?.name} <ThemedText style={styles.cardId}>{item.cardId}</ThemedText>
+                  </ThemedText>
+                </View>
+              </View>
               <View style={styles.qtyCol}>
                 <ThemedButton
                   title="-"
