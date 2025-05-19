@@ -23,6 +23,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState<any>(null);
   const [stagedQty, setStagedQty] = useState(1);
+  const [buttonGroupHeight, setButtonGroupHeight] = useState<number | undefined>(undefined);
   // Use userDb for all user DB operations
   const db = userDb;
   const { db: cardDb } = useCardDatabase();
@@ -219,6 +220,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
         buttonSize="large"
         onCancelText="Cancel"
         onCancel={() => setModalVisible(false)}
+        contentStyle={buttonGroupHeight ? { minHeight: buttonGroupHeight + 120 } : undefined} // 120 for header/buttons
       >
         <ThemedText
           type="h4"
@@ -253,20 +255,25 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
               />
             </View>
           ) : (
-            [0, 1, 2, 3, 4].map((qty) => (
-              <ThemedButton
-                key={qty}
-                title={qty.toString()}
-                type="outline"
-                size="large"
-                onPress={() => handleQtyChange(qty)}
-                style={
-                  stagedQty === qty
-                    ? [styles.numbersModal, { backgroundColor: theme.colors.green }]
-                    : styles.numbersModal
-                }
-              />
-            ))
+            <View
+              style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", width: "100%" }}
+              onLayout={(e) => setButtonGroupHeight(e.nativeEvent.layout.height)}
+            >
+              {[0, 1, 2, 3, 4].map((qty) => (
+                <ThemedButton
+                  key={qty}
+                  title={qty.toString()}
+                  type="outline"
+                  size="large"
+                  onPress={() => handleQtyChange(qty)}
+                  style={
+                    stagedQty === qty
+                      ? [styles.numbersModal, { backgroundColor: theme.colors.green }]
+                      : styles.numbersModal
+                  }
+                />
+              ))}
+            </View>
           )}
         </View>
       </ThemedModal>

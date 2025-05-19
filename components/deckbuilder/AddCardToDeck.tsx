@@ -41,6 +41,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
   const [resetCounter, setResetCounter] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [stagedQty, setStagedQty] = useState<number>(1);
+  const [buttonGroupHeight, setButtonGroupHeight] = useState<number | undefined>(undefined);
 
   // Helper to parse deck.cards (stored as JSON string)
   const getCardsArray = () => {
@@ -167,6 +168,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
         onCancelText="Cancel"
         onCancel={() => setModalVisible(false)}
         onConfirm={handleConfirm}
+        contentStyle={buttonGroupHeight ? { minHeight: buttonGroupHeight + 160 } : undefined} // 160 for header/buttons padding
       >
         <ThemedText
           type="h4"
@@ -201,16 +203,21 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
               />
             </View>
           ) : (
-            [1, 2, 3, 4].map((qty) => (
-              <ThemedButton
-                key={qty}
-                title={qty.toString()}
-                type={"outline"}
-                size="large"
-                onPress={() => handleQtyChange(qty)}
-                style={stagedQty === qty ? styles.numbersModalActive : styles.numbersModal}
-              />
-            ))
+            <View
+              style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", width: "100%" }}
+              onLayout={(e) => setButtonGroupHeight(e.nativeEvent.layout.height)}
+            >
+              {[1, 2, 3, 4].map((qty) => (
+                <ThemedButton
+                  key={qty}
+                  title={qty.toString()}
+                  type={"outline"}
+                  size="large"
+                  onPress={() => handleQtyChange(qty)}
+                  style={stagedQty === qty ? styles.numbersModalActive : styles.numbersModal}
+                />
+              ))}
+            </View>
           )}
         </View>
       </ThemedModal>

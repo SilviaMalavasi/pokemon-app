@@ -2,7 +2,6 @@ import React from "react";
 import { Modal, Pressable, View, SafeAreaView, Platform, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import ThemedButton from "@/components/base/ThemedButton";
-import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
 import styles from "@/style/base/ThemedModalStyle";
 
@@ -17,7 +16,7 @@ interface ThemedModalProps {
   onCancelText?: string;
   onCancel?: () => void;
   onConfirm?: () => void;
-  disabled?: boolean; // <-- add this line
+  disabled?: boolean;
 }
 
 export default function ThemedModal({
@@ -31,7 +30,7 @@ export default function ThemedModal({
   onCancelText,
   onCancel,
   onConfirm,
-  disabled = false, // <-- add this line
+  disabled = false,
 }: ThemedModalProps) {
   return (
     <Modal
@@ -62,10 +61,7 @@ export default function ThemedModal({
                 end={{ x: 0.4, y: 1 }}
                 style={styles.mainModal}
               >
-                <ScrollView
-                  contentContainerStyle={{ alignItems: "center" }}
-                  persistentScrollbar={true}
-                >
+                <ScrollView contentContainerStyle={{ alignItems: "center" }}>
                   {children}
                   <View style={styles.buttonContainer}>
                     {onCancel && (
