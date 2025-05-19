@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Dimensions } from "react-native";
+import { View, Dimensions, ActivityIndicator } from "react-native";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedText from "@/components/base/ThemedText";
@@ -18,7 +18,7 @@ interface DeckImportExportProps {
   deckId: string | number;
 }
 
-const DeckImportExport: React.FC<DeckImportExportProps> = ({
+const DeckImportExport: React.FC<DeckImportExportProps & { incrementDecksVersion?: () => void }> = ({
   deck,
   cardDb,
   db,
@@ -26,11 +26,11 @@ const DeckImportExport: React.FC<DeckImportExportProps> = ({
   setDeck,
   decksVersion,
   deckId,
+  incrementDecksVersion,
 }) => {
   const [importModalVisible, setImportModalVisible] = useState(false);
   const [importText, setImportText] = useState("");
   const [importing, setImporting] = useState(false);
-  const screenHeight = Dimensions.get("window").height;
 
   // Export deck to txt file
   const handleExportDeck = async () => {
@@ -115,6 +115,17 @@ const DeckImportExport: React.FC<DeckImportExportProps> = ({
   };
 
   // Import modal UI only (logic to be implemented)
+  if (!cardDb) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.purple}
+        />
+      </View>
+    );
+  }
+
   return (
     <>
       <ThemedButton
@@ -136,7 +147,89 @@ const DeckImportExport: React.FC<DeckImportExportProps> = ({
         onClose={() => setImportModalVisible(false)}
         onConfirm={async () => {
           setImporting(true);
-          // TODO: implement import logic here
+          if (!cardDb) {
+            // Optionally show a message to the user here
+            setImporting(false);
+            setImportModalVisible(false);
+            return;
+          }
+          try {
+            // --- IMPORT LOGIC START ---
+            const lines = importText.split(/\r?\n/);
+            let section = null;
+            const cardLines = [];
+            for (const line of lines) {
+              if (/^Pok[ée]mon:/i.test(line)) section = "pokemon";
+              else if (/^Trainer:/i.test(line)) section = "trainer";
+              else if (/^Energy:/i.test(line)) section = "energy";
+              else if (line.trim() && section) cardLines.push({ section, line: line.trim() });
+            }
+            // Parse each card line
+            const parsed = cardLines
+              .map(({ section, line }) => {
+                // e.g. 2 Gardevoir ex PAF 29
+                const m = line.match(/^(\d+)\s+(.+?)\s+([A-Z0-9\-]+)\s+(\d+)$/);
+                if (!m) return null;
+                const [, quantity, name, ptcgoCode, number] = m;
+                return { section, quantity: parseInt(quantity, 10), name, ptcgoCode, number };
+              })
+              .filter((card) => card !== null);
+            // Query CardSet table for ptcgoCode -> setId
+            const ptcgoCodes = Array.from(new Set(parsed.map((card) => card && card.ptcgoCode)));
+            const placeholders = ptcgoCodes.map(() => "?").join(",");
+            const setRows = await cardDb.getAllAsync(
+              `SELECT id, ptcgoCode FROM CardSet WHERE ptcgoCode IN (${placeholders})`,
+              ptcgoCodes
+            );
+            const ptcgoToSetId: Record<string, number> = {};
+            for (const set of setRows) ptcgoToSetId[set.ptcgoCode] = set.id;
+            // Find cards in db
+            const deckCards = [];
+            for (const card of parsed) {
+              if (!card) continue;
+              // Handle basic energy special case
+              if (
+                card.section === "energy" &&
+                /energy/i.test(card.name) &&
+                card.ptcgoCode &&
+                card.number &&
+                /psychic|darkness|metal|fire|water|grass|lightning|fighting|fairy/i.test(card.name)
+              ) {
+                // Try to match our DB's basic energy name
+                const energyType = card.name.replace(/\s*Energy.*/i, "").trim();
+                const dbEnergyName = `Basic ${energyType} Energy`;
+                const rows = await cardDb.getAllAsync(
+                  "SELECT * FROM Card WHERE supertype = 'Energy' AND subtypes LIKE '%Basic%' AND name = ?",
+                  [dbEnergyName]
+                );
+                if (rows && rows.length > 0) {
+                  deckCards.push({ cardId: rows[0].cardId, quantity: card.quantity });
+                  continue;
+                }
+              }
+              // Normal card import
+              const setId = ptcgoToSetId[card.ptcgoCode];
+              if (!setId) continue;
+              const rows = await cardDb.getAllAsync("SELECT * FROM Card WHERE setId = ? AND number = ?", [
+                setId,
+                card.number,
+              ]);
+              if (rows && rows.length > 0) {
+                deckCards.push({ cardId: rows[0].cardId, quantity: card.quantity });
+              }
+            }
+            // Build new deck object (structure may need to match your app)
+            const newDeck = { ...deck, cards: deckCards };
+            setDeck(newDeck);
+            // Also update decksVersion if available (for parent sync)
+            if (typeof decksVersion === "number" && typeof incrementDecksVersion === "function") {
+              incrementDecksVersion();
+            }
+            // --- IMPORT LOGIC END ---
+          } catch (e) {
+            // Optionally show error
+            console.error(e);
+          }
           setImporting(false);
           setImportModalVisible(false);
         }}
