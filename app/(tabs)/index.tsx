@@ -158,7 +158,7 @@ export default function HomeScreen() {
             fontWeight="bold"
             color={theme.colors.grey}
           >
-            LAST UPDATE:{" "}
+            LAST DB UPDATE:{" "}
           </ThemedText>
           Journey Together
         </ThemedText>

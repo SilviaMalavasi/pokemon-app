@@ -7,6 +7,7 @@ import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import ThemedButton from "@/components/base/ThemedButton";
 import { orderCardsInDeck } from "@/helpers/orderCardsInDeck";
+import { useRouter } from "expo-router";
 
 interface DeckCardListProps {
   cards: any[];
@@ -17,6 +18,7 @@ interface DeckCardListProps {
 const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChanged }) => {
   const { db } = useCardDatabase();
   const { db: userDb, isLoading, error, decksVersion } = useUserDatabase();
+  const router = useRouter();
 
   // Wait for userDb to be ready before rendering anything
   if (isLoading || !userDb) {
@@ -235,7 +237,14 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
               <View style={styles.summaryTextCardName}>
                 <View style={styles.summaryTextCardNameCols}>
                   <ThemedText style={styles.summaryTextCardQtyCol}>{item.quantity || 1}</ThemedText>
-                  <ThemedText>
+                  <ThemedText
+                    onPress={() =>
+                      router.push({
+                        pathname: "/cards/[cardId]",
+                        params: { cardId: item.cardId, deckId, from: "deckDetail" },
+                      })
+                    }
+                  >
                     {cardDataMap[item.cardId]?.name} <ThemedText style={styles.cardId}>{item.cardId}</ThemedText>
                   </ThemedText>
                 </View>

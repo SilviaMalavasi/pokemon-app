@@ -13,9 +13,10 @@ import React from "react";
 import { View } from "react-native";
 
 export default function FullCardScreen() {
-  const { cardId, watchlistId, from } = useLocalSearchParams<{
+  const { cardId, watchlistId, deckId, from } = useLocalSearchParams<{
     cardId: string;
     watchlistId?: string;
+    deckId?: string;
     from?: string;
   }>();
   const [card, setCard] = useState<CardType | null>(null);
@@ -32,6 +33,12 @@ export default function FullCardScreen() {
           router.replace({
             pathname: "/watchlists/[watchlistId]",
             params: { watchlistId: watchlistId },
+          });
+          return true; // Prevent default behavior
+        } else if (from === "deckDetail" && deckId) {
+          router.replace({
+            pathname: "/decks/[deckId]",
+            params: { deckId: deckId },
           });
           return true; // Prevent default behavior
         } else if (from === "searchResult") {
@@ -51,7 +58,7 @@ export default function FullCardScreen() {
       const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
 
       return () => subscription.remove();
-    }, [from, watchlistId, router, navigation])
+    }, [from, watchlistId, deckId, router, navigation])
   );
 
   useFocusEffect(

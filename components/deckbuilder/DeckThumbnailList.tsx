@@ -9,6 +9,7 @@ import styles from "@/style/deckbuilder/DeckThumbnailListStyle";
 import { theme } from "@/style/ui/Theme";
 import ThemedButton from "@/components/base/ThemedButton";
 import { orderCardsInDeck } from "@/helpers/orderCardsInDeck";
+import { useRouter } from "expo-router";
 
 interface DeckThumbnailListProps {
   cards: Array<{ cardId: string; quantity: number; name?: string; imagesLarge?: string; supertype?: string }>;
@@ -19,6 +20,7 @@ interface DeckThumbnailListProps {
 export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: DeckThumbnailListProps) {
   const { db: userDb, isLoading, error } = require("@/components/context/UserDatabaseContext").useUserDatabase();
   const { db: cardDb } = useCardDatabase();
+  const router = useRouter();
   // Always call all hooks, even if DB is not ready
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState<any>(null);
@@ -200,16 +202,27 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
         </ThemedText>
         <View style={styles.cardList}>
           {groupCards.map((item, idx) => (
-            <View
+            <TouchableOpacity
               key={item.cardId || idx}
               style={{ position: "relative" }}
+              activeOpacity={0.85}
+              onPress={() =>
+                router.push({
+                  pathname: "/cards/[cardId]",
+                  params: { cardId: item.cardId, deckId: deckId, from: "deckDetail" },
+                })
+              }
+              accessibilityLabel={`View details for ${item.name || item.cardId}`}
             >
               <CompactCard
                 card={{ cardId: item.cardId, name: item.name || item.cardId, imagesLarge: item.imagesLarge || "" }}
                 disableLink={true}
               />
               <TouchableOpacity
-                onPress={() => handleQtyPress(item)}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  handleQtyPress(item);
+                }}
                 accessibilityLabel="Change number"
                 style={styles.numberButton}
               >
@@ -219,7 +232,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
                   </View>
                 </View>
               </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       </React.Fragment>
@@ -242,16 +255,27 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
         </ThemedText>
         <View style={styles.cardList}>
           {groupCards.map((item, idx) => (
-            <View
+            <TouchableOpacity
               key={item.cardId || idx}
               style={{ position: "relative" }}
+              activeOpacity={0.85}
+              onPress={() =>
+                router.push({
+                  pathname: "/cards/[cardId]",
+                  params: { cardId: item.cardId, deckId: deckId, from: "deckDetail" },
+                })
+              }
+              accessibilityLabel={`View details for ${item.name || item.cardId}`}
             >
               <CompactCard
                 card={{ cardId: item.cardId, name: item.name || item.cardId, imagesLarge: item.imagesLarge || "" }}
                 disableLink={true}
               />
               <TouchableOpacity
-                onPress={() => handleQtyPress(item)}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  handleQtyPress(item);
+                }}
                 accessibilityLabel="Change number"
                 style={styles.numberButton}
               >
@@ -261,7 +285,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
                   </View>
                 </View>
               </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       </React.Fragment>
