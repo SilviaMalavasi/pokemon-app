@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, TouchableOpacity, Pressable, Modal, TextInput } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { getSavedDecks } from "@/lib/userDatabase";
@@ -25,7 +24,19 @@ interface AddToDeckDropdownProps {
 }
 
 export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, subtypes }: AddToDeckDropdownProps) {
-  const { db, workingDeckId, setWorkingDeckId, incrementDecksVersion, error } = useUserDatabase();
+  const { db: userDb, workingDeckId, setWorkingDeckId, incrementDecksVersion, error, isLoading } = useUserDatabase();
+  // Wait for userDb to be ready before rendering anything
+  if (isLoading || !userDb) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.purple}
+        />
+      </View>
+    );
+  }
+
   const [modalVisible, setModalVisible] = useState(false);
   const [deckPickerVisible, setDeckPickerVisible] = useState(false);
   const [decks, setDecks] = useState<any[]>([]);
@@ -47,13 +58,13 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
 
   useEffect(() => {
     if (!modalVisible) return;
-    if (!db) {
+    if (!userDb) {
       setDecks([]);
       setQuantities({});
       setStagedQuantity(0);
       return;
     }
-    getSavedDecks(db).then((decks) => {
+    getSavedDecks(userDb).then((decks) => {
       setDecks(decks);
       const q: { [deckId: number]: number } = {};
       decks.forEach((deck) => {
@@ -74,7 +85,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
         setStagedQuantity(deckObj ? q[deckObj.id] : 0);
       }
     });
-  }, [modalVisible, db, cardId]);
+  }, [modalVisible, userDb, cardId]);
 
   useEffect(() => {
     // When deck changes, update stagedQuantity
@@ -100,7 +111,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
 
   // Handler to save card to deck
   const handleConfirmAdd = async () => {
-    if (!db || !workingDeck) return;
+    if (!userDb || !workingDeck) return;
     setAddingDeckId(workingDeck.id);
     try {
       // Get current cards array
@@ -116,7 +127,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
       if (stagedQuantity > 0) {
         filtered.push({ cardId, quantity: stagedQuantity });
       }
-      await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(filtered), workingDeck.id]);
+      await userDb.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(filtered), workingDeck.id]);
       setQuantities((prev) => ({ ...prev, [workingDeck.id]: stagedQuantity }));
       incrementDecksVersion(); // Notify context of deck change
       setModalVisible(false);
@@ -135,15 +146,15 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
   };
 
   const handleCreateNewDeck = async () => {
-    if (!db || !newDeckName.trim()) return;
+    if (!userDb || !newDeckName.trim()) return;
     try {
-      await db.runAsync("INSERT INTO Decks (name, cards, thumbnail) VALUES (?, ?, ?)", [
+      await userDb.runAsync("INSERT INTO Decks (name, cards, thumbnail) VALUES (?, ?, ?)", [
         newDeckName.trim(),
         JSON.stringify([]),
         newDeckThumbnail,
       ]);
       // Refresh decks and select the last one (newest)
-      const updatedDecks = await getSavedDecks(db);
+      const updatedDecks = await getSavedDecks(userDb);
       const newDeck = updatedDecks[updatedDecks.length - 1];
       setDecks(updatedDecks);
       setSelectedDeckId(String(newDeck.id));
@@ -219,13 +230,12 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
           )}{" "}
           to Deck
         </ThemedText>
-        {!db ? (
+        {!userDb ? (
           <>
-            <ThemedText style={{ textAlign: "center", marginTop: 16, color: theme.colors.green }}>
-              Database not available. Please try again later.
-            </ThemedText>
             {error && (
-              <ThemedText style={{ textAlign: "center", marginTop: 8, color: "red" }}>{error.message}</ThemedText>
+              <ThemedText style={{ textAlign: "center", marginTop: 16, color: theme.colors.green }}>
+                Database not available. Please try again later.
+              </ThemedText>
             )}
           </>
         ) : (

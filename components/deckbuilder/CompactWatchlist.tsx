@@ -52,8 +52,12 @@ export default function CompactWatchlist({
   layout,
   loading,
   onDelete,
-  onPressWatchlist, // Add this line
+  onPressWatchlist,
 }: CompactWatchlistProps) {
+  const { incrementDecksVersion, db: userDb, isLoading, error } = useUserDatabase();
+  // Wait for userDb to be ready before rendering anything
+  if (!userDb || isLoading || error) return null;
+
   const [imageLoading, setImageLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -62,7 +66,7 @@ export default function CompactWatchlist({
   const [saving, setSaving] = useState(false);
   const imageSource = getDeckImage(watchlist.thumbnail || "");
   const router = useRouter();
-  const { incrementDecksVersion, db: userDb } = useUserDatabase();
+  const { incrementDecksVersion: incrementUserDecksVersion } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
 
   const handlePress = () => {
@@ -104,7 +108,7 @@ export default function CompactWatchlist({
       }
       const cards = (watchlist as any).cards ? (watchlist as any).cards : "[]";
       await addWatchList(userDb, newName, cards, watchlist.thumbnail || undefined);
-      incrementDecksVersion();
+      incrementUserDecksVersion();
     } catch (e) {
       console.error("Failed to clone watchlist", e);
     }
@@ -125,7 +129,7 @@ export default function CompactWatchlist({
         editThumbnail || null,
         watchlist.id,
       ]);
-      incrementDecksVersion();
+      incrementUserDecksVersion();
       setEditModalVisible(false);
     } catch (e) {
       console.error("Error updating watchlist:", e);
@@ -152,6 +156,17 @@ export default function CompactWatchlist({
       }
     }
   };
+
+  if (isLoading || !userDb) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.purple}
+        />
+      </View>
+    );
+  }
 
   if (loading) {
     return (

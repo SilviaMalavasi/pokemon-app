@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import styles from "@/style/deckbuilder/DeckCardListStyle";
-import { Svg, Circle } from "react-native-svg";
-import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
@@ -17,7 +15,20 @@ interface DeckCardListProps {
 
 const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChanged }) => {
   const { db } = useCardDatabase();
-  const { db: userDb, decksVersion } = useUserDatabase();
+  const { db: userDb, isLoading, error, decksVersion } = useUserDatabase();
+
+  // Wait for userDb to be ready before rendering anything
+  if (isLoading || !userDb) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.purple}
+        />
+      </View>
+    );
+  }
+
   const [cardNames, setCardNames] = useState<{ [id: string]: string }>({});
   const [cardDataMap, setCardDataMap] = useState<{ [id: string]: { name: string; supertype: string } }>({});
 

@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { TouchableOpacity, View, Modal } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { addWatchList } from "@/lib/userDatabase";
-import { Pressable } from "react-native";
-import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
 import ThemedSelect from "@/components/base/ThemedSelect";
 import styles from "@/style/deckbuilder/AddToWatchListModalStyle";
 import { theme } from "@/style/ui/Theme";
@@ -19,12 +17,32 @@ interface AddToWatchListModalProps {
 }
 
 export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddToWatchListModalProps) {
-  const { db, watchLists, incrementWatchListsVersion, lastWatchListId, setLastWatchListId } = useUserDatabase();
+  const {
+    db: userDb,
+    watchLists,
+    incrementWatchListsVersion,
+    lastWatchListId,
+    setLastWatchListId,
+    isLoading,
+    error,
+  } = useUserDatabase();
+  // Wait for userDb to be ready before rendering anything
+  if (isLoading || !userDb) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.purple}
+        />
+      </View>
+    );
+  }
+
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedWatchListId, setSelectedWatchListId] = useState<number | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [newListName, setNewListName] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [errorMsg, setError] = useState<string | null>(null);
   const [showNewListModal, setShowNewListModal] = useState(false);
   const [watchListPickerVisible, setWatchListPickerVisible] = useState(false);
 
@@ -36,14 +54,14 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
 
   // Handler for main modal (add card to watchlist)
   const handleAddToWatchListAndClose = async () => {
-    if (!db) return;
+    if (!userDb) return;
     setIsSaving(true);
     setError(null);
     try {
       let targetId = selectedWatchListId;
       if (!targetId && newListName.trim()) {
         // Create new watchlist with this card only
-        const res = await addWatchList(db, newListName.trim(), JSON.stringify([{ cardId }]));
+        const res = await addWatchList(userDb, newListName.trim(), JSON.stringify([{ cardId }]));
         targetId = res.lastInsertRowId;
         await incrementWatchListsVersion();
       } else if (targetId) {
@@ -59,7 +77,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
         // Avoid duplicates
         if (!cardsArr.some((c: any) => c.cardId === cardId)) {
           cardsArr.push({ cardId });
-          await db.runAsync("UPDATE WatchedCards SET cards = ? WHERE id = ?", [JSON.stringify(cardsArr), targetId]);
+          await userDb.runAsync("UPDATE WatchedCards SET cards = ? WHERE id = ?", [JSON.stringify(cardsArr), targetId]);
           await incrementWatchListsVersion();
         } else {
           setError("Card already in this watchlist.");
@@ -85,7 +103,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
   // Handler for new watchlist modal (create new watchlist)
   const handleCreateNewWatchListAndClose = async () => {
     if (isSaving) return; // Prevent double submit
-    if (!db || !newListName.trim()) {
+    if (!userDb || !newListName.trim()) {
       setShowNewListModal(false);
       return;
     }
@@ -93,12 +111,12 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
     setError(null);
     try {
       // Prepare the WatchedCards table if not already present
-      if (db.prepareAsync) {
-        await db.prepareAsync(
+      if (userDb.prepareAsync) {
+        await userDb.prepareAsync(
           "CREATE TABLE IF NOT EXISTS WatchedCards (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, cards TEXT)"
         );
       }
-      const res = await addWatchList(db, newListName.trim(), JSON.stringify([]));
+      const res = await addWatchList(userDb, newListName.trim(), JSON.stringify([]));
       await incrementWatchListsVersion(); // Await in case it's async
       setLastWatchListId(res.lastInsertRowId);
       setSelectedWatchListId(res.lastInsertRowId);
@@ -129,7 +147,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
         buttonType="main"
         buttonSize="large"
         onCancelText="Cancel"
-        disabled={isSaving || !!error}
+        disabled={isSaving || !!errorMsg}
       >
         <ThemedText
           type="h4"
@@ -148,7 +166,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
           )}{" "}
           to WatchList
         </ThemedText>
-        {!db ? (
+        {!userDb ? (
           <ThemedText style={{ textAlign: "center", marginTop: theme.padding.large, color: theme.colors.green }}>
             Database not available. Please try again later.
           </ThemedText>
@@ -201,9 +219,9 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
           onChange={setNewListName}
           placeholder="Watchlist name"
         />
-        {error &&
+        {errorMsg &&
           (() => {
-            console.warn(error);
+            console.warn(errorMsg);
             return null;
           })()}
       </ThemedModal>

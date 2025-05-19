@@ -45,14 +45,12 @@ interface CompactDeckProps {
   onPressDeck?: (id: number) => void; // Ensure this line is present
 }
 
-export default function CompactDeck({
-  deck,
-  onImageLoad,
-  layout,
-  loading,
-  onDelete,
-  onPressDeck, // Ensure this line is present
-}: CompactDeckProps) {
+export default function CompactDeck({ deck, onImageLoad, layout, loading, onDelete, onPressDeck }: CompactDeckProps) {
+  const userDbCtx = useUserDatabase();
+  const { incrementDecksVersion, db: userDb, isLoading, error } = userDbCtx;
+  // Wait for userDb to be ready before rendering anything
+  if (!userDb || isLoading || error) return null;
+
   const [imageLoading, setImageLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -61,7 +59,6 @@ export default function CompactDeck({
   const [saving, setSaving] = useState(false);
   const imageSource = getDeckImage(deck.thumbnail || "");
   const router = useRouter(); // Ensure router is initialized
-  const { incrementDecksVersion, db: userDb } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
 
   const handleDeletePress = (e: any) => {
@@ -155,6 +152,17 @@ export default function CompactDeck({
       router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id, from: "deckbuilder" } });
     }
   };
+
+  if (isLoading || !userDb) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.purple}
+        />
+      </View>
+    );
+  }
 
   if (loading) {
     return (

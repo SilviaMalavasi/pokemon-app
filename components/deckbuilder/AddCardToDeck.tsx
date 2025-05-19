@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
   CardAutoCompleteSuggestions,
@@ -20,8 +20,19 @@ interface AddCardToDeckProps {
 }
 
 export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckProps) {
-  const { incrementDecksVersion } = useUserDatabase();
+  const { incrementDecksVersion, db: userDb, isLoading, error } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
+  // Wait for userDb to be ready before rendering anything
+  if (isLoading || !userDb) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.purple}
+        />
+      </View>
+    );
+  }
   const [selectedCardId, setSelectedCardId] = useState<string>("");
   const [selectedCardName, setSelectedCardName] = useState<string>("");
   const [selectedCardSupertype, setSelectedCardSupertype] = useState<string>("");

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
   CardAutoCompleteSuggestions,
@@ -9,6 +9,7 @@ import ThemedText from "../base/ThemedText";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import styles from "@/style/deckbuilder/AddCardToWatchlistStyle";
+import { theme } from "@/style/ui/Theme";
 
 interface AddCardToWatchlistProps {
   watchlist: any;
@@ -17,7 +18,19 @@ interface AddCardToWatchlistProps {
 }
 
 export default function AddCardToWatchlist({ watchlist, db, onCardAdded }: AddCardToWatchlistProps) {
-  const { incrementDecksVersion } = useUserDatabase();
+  const { incrementDecksVersion, db: userDb, isLoading, error } = useUserDatabase();
+  // Wait for userDb to be ready before rendering anything
+  if (isLoading || !userDb) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.purple}
+        />
+      </View>
+    );
+  }
+
   const { db: cardDb } = useCardDatabase();
   const [selectedCardId, setSelectedCardId] = useState<string>("");
   const [selectedCardName, setSelectedCardName] = useState<string>("");

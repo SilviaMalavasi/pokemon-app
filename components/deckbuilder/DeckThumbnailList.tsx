@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import CompactCard from "@/components/CompactCard";
 import { TouchableOpacity } from "react-native";
@@ -15,12 +15,16 @@ interface DeckThumbnailListProps {
   onCardsChanged?: () => void;
 }
 
-// This component displays deck cards as thumbnails, similar to SearchResult, but with quantity overlay
 export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: DeckThumbnailListProps) {
+  const { db: userDb, isLoading, error } = require("@/components/context/UserDatabaseContext").useUserDatabase();
+  // Wait for userDb to be ready before rendering anything
+  if (!userDb || isLoading || error) return null;
+
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState<any>(null);
   const [stagedQty, setStagedQty] = useState(1);
-  const { db } = require("@/components/context/UserDatabaseContext").useUserDatabase();
+  // Use userDb for all user DB operations
+  const db = userDb;
   const { db: cardDb } = useCardDatabase();
   const [cardDataMap, setCardDataMap] = useState<{ [id: string]: { name: string; supertype: string } }>({});
   // Add state for supertype and subtypes
@@ -191,6 +195,17 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
       </React.Fragment>
     );
   };
+
+  if (isLoading || !userDb) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.purple}
+        />
+      </View>
+    );
+  }
 
   return (
     <View>
