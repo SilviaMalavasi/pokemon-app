@@ -19,7 +19,7 @@ interface AddCardToWatchlistProps {
 
 export default function AddCardToWatchlist({ watchlist, db, onCardAdded }: AddCardToWatchlistProps) {
   const { incrementDecksVersion, db: userDb, isLoading, error } = useUserDatabase();
-  // Wait for userDb to be ready before rendering anything
+  // Defensive: Wait for both db and isLoading to be ready before any DB access
   if (isLoading || !userDb) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

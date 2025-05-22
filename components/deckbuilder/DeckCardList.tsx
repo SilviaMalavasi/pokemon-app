@@ -20,7 +20,7 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
   const { db: userDb, isLoading, error, decksVersion } = useUserDatabase();
   const router = useRouter();
 
-  // Wait for userDb to be ready before rendering anything
+  // Defensive: Wait for both db and isLoading to be ready before any DB access
   if (isLoading || !userDb) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

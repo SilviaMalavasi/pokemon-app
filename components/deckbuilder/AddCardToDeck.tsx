@@ -22,7 +22,7 @@ interface AddCardToDeckProps {
 export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckProps) {
   const { incrementDecksVersion, db: userDb, isLoading, error } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
-  // Wait for userDb to be ready before rendering anything
+  // Defensive: Wait for both db and isLoading to be ready before any DB access
   if (isLoading || !userDb) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

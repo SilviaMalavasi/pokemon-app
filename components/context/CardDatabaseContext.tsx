@@ -52,40 +52,66 @@ export const CardDatabaseProvider = ({
     };
   }, []);
 
-  useEffect(() => {
-    async function setupDatabase() {
-      try {
-        // Open or create the card database (fixed name)
-        const openedDb = await SQLite.openDatabaseAsync("cardDatabase.db");
+  // Retry logic constants
+  const MAX_RETRIES = 3;
+  const RETRY_DELAY_MS = 1000;
 
-        if (isMounted.current) {
-          // Run migration and JSON population - use a custom wrapper function
-          // that doesn't immediately update state during rendering
-          await migrateDbIfNeeded(
-            openedDb,
-            (updating) => {
-              // Use setTimeout to defer state updates out of the render cycle
-              setTimeout(() => safeSetIsUpdating(updating), 0);
-            },
-            setCardDbProgress
-          );
+  useEffect(() => {
+    let retryCount = 0;
+    let cancelled = false;
+
+    async function setupDatabaseWithRetry() {
+      while (retryCount < MAX_RETRIES && !cancelled) {
+        try {
+          // Open or create the card database (fixed name)
+          console.log(`[CardDB] Attempting to open card database... (try ${retryCount + 1})`);
+          const openedDb = await SQLite.openDatabaseAsync("cardDatabase.db");
 
           if (isMounted.current) {
-            setDb(openedDb);
+            // Run migration and JSON population - use a custom wrapper function
+            // that doesn't immediately update state during rendering
+            await migrateDbIfNeeded(
+              openedDb,
+              (updating) => {
+                // Use setTimeout to defer state updates out of the render cycle
+                setTimeout(() => safeSetIsUpdating(updating), 0);
+              },
+              setCardDbProgress
+            );
+
+            if (isMounted.current) {
+              setDb(openedDb);
+            }
           }
-        }
-      } catch (e) {
-        if (isMounted.current) {
-          setError(e instanceof Error ? e : new Error(String(e)));
-        }
-      } finally {
-        if (isMounted.current) {
-          setIsLoading(false);
+          break; // Success, exit retry loop
+        } catch (e) {
+          retryCount++;
+          console.error(`[CardDB] Failed to initialize card database (attempt ${retryCount}):`, e);
+          if (retryCount >= MAX_RETRIES) {
+            // Dev only: fire alert on repeated failure
+            // eslint-disable-next-line no-alert
+            alert("[DEV] Card DB failed to initialize after multiple attempts. See console for details.");
+            if (isMounted.current) {
+              setError(e instanceof Error ? e : new Error(String(e)));
+            }
+          } else {
+            // Wait before retrying
+            await new Promise((res) => setTimeout(res, RETRY_DELAY_MS));
+          }
+        } finally {
+          if (isMounted.current) {
+            setIsLoading(false);
+          }
         }
       }
     }
 
-    setupDatabase();
+    setupDatabaseWithRetry();
+
+    return () => {
+      cancelled = true;
+      isMounted.current = false;
+    };
   }, []);
 
   return (

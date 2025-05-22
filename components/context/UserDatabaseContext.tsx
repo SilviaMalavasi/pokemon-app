@@ -69,38 +69,58 @@ export const UserDatabaseProvider = ({
     };
   }, []);
 
+  // Retry logic constants
+  const MAX_RETRIES = 3;
+  const RETRY_DELAY_MS = 1000;
+
   useEffect(() => {
-    async function setupDatabase() {
-      try {
-        console.log("[UserDB] Attempting to open user database...");
-        const openedDb = await openUserDatabase();
-        console.log("[UserDB] Database opened successfully");
-        if (isMounted.current) {
-          console.log("[UserDB] Migrating user database if needed...");
-          await migrateUserDbIfNeeded(openedDb, (updating) => {
-            setTimeout(() => safeSetIsUpdating(updating), 0);
-          });
-          console.log("[UserDB] Migration complete");
+    let retryCount = 0;
+    let cancelled = false;
+
+    async function setupDatabaseWithRetry() {
+      while (retryCount < MAX_RETRIES && !cancelled) {
+        try {
+          console.log(`[UserDB] Attempting to open user database... (try ${retryCount + 1})`);
+          const openedDb = await openUserDatabase();
+          console.log("[UserDB] Database opened successfully");
           if (isMounted.current) {
-            setDb(openedDb);
-            console.log("[UserDB] setDb called");
+            console.log("[UserDB] Migrating user database if needed...");
+            await migrateUserDbIfNeeded(openedDb, (updating) => {
+              setTimeout(() => safeSetIsUpdating(updating), 0);
+            });
+            console.log("[UserDB] Migration complete");
+            if (isMounted.current) {
+              setDb(openedDb);
+              console.log("[UserDB] setDb called");
+            }
           }
-        }
-      } catch (e) {
-        console.error("[UserDB] Failed to initialize user database:", e);
-        if (isMounted.current) {
-          setError(e instanceof Error ? e : new Error(String(e)));
-        }
-      } finally {
-        if (isMounted.current) {
-          setIsLoading(false);
+          break; // Success, exit retry loop
+        } catch (e) {
+          retryCount++;
+          console.error(`[UserDB] Failed to initialize user database (attempt ${retryCount}):`, e);
+          if (retryCount >= MAX_RETRIES) {
+            // Dev only: fire alert on repeated failure
+            // eslint-disable-next-line no-alert
+            alert("[DEV] User DB failed to initialize after multiple attempts. See console for details.");
+            if (isMounted.current) {
+              setError(e instanceof Error ? e : new Error(String(e)));
+            }
+          } else {
+            // Wait before retrying
+            await new Promise((res) => setTimeout(res, RETRY_DELAY_MS));
+          }
+        } finally {
+          if (isMounted.current) {
+            setIsLoading(false);
+          }
         }
       }
     }
 
-    setupDatabase();
+    setupDatabaseWithRetry();
 
     return () => {
+      cancelled = true;
       console.log("UserDatabaseProvider unmounted.");
     };
   }, []);
