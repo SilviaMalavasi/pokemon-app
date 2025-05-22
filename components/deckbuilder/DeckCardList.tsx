@@ -17,7 +17,7 @@ interface DeckCardListProps {
 
 const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChanged }) => {
   const { db } = useCardDatabase();
-  const { db: userDb, isLoading, error, decksVersion } = useUserDatabase();
+  const { db: userDb, isLoading, error, decksVersion, incrementDecksVersion } = useUserDatabase();
   const router = useRouter();
 
   // Defensive: Wait for both db and isLoading to be ready before any DB access
@@ -209,6 +209,7 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
       newQty = Math.max(0, newQty - 1);
     }
     if (onCardsChanged) onCardsChanged();
+    if (typeof incrementDecksVersion === "function") incrementDecksVersion();
   };
 
   if (!cards || cards.length === 0) {

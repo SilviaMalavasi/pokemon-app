@@ -70,6 +70,7 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
   const handleConfirmDelete = () => {
     setShowModal(false);
     if (onDelete) onDelete(deck.id);
+    incrementDecksVersion();
   };
 
   const handleCloneDeck = async () => {

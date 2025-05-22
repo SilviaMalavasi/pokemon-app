@@ -54,7 +54,7 @@ export default function CompactWatchlist({
   onDelete,
   onPressWatchlist,
 }: CompactWatchlistProps) {
-  const { incrementDecksVersion, db: userDb, isLoading, error } = useUserDatabase();
+  const { incrementWatchListsVersion, db: userDb, isLoading, error } = useUserDatabase();
   // Wait for userDb to be ready before rendering anything
   if (!userDb || isLoading || error) return null;
 
@@ -66,7 +66,7 @@ export default function CompactWatchlist({
   const [saving, setSaving] = useState(false);
   const imageSource = getDeckImage(watchlist.thumbnail || "");
   const router = useRouter();
-  const { incrementDecksVersion: incrementUserDecksVersion } = useUserDatabase();
+  const { incrementWatchListsVersion: incrementUserDecksVersion } = useUserDatabase();
   const { db: cardDb } = useCardDatabase();
 
   const handlePress = () => {
@@ -108,7 +108,7 @@ export default function CompactWatchlist({
       }
       const cards = (watchlist as any).cards ? (watchlist as any).cards : "[]";
       await addWatchList(userDb, newName, cards, watchlist.thumbnail || undefined);
-      incrementUserDecksVersion();
+      incrementWatchListsVersion();
     } catch (e) {
       console.error("Failed to clone watchlist", e);
     }
@@ -129,7 +129,7 @@ export default function CompactWatchlist({
         editThumbnail || null,
         watchlist.id,
       ]);
-      incrementUserDecksVersion();
+      incrementWatchListsVersion();
       setEditModalVisible(false);
     } catch (e) {
       console.error("Error updating watchlist:", e);

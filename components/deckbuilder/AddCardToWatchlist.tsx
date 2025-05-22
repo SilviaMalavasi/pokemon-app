@@ -18,7 +18,7 @@ interface AddCardToWatchlistProps {
 }
 
 export default function AddCardToWatchlist({ watchlist, db, onCardAdded }: AddCardToWatchlistProps) {
-  const { incrementDecksVersion, db: userDb, isLoading, error } = useUserDatabase();
+  const { incrementWatchListsVersion, db: userDb, isLoading, error } = useUserDatabase();
   // Defensive: Wait for both db and isLoading to be ready before any DB access
   if (isLoading || !userDb) {
     return (
@@ -56,7 +56,7 @@ export default function AddCardToWatchlist({ watchlist, db, onCardAdded }: AddCa
       if (!cardsArr.some((c: any) => c.cardId === cardId)) {
         cardsArr.push({ cardId });
         await db.runAsync("UPDATE WatchedCards SET cards = ? WHERE id = ?", [JSON.stringify(cardsArr), watchlist.id]);
-        incrementDecksVersion();
+        incrementWatchListsVersion();
         if (onCardAdded) onCardAdded();
       }
       setSelectedCardId("");

@@ -129,7 +129,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
       }
       await userDb.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(filtered), workingDeck.id]);
       setQuantities((prev) => ({ ...prev, [workingDeck.id]: stagedQuantity }));
-      incrementDecksVersion(); // Notify context of deck change
+      if (typeof incrementDecksVersion === "function") incrementDecksVersion();
       setModalVisible(false);
       if (onAdded) onAdded(workingDeck.id);
     } catch (e) {
@@ -160,13 +160,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
       setSelectedDeckId(String(newDeck.id));
       setWorkingDeckId(String(newDeck.id));
       setQuantities((prev) => ({ ...prev, [newDeck.id]: 0 }));
-      setStagedQuantity(0);
-      setNewDeckModalVisible(false);
-      setDeckPickerVisible(false);
-      setNewDeckName("");
-      setNewDeckThumbnail("");
-      setAutoCompleteKey((k) => k + 1);
-      incrementDecksVersion();
+      if (typeof incrementDecksVersion === "function") incrementDecksVersion();
     } catch (e) {
       console.error("Error creating new deck:", e);
     }

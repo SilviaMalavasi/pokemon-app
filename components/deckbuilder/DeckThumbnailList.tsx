@@ -18,7 +18,12 @@ interface DeckThumbnailListProps {
 }
 
 export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: DeckThumbnailListProps) {
-  const { db: userDb, isLoading, error } = require("@/components/context/UserDatabaseContext").useUserDatabase();
+  const {
+    db: userDb,
+    isLoading,
+    error,
+    incrementDecksVersion,
+  } = require("@/components/context/UserDatabaseContext").useUserDatabase();
   const { db: cardDb } = useCardDatabase();
   const router = useRouter();
   // Always call all hooks, even if DB is not ready
@@ -184,6 +189,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
     setSelectedCardSupertype("");
     setSelectedCardSubtypes([]);
     if (onCardsChanged) onCardsChanged();
+    if (typeof incrementDecksVersion === "function") incrementDecksVersion();
   };
 
   // Helper to render a flat group (Trainer or Energy)

@@ -241,6 +241,7 @@ export default function DeckScreen() {
     if (!deckId || !db) return;
     try {
       await db.runAsync(`DELETE FROM Decks WHERE id = ?`, [Number(deckId)]);
+      if (typeof incrementDecksVersion === "function") incrementDecksVersion();
       router.replace("/deckbuilder");
     } catch (error) {
       console.error("Error deleting deck:", error);
@@ -267,6 +268,7 @@ export default function DeckScreen() {
       ]);
       const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
       setDeck(updatedDeck);
+      if (typeof incrementDecksVersion === "function") incrementDecksVersion();
       setEditModalVisible(false);
     } catch (error) {
       console.error("Error updating deck:", error);
@@ -372,6 +374,7 @@ export default function DeckScreen() {
                       if (db) {
                         const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
                         setDeck(updatedDeck);
+                        if (typeof incrementDecksVersion === "function") incrementDecksVersion();
                       }
                     }}
                   />
@@ -383,6 +386,7 @@ export default function DeckScreen() {
                       if (db) {
                         const updatedDeck = await db.getFirstAsync<any>(`SELECT * FROM Decks WHERE id = ?`, [deckId]);
                         setDeck(updatedDeck);
+                        if (typeof incrementDecksVersion === "function") incrementDecksVersion();
                       }
                     }}
                   />

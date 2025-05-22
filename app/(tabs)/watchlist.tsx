@@ -67,6 +67,7 @@ export default function WatchlistScreen() {
       setWatchlistName("");
       setWatchlistThumbnail("");
       fetchWatchLists();
+      await incrementWatchListsVersion(); // Ensure context is updated after creation
     } catch (error) {
       console.error("Failed to save watchlist:", error);
     }

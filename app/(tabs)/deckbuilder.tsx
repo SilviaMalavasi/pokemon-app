@@ -19,7 +19,7 @@ interface SavedDeck {
 
 export default function DeckBuilderScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const { db, isLoading: dbLoading, error: dbError, decksVersion } = useUserDatabase();
+  const { db, isLoading: dbLoading, error: dbError, decksVersion, incrementDecksVersion } = useUserDatabase();
   const router = useRouter(); // Initialize router
 
   const [deckName, setDeckName] = useState("");
@@ -68,6 +68,7 @@ export default function DeckBuilderScreen() {
       setDeckName("");
       setDeckThumbnail("");
       fetchSavedDecks();
+      if (typeof incrementDecksVersion === "function") incrementDecksVersion();
     } catch (error) {
       console.error("Failed to save deck:", error);
     }
@@ -80,13 +81,14 @@ export default function DeckBuilderScreen() {
       try {
         await deleteDeck(db, id);
         await fetchSavedDecks();
+        if (typeof incrementDecksVersion === "function") incrementDecksVersion();
       } catch (e) {
         console.error("Failed to delete deck", e);
       } finally {
         setDeletingId(null);
       }
     },
-    [db, fetchSavedDecks]
+    [db, fetchSavedDecks, incrementDecksVersion]
   );
 
   const handleThumbnailSelect = (imagesLargeUrl: string) => {

@@ -22,7 +22,14 @@ import cardImages from "@/helpers/cardImageMapping";
 export default function WatchListDetailScreen() {
   const router = useRouter();
   const { watchlistId, from } = useLocalSearchParams<{ watchlistId: string; from?: string }>();
-  const { db, isLoading: dbLoading, error, watchLists, watchListsVersion } = useUserDatabase();
+  const {
+    db,
+    isLoading: dbLoading,
+    error,
+    watchLists,
+    watchListsVersion,
+    incrementWatchListsVersion,
+  } = useUserDatabase();
   const { db: cardDb, isLoading: cardDbLoading } = useCardDatabase();
   const [watchList, setWatchList] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -106,6 +113,7 @@ export default function WatchListDetailScreen() {
         newName,
         typeof cards === "string" ? cards : JSON.stringify(cards),
       ]);
+      incrementWatchListsVersion();
       // Optionally: refresh UI or navigate to new watchlist
     } catch (e) {
       console.error("Failed to clone watchlist", e);
@@ -131,6 +139,7 @@ export default function WatchListDetailScreen() {
       const updated = await db.getFirstAsync<any>(`SELECT * FROM WatchedCards WHERE id = ?`, [watchList.id]);
       setWatchList(updated);
       setEditModalVisible(false);
+      incrementWatchListsVersion();
     } catch (e) {
       console.error("Error updating watchlist:", e);
     } finally {
@@ -161,6 +170,7 @@ export default function WatchListDetailScreen() {
     if (!watchList || !db) return;
     try {
       await db.runAsync("DELETE FROM WatchedCards WHERE id = ?", [watchList.id]);
+      incrementWatchListsVersion();
       router.replace("/watchlist");
     } catch (e) {
       console.error("Error deleting watchlist:", e);
@@ -189,6 +199,11 @@ export default function WatchListDetailScreen() {
       return () => subscription.remove();
     }, [handleBack])
   );
+
+  // Handler to update context when cards are changed (e.g., card removed)
+  const handleCardsChanged = () => {
+    incrementWatchListsVersion();
+  };
 
   return (
     <MainScrollView
@@ -252,37 +267,10 @@ export default function WatchListDetailScreen() {
                 <ThemedText type="h2">Cards ({cardDetails.length})</ThemedText>
               </View>
               <WatchlistThumbnailList
-                cards={cardDetails}
+                cards={getCardsArray()}
                 watchlistId={Number(watchlistId)}
                 db={db}
-                onCardsChanged={async () => {
-                  if (db) {
-                    const updatedWatchList = await db.getFirstAsync<any>(`SELECT * FROM WatchedCards WHERE id = ?`, [
-                      watchlistId,
-                    ]);
-                    setWatchList(updatedWatchList);
-                    // Optionally refresh card details
-                    let cardsArr = [];
-                    try {
-                      cardsArr = Array.isArray(updatedWatchList?.cards)
-                        ? updatedWatchList.cards
-                        : JSON.parse(updatedWatchList?.cards || "[]");
-                    } catch {
-                      cardsArr = [];
-                    }
-                    if (cardsArr.length > 0 && cardDb) {
-                      const ids = cardsArr.map((c: any) => c.cardId);
-                      const placeholders = ids.map(() => "?").join(",");
-                      const details = await cardDb.getAllAsync<any>(
-                        `SELECT cardId, name, imagesLarge FROM Card WHERE cardId IN (${placeholders})`,
-                        ids
-                      );
-                      setCardDetails(details);
-                    } else {
-                      setCardDetails([]);
-                    }
-                  }
-                }}
+                onCardsChanged={handleCardsChanged}
               />
               <View style={{ marginBottom: theme.padding.xlarge }} />
             </ThemedView>
