@@ -82,7 +82,11 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
         setSelectedDeckId(initialDeckId);
         if (!workingDeckId) setWorkingDeckId(initialDeckId);
         const deckObj = decks.find((d) => String(d.id) === initialDeckId);
-        setStagedQuantity(deckObj ? q[deckObj.id] : 0);
+        let initialQty = deckObj ? q[deckObj.id] : 0;
+        if (initialQty === 0) {
+          initialQty = 1;
+        }
+        setStagedQuantity(initialQty);
       }
     });
   }, [modalVisible, userDb, cardId]);
@@ -93,9 +97,14 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
     const deckId = workingDeckId || selectedDeckId;
     const deckIdNum = deckId ? Number(deckId) : undefined;
     if (deckIdNum !== undefined && deckIdNum in quantities) {
-      setStagedQuantity(quantities[deckIdNum]);
+      let qty = quantities[deckIdNum];
+      // Set minimum to 1 for all cards
+      if (qty === 0) {
+        qty = 1;
+      }
+      setStagedQuantity(qty);
     } else if (deckIdNum !== undefined) {
-      setStagedQuantity(0);
+      setStagedQuantity(1);
     }
   }, [workingDeckId, selectedDeckId, quantities, modalVisible]);
 
@@ -268,8 +277,8 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
                     title="-"
                     type="outline"
                     size="small"
-                    onPress={() => setStagedQuantity((q) => Math.max(q - 1, 0))}
-                    disabled={stagedQuantity <= 0 || addingDeckId === workingDeck.id}
+                    onPress={() => setStagedQuantity((q) => Math.max(q - 1, 1))}
+                    disabled={stagedQuantity <= 1 || addingDeckId === workingDeck.id}
                     style={styles.qtyOperator}
                     accessibilityLabel={`Remove from ${workingDeck.name}`}
                   />
