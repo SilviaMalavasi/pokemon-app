@@ -14,6 +14,7 @@ import NewWatchlist from "@/components/deckbuilder/NewWatchlist";
 import ThemedView from "@/components/ui/ThemedView";
 import { theme } from "@/style/ui/Theme";
 import { useRouter } from "expo-router";
+import ThemedButton from "@/components/base/ThemedButton";
 
 interface SavedDeck {
   id: number;
@@ -214,7 +215,8 @@ export default function HomeScreen() {
             color={theme.colors.white}
             style={{ padding: theme.padding.medium }}
           >
-            This app was created with ♥ by Pokémon nerd and developer{" "}
+            This app was created with <ThemedText color={theme.colors.purple}>♥</ThemedText> by Pokémon nerd and
+            developer{" "}
             <ExternalLink
               color="alternative"
               href="https://www.linkedin.com/in/silvia-malavasi/"
@@ -225,6 +227,21 @@ export default function HomeScreen() {
             <ExternalLink href="https://pokemontcg.io/">pokemontcg.io </ExternalLink>
             for the Card Archive.
           </ThemedText>
+        </View>
+        <View>
+          <ThemedText
+            type="default"
+            color={theme.colors.white}
+            style={{ padding: theme.padding.medium }}
+          >
+            This app is free, use it to build wonderfull decks and have fun. If you like it and you want to support my
+            work, you can do it by sharing this app with your friends and by supporting me on Patreon.{" "}
+          </ThemedText>
+          <ThemedButton
+            onPress={() => router.push("https://www.patreon.com/silviamalavasi")}
+            title="Buy me a coffe"
+            style={{ marginHorizontal: theme.padding.small }}
+          />
         </View>
         <View style={{ padding: theme.padding.medium }}>
           <ThemedText
