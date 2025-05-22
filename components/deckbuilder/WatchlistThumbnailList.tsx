@@ -22,7 +22,9 @@ export default function WatchlistThumbnailList({
   onCardsChanged,
 }: WatchlistThumbnailListProps) {
   const { db: cardDb } = useCardDatabase();
-  const [cardDataMap, setCardDataMap] = React.useState<{ [id: string]: { name: string; supertype: string } }>({});
+  const [cardDataMap, setCardDataMap] = React.useState<{
+    [id: string]: { name: string; supertype: string; imagesLarge: string };
+  }>({});
   const router = useRouter();
 
   // Add loading indicator for cardDb
@@ -46,13 +48,15 @@ export default function WatchlistThumbnailList({
       const ids = cards.map((c) => c.cardId).filter(Boolean);
       if (!ids.length) return;
       const placeholders = ids.map(() => "?").join(", ");
-      const results = await cardDb.getAllAsync?.<{ cardId: string; name: string; supertype: string }>(
-        `SELECT cardId, name, supertype FROM Card WHERE cardId IN (${placeholders})`,
-        ids
-      );
-      const dataMap: { [id: string]: { name: string; supertype: string } } = {};
+      const results = await cardDb.getAllAsync?.<{
+        cardId: string;
+        name: string;
+        supertype: string;
+        imagesLarge: string;
+      }>(`SELECT cardId, name, supertype, imagesLarge FROM Card WHERE cardId IN (${placeholders})`, ids);
+      const dataMap: { [id: string]: { name: string; supertype: string; imagesLarge: string } } = {};
       results?.forEach((row) => {
-        dataMap[row.cardId] = { name: row.name, supertype: row.supertype };
+        dataMap[row.cardId] = { name: row.name, supertype: row.supertype, imagesLarge: row.imagesLarge };
       });
       setCardDataMap(dataMap);
     };
@@ -115,40 +119,47 @@ export default function WatchlistThumbnailList({
           {groupName} ({groupCards.length})
         </ThemedText>
         <View style={styles.cardList}>
-          {groupCards.map((item, idx) => (
-            <TouchableOpacity
-              key={item.cardId || idx}
-              style={{ position: "relative" }}
-              activeOpacity={0.85}
-              onPress={() =>
-                router.push({
-                  pathname: "/cards/[cardId]",
-                  params: { cardId: item.cardId, watchlistId: watchlistId, from: "watchlistDetail" },
-                })
-              }
-              accessibilityLabel={`View details for ${item.name || item.cardId}`}
-            >
-              <CompactCard
-                card={{ cardId: item.cardId, name: item.name || item.cardId, imagesLarge: item.imagesLarge || "" }}
-                disableLink={true}
-              />
-              {/* Overlay delete button in top right */}
+          {groupCards.map((item, idx) => {
+            const dbData = cardDataMap[item.cardId] || {};
+            return (
               <TouchableOpacity
-                onPress={(e) => {
-                  e.stopPropagation();
-                  handleDeleteCard(item.cardId);
-                }}
-                accessibilityLabel="Remove card"
-                style={styles.numberButton}
+                key={item.cardId || idx}
+                style={{ position: "relative" }}
+                activeOpacity={0.85}
+                onPress={() =>
+                  router.push({
+                    pathname: "/cards/[cardId]",
+                    params: { cardId: item.cardId, watchlistId: watchlistId, from: "watchlistDetail" },
+                  })
+                }
+                accessibilityLabel={`View details for ${item.name || item.cardId}`}
               >
-                <View style={styles.button}>
-                  <View style={styles.iconContainerStyle}>
-                    <ThemedText style={styles.numberStyle}>×</ThemedText>
+                <CompactCard
+                  card={{
+                    cardId: item.cardId,
+                    name: item.name || dbData.name || item.cardId,
+                    imagesLarge: item.imagesLarge || dbData.imagesLarge || "",
+                  }}
+                  disableLink={true}
+                />
+                {/* Overlay delete button in top right */}
+                <TouchableOpacity
+                  onPress={(e) => {
+                    e.stopPropagation();
+                    handleDeleteCard(item.cardId);
+                  }}
+                  accessibilityLabel="Remove card"
+                  style={styles.numberButton}
+                >
+                  <View style={styles.button}>
+                    <View style={styles.iconContainerStyle}>
+                      <ThemedText style={styles.numberStyle}>×</ThemedText>
+                    </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               </TouchableOpacity>
-            </TouchableOpacity>
-          ))}
+            );
+          })}
         </View>
       </React.Fragment>
     );
