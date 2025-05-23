@@ -191,12 +191,12 @@ export default function TabLayout() {
                 <ThemedText
                   type="tabLabel"
                   style={[styles.label, { color }]}
-                  accessibilityLabel="Home Tab"
                 >
                   Home
                 </ThemedText>
               ),
               tabBarIcon: ({ color }) => <HomeIcon color={color} />,
+              tabBarAccessibilityLabel: "Home Tab",
             }}
           />
           <Tabs.Screen
@@ -206,12 +206,12 @@ export default function TabLayout() {
                 <ThemedText
                   type="tabLabel"
                   style={[styles.label, { color }]}
-                  accessibilityLabel="Deck Builder Tab"
                 >
                   Deck Builder
                 </ThemedText>
               ),
               tabBarIcon: ({ color }) => <DeckBuilderIcon color={color} />,
+              tabBarAccessibilityLabel: "Deck Builder Tab",
             }}
           />
           <Tabs.Screen
@@ -221,12 +221,12 @@ export default function TabLayout() {
                 <ThemedText
                   type="tabLabel"
                   style={[styles.label, { color }]}
-                  accessibilityLabel="Watchlist Tab"
                 >
                   Watchlist
                 </ThemedText>
               ),
               tabBarIcon: ({ color }) => <WatchlistIcon color={color} />,
+              tabBarAccessibilityLabel: "Watchlist Tab",
             }}
           />
           <Tabs.Screen
@@ -236,12 +236,12 @@ export default function TabLayout() {
                 <ThemedText
                   type="tabLabel"
                   style={[styles.label, { color }]}
-                  accessibilityLabel="Advanced Search Tab"
                 >
                   Advanced Search
                 </ThemedText>
               ),
               tabBarIcon: ({ color }) => <AdvSearchIcon color={color} />,
+              tabBarAccessibilityLabel: "Advanced Search Tab",
             }}
           />
           <Tabs.Screen
@@ -251,12 +251,12 @@ export default function TabLayout() {
                 <ThemedText
                   type="tabLabel"
                   style={[styles.label, { color }]}
-                  accessibilityLabel="Free Search Tab"
                 >
                   Free Search
                 </ThemedText>
               ),
               tabBarIcon: ({ color }) => <FreeSearchIcon color={color} />,
+              tabBarAccessibilityLabel: "Free Search Tab",
             }}
           />
           <Tabs.Screen
