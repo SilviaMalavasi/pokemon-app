@@ -240,7 +240,7 @@ export default function HomeScreen() {
           <ThemedButton
             onPress={() => router.push("https://www.patreon.com/silviamalavasi")}
             title="Buy me a coffe"
-            style={{ marginHorizontal: theme.padding.small }}
+            style={{ marginHorizontal: theme.padding.small, marginVertical: theme.padding.small }}
           />
         </View>
         <View style={{ padding: theme.padding.medium }}>
