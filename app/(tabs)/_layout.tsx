@@ -191,6 +191,7 @@ export default function TabLayout() {
                 <ThemedText
                   type="tabLabel"
                   style={[styles.label, { color }]}
+                  accessibilityLabel="Home Tab"
                 >
                   Home
                 </ThemedText>
@@ -205,6 +206,7 @@ export default function TabLayout() {
                 <ThemedText
                   type="tabLabel"
                   style={[styles.label, { color }]}
+                  accessibilityLabel="Deck Builder Tab"
                 >
                   Deck Builder
                 </ThemedText>
@@ -219,6 +221,7 @@ export default function TabLayout() {
                 <ThemedText
                   type="tabLabel"
                   style={[styles.label, { color }]}
+                  accessibilityLabel="Watchlist Tab"
                 >
                   Watchlist
                 </ThemedText>
@@ -233,6 +236,7 @@ export default function TabLayout() {
                 <ThemedText
                   type="tabLabel"
                   style={[styles.label, { color }]}
+                  accessibilityLabel="Advanced Search Tab"
                 >
                   Advanced Search
                 </ThemedText>
@@ -247,6 +251,7 @@ export default function TabLayout() {
                 <ThemedText
                   type="tabLabel"
                   style={[styles.label, { color }]}
+                  accessibilityLabel="Free Search Tab"
                 >
                   Free Search
                 </ThemedText>
