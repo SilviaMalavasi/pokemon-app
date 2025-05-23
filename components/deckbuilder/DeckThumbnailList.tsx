@@ -226,7 +226,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
               />
               <TouchableOpacity
                 onPress={(e) => {
-                  e.stopPropagation();
+                  if (e && typeof e.stopPropagation === "function") e.stopPropagation();
                   handleQtyPress(item);
                 }}
                 accessibilityLabel="Change number"
