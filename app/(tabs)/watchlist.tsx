@@ -6,8 +6,6 @@ import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { addWatchList, getWatchLists, deleteWatchList } from "@/lib/userDatabase";
 import NewWatchlist from "@/components/deckbuilder/NewWatchlist";
 import WatchLists from "@/components/deckbuilder/WatchLists";
-import { BackHandler } from "react-native";
-import { useRouter } from "expo-router";
 
 interface Watchlist {
   id: number;
@@ -19,7 +17,6 @@ interface Watchlist {
 export default function WatchlistScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const { db, isLoading: dbLoading, error: dbError, decksVersion, incrementWatchListsVersion } = useUserDatabase();
-  const router = useRouter();
 
   const [watchlistName, setWatchlistName] = useState("");
   const [watchlistThumbnail, setWatchlistThumbnail] = useState("");
@@ -67,7 +64,7 @@ export default function WatchlistScreen() {
       setWatchlistName("");
       setWatchlistThumbnail("");
       fetchWatchLists();
-      await incrementWatchListsVersion(); // Ensure context is updated after creation
+      await incrementWatchListsVersion();
     } catch (error) {
       console.error("Failed to save watchlist:", error);
     }
@@ -80,7 +77,7 @@ export default function WatchlistScreen() {
       try {
         await deleteWatchList(db, id);
         await fetchWatchLists();
-        await incrementWatchListsVersion(); // Ensure context is updated after deletion
+        await incrementWatchListsVersion();
       } catch (e) {
         console.error("Failed to delete watchlist", e);
       } finally {
