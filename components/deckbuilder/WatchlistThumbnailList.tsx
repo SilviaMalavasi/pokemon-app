@@ -34,6 +34,7 @@ export default function WatchlistThumbnailList({
         <ActivityIndicator
           size="large"
           color={theme.colors.purple}
+          testID="ActivityIndicator"
         />
       </View>
     );
@@ -145,7 +146,7 @@ export default function WatchlistThumbnailList({
                 {/* Overlay delete button in top right */}
                 <TouchableOpacity
                   onPress={(e) => {
-                    e.stopPropagation();
+                    if (e && typeof e.stopPropagation === "function") e.stopPropagation();
                     handleDeleteCard(item.cardId);
                   }}
                   accessibilityLabel="Remove card"
