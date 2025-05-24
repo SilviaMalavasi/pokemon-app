@@ -263,7 +263,7 @@ export default function AdvancedSearchForm({
     saveFormToContext();
 
     // Build filters array using modal filter functions
-    const filters = [
+    let filters = [
       cardName && {
         config: { key: "cardName", type: "text", table: "Card", column: "name" },
         value: cardName,
@@ -286,6 +286,11 @@ export default function AdvancedSearchForm({
       ...getEditionFilters(cardRegulationMark, cardSetName, cardNumber, cardSetNumber),
       ...getRulesFilters(cardRules),
     ].filter(Boolean) as QueryBuilderFilter[];
+
+    // Remove all multiselect filters with empty array value before calling queryBuilder
+    filters = filters.filter(
+      (f) => !(f.config.type === "multiselect" && Array.isArray(f.value) && f.value.length === 0)
+    );
 
     if (!db) {
       // Add a check for db instance

@@ -48,7 +48,7 @@ export async function queryBuilder(
     if (f.config.type === "text" && typeof f.value === "string") {
       return {
         ...f,
-        value: f.value.replace(/pok[eèé]mon/gi, "Pokémon"),
+        value: f.value.replace(/pok[eèé́]mon/gi, "Pokémon"),
       };
     }
     return f;
@@ -57,6 +57,10 @@ export async function queryBuilder(
   // Group filters by table
   const grouped: Record<string, QueryBuilderFilter[]> = {};
   normalizedFilters.forEach((f) => {
+    // Ignore multiselects with empty array value
+    if (f.config.type === "multiselect" && Array.isArray(f.value) && f.value.length === 0) {
+      return;
+    }
     // Ensure value is not null/undefined and not an empty string/array before adding
     const hasValue =
       f.value !== null && f.value !== undefined && f.value !== "" && (!Array.isArray(f.value) || f.value.length > 0);
@@ -65,6 +69,12 @@ export async function queryBuilder(
       grouped[f.config.table].push(f);
     }
   });
+
+  // If all filters are ignored, return no results
+  const hasAnyActiveFilters = Object.values(grouped).some((arr) => arr.length > 0);
+  if (!hasAnyActiveFilters) {
+    return { cardIds: [], query: "No filters applied (all ignored)" };
+  }
 
   // Helper to build a SQLite query for a table and its filters (for non-joined tables)
   const buildQuery = async (table: string, selectCol: string, filters: QueryBuilderFilter[]) => {
