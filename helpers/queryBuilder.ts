@@ -72,6 +72,18 @@ export async function queryBuilder(
     const whereClauses: string[] = [];
     const params: any[] = [];
 
+    // --- JOIN logic for CardAttacks/Attacks ---
+    let joinAttacks = false;
+    for (const f of filters) {
+      if (table === "CardAttacks" && f.config.table === "Attacks") {
+        joinAttacks = true;
+        break;
+      }
+    }
+    if (joinAttacks) {
+      query += " JOIN Attacks ON CardAttacks.attackId = Attacks.id";
+    }
+
     // Collect all OR groups for this table
     const orGroups = filters.filter((f) => f.config.logic === "or" && Array.isArray(f.value));
     // Collect all AND filters for this table
@@ -281,6 +293,9 @@ export async function queryBuilder(
     const attackDbFilters = attackRelatedFilters.filter((f) => !requiresJsTextNumericFilter(f));
     const attackJsFilters = attackRelatedFilters.filter(requiresJsTextNumericFilter);
 
+    // --- Determine if we need to join Attacks table ---
+    const needsJoinAttacks = attackRelatedFilters.some((f) => f.config.table === "Attacks");
+
     // Check for the special cost + slots case (these are DB filters)
     const costOpFilter = attackDbFilters.find(
       (f) =>
@@ -340,7 +355,19 @@ export async function queryBuilder(
       }
 
       // Build query, apply DB filters first
-      let query = `SELECT ${specialSelect} FROM CardAttacks WHERE convertedEnergyCost = ?`;
+      let query = `SELECT ${specialSelect} FROM CardAttacks`;
+      // Always join Attacks if selecting any Attacks.* columns
+      if (
+        specialSelect.includes("Attacks.") ||
+        specialSelect.includes(", name") ||
+        specialSelect.includes(", text") ||
+        specialSelect.includes(", Attacks.id")
+      ) {
+        query += " JOIN Attacks ON CardAttacks.attackId = Attacks.id";
+      } else if (needsJoinAttacks) {
+        query += " JOIN Attacks ON CardAttacks.attackId = Attacks.id";
+      }
+      query += " WHERE convertedEnergyCost = ?";
       const params = [requiredCost];
 
       // Apply other DB attack-related filters (non-cost/slot)
@@ -445,6 +472,9 @@ export async function queryBuilder(
     } else {
       // --- General Case: Apply DB filters, then JS filters ---
       let query = `SELECT ${selectCols} FROM CardAttacks`;
+      if (needsJoinAttacks) {
+        query += " JOIN Attacks ON CardAttacks.attackId = Attacks.id";
+      }
       const params: any[] = [];
       const whereClauses: string[] = [];
 
