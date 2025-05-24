@@ -107,7 +107,8 @@ export async function removeCardDuplicates(db: SQLiteDatabase, cards: any[]): Pr
           } catch {
             // Not JSON, use as is
           }
-          rulesMap[row.cardId] = (rule || "").replace(/\s+/g, " ").trim();
+          // Remove ALL whitespace for normalization
+          rulesMap[row.cardId] = (rule || "").replace(/\s+/g, "").trim();
         }
       }
     } catch (error) {
@@ -128,11 +129,36 @@ export async function removeCardDuplicates(db: SQLiteDatabase, cards: any[]): Pr
         key = `${card.name}|${card.hp}|${attacksKey}`;
       }
     } else if (card.supertype === "Trainer" || card.supertype === "Energy") {
-      let rules = rulesMap[card.cardId] || (card.rules ? card.rules.trim() : "");
-      if (!rules) {
+      // Normalize rules: trim, collapse ALL whitespace (not just collapse to one space), treat null/empty/[] as ""
+      let rules = rulesMap[card.cardId];
+      if (rules === undefined) {
+        // fallback to card.rules if not in rulesMap
+        if (Array.isArray(card.rules) && card.rules.length > 0 && typeof card.rules[0] === "string") {
+          rules = card.rules[0];
+        } else if (typeof card.rules === "string") {
+          rules = card.rules;
+        } else {
+          rules = "";
+        }
+      }
+      // Always normalize as string
+      let ruleStr = typeof rules === "string" ? rules : "";
+      // Try to parse as JSON array, use first element if string
+      try {
+        const arr = JSON.parse(ruleStr);
+        if (Array.isArray(arr) && arr.length > 0 && typeof arr[0] === "string") {
+          ruleStr = arr[0];
+        }
+      } catch {}
+      // Remove ALL whitespace for normalization
+      const normRule = (ruleStr || "").replace(/\s/g, "").trim();
+      // Always log for debugging
+      // eslint-disable-next-line no-console
+      console.log(`[DEBUG] cardId: ${card.cardId}, name: ${card.name}, normRule: '${normRule}', rawRule: '${ruleStr}'`);
+      if (!normRule) {
         key = `${card.name}`;
       } else {
-        key = `${card.name}|${rules}`;
+        key = `${card.name}|${normRule}`;
       }
     } else {
       key = card.cardId; // fallback
