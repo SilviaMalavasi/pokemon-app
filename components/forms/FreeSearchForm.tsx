@@ -332,7 +332,8 @@ export default function FreeSearchForm({
           type="hintText"
           style={styles.instructions}
         >
-          You can exclude database fields in the search by toggling them off.
+          You can exclude database fields in the search by toggling them off. By default all fields are included except
+          "Artist" and "Flavor Text".{" "}
         </ThemedText>
         {/* Collapsibles in two columns */}
         <View style={styles.collapsibleContainer}>
