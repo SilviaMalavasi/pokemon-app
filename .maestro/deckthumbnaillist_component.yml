@@ -1,0 +1,30 @@
+# Maestro component-level test for DeckThumbnailList
+# Covers main UI, group rendering, card navigation, quantity modal, and empty/loading states
+
+appId: com.pokedeckbuilder
+---
+- launchApp
+- waitFor: "Pokémon"
+- assertVisible: "Pokémon"
+- assertVisible: "Trainer"
+- assertVisible: "Energy"
+# Test card navigation
+- tapOn: "View details for Pikachu"
+- assertScreenContains: "Card Details"
+- back
+# Test quantity modal open/close
+- tapOn: "Change number"
+- assertVisible: "Set Quantity for Pikachu"
+- tapOn: "Cancel"
+- assertNotVisible: "Set Quantity for Pikachu"
+# Test quantity modal set value and confirm
+- tapOn: "Change number"
+- tapOn: "2"
+- tapOn: "Confirm"
+- assertVisible: "2"
+# Test empty deck state
+- setVariable: cards []
+- assertVisible: "No cards in this deck."
+# Test loading state (no userDb or cardDb)
+- setVariable: userDb null
+- assertVisible: "ActivityIndicator"

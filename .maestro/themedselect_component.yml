@@ -1,0 +1,23 @@
+# Maestro test for ThemedSelect component
+appId: com.silviamalavasi.pokedeckbuilder
+---
+# Launch the app (assumes a screen with ThemedSelect is accessible)
+- launchApp
+
+# Navigate to the screen containing ThemedSelect (update as needed)
+# - tapOn: "YourScreenWithThemedSelect"
+
+# Assert the select label is visible (replace 'Select Label' with the actual label)
+- assertVisible: "Select Label"
+
+# Tap to open the select modal
+- tapOn: "Select Label"
+
+# Assert an option is visible (replace 'Option 1' with an actual option label)
+- assertVisible: "Option 1"
+
+# Tap the option to select it
+- tapOn: "Option 1"
+
+# Assert the selected value is now visible
+- assertVisible: "Option 1"

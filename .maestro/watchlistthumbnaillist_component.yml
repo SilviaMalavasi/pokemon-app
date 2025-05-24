@@ -1,0 +1,25 @@
+# Maestro component-level test for WatchlistThumbnailList
+# Covers main UI, group rendering, card navigation, delete action, and empty/loading states
+
+appId: com.pokedeckbuilder
+---
+- launchApp
+- waitFor: "Pokémon"
+- assertVisible: "Pokémon"
+- assertVisible: "Trainer"
+- assertVisible: "Energy"
+# Test card navigation
+- tapOn: "View details for Pikachu"
+- assertScreenContains: "Card Details"
+- back
+# Test delete action
+- tapOn: "Remove card"
+- assertNotVisible: "Pikachu"
+# Test empty watchlist state
+- setVariable:
+    cards: []
+- assertVisible: "No cards in this watchlist."
+# Test loading state (no cardDb)
+- setVariable:
+    cardDb: null
+- assertVisible: "ActivityIndicator"

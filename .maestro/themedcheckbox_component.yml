@@ -1,0 +1,16 @@
+# Maestro test for ThemedCheckbox component
+appId: com.silviamalavasi.pokedeckbuilder
+---
+# Launch the app (assumes a screen with ThemedCheckbox is accessible)
+- launchApp
+
+# Navigate to the screen containing ThemedCheckbox (update as needed)
+# - tapOn: "YourScreenWithThemedCheckbox"
+
+# Assert the checkbox label is visible (replace 'Checkbox Label' with the actual label)
+- assertVisible: "Checkbox Label"
+
+# Tap the checkbox to toggle it
+- tapOn: "Checkbox Label"
+# (Optional) Assert the checkbox is now checked/unchecked if the UI provides feedback
+# - assertVisible: "Checked State Indicator" # e.g., a checkmark or style change

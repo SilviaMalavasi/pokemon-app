@@ -1,0 +1,21 @@
+# Maestro E2E test for AdvancedSearchScreen
+# Covers advanced search form input, toggles, search, and modal flows
+
+- launchApp
+- tapOn: "Advanced Search"
+- assertVisible: "Card name"
+- inputText:
+    id: "Card name"
+    text: "Pikachu"
+- tapOn: "Hide duplicates"
+- tapOn: "Search"
+- assertVisible: "You are searching for"
+- tapOn: "Reset"
+- assertVisible: "Card name"
+- inputText:
+    id: "Card name"
+    text: "NonexistentCardName"
+- tapOn: "Search"
+- assertVisible: "No cards found"
+- tapOn: "Close"
+- assertVisible: "Card name"

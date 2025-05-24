@@ -1,0 +1,35 @@
+# Maestro component-level test for SavedDecks
+# Covers main UI, empty/loading states, and deck actions
+
+appId: com.pokedeckbuilder
+---
+- launchApp
+- waitFor: "Decks"
+- assertVisible: "Decks"
+# Test loading state
+- setVariable:
+    isLoadingDecks: true
+- assertVisible: "Loading decks..."
+# Test empty state
+- setVariable:
+    savedDecks: []
+    isLoadingDecks: false
+- assertVisible: "No saved decks yet. Add a new deck to get started!"
+# Test deck list and actions
+- setVariable:
+    savedDecks:
+      - id: 1
+        name: "Test Deck"
+        thumbnail: null
+        cards: "[]"
+    layout: view
+- assertVisible: "Test Deck"
+- tapOn: "Test Deck"
+- assertScreenContains: "Deck Details"
+# Test delete action (edit mode)
+- setVariable:
+    layout: edit
+- tapOn: "Delete"
+- assertVisible: "Delete Deck?"
+- tapOn: "Cancel"
+- assertVisible: "Test Deck"

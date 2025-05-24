@@ -1,0 +1,16 @@
+# Maestro test for ThemedButton component
+appId: com.silviamalavasi.pokedeckbuilder
+---
+# Launch the app (assumes a screen with ThemedButton is accessible)
+- launchApp
+
+# Navigate to the screen containing ThemedButton (update as needed)
+# - tapOn: "YourScreenWithThemedButton"
+
+# Assert the button is visible (replace 'Button Text' with the actual button label)
+- assertVisible: "Button Text"
+
+# Tap the button
+- tapOn: "Button Text"
+# (Optional) Assert the result of the button tap, e.g., navigation or feedback
+# - assertVisible: "Expected Result After Tap"

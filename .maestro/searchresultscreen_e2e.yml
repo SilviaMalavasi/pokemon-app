@@ -1,0 +1,24 @@
+# Maestro E2E test for Search Result Screen
+# Covers search result rendering, pagination, card navigation, and back flows
+
+- launchApp
+- tapOn: "Free Search"
+- inputText:
+    id: "Free text"
+    text: "Pikachu"
+- tapOn: "Search"
+- assertVisible: "Search Results"
+- assertVisible: "Page"
+- assertVisible: "Prev"
+- assertVisible: "Next"
+- assertVisible: "CompactCard"
+- tapOn: "Next"
+- assertVisible: "Page 2"
+- tapOn: "Prev"
+- assertVisible: "Page 1"
+- tapOn: "CompactCard"
+- assertVisible: "FullCard"
+- goBack
+- assertVisible: "Search Results"
+- goBack
+- assertVisible: "Free Search"

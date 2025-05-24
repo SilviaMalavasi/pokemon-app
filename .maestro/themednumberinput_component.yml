@@ -1,0 +1,24 @@
+# Maestro test for ThemedNumberInput component
+appId: com.silviamalavasi.pokedeckbuilder
+---
+# Launch the app (assumes a screen with ThemedNumberInput is accessible)
+- launchApp
+
+# Navigate to the screen containing ThemedNumberInput (update as needed)
+# - tapOn: "YourScreenWithThemedNumberInput"
+
+# Assert the number input label is visible (replace 'Number Input Label' with the actual label)
+- assertVisible: "Number Input Label"
+
+# Tap the input to focus
+- tapOn: "Number Input Label"
+
+# Input a number (e.g., 42)
+- inputText: "42"
+# (Optional) Tap the operator select if present (replace '=' with the actual operator label)
+# - tapOn: "="
+# - tapOn: ">="
+
+# (Optional) Tap the clear icon to clear the input (replace 'Clear Number Input Label' with the actual accessibility label)
+# - tapOn: "Clear Number Input Label"
+# - assertNotVisible: "42"

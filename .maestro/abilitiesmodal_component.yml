@@ -1,0 +1,22 @@
+# Maestro component-level test for AbilitiesModal
+# Covers modal open/close, input, switch, and cancel flows
+
+appId: com.pokedeckbuilder
+---
+- launchApp
+- waitFor: "Abilities"
+- assertVisible: "Abilities"
+- inputText: "Ability Name"
+  text: "Test Ability"
+- inputText: "Ability Text"
+  text: "search"
+- tapOn: "search"
+- tapOn: "Has any ability"
+- assertVisible: "Has any ability"
+- tapOn: "Set Filters"
+- assertNotVisible: "Abilities"
+# Test cancel/reset
+- launchApp
+- waitFor: "Abilities"
+- tapOn: "Cancel"
+- assertNotVisible: "Abilities"

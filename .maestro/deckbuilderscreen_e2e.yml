@@ -1,0 +1,24 @@
+# Maestro E2E test for DeckBuilderScreen
+# Covers deck creation, thumbnail selection, viewing, and deletion flows
+
+- launchApp
+- tapOn: "Deck Builder"
+# NewDeck component flow
+- inputText:
+    id: "Deck Name"
+    text: "Test Deck"
+- inputText:
+    id: "Thumbnail card name (min 3 chars)"
+    text: "Pikachu"
+- tapOn: "Pikachu"
+- tapOn: "Save Deck"
+- assertVisible: "Test Deck"
+# SavedDecks component flow
+- tapOn: "Test Deck"
+- assertVisible: "Deck Details"
+- goBack
+- tapOn: "Delete"
+- assertVisible: "Are you sure you want to delete?"
+- tapOn: "Confirm"
+- assertNotVisible: "Test Deck"
+- assertVisible: "Deck Builder"

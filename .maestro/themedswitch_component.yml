@@ -1,0 +1,17 @@
+# Maestro test for ThemedSwitch component
+appId: com.silviamalavasi.pokedeckbuilder
+---
+# Launch the app (assumes a screen with ThemedSwitch is accessible)
+- launchApp
+
+# Navigate to the screen containing ThemedSwitch (update as needed)
+# - tapOn: "YourScreenWithThemedSwitch"
+
+# Assert the switch label is visible (replace 'Switch Label' with the actual label)
+- assertVisible: "Switch Label"
+
+# Tap the switch to toggle it
+- tapOn: "Switch Label"
+# (Optional) Assert the switch is now on/off if the UI provides feedback
+# - assertVisible: "On State Indicator" # e.g., color or icon change
+# - assertNotVisible: "Off State Indicator"

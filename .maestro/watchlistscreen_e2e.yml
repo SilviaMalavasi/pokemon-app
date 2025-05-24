@@ -1,0 +1,26 @@
+# Maestro E2E test for WatchlistScreen
+# Covers watchlist creation, thumbnail selection, deletion, and main UI flows
+
+- launchApp
+- tapOn: "Watchlists"
+- assertVisible: "Watchlists"
+# NewWatchlist component flow
+- tapOn: "New Watchlist"
+- inputText:
+    id: "Watchlist Name"
+    text: "Test Watchlist"
+- inputText:
+    id: "Thumbnail card name (min 3 chars)"
+    text: "Pikachu"
+- tapOn: "Pikachu"
+- tapOn: "Save Watchlist"
+- assertVisible: "Test Watchlist"
+# WatchLists component flow
+- tapOn: "Test Watchlist"
+- assertVisible: "Watchlist Details"
+- goBack
+- tapOn: "Delete"
+- assertVisible: "Are you sure you want to delete?"
+- tapOn: "Confirm"
+- assertNotVisible: "Test Watchlist"
+- assertVisible: "Watchlists"

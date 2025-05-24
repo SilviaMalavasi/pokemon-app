@@ -1,0 +1,33 @@
+# Maestro test for AddToWatchListModal (composed flow)
+appId: com.silviamalavasi.pokedeckbuilder
+---
+# Launch the app (assumes AddToWatchListModal is accessible from a card details or search result screen)
+- launchApp
+
+# Navigate to a card details or search result screen (update as needed)
+# - tapOn: "Pikachu" # Replace with actual navigation if needed
+
+# Tap on 'Add to Watched' button
+- tapOn: "Add to Watched"
+
+# --- ThemedModal for watchlist selection ---
+# Assert the modal title is visible (replace 'Add Pikachu to WatchList' with actual text if needed)
+- assertVisible: "Add Pikachu to WatchList"
+
+# Tap the watchlist select (replace 'Select a WatchList' with the actual label if needed)
+- tapOn: "Select a WatchList"
+
+# Select a watchlist (replace 'Test Watchlist' with the actual watchlist name)
+- tapOn: "Test Watchlist"
+
+# Tap the 'Add' button to confirm
+- tapOn: "Add"
+
+# Assert Pikachu is now in the watchlist (visible in the watchlist card list)
+- assertVisible: "Pikachu"
+# (Optional) Test creating a new watchlist from the modal
+# - tapOn: "Select a WatchList"
+# - tapOn: "- New Watchlist -"
+# - inputText: "New Watchlist Name"
+# - tapOn: "Create"
+# - assertVisible: "New Watchlist Name"

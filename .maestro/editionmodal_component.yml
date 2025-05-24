@@ -1,0 +1,21 @@
+# Maestro component-level test for EditionModal
+# Covers modal open/close, all multi-selects, text input, and cancel flows
+
+appId: com.pokedeckbuilder
+---
+- launchApp
+- waitFor: "Edition"
+- assertVisible: "Edition"
+- tapOn: "Regulation Mark"
+- tapOn: "F"
+- tapOn: "Set Name"
+- tapOn: "Obsidian Flames"
+- inputText: "Pokédex number"
+  text: "SV3-27"
+- tapOn: "Set Filters"
+- assertNotVisible: "Edition"
+# Test cancel/reset
+- launchApp
+- waitFor: "Edition"
+- tapOn: "Cancel"
+- assertNotVisible: "Edition"

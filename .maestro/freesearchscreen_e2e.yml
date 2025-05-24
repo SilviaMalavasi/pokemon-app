@@ -1,0 +1,21 @@
+# Maestro E2E test for FreeSearchScreen
+# Covers free search form input, toggles, search, and modal flows
+
+- launchApp
+- tapOn: "Free Search"
+- assertVisible: "Free text"
+- inputText:
+    id: "Free text"
+    text: "Pikachu"
+- tapOn: "Hide duplicates"
+- tapOn: "Search"
+- assertVisible: "You are searching for:"
+- tapOn: "Reset"
+- assertVisible: "Free text"
+- inputText:
+    id: "Free text"
+    text: "NonexistentCardName"
+- tapOn: "Search"
+- assertVisible: "No cards found"
+- tapOn: "Close"
+- assertVisible: "Free text"

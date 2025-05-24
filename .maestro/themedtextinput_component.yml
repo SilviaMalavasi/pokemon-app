@@ -1,0 +1,23 @@
+# Maestro test for ThemedTextInput component
+appId: com.silviamalavasi.pokedeckbuilder
+---
+# Launch the app (assumes a screen with ThemedTextInput is accessible)
+- launchApp
+
+# Navigate to the screen containing ThemedTextInput (update as needed)
+# - tapOn: "YourScreenWithThemedTextInput"
+
+# Assert the input placeholder is visible (replace 'Input Placeholder' with the actual placeholder)
+- assertVisible: "Input Placeholder"
+
+# Tap the input to focus
+- tapOn: "Input Placeholder"
+
+# Input some text (e.g., Hello)
+- inputText: "Hello"
+
+# Assert the text is now visible
+- assertVisible: "Hello"
+# Tap the clear icon (replace 'Clear Input Placeholder' with the actual accessibility label)
+# - tapOn: "Clear Input Placeholder"
+# - assertNotVisible: "Hello"

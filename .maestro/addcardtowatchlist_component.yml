@@ -1,0 +1,29 @@
+# Maestro test for AddCardToWatchlist (composed flow)
+appId: com.silviamalavasi.pokedeckbuilder
+---
+# Launch the app (assumes AddCardToWatchlist is accessible from Watchlist)
+- launchApp
+
+# Navigate to Watchlist
+- tapOn: "Watchlist"
+
+# Tap on a watchlist (replace 'Test Watchlist' with the actual watchlist name if needed)
+- tapOn: "Test Watchlist"
+
+# Tap on 'Add Card' button
+- tapOn: "Add Card"
+
+# --- CardAutoCompleteInput flow ---
+# Focus the card input (placeholder: 'Type card name (min 3 chars)')
+- tapOn: "Type card name (min 3 chars)"
+- inputText: "Pik"
+- assertVisible: "Pikachu"
+- tapOn: "Pikachu"
+- assertVisible: "Pikachu"
+
+# Assert Pikachu is now in the watchlist (visible in the card list)
+- assertVisible: "Pikachu"
+# (Optional) Remove Pikachu from watchlist if your UI allows
+# - tapOn: "Pikachu"
+# - tapOn: "Delete"
+# - assertNotVisible: "Pikachu"

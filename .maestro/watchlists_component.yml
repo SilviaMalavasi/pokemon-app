@@ -1,0 +1,35 @@
+# Maestro component-level test for WatchLists
+# Covers main UI, empty/loading states, and watchlist actions
+
+appId: com.pokedeckbuilder
+---
+- launchApp
+- waitFor: "Watchlists"
+- assertVisible: "Watchlists"
+# Test loading state
+- setVariable:
+    isLoadingWatchLists: true
+- assertVisible: "Loading watchlists..."
+# Test empty state
+- setVariable:
+    watchLists: []
+    isLoadingWatchLists: false
+- assertVisible: "No watchlists yet. Create a watchlist to track cards for the next metabreaker!"
+# Test watchlist list and actions
+- setVariable:
+    watchLists:
+      - id: 1
+        name: "Test Watchlist"
+        thumbnail: null
+        cards: "[]"
+    layout: view
+- assertVisible: "Test Watchlist"
+- tapOn: "Test Watchlist"
+- assertScreenContains: "Watchlist Details"
+# Test delete action (edit mode)
+- setVariable:
+    layout: edit
+- tapOn: "Delete"
+- assertVisible: "Delete Watchlist?"
+- tapOn: "Cancel"
+- assertVisible: "Test Watchlist"

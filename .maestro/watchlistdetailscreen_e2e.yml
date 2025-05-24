@@ -1,0 +1,38 @@
+# Maestro E2E test for Watchlist Detail Screen
+# Covers add card, card list, navigation, edit, clone, and delete flows
+
+- launchApp
+- tapOn: "Watchlists"
+- tapOn: "Test Watchlist"
+- assertVisible: "Watchlist Details"
+# AddCardToWatchlist flow
+- tapOn: "Add Card"
+- tapOn: "Type card name (min 3 chars)"
+- inputText:
+    id: "Type card name (min 3 chars)"
+    text: "Pik"
+- assertVisible: "Pikachu"
+- tapOn: "Pikachu"
+- assertVisible: "Pikachu"
+# WatchlistThumbnailList flow
+- tapOn: "View details for Pikachu"
+- assertVisible: "Card Details"
+- goBack
+- tapOn: "Remove card"
+- assertNotVisible: "Pikachu"
+# Edit watchlist
+- tapOn: "Edit"
+- inputText:
+    id: "Enter watchlist name"
+    text: "Edited Watchlist"
+- tapOn: "Save"
+- assertVisible: "Edited Watchlist"
+# Clone watchlist
+- tapOn: "Clone"
+- assertVisible: "Edited Watchlist #1"
+# Delete watchlist
+- tapOn: "Delete"
+- assertVisible: "Delete Watchlist?"
+- tapOn: "Delete"
+- assertNotVisible: "Edited Watchlist"
+- assertVisible: "Watchlists"

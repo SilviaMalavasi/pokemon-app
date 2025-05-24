@@ -1,0 +1,19 @@
+# Maestro component-level test for NewDeck
+# Covers main UI, input, autocomplete, and add deck flow
+
+appId: com.pokedeckbuilder
+---
+- launchApp
+- waitFor: "Enter deck name *"
+- assertVisible: "Enter deck name *"
+- inputText: "Enter deck name *"
+  text: "Test Deck"
+- assertVisible: "Thumbnail card name (min 3 chars)"
+- inputText: "Thumbnail card name (min 3 chars)"
+  text: "Pikachu"
+- tapOn: "Pikachu"
+- tapOn: "Add New Deck"
+- assertNotVisible: "Add New Deck"
+# Test loading state (no db)
+- setVariable: db null
+- assertVisible: "Loading cards..."

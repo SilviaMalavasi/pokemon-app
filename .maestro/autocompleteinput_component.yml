@@ -1,0 +1,25 @@
+# Maestro test for AutoCompleteInput component
+appId: com.silviamalavasi.pokedeckbuilder
+---
+# Launch the app (assumes a screen with AutoCompleteInput is accessible)
+- launchApp
+
+# Navigate to the screen containing AutoCompleteInput (update as needed)
+# - tapOn: "YourScreenWithAutoCompleteInput"
+
+# Focus the input field
+- tapOn: "{labelHint}"
+
+# Type a partial value to trigger suggestions
+- inputText: "Pik"
+
+# Assert that the suggestions list appears
+- assertVisible: "Are you searchig for..."
+
+# Tap on a suggestion (e.g., Pikachu)
+- tapOn: "Pikachu"
+
+# Assert that the input value is now the suggestion
+- assertVisible: "Pikachu"
+# Blur the input (optional, if needed)
+# - tapOn: "SomeOtherElement"

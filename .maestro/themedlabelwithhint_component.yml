@@ -1,0 +1,22 @@
+# Maestro test for ThemedLabelWithHint component
+appId: com.silviamalavasi.pokedeckbuilder
+---
+# Launch the app (assumes a screen with ThemedLabelWithHint is accessible)
+- launchApp
+
+# Navigate to the screen containing ThemedLabelWithHint (update as needed)
+# - tapOn: "YourScreenWithThemedLabelWithHint"
+
+# Assert the label hint is visible (replace 'Label Hint' with the actual labelHint prop)
+- assertVisible: "Label Hint"
+
+# Tap the hint icon to show the hint
+- tapOn: "Hint for Label Hint"
+
+# (Optional) Assert the hint content is now visible (replace 'Hint Content' with actual hint text)
+# - assertVisible: "Hint Content"
+
+# Tap the hint icon again to hide the hint
+- tapOn: "Hint for Label Hint"
+# (Optional) Assert the hint content is now hidden
+# - assertNotVisible: "Hint Content"

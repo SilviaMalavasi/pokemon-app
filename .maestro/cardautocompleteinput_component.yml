@@ -1,0 +1,25 @@
+# Maestro test for CardAutoCompleteInput component
+appId: com.silviamalavasi.pokedeckbuilder
+---
+# Launch the app (assumes a screen with CardAutoCompleteInput is accessible)
+- launchApp
+
+# Navigate to the screen containing CardAutoCompleteInput (update as needed)
+# - tapOn: "YourScreenWithCardAutoCompleteInput"
+
+# Focus the input field (using labelHint or placeholder if available)
+- tapOn: "{labelHint}"
+
+# Type a partial card name to trigger suggestions
+- inputText: "Pik"
+
+# Assert that a suggestion appears (e.g., Pikachu)
+- assertVisible: "Pikachu"
+
+# Tap on the suggestion
+- tapOn: "Pikachu"
+
+# Assert that the input value is now the suggestion
+- assertVisible: "Pikachu"
+# Optionally, assert that the cardId is visible if shown in the UI
+# - assertVisible: "SV1-1" # Example cardId, update as needed
