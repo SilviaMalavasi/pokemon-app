@@ -152,9 +152,6 @@ export async function removeCardDuplicates(db: SQLiteDatabase, cards: any[]): Pr
       } catch {}
       // Remove ALL whitespace for normalization
       const normRule = (ruleStr || "").replace(/\s/g, "").trim();
-      // Always log for debugging
-      // eslint-disable-next-line no-console
-      console.log(`[DEBUG] cardId: ${card.cardId}, name: ${card.name}, normRule: '${normRule}', rawRule: '${ruleStr}'`);
       if (!normRule) {
         key = `${card.name}`;
       } else {
