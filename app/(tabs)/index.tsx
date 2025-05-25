@@ -2,13 +2,11 @@ import MainScrollView from "@/components/ui/MainScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import ExternalLink from "@/components/base/ExternalLink";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
-import { useFocusEffect } from "@react-navigation/native";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import SavedDecks from "@/components/deckbuilder/SavedDecks";
 import WatchLists from "@/components/deckbuilder/WatchLists";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
-import { getSavedDecks, getWatchLists } from "@/lib/userDatabase";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import NewDeck from "@/components/deckbuilder/NewDeck";
 import NewWatchlist from "@/components/deckbuilder/NewWatchlist";
 import ThemedView from "@/components/ui/ThemedView";
@@ -16,33 +14,22 @@ import { theme } from "@/style/ui/Theme";
 import { useRouter } from "expo-router";
 import ThemedButton from "@/components/base/ThemedButton";
 
-interface SavedDeck {
-  id: number;
-  name: string;
-  thumbnail: string | null;
-  cards: string;
-}
-
-interface Watchlist {
-  id: number;
-  name: string;
-  thumbnail: string | null;
-  cards: string;
-}
-
 export default function HomeScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const { db, decksVersion } = useUserDatabase();
-  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
-  const [isLoadingDecks, setIsLoadingDecks] = useState(false);
+  const {
+    db,
+    isLoading: dbLoading,
+    error: dbError,
+    decksVersion,
+    decks,
+    isLoadingDecks,
+    watchLists,
+    isLoadingWatchLists,
+  } = useUserDatabase();
   const [deletingId] = useState(null);
-  const [watchlists, setWatchlists] = useState<Watchlist[]>([]);
-  const [isLoadingWatchlists, setIsLoadingWatchlists] = useState(false);
-
   // --- NewDeck state and handlers ---
   const [deckName, setDeckName] = useState("");
   const [deckThumbnail, setDeckThumbnail] = useState("");
-
   // --- NewWatchlist state and handlers ---
   const [watchlistName, setWatchlistName] = useState("");
   const [watchlistThumbnail, setWatchlistThumbnail] = useState("");
@@ -53,12 +40,11 @@ export default function HomeScreen() {
       return;
     }
     try {
-      // Import addDeck from userDatabase if not already
       const { addDeck } = await import("@/lib/userDatabase");
       await addDeck(db, deckName, deckThumbnail || undefined);
       setDeckName("");
       setDeckThumbnail("");
-      fetchSavedDecks();
+      // decksVersion will trigger context refresh
     } catch (error) {
       console.error("Failed to save deck:", error);
     }
@@ -78,7 +64,7 @@ export default function HomeScreen() {
       await addWatchList(db, watchlistName, watchlistThumbnail || undefined);
       setWatchlistName("");
       setWatchlistThumbnail("");
-      fetchWatchlists();
+      // watchListsVersion will trigger context refresh
     } catch (error) {
       console.error("Failed to save watchlist:", error);
     }
@@ -88,61 +74,43 @@ export default function HomeScreen() {
     setWatchlistThumbnail(imagesLargeUrl);
   };
 
-  const fetchSavedDecks = useCallback(async () => {
-    if (!db) return;
-    setIsLoadingDecks(true);
-    try {
-      const decks = await getSavedDecks(db);
-      setSavedDecks(decks);
-    } catch (error) {
-      console.error("Failed to fetch saved decks:", error);
-    } finally {
-      setIsLoadingDecks(false);
-    }
-  }, [db]);
-
-  const fetchWatchlists = useCallback(async () => {
-    if (!db) return;
-    setIsLoadingWatchlists(true);
-    try {
-      const lists = await getWatchLists(db);
-      setWatchlists(lists);
-    } catch (error) {
-      console.error("Failed to fetch watchlists:", error);
-    } finally {
-      setIsLoadingWatchlists(false);
-    }
-  }, [db]);
-
-  useEffect(() => {
-    if (db) {
-      fetchSavedDecks();
-      fetchWatchlists();
-    }
-  }, [db, decksVersion, fetchSavedDecks, fetchWatchlists]);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTo({ y: 0, animated: true });
-      }
-      if (db) {
-        fetchSavedDecks();
-        fetchWatchlists();
-      }
-    }, [db, fetchSavedDecks, fetchWatchlists])
-  );
-
   const router = useRouter();
 
   // Navigation handlers that pass the 'from' parameter
   const navigateToDeck = (deckId: number) => {
     router.push({ pathname: `/decks/${deckId}` as any, params: { from: "home" } });
   };
-
   const navigateToWatchlist = (watchlistId: number) => {
     router.push({ pathname: `/watchlists/${watchlistId}` as any, params: { from: "home" } });
   };
+
+  if (dbLoading) {
+    return (
+      <MainScrollView
+        headerImage="home-bkg"
+        headerTitle="PokéDeck Builder"
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
+          <ActivityIndicator
+            size="large"
+            color={theme.colors.purple}
+          />
+        </View>
+      </MainScrollView>
+    );
+  }
+  if (dbError) {
+    return (
+      <MainScrollView
+        headerImage="home-bkg"
+        headerTitle="PokéDeck Builder"
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
+          <ThemedText>Error loading database: {dbError.message}</ThemedText>
+        </View>
+      </MainScrollView>
+    );
+  }
 
   return (
     <MainScrollView
@@ -164,16 +132,16 @@ export default function HomeScreen() {
           Journey Together
         </ThemedText>
       </View>
-      {savedDecks.length > 0 && (
+      {decks.length > 0 && (
         <SavedDecks
-          savedDecks={savedDecks}
+          savedDecks={decks}
           isLoadingDecks={isLoadingDecks}
           deletingId={deletingId}
           layout="view"
-          onPressDeck={navigateToDeck} // Pass navigation handler
+          onPressDeck={navigateToDeck}
         />
       )}
-      {savedDecks.length === 0 && (
+      {decks.length === 0 && (
         <View style={{ marginBottom: theme.padding.large * -1.5 }}>
           <NewDeck
             deckName={deckName}
@@ -186,16 +154,16 @@ export default function HomeScreen() {
           />
         </View>
       )}
-      {watchlists.length > 0 && (
+      {watchLists.length > 0 && (
         <WatchLists
-          watchLists={watchlists}
-          isLoadingWatchLists={isLoadingWatchlists}
+          watchLists={watchLists}
+          isLoadingWatchLists={isLoadingWatchLists}
           deletingId={deletingId}
           layout="view"
-          onPressWatchlist={navigateToWatchlist} // Pass navigation handler
+          onPressWatchlist={navigateToWatchlist}
         />
       )}
-      {watchlists.length === 0 && (
+      {watchLists.length === 0 && (
         <View style={{ marginBottom: theme.padding.large * -1.5 }}>
           <NewWatchlist
             watchlistName={watchlistName}

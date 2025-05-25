@@ -1,62 +1,32 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import MainScrollView from "@/components/ui/MainScrollView";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useFocusEffect } from "@react-navigation/native";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
-import { addDeck, getSavedDecks, deleteDeck } from "@/lib/userDatabase";
+import { addDeck, deleteDeck } from "@/lib/userDatabase";
 import NewDeck from "@/components/deckbuilder/NewDeck";
 import SavedDecks from "@/components/deckbuilder/SavedDecks";
 import { theme } from "@/style/ui/Theme";
-import { BackHandler } from "react-native"; // Add this import
-import { useRouter } from "expo-router"; // Add this import
-
-interface SavedDeck {
-  id: number;
-  name: string;
-  thumbnail: string | null;
-  cards: string;
-}
+import { ActivityIndicator, View, BackHandler } from "react-native";
+import { useRouter } from "expo-router";
+import ThemedText from "@/components/base/ThemedText";
 
 export default function DeckBuilderScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const { db, isLoading: dbLoading, error: dbError, decksVersion, incrementDecksVersion } = useUserDatabase();
-  const router = useRouter(); // Initialize router
+  const {
+    db,
+    isLoading: dbLoading,
+    error: dbError,
+    decksVersion,
+    incrementDecksVersion,
+    decks,
+    isLoadingDecks,
+  } = useUserDatabase();
+  const router = useRouter();
 
   const [deckName, setDeckName] = useState("");
   const [deckThumbnail, setDeckThumbnail] = useState("");
-  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
-  const [isLoadingDecks, setIsLoadingDecks] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
-
-  const fetchSavedDecks = useCallback(async () => {
-    if (!db) return;
-    setIsLoadingDecks(true);
-    try {
-      const decks = await getSavedDecks(db);
-      setSavedDecks(decks);
-    } catch (error) {
-      console.error("Failed to fetch saved decks:", error);
-    } finally {
-      setIsLoadingDecks(false);
-    }
-  }, [db]);
-
-  useEffect(() => {
-    if (db) {
-      fetchSavedDecks();
-    }
-  }, [db, decksVersion, fetchSavedDecks]);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTo({ y: 0, animated: true });
-      }
-      if (db) {
-        fetchSavedDecks();
-      }
-    }, [db, fetchSavedDecks])
-  );
 
   const handleSaveDeck = async () => {
     if (!db) {
@@ -67,7 +37,6 @@ export default function DeckBuilderScreen() {
       await addDeck(db, deckName, deckThumbnail || undefined);
       setDeckName("");
       setDeckThumbnail("");
-      fetchSavedDecks();
       if (typeof incrementDecksVersion === "function") incrementDecksVersion();
     } catch (error) {
       console.error("Failed to save deck:", error);
@@ -80,7 +49,6 @@ export default function DeckBuilderScreen() {
       setDeletingId(id);
       try {
         await deleteDeck(db, id);
-        await fetchSavedDecks();
         if (typeof incrementDecksVersion === "function") incrementDecksVersion();
       } catch (e) {
         console.error("Failed to delete deck", e);
@@ -88,7 +56,7 @@ export default function DeckBuilderScreen() {
         setDeletingId(null);
       }
     },
-    [db, fetchSavedDecks, incrementDecksVersion]
+    [db, incrementDecksVersion]
   );
 
   const handleThumbnailSelect = (imagesLargeUrl: string) => {
@@ -99,7 +67,7 @@ export default function DeckBuilderScreen() {
     React.useCallback(() => {
       const onBackPress = () => {
         router.replace("/");
-        return true; // Prevent default behavior (closing app)
+        return true;
       };
 
       const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
@@ -107,6 +75,26 @@ export default function DeckBuilderScreen() {
       return () => subscription.remove();
     }, [router])
   );
+
+  if (dbLoading) {
+    return (
+      <MainScrollView
+        headerImage="deck-bkg"
+        headerTitle="Deck Builder"
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
+          <ActivityIndicator
+            size="large"
+            color={theme.colors.purple}
+          />
+        </View>
+      </MainScrollView>
+    );
+  }
+  if (dbError) {
+    console.error("Error loading database:", dbError);
+    // Optionally, you could return null or a fallback UI here, but per user request, just log.
+  }
 
   return (
     <MainScrollView
@@ -123,7 +111,7 @@ export default function DeckBuilderScreen() {
         handleThumbnailSelect={handleThumbnailSelect}
       />
       <SavedDecks
-        savedDecks={savedDecks}
+        savedDecks={decks}
         isLoadingDecks={isLoadingDecks}
         onDelete={handleDeleteDeck}
         deletingId={deletingId}

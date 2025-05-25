@@ -1,58 +1,27 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import MainScrollView from "@/components/ui/MainScrollView";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
-import { useFocusEffect } from "@react-navigation/native";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
-import { addWatchList, getWatchLists, deleteWatchList } from "@/lib/userDatabase";
+import { addWatchList, deleteWatchList } from "@/lib/userDatabase";
 import NewWatchlist from "@/components/deckbuilder/NewWatchlist";
 import WatchLists from "@/components/deckbuilder/WatchLists";
-
-interface Watchlist {
-  id: number;
-  name: string;
-  thumbnail: string | null;
-  cards: string;
-}
+import { ActivityIndicator, View } from "react-native";
+import { theme } from "@/style/ui/Theme";
 
 export default function WatchlistScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const { db, isLoading: dbLoading, error: dbError, decksVersion, incrementWatchListsVersion } = useUserDatabase();
+  const {
+    db,
+    isLoading: dbLoading,
+    error: dbError,
+    watchLists,
+    isLoadingWatchLists,
+    incrementWatchListsVersion,
+  } = useUserDatabase();
 
   const [watchlistName, setWatchlistName] = useState("");
   const [watchlistThumbnail, setWatchlistThumbnail] = useState("");
-  const [watchLists, setWatchLists] = useState<Watchlist[]>([]);
-  const [isLoadingWatchLists, setIsLoadingWatchLists] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
-
-  const fetchWatchLists = useCallback(async () => {
-    if (!db) return;
-    setIsLoadingWatchLists(true);
-    try {
-      const lists = await getWatchLists(db);
-      setWatchLists(lists);
-    } catch (error) {
-      console.error("Failed to fetch watchlists:", error);
-    } finally {
-      setIsLoadingWatchLists(false);
-    }
-  }, [db]);
-
-  useEffect(() => {
-    if (db) {
-      fetchWatchLists();
-    }
-  }, [db, decksVersion, fetchWatchLists]);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTo({ y: 0, animated: true });
-      }
-      if (db) {
-        fetchWatchLists();
-      }
-    }, [db, fetchWatchLists])
-  );
 
   const handleSaveWatchList = async () => {
     if (!db) {
@@ -63,8 +32,7 @@ export default function WatchlistScreen() {
       await addWatchList(db, watchlistName, "[]", watchlistThumbnail || undefined);
       setWatchlistName("");
       setWatchlistThumbnail("");
-      fetchWatchLists();
-      await incrementWatchListsVersion();
+      incrementWatchListsVersion();
     } catch (error) {
       console.error("Failed to save watchlist:", error);
     }
@@ -76,20 +44,39 @@ export default function WatchlistScreen() {
       setDeletingId(id);
       try {
         await deleteWatchList(db, id);
-        await fetchWatchLists();
-        await incrementWatchListsVersion();
+        incrementWatchListsVersion();
       } catch (e) {
         console.error("Failed to delete watchlist", e);
       } finally {
         setDeletingId(null);
       }
     },
-    [db, fetchWatchLists, incrementWatchListsVersion]
+    [db, incrementWatchListsVersion]
   );
 
   const handleThumbnailSelect = (imagesLargeUrl: string) => {
     setWatchlistThumbnail(imagesLargeUrl);
   };
+
+  if (isLoadingWatchLists) {
+    return (
+      <MainScrollView
+        headerImage="watchlist-bkg"
+        headerTitle="Watchlists"
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
+          <ActivityIndicator
+            size="large"
+            color={theme.colors.purple}
+          />
+        </View>
+      </MainScrollView>
+    );
+  }
+
+  if (dbError) {
+    console.error("Error loading database:", dbError);
+  }
 
   return (
     <MainScrollView
