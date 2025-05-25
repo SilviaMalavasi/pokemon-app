@@ -192,6 +192,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
                 onPress={() => setStagedQty((q) => Math.max(1, q - 1))}
                 style={[styles.numbersModal, { paddingBottom: theme.padding.xsmall }]}
                 disabled={stagedQty === 1}
+                accessibilityLabel="Decrease quantity"
               />
               <ThemedText style={styles.energyNumber}>{stagedQty}</ThemedText>
               <ThemedButton
@@ -200,6 +201,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
                 size="large"
                 onPress={() => setStagedQty((q) => q + 1)}
                 style={[styles.numbersModal, { paddingBottom: theme.padding.xsmall }]}
+                accessibilityLabel="Increase quantity"
               />
             </View>
           ) : (
@@ -215,6 +217,7 @@ export default function AddCardToDeck({ deck, db, onCardAdded }: AddCardToDeckPr
                   size="large"
                   onPress={() => handleQtyChange(qty)}
                   style={stagedQty === qty ? styles.numbersModalActive : styles.numbersModal}
+                  accessibilityLabel={`Set quantity to ${qty}`}
                 />
               ))}
             </View>

@@ -219,6 +219,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
                 })
               }
               accessibilityLabel={`View details for ${item.name || item.cardId}`}
+              accessibilityRole="button"
             >
               <CompactCard
                 card={{ cardId: item.cardId, name: item.name || item.cardId, imagesLarge: item.imagesLarge || "" }}
@@ -230,6 +231,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
                   handleQtyPress(item);
                 }}
                 accessibilityLabel="Change number"
+                accessibilityRole="button"
                 style={styles.numberButton}
               >
                 <View style={styles.button}>
@@ -272,6 +274,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
                 })
               }
               accessibilityLabel={`View details for ${item.name || item.cardId}`}
+              accessibilityRole="button"
             >
               <CompactCard
                 card={{ cardId: item.cardId, name: item.name || item.cardId, imagesLarge: item.imagesLarge || "" }}
@@ -283,6 +286,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
                   handleQtyPress(item);
                 }}
                 accessibilityLabel="Change number"
+                accessibilityRole="button"
                 style={styles.numberButton}
               >
                 <View style={styles.button}>

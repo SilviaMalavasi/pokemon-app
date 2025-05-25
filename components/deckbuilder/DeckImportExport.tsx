@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Dimensions, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedText from "@/components/base/ThemedText";

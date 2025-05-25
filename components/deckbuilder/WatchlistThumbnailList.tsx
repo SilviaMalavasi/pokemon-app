@@ -134,6 +134,7 @@ export default function WatchlistThumbnailList({
                   })
                 }
                 accessibilityLabel={`View details for ${item.name || item.cardId}`}
+                accessibilityRole="button"
               >
                 <CompactCard
                   card={{
@@ -150,6 +151,7 @@ export default function WatchlistThumbnailList({
                     handleDeleteCard(item.cardId);
                   }}
                   accessibilityLabel="Remove card"
+                  accessibilityRole="button"
                   style={styles.numberButton}
                 >
                   <View style={styles.button}>

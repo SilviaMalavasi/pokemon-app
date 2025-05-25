@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Image, ActivityIndicator, TouchableOpacity } from "react-native";
-import { Svg, Path } from "react-native-svg";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedButton from "../base/ThemedButton";

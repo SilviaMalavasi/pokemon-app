@@ -2,7 +2,6 @@ import React from "react";
 import ThemedText from "@/components/base/ThemedText";
 import CompactDeck from "@/components/deckbuilder/CompactDeck";
 import ThemedView from "@/components/ui/ThemedView";
-import NewDeck from "@/components/deckbuilder/NewDeck";
 import { View } from "react-native";
 import { theme } from "@/style/ui/Theme";
 

@@ -17,6 +17,7 @@ interface SearchResultState {
 }
 
 const SearchResultContext = createContext<SearchResultState | undefined>(undefined);
+SearchResultContext.displayName = "SearchResultContext";
 
 export function useSearchResultContext() {
   const ctx = useContext(SearchResultContext);

@@ -6,13 +6,14 @@ interface DatabaseStateContextType {
   setCardDbUpdating: (isUpdating: boolean) => void;
   setUserDbUpdating: (isUpdating: boolean) => void;
   isAnyDbUpdating: boolean;
-  cardDbProgress: number; // 0 to 1
-  userDbProgress: number; // 0 to 1
+  cardDbProgress: number;
+  userDbProgress: number;
   setCardDbProgress: (progress: number) => void;
   setUserDbProgress: (progress: number) => void;
 }
 
 const DatabaseStateContext = createContext<DatabaseStateContextType | undefined>(undefined);
+DatabaseStateContext.displayName = "DatabaseStateContext";
 
 export const DatabaseStateProvider = ({ children }: { children: ReactNode }) => {
   // Set both to true by default so splash is shown immediately

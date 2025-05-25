@@ -22,6 +22,7 @@ interface UserDatabaseContextType {
 }
 
 const UserDatabaseContext = createContext<UserDatabaseContextType | undefined>(undefined);
+UserDatabaseContext.displayName = "UserDatabaseContext";
 
 export const UserDatabaseProvider = ({
   children,

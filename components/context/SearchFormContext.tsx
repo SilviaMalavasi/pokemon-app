@@ -96,6 +96,7 @@ const defaultFreeForm: FreeSearchFormState = {
 };
 
 const SearchFormContext = createContext<SearchFormContextType | undefined>(undefined);
+SearchFormContext.displayName = "SearchFormContext";
 
 export function useSearchFormContext() {
   const ctx = useContext(SearchFormContext);

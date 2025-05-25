@@ -10,6 +10,7 @@ interface CardDatabaseContextType {
 }
 
 const CardDatabaseContext = createContext<CardDatabaseContextType | undefined>(undefined);
+CardDatabaseContext.displayName = "CardDatabaseContext";
 
 export const CardDatabaseProvider = ({
   children,
