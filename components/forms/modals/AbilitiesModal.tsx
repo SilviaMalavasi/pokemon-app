@@ -1,6 +1,5 @@
 import React from "react";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
-import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedModal from "@/components/base/ThemedModal";
@@ -54,10 +53,9 @@ export default function AbilitiesModal({
         onChange={setAbilitiesName}
         placeholder="Ability Name"
       />
-      <AutoCompleteInput
+      <ThemedTextInput
         value={abilitiesText}
         onChange={setAbilitiesText}
-        suggestions={["search", "discard pile", "attach", "energy"]}
         placeholder="Ability Text"
       />
       <ThemedSwitch

@@ -1,5 +1,5 @@
 import React from "react";
-import AutoCompleteInput from "@/components/base/AutoCompleteInput";
+import ThemedTextInput from "@/components/base/ThemedTextInput";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedModal from "@/components/base/ThemedModal";
 
@@ -32,11 +32,10 @@ export default function RulesModal({ visible, onClose, cardRules, setCardRules }
       >
         Rules/Rule Box
       </ThemedText>
-      <AutoCompleteInput
+      <ThemedTextInput
         value={cardRules}
         labelHint="Search for card TextEffect in Trainer cards and Rule Box in Pokèmon cards"
         onChange={setCardRules}
-        suggestions={["search", "discard pile", "attach", "energy"]}
         placeholder="Rule/Rule Box"
       />
     </ThemedModal>

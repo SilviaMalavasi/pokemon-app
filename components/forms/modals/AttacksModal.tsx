@@ -2,7 +2,6 @@ import React from "react";
 import { View } from "react-native";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import ThemedNumberInput from "@/components/base/ThemedNumberInput";
-import AutoCompleteInput from "@/components/base/AutoCompleteInput";
 import ThemedMultiSelect from "@/components/base/ThemedMultiSelect";
 import ThemedSelect from "@/components/base/ThemedSelect";
 import ThemedModal from "@/components/base/ThemedModal";
@@ -98,10 +97,9 @@ export default function AttacksModal({
         placeholder="Attack Damage"
         showOperatorSelect={"advanced"}
       />
-      <AutoCompleteInput
+      <ThemedTextInput
         value={attacksText}
         onChange={setAttacksText}
-        suggestions={["search", "discard pile", "attach", "energy"]}
         placeholder="Attack Text"
       />
       <ThemedNumberInput
