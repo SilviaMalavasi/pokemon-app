@@ -22,7 +22,7 @@ function generatePlaceholders(count: number): string {
 export default function FreeSearchScreen() {
   const { db } = useCardDatabase();
   const [resetKey, setResetKey] = useState(0);
-  const [removeDuplicatesState, setRemoveDuplicatesState] = useState(false); // Renamed state variable
+  const [removeDuplicatesState, setRemoveDuplicatesState] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const ITEMS_PER_PAGE = 20;
   const router = useRouter();
@@ -39,7 +39,6 @@ export default function FreeSearchScreen() {
       return;
     }
     if (removeDuplicatesState && ids.length > 0) {
-      // Use renamed state variable
       // Fetch card details for duplicate removal using SQLite
       const placeholders = generatePlaceholders(ids.length);
       const sql = `SELECT cardId, name, supertype, hp, rules FROM Card WHERE cardId IN (${placeholders})`;

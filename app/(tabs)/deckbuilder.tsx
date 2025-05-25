@@ -9,7 +9,6 @@ import SavedDecks from "@/components/deckbuilder/SavedDecks";
 import { theme } from "@/style/ui/Theme";
 import { ActivityIndicator, View, BackHandler } from "react-native";
 import { useRouter } from "expo-router";
-import ThemedText from "@/components/base/ThemedText";
 
 export default function DeckBuilderScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();

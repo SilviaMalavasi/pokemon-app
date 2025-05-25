@@ -105,7 +105,7 @@ export default function FullFormScreen() {
         <View style={{ paddingBottom: theme.padding.large }}>
           <AdvancedSearchForm
             onSearchResults={handleSearchResults}
-            setLoading={() => {}}
+            setLoading={setLoading}
             resetKey={resetKey}
             removeDuplicates={removeDuplicates}
             onRemoveDuplicatesChange={setRemoveDuplicates}
