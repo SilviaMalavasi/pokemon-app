@@ -2,7 +2,7 @@ import React from "react";
 import ThemedText from "@/components/base/ThemedText";
 import CompactDeck from "@/components/deckbuilder/CompactDeck";
 import ThemedView from "@/components/ui/ThemedView";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { theme } from "@/style/ui/Theme";
 
 interface SavedDeck {
@@ -35,7 +35,7 @@ export default function SavedDecks({
       {...props}
       style={[
         props.style,
-        savedDecks.length > 0
+        savedDecks.length > 0 && !isLoadingDecks
           ? {
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
@@ -56,7 +56,12 @@ export default function SavedDecks({
         </ThemedText>
       )}
       {isLoadingDecks ? (
-        <ThemedText>Loading decks...</ThemedText>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
+          <ActivityIndicator
+            size="large"
+            color={theme.colors.purple}
+          />
+        </View>
       ) : savedDecks.length === 0 ? (
         <ThemedText
           color={theme.colors.grey}

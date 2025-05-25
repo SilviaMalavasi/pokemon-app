@@ -44,13 +44,19 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
   const [newListName, setNewListName] = useState("");
   const [errorMsg, setError] = useState<string | null>(null);
   const [showNewListModal, setShowNewListModal] = useState(false);
-  const [watchListPickerVisible, setWatchListPickerVisible] = useState(false);
 
   React.useEffect(() => {
     if (modalVisible && watchLists.length > 0) {
       setSelectedWatchListId(lastWatchListId ?? watchLists[0].id);
     }
+    // Reset error when modal is opened or closed
+    if (!modalVisible) setError(null);
   }, [modalVisible, watchLists, lastWatchListId]);
+
+  // Only reset the error message when the selected watchlist changes
+  React.useEffect(() => {
+    setError(null);
+  }, [selectedWatchListId]);
 
   // Handler for main modal (add card to watchlist)
   const handleAddToWatchListAndClose = async () => {
@@ -80,7 +86,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
           await userDb.runAsync("UPDATE WatchedCards SET cards = ? WHERE id = ?", [JSON.stringify(cardsArr), targetId]);
           await incrementWatchListsVersion();
         } else {
-          setError("Card already in this watchlist.");
+          setError("Card already in this watchlist");
           setIsSaving(false);
           return;
         }
@@ -197,6 +203,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
                 labelHint="Select a WatchList"
                 {...(!selectedWatchListId ? { label: "Select a WatchList" } : {})}
               />
+              {errorMsg && <ThemedText type="hintText">{errorMsg}</ThemedText>}
             </View>
           </>
         )}
@@ -219,11 +226,7 @@ export default function AddToWatchListModal({ cardId, cardName, onAdded }: AddTo
           onChange={setNewListName}
           placeholder="Watchlist name"
         />
-        {errorMsg &&
-          (() => {
-            console.warn(errorMsg);
-            return null;
-          })()}
+        {errorMsg && null}
       </ThemedModal>
     </>
   );

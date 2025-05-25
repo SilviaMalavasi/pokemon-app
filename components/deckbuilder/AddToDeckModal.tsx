@@ -38,7 +38,6 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
   }
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [deckPickerVisible, setDeckPickerVisible] = useState(false);
   const [decks, setDecks] = useState<any[]>([]);
   const [addingDeckId, setAddingDeckId] = useState<number | null>(null);
   const [quantities, setQuantities] = useState<{ [deckId: number]: number }>({});
@@ -48,6 +47,7 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
   const [newDeckName, setNewDeckName] = useState("");
   const [newDeckThumbnail, setNewDeckThumbnail] = useState("");
   const [autoCompleteKey, setAutoCompleteKey] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
   const cardDb = useCardDatabase().db;
 
   // Compute maxQuantity based on supertype and subtypes
@@ -168,10 +168,42 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
       setDecks(updatedDecks);
       setSelectedDeckId(String(newDeck.id));
       setWorkingDeckId(String(newDeck.id));
-      setQuantities((prev) => ({ ...prev, [newDeck.id]: 0 }));
       if (typeof incrementDecksVersion === "function") incrementDecksVersion();
+      setNewDeckName("");
+      setNewDeckThumbnail("");
+      setNewDeckModalVisible(false); // Only close after state update
     } catch (e) {
       console.error("Error creating new deck:", e);
+    }
+  };
+
+  // Handler to create a new deck and close the modal (prevents double submit, resets state)
+  const handleCreateNewDeckAndClose = async () => {
+    if (isSaving) return; // Prevent double submit
+    if (!userDb || !newDeckName.trim()) {
+      setNewDeckModalVisible(false);
+      return;
+    }
+    setIsSaving(true);
+    try {
+      await userDb.runAsync("INSERT INTO Decks (name, cards, thumbnail) VALUES (?, ?, ?)", [
+        newDeckName.trim(),
+        JSON.stringify([]),
+        newDeckThumbnail,
+      ]);
+      const updatedDecks = await getSavedDecks(userDb);
+      const newDeck = updatedDecks[updatedDecks.length - 1];
+      setDecks(updatedDecks);
+      setSelectedDeckId(String(newDeck.id));
+      setWorkingDeckId(String(newDeck.id));
+      if (typeof incrementDecksVersion === "function") incrementDecksVersion();
+      setNewDeckName("");
+      setNewDeckThumbnail("");
+      setNewDeckModalVisible(false); // Only close after state update
+    } catch (e) {
+      console.error("Error creating new deck:", e);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -306,10 +338,11 @@ export default function AddToDeckModal({ cardId, cardName, onAdded, supertype, s
       {/* New Deck Modal */}
       <ThemedModal
         visible={newDeckModalVisible}
-        onClose={handleCreateNewDeck}
+        onClose={() => setNewDeckModalVisible(false)}
         buttonText={"Create"}
         buttonType="main"
         buttonSize="large"
+        onConfirm={handleCreateNewDeckAndClose}
         onCancelText="Cancel"
         onCancel={() => setNewDeckModalVisible(false)}
       >

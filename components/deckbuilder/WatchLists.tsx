@@ -2,7 +2,7 @@ import React from "react";
 import ThemedText from "@/components/base/ThemedText";
 import CompactWatchlist from "@/components/deckbuilder/CompactWatchlist";
 import ThemedView from "@/components/ui/ThemedView";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { theme } from "@/style/ui/Theme";
 
 interface Watchlist {
@@ -36,7 +36,7 @@ export default function WatchLists({
       {...props}
       style={[
         props.style,
-        watchLists.length > 0
+        watchLists.length > 0 && !isLoadingWatchLists
           ? {
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
@@ -54,7 +54,12 @@ export default function WatchLists({
         </ThemedText>
       )}
       {isLoadingWatchLists ? (
-        <ThemedText>Loading watchlists...</ThemedText>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
+          <ActivityIndicator
+            size="large"
+            color={theme.colors.purple}
+          />
+        </View>
       ) : watchLists.length === 0 ? (
         <ThemedText
           color={theme.colors.grey}
