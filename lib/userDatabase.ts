@@ -1,9 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 // ----> INCREMENT THIS WHEN SCHEMA CHANGES <----
-const USER_DATABASE_VERSION = 28;
-// Set to false; we will force reset only if a mismatch is detected
-const FORCE_USER_DB_RESET = false; // TEMP: Set to false after first run!
+const USER_DATABASE_VERSION = 29;
 
 const USER_DATABASE_NAME = "userDatabase.db";
 
