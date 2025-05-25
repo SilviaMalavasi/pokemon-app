@@ -7,7 +7,6 @@ import { Image } from "expo-image";
 import { vw } from "@/helpers/viewport";
 import styles from "@/style/ui/MainScrollViewStyle";
 import { theme } from "@/style/ui/Theme";
-import { LinearGradient } from "expo-linear-gradient";
 
 // Mapping of header image filenames to require statements
 const headerImages: Record<string, any> = {

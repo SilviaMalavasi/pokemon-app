@@ -168,8 +168,6 @@ export function orderCardsInDeck(cards: CardData[], cardDataMap: CardDataMap, ca
 
   // 4. Add any remaining Pokémon as single-card lines
   let remaining = pokemon.filter((c) => !used.has(c.cardId));
-  if (remaining.length > 0) {
-  }
   remaining.forEach((c) => {
     if (!used.has(c.cardId)) {
       lines.push([c]);

@@ -26,11 +26,11 @@ export default function AbilitiesModal({
   hasAnyAbility,
   setHasAnyAbility,
 }: AbilitiesModalProps) {
-  // Reset all values to their initial state
   const handleCancel = () => {
     setAbilitiesName("");
     setAbilitiesText("");
     setHasAnyAbility(false);
+    onClose();
   };
 
   return (
@@ -44,6 +44,7 @@ export default function AbilitiesModal({
     >
       <ThemedText
         type="h3"
+        accessibilityRole="header"
         style={{ width: "100%", paddingBottom: theme.padding.medium }}
       >
         Abilities
@@ -61,6 +62,7 @@ export default function AbilitiesModal({
       <ThemedSwitch
         value={hasAnyAbility}
         label="Has any ability"
+        accessibilityLabel="Toggle to filter cards that have any ability"
         onValueChange={setHasAnyAbility}
         style={{ marginVertical: theme.padding.medium }}
       />
