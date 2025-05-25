@@ -72,6 +72,15 @@ export default function WatchlistThumbnailList({
     if (onCardsChanged) onCardsChanged();
   };
 
+  // Helper: navigation handler for card details
+  const handleCardPress = (item: any) => {
+    console.log("[WatchlistThumbnailList] Navigating to card", item.cardId, "from watchlist", watchlistId);
+    router.push({
+      pathname: "/cards/[cardId]",
+      params: { cardId: item.cardId, watchlistId: watchlistId, from: "watchlistDetail" },
+    });
+  };
+
   // Group cards by supertype using DB data
   const grouped = React.useMemo(() => {
     const groups: { [key: string]: any[] } = {
@@ -127,12 +136,7 @@ export default function WatchlistThumbnailList({
                 key={item.cardId || idx}
                 style={{ position: "relative" }}
                 activeOpacity={0.85}
-                onPress={() =>
-                  router.push({
-                    pathname: "/cards/[cardId]",
-                    params: { cardId: item.cardId, watchlistId: watchlistId, from: "watchlistDetail" },
-                  })
-                }
+                onPress={() => handleCardPress(item)}
                 accessibilityLabel={`View details for ${item.name || item.cardId}`}
                 accessibilityRole="button"
               >

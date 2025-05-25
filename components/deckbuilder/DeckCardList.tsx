@@ -212,6 +212,15 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
     if (typeof incrementDecksVersion === "function") incrementDecksVersion();
   };
 
+  // Helper: navigation handler for card details
+  const handleCardPress = (item: any) => {
+    console.log("[DeckCardList] Navigating to card", item.cardId, "from deck", deckId);
+    router.push({
+      pathname: "/cards/[cardId]",
+      params: { cardId: item.cardId, deckId, from: "deckDetail" },
+    });
+  };
+
   if (!cards || cards.length === 0) {
     return <ThemedText style={{ paddingVertical: theme.padding.medium }}>No cards in this deck.</ThemedText>;
   }
@@ -238,14 +247,7 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
               <View style={styles.summaryTextCardName}>
                 <View style={styles.summaryTextCardNameCols}>
                   <ThemedText style={styles.summaryTextCardQtyCol}>{item.quantity || 1}</ThemedText>
-                  <ThemedText
-                    onPress={() =>
-                      router.push({
-                        pathname: "/cards/[cardId]",
-                        params: { cardId: item.cardId, deckId, from: "deckDetail" },
-                      })
-                    }
-                  >
+                  <ThemedText onPress={() => handleCardPress(item)}>
                     {cardDataMap[item.cardId]?.name} <ThemedText style={styles.cardId}>{item.cardId}</ThemedText>
                   </ThemedText>
                 </View>

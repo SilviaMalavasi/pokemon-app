@@ -192,6 +192,15 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
     if (typeof incrementDecksVersion === "function") incrementDecksVersion();
   };
 
+  // Helper: navigation handler for card details
+  const handleCardPress = (item: any) => {
+    console.log("[DeckThumbnailList] Navigating to card", item.cardId, "from deck", deckId);
+    router.push({
+      pathname: "/cards/[cardId]",
+      params: { cardId: item.cardId, deckId: deckId, from: "deckDetail" },
+    });
+  };
+
   // Helper to render a flat group (Trainer or Energy)
   const renderFlatGroup = (groupName: string, groupCards: any[], index: number) => {
     if (!groupCards || groupCards.length === 0) return null;
@@ -212,12 +221,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
               key={item.cardId || idx}
               style={{ position: "relative" }}
               activeOpacity={0.85}
-              onPress={() =>
-                router.push({
-                  pathname: "/cards/[cardId]",
-                  params: { cardId: item.cardId, deckId: deckId, from: "deckDetail" },
-                })
-              }
+              onPress={() => handleCardPress(item)}
               accessibilityLabel={`View details for ${item.name || item.cardId}`}
               accessibilityRole="button"
             >
@@ -267,12 +271,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
               key={item.cardId || idx}
               style={{ position: "relative" }}
               activeOpacity={0.85}
-              onPress={() =>
-                router.push({
-                  pathname: "/cards/[cardId]",
-                  params: { cardId: item.cardId, deckId: deckId, from: "deckDetail" },
-                })
-              }
+              onPress={() => handleCardPress(item)}
               accessibilityLabel={`View details for ${item.name || item.cardId}`}
               accessibilityRole="button"
             >

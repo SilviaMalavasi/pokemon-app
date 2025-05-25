@@ -6,6 +6,7 @@ import { CardType } from "@/types/PokemonCardType";
 import ThemedView from "@/components/ui/ThemedView";
 import styles from "@/style/SearchResultStyle";
 import { View } from "react-native";
+import { useRouter } from "expo-router";
 
 interface SearchResultProps {
   cardIds: string[];
@@ -26,6 +27,8 @@ export default function SearchResult({
   onPageChange,
   onAllImagesLoaded,
 }: SearchResultProps) {
+  const router = useRouter();
+
   // Pagination logic
   const totalPages = Math.ceil((cardIds?.length || 0) / itemsPerPage);
   const startIdx = (currentPage - 1) * itemsPerPage;
@@ -43,6 +46,15 @@ export default function SearchResult({
     }
   }, [imagesLoaded, paginatedIds.length, onAllImagesLoaded]);
 
+  // Handler for card navigation
+  const handleCardPress = (cardId: string) => {
+    console.log("[SearchResult] Navigating to card", cardId);
+    router.push({
+      pathname: "/cards/[cardId]",
+      params: { cardId, from: "searchResult" },
+    });
+  };
+
   return (
     <ThemedView style={styles.wrapper}>
       <View style={styles.cardList}>
@@ -54,6 +66,7 @@ export default function SearchResult({
                 card={cardData || { cardId: "", name: "", imagesLarge: "" }}
                 onImageLoad={() => setImagesLoaded((n) => n + 1)}
                 loading={loading || !cardData}
+                onPress={() => handleCardPress(item)}
               />
             </View>
           );
