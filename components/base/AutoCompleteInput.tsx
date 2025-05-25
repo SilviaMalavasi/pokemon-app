@@ -40,7 +40,7 @@ export default function AutoCompleteInput({
             type="label"
             style={styles.suggestionLabel}
           >
-            Are you searchig for...
+            Are you searching for...
           </ThemedText>
           {filteredSuggestions.map((suggestion) => {
             return (
@@ -57,6 +57,7 @@ export default function AutoCompleteInput({
                   selectingSuggestion.current = false; // Reset flag after action
                 }}
                 accessibilityLabel={`Select suggestion ${suggestion}`}
+                accessibilityRole="button"
               >
                 <ThemedText style={styles.customItem}>{suggestion}</ThemedText>
               </Pressable>

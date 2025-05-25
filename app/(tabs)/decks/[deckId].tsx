@@ -424,7 +424,6 @@ export default function DeckScreen() {
                 onClose={() => setImportModalVisible(false)}
                 onConfirm={async () => {
                   setImporting(true);
-                  // TODO: implement import logic here
                   setImporting(false);
                   setImportModalVisible(false);
                 }}

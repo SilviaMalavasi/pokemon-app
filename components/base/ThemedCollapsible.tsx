@@ -6,7 +6,6 @@ import { theme } from "@/style/ui/Theme";
 import { vw } from "@/helpers/viewport";
 import styles from "@/style/base/ThemedCollapsibleStyle";
 
-// ChevronRightIcon component, defined like in ThemedButton
 function ChevronRightIcon({ color }: { color: string }) {
   return (
     <Svg
@@ -57,6 +56,9 @@ export default function ThemedCollapsible({
         style={styles.heading}
         onPress={handleToggle}
         activeOpacity={0.8}
+        accessibilityRole="button"
+        accessibilityLabel={title}
+        accessibilityState={{ expanded: actualOpen }}
       >
         <View style={{ transform: [{ rotate: actualOpen ? "90deg" : "0deg" }] }}>
           <ChevronRightIcon color={theme.colors.purple} />

@@ -13,6 +13,7 @@ export default function ExternalLink({ href, color = "default", ...rest }: Props
     <Link
       target="_blank"
       style={{ color: linkColor }}
+      accessibilityRole="link"
       {...rest}
       href={href as ExternalPathString}
       onPress={async (event) => {

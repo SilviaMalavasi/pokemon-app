@@ -81,6 +81,8 @@ export default function ThemedNumberInput({
             <Pressable
               onPress={() => setModalVisible(true)}
               style={styles.pickerWrapper}
+              accessibilityRole="button"
+              accessibilityLabel="Select operator"
             >
               <ThemedText
                 style={styles.selectPressable}

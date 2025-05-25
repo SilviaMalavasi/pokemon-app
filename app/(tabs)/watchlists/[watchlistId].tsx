@@ -17,7 +17,6 @@ import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
   CardAutoCompleteSuggestions,
 } from "@/components/base/CardAutoCompleteInput";
-import cardImages from "@/helpers/cardImageMapping";
 
 export default function WatchListDetailScreen() {
   const router = useRouter();

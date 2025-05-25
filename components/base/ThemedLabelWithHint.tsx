@@ -25,6 +25,8 @@ export default function ThemedLabelWithHint({
       <TouchableOpacity
         onPress={() => actualSetShowHint(!actualShowHint)}
         accessibilityLabel={`Hint for ${labelHint}`}
+        accessibilityRole="button"
+        accessibilityState={{ expanded: actualShowHint }}
         activeOpacity={1}
         style={[
           {

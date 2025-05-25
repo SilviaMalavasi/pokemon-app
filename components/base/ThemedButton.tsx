@@ -14,7 +14,7 @@ export type ThemedButtonProps = ButtonProps & {
   width?: number;
   icon?: string | "void";
   style?: any;
-  color?: string; // <-- add color prop
+  color?: string;
 };
 
 // Icons
@@ -100,6 +100,7 @@ export default function ThemedButton({
   return (
     <TouchableOpacity
       activeOpacity={1}
+      accessibilityRole="button"
       style={[
         containerStyle,
         typeof width === "number" ? { width } : {},

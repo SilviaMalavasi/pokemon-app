@@ -26,7 +26,10 @@ export default function ThemedSwitch({
 }: ThemedSwitchProps) {
   const [showHint, setShowHint] = useState(false);
   return (
-    <View style={[styles.container, style]}>
+    <View
+      style={[styles.container, style]}
+      accessible={true}
+    >
       <View style={styles.row}>
         <Switch
           value={value}
@@ -34,6 +37,9 @@ export default function ThemedSwitch({
           disabled={disabled}
           trackColor={{ false: theme.colors.lightGrey, true: theme.colors.lightGrey }}
           thumbColor={value ? theme.colors.green : theme.colors.purple}
+          accessibilityRole="switch"
+          accessibilityLabel={label}
+          accessibilityState={{ checked: value, disabled }}
           {...rest}
           style={styles.switch}
         />
@@ -41,7 +47,8 @@ export default function ThemedSwitch({
           {hint ? (
             <TouchableOpacity
               onPress={() => setShowHint((v) => !v)}
-              accessibilityLabel={hint}
+              accessibilityRole="button"
+              accessibilityLabel={`Show hint for ${label}`}
               style={styles.labelHintTouchable}
             >
               <ThemedText
@@ -78,6 +85,8 @@ export default function ThemedSwitch({
                 if (!disabled) onValueChange(!value);
               }}
               disabled={disabled}
+              accessibilityRole="button"
+              accessibilityLabel={label}
               style={styles.labelHintTouchable}
             >
               <ThemedText

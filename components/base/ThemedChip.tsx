@@ -79,6 +79,8 @@ export default function ThemedChip({
       onPress={onPress}
       disabled={disabled}
       accessibilityState={{ selected, disabled }}
+      accessibilityRole="button"
+      accessibilityLabel={label}
     >
       {IconComponent ? <View style={styles.icon}>{IconComponent({ stroke: iconStroke })}</View> : null}
       <ThemedText

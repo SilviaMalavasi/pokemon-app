@@ -124,6 +124,7 @@ export function CardAutoCompleteSuggestions({ onCardSelect }: { onCardSelect: (c
             }
           }}
           accessibilityLabel={`Select card ${card.name}`}
+          accessibilityRole="button"
         >
           <ThemedText style={styles.customItem}>
             {card.name} <ThemedText type="hintText">{card.cardId.toUpperCase()}</ThemedText>

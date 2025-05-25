@@ -40,12 +40,15 @@ export default function ThemedModal({
       onRequestClose={onClose}
       statusBarTranslucent={true}
       presentationStyle="overFullScreen"
+      accessible={true}
+      accessibilityViewIsModal={true}
     >
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.modalRoot}>
           <Pressable
             onPress={onClose}
             style={[Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop, styles.backdrop]}
+            accessibilityLabel="Close modal"
           />
           <View
             style={[styles.centeredView, contentStyle]}

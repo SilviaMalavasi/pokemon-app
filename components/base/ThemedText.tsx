@@ -26,7 +26,16 @@ export type ThemedTextProps = TextProps & {
   gradient?: string[];
 };
 
-export default function ThemedText({ style, type = "default", color, fontSize, fontWeight, ...rest }: ThemedTextProps) {
+export default function ThemedText({
+  style,
+  type = "default",
+  color,
+  fontSize,
+  fontWeight,
+  accessibilityRole,
+  accessibilityLabel,
+  ...rest
+}: ThemedTextProps) {
   // Map custom fontWeight values to valid React Native values
   const fontWeightMap: Record<string, TextStyle["fontWeight"]> = {
     black: "900",
@@ -63,9 +72,15 @@ export default function ThemedText({ style, type = "default", color, fontSize, f
     color ? { color } : undefined,
   ];
 
+  // Set accessibilityRole to 'header' for headings unless overridden
+  const computedAccessibilityRole =
+    accessibilityRole || (["h1", "h2", "h3", "h4"].includes(type) ? "header" : undefined);
+
   return (
     <Text
       style={textStyle}
+      accessibilityRole={computedAccessibilityRole}
+      accessibilityLabel={accessibilityLabel}
       {...rest}
     />
   );

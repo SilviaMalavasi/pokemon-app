@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { View, Pressable, ScrollView, TouchableOpacity } from "react-native";
-import { Svg, Rect, Path } from "react-native-svg";
+import { View, Pressable } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
-import ThemedChip from "@/components/base/ThemedChip";
 import ThemedLabelWithHint from "@/components/base/ThemedLabelWithHint";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedButton from "@/components/base/ThemedButton";
@@ -48,6 +46,8 @@ export default function ThemedSelect({ label, value, options, onChange, labelHin
           <Pressable
             onPress={() => setModalVisible(true)}
             style={styles.pickerWrapper}
+            accessibilityRole="button"
+            accessibilityLabel={label}
           >
             {!value ? (
               <ThemedText style={styles.selectPressable}>{label}</ThemedText>

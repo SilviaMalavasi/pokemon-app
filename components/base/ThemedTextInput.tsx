@@ -76,12 +76,15 @@ export default forwardRef<TextInput, ThemedTextInputProps>(function ThemedTextIn
           onBlur={onBlur}
           multiline={isMultiline}
           numberOfLines={numberOfLines}
+          accessibilityLabel={placeholder || labelHint || "Input"}
+          maxLength={typeof maxChars === "number" ? maxChars : undefined}
         />
         <View style={styles.fakeInnerShadow} />
         {value.length > 0 && (
           <TouchableOpacity
             onPress={() => onChange("")}
             accessibilityLabel={`Clear ${placeholder || "input"}`}
+            accessibilityRole="button"
             style={[styles.clearIcon, isMultiline ? styles.clearIconMultiline : null]}
           >
             <Svg

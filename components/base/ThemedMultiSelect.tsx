@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedChip from "@/components/base/ThemedChip";
 import ThemedCheckbox from "@/components/base/ThemedCheckbox";
@@ -67,6 +67,8 @@ export default function ThemedMultiSelect({
         <Pressable
           onPress={() => setModalVisible(true)}
           style={styles.pickerWrapper}
+          accessibilityRole="button"
+          accessibilityLabel={label}
         >
           <ThemedText style={styles.selectPressable}>{label}</ThemedText>
         </Pressable>
