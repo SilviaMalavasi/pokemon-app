@@ -94,12 +94,13 @@ export async function migrateUserDbIfNeeded(db: SQLite.SQLiteDatabase, setIsUpda
         CREATE TABLE IF NOT EXISTS WatchedCards_new (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           name TEXT NOT NULL,
+          thumbnail TEXT,
           cards TEXT
         );
       `);
       await db.execAsync(`
-        INSERT INTO WatchedCards_new (id, name, cards)
-        SELECT id, name, cards FROM WatchedCards
+        INSERT INTO WatchedCards_new (id, name, thumbnail, cards)
+        SELECT id, name, thumbnail, cards FROM WatchedCards
       `);
       await db.execAsync("DROP TABLE WatchedCards");
       await db.execAsync("ALTER TABLE WatchedCards_new RENAME TO WatchedCards");
