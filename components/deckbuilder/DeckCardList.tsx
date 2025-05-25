@@ -214,7 +214,6 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
 
   // Helper: navigation handler for card details
   const handleCardPress = (item: any) => {
-    console.log("[DeckCardList] Navigating to card", item.cardId, "from deck", deckId);
     router.push({
       pathname: "/cards/[cardId]",
       params: { cardId: item.cardId, deckId, from: "deckDetail" },

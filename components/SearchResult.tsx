@@ -48,7 +48,6 @@ export default function SearchResult({
 
   // Handler for card navigation
   const handleCardPress = (cardId: string) => {
-    console.log("[SearchResult] Navigating to card", cardId);
     router.push({
       pathname: "/cards/[cardId]",
       params: { cardId, from: "searchResult" },

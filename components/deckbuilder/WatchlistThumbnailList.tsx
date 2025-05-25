@@ -74,7 +74,6 @@ export default function WatchlistThumbnailList({
 
   // Helper: navigation handler for card details
   const handleCardPress = (item: any) => {
-    console.log("[WatchlistThumbnailList] Navigating to card", item.cardId, "from watchlist", watchlistId);
     router.push({
       pathname: "/cards/[cardId]",
       params: { cardId: item.cardId, watchlistId: watchlistId, from: "watchlistDetail" },
