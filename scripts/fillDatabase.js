@@ -78,8 +78,8 @@ const createTables = () => {
     );
   `;
 
-  // Write schema to db/schema.sql
-  const schemaPath = path.resolve(__dirname, "../scripts/db/schema.sql");
+  // Write schema to db/cardsSchema.sql
+  const schemaPath = path.resolve(__dirname, "../scripts/db/cardsSchema.sql");
   fs.writeFileSync(schemaPath, schemaSQL.trim() + "\n");
 
   db.exec(schemaSQL);
