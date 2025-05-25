@@ -60,12 +60,14 @@ export default function SearchResult({
         {paginatedIds.map((item, idx) => {
           const cardData = cards?.find((c) => c.cardId === item);
           return (
-            <View key={item + idx}>
+            <View
+              key={item + idx}
+              onTouchEnd={() => handleCardPress(item)}
+            >
               <CompactCard
                 card={cardData || { cardId: "", name: "", imagesLarge: "" }}
                 onImageLoad={() => setImagesLoaded((n) => n + 1)}
                 loading={loading || !cardData}
-                onPress={() => handleCardPress(item)}
               />
             </View>
           );

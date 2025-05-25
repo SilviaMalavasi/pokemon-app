@@ -7,6 +7,7 @@ import ThemedTextInput from "@/components/base/ThemedTextInput";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import { theme } from "@/style/ui/Theme";
+import { orderCardsInDeck } from "@/helpers/orderCardsInDeck";
 
 interface DeckImportExportProps {
   deck: any;
@@ -54,52 +55,67 @@ const DeckImportExport: React.FC<DeckImportExportProps & { incrementDecksVersion
     for (const row of cardRows) {
       cardMap[row.cardId] = row;
     }
-    // Group cards by supertype
+    // Build cardDataMap for orderCardsInDeck
+    const cardDataMap: Record<string, { name: string; supertype: string; subtypes: string[] }> = {};
+    for (const row of cardRows) {
+      let subtypes: string[] = [];
+      if (Array.isArray(row.subtypes)) subtypes = row.subtypes;
+      else if (typeof row.subtypes === "string") {
+        try {
+          const arr = JSON.parse(row.subtypes);
+          if (Array.isArray(arr)) subtypes = arr;
+          else if (arr) subtypes = [arr];
+        } catch {
+          if (row.subtypes && row.subtypes.trim() !== "") subtypes = [row.subtypes];
+        }
+      }
+      cardDataMap[row.cardId] = {
+        name: row.name,
+        supertype: row.supertype,
+        subtypes,
+      };
+    }
+    // Use orderCardsInDeck to group/sort
+    const grouped = orderCardsInDeck(cardsArr, cardDataMap);
+    // Export in grouped order
     const pokemon: string[] = [];
     const trainer: string[] = [];
     const energy: string[] = [];
     let pokemonCount = 0;
     let trainerCount = 0;
     let energyCount = 0;
-    for (const c of cardsArr) {
+    for (const c of grouped.Pokémon) {
       const card = cardMap[c.cardId];
       if (!card) continue;
       const name = card.name || c.cardId;
-      const supertype = card.supertype || "";
       const quantity = c.quantity || 1;
       const ptcgoCode = card.ptcgoCode || "";
       const number = card.number || "";
-      // For basic energy, use correct name and set code
-      let line = "";
-      if (supertype === "Energy") {
-        // Try to parse subtypes for 'Basic'
-        let isBasic = false;
-        if (card.subtypes) {
-          try {
-            const arr = typeof card.subtypes === "string" ? JSON.parse(card.subtypes) : card.subtypes;
-            if (Array.isArray(arr) && arr.includes("Basic")) isBasic = true;
-          } catch {
-            if (typeof card.subtypes === "string" && card.subtypes.includes("Basic")) isBasic = true;
-          }
-        }
-        if (isBasic) {
-          // Use e.g. 'Psychic Energy SVE 5'
-          line = `${quantity} ${name} ${ptcgoCode} ${number}`;
-        } else {
-          // Special energy, just use name and code
-          line = `${quantity} ${name} ${ptcgoCode} ${number}`;
-        }
-        energy.push(line);
-        energyCount += quantity;
-      } else if (supertype === "Pokémon") {
-        line = `${quantity} ${name} ${ptcgoCode} ${number}`;
-        pokemon.push(line);
-        pokemonCount += quantity;
-      } else if (supertype === "Trainer") {
-        line = `${quantity} ${name} ${ptcgoCode} ${number}`;
-        trainer.push(line);
-        trainerCount += quantity;
-      }
+      const line = `${quantity} ${name} ${ptcgoCode} ${number}`;
+      pokemon.push(line);
+      pokemonCount += quantity;
+    }
+    for (const c of grouped.Trainer) {
+      const card = cardMap[c.cardId];
+      if (!card) continue;
+      const name = card.name || c.cardId;
+      const quantity = c.quantity || 1;
+      const ptcgoCode = card.ptcgoCode || "";
+      const number = card.number || "";
+      const line = `${quantity} ${name} ${ptcgoCode} ${number}`;
+      trainer.push(line);
+      trainerCount += quantity;
+    }
+    for (const c of grouped.Energy) {
+      const card = cardMap[c.cardId];
+      if (!card) continue;
+      const name = card.name || c.cardId;
+      const quantity = c.quantity || 1;
+      const ptcgoCode = card.ptcgoCode || "";
+      const number = card.number || "";
+      const line = `${quantity} ${name} ${ptcgoCode} ${number}`;
+      energy.push(line);
+      energyCount += quantity;
     }
     // No deck name, just the groups
     let deckText = "";
@@ -114,17 +130,76 @@ const DeckImportExport: React.FC<DeckImportExportProps & { incrementDecksVersion
     await Sharing.shareAsync(fileUri, { mimeType: "text/plain", dialogTitle: "Export Deck" });
   };
 
-  // Import modal UI only (logic to be implemented)
-  if (!cardDb) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
-        <ActivityIndicator
-          size="large"
-          color={theme.colors.purple}
-        />
-      </View>
-    );
-  }
+  // Import deck from txt file
+  const handleImportDeck = async () => {
+    if (!importText.trim() || !cardDb) return;
+    setImporting(true);
+    try {
+      const lines = importText.split("\n").filter(Boolean);
+      const newCardsArr: any[] = [];
+      let currentGroup: "Pokémon" | "Trainer" | "Energy" | null = null;
+      for (const line of lines) {
+        if (/^Pok[ée]mon:/i.test(line)) {
+          currentGroup = "Pokémon";
+          continue;
+        } else if (/^Trainer:/i.test(line)) {
+          currentGroup = "Trainer";
+          continue;
+        } else if (/^Energy:/i.test(line)) {
+          currentGroup = "Energy";
+          continue;
+        }
+        if (!currentGroup) continue;
+        // Robustly parse: <qty> <name...> <ptcgoCode> <number>
+        const m = line.match(/^(\d+)\s+(.+?)\s+([A-Z0-9\-]+)\s+(\d+)$/);
+        if (!m) continue;
+        const [, quantityStr, name, ptcgoCode, number] = m;
+        const quantity = parseInt(quantityStr, 10);
+        let cardId: string | null = null;
+        if (currentGroup === "Energy" && /basic/i.test(name)) {
+          // Special case: Basic Energy, match by name, subtypes, set code, and number
+          const dbEnergyName = name.trim();
+          const rows = await cardDb.getAllAsync(
+            `SELECT cardId FROM Card WHERE supertype = 'Energy' AND subtypes LIKE '%Basic%' AND name = ? AND setId IN (SELECT id FROM CardSet WHERE ptcgoCode = ?) AND number = ?`,
+            [dbEnergyName, ptcgoCode, number]
+          );
+          if (rows && rows.length > 0) {
+            cardId = rows[0].cardId;
+          }
+        } else {
+          // Normal card: match by set code and number
+          const setRows = await cardDb.getAllAsync(`SELECT id FROM CardSet WHERE ptcgoCode = ?`, [ptcgoCode]);
+          if (setRows && setRows.length > 0) {
+            const setId = setRows[0].id;
+            const cardRows = await cardDb.getAllAsync(`SELECT cardId FROM Card WHERE setId = ? AND number = ?`, [
+              setId,
+              number,
+            ]);
+            if (cardRows && cardRows.length > 0) {
+              cardId = cardRows[0].cardId;
+            }
+          }
+        }
+        if (cardId) {
+          newCardsArr.push({ cardId, quantity });
+        }
+      }
+      // Replace deck cards with imported cards
+      setDeck((prevDeck: any) => ({
+        ...prevDeck,
+        cards: newCardsArr,
+      }));
+      if (db && deckId) {
+        await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(newCardsArr), Number(deckId)]);
+      }
+      if (incrementDecksVersion) incrementDecksVersion();
+    } catch (e) {
+      console.error(e);
+    }
+    setImporting(false);
+    setImportText("");
+    setImportModalVisible(false);
+  };
 
   return (
     <>
@@ -145,98 +220,7 @@ const DeckImportExport: React.FC<DeckImportExportProps & { incrementDecksVersion
       <ThemedModal
         visible={importModalVisible}
         onClose={() => setImportModalVisible(false)}
-        onConfirm={async () => {
-          setImporting(true);
-          if (!cardDb) {
-            // Optionally show a message to the user here
-            setImporting(false);
-            setImportModalVisible(false);
-            return;
-          }
-          try {
-            // --- IMPORT LOGIC START ---
-            const lines = importText.split(/\r?\n/);
-            let section = null;
-            const cardLines = [];
-            for (const line of lines) {
-              if (/^Pok[ée]mon:/i.test(line)) section = "pokemon";
-              else if (/^Trainer:/i.test(line)) section = "trainer";
-              else if (/^Energy:/i.test(line)) section = "energy";
-              else if (line.trim() && section) cardLines.push({ section, line: line.trim() });
-            }
-            // Parse each card line
-            const parsed = cardLines
-              .map(({ section, line }) => {
-                // e.g. 2 Gardevoir ex PAF 29
-                const m = line.match(/^(\d+)\s+(.+?)\s+([A-Z0-9\-]+)\s+(\d+)$/);
-                if (!m) return null;
-                const [, quantity, name, ptcgoCode, number] = m;
-                return { section, quantity: parseInt(quantity, 10), name, ptcgoCode, number };
-              })
-              .filter((card) => card !== null);
-            // Query CardSet table for ptcgoCode -> setId
-            const ptcgoCodes = Array.from(new Set(parsed.map((card) => card && card.ptcgoCode)));
-            const placeholders = ptcgoCodes.map(() => "?").join(",");
-            const setRows = await cardDb.getAllAsync(
-              `SELECT id, ptcgoCode FROM CardSet WHERE ptcgoCode IN (${placeholders})`,
-              ptcgoCodes
-            );
-            const ptcgoToSetId: Record<string, number> = {};
-            for (const set of setRows) ptcgoToSetId[set.ptcgoCode] = set.id;
-            // Find cards in db
-            const deckCards = [];
-            for (const card of parsed) {
-              if (!card) continue;
-              // Handle basic energy special case
-              if (
-                card.section === "energy" &&
-                /energy/i.test(card.name) &&
-                card.ptcgoCode &&
-                card.number &&
-                /psychic|darkness|metal|fire|water|grass|lightning|fighting|fairy/i.test(card.name)
-              ) {
-                // Try to match our DB's basic energy name
-                const energyType = card.name.replace(/\s*Energy.*/i, "").trim();
-                const dbEnergyName = `Basic ${energyType} Energy`;
-                const rows = await cardDb.getAllAsync(
-                  "SELECT * FROM Card WHERE supertype = 'Energy' AND subtypes LIKE '%Basic%' AND name = ?",
-                  [dbEnergyName]
-                );
-                if (rows && rows.length > 0) {
-                  deckCards.push({ cardId: rows[0].cardId, quantity: card.quantity });
-                  continue;
-                }
-              }
-              // Normal card import
-              const setId = ptcgoToSetId[card.ptcgoCode];
-              if (!setId) continue;
-              const rows = await cardDb.getAllAsync("SELECT * FROM Card WHERE setId = ? AND number = ?", [
-                setId,
-                card.number,
-              ]);
-              if (rows && rows.length > 0) {
-                deckCards.push({ cardId: rows[0].cardId, quantity: card.quantity });
-              }
-            }
-            // Build new deck object (structure may need to match your app)
-            const newDeck = { ...deck, cards: deckCards };
-            setDeck(newDeck);
-            // Persist imported cards to user DB
-            if (db && deckId) {
-              await db.runAsync("UPDATE Decks SET cards = ? WHERE id = ?", [JSON.stringify(deckCards), Number(deckId)]);
-            }
-            // Also update decksVersion if available (for parent sync)
-            if (typeof decksVersion === "number" && typeof incrementDecksVersion === "function") {
-              incrementDecksVersion();
-            }
-            // --- IMPORT LOGIC END ---
-          } catch (e) {
-            // Optionally show error
-            console.error(e);
-          }
-          setImporting(false);
-          setImportModalVisible(false);
-        }}
+        onConfirm={handleImportDeck}
         buttonText={importing ? "Importing..." : "Import"}
         buttonType="main"
         buttonSize="large"
