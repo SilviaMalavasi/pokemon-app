@@ -98,7 +98,7 @@ export default function WatchlistScreen() {
         onDelete={handleDeleteWatchList}
         deletingId={deletingId}
         layout="edit"
-        style={{ marginTop: -24 }}
+        style={{ marginTop: theme.padding.large * -1 }}
       />
     </MainScrollView>
   );

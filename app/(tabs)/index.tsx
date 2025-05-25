@@ -26,13 +26,14 @@ export default function HomeScreen() {
     watchLists,
     isLoadingWatchLists,
   } = useUserDatabase();
-  const [deletingId] = useState(null);
   // --- NewDeck state and handlers ---
   const [deckName, setDeckName] = useState("");
   const [deckThumbnail, setDeckThumbnail] = useState("");
   // --- NewWatchlist state and handlers ---
   const [watchlistName, setWatchlistName] = useState("");
   const [watchlistThumbnail, setWatchlistThumbnail] = useState("");
+  // Deletion is not handled here, but prop is required by children
+  const deletingId = null;
 
   const handleSaveDeck = async () => {
     if (!db) {
@@ -127,7 +128,7 @@ export default function HomeScreen() {
             fontWeight="bold"
             color={theme.colors.grey}
           >
-            LAST DB UPDATE:{" "}
+            Last Cards Update:{" "}
           </ThemedText>
           Journey Together
         </ThemedText>
@@ -200,20 +201,20 @@ export default function HomeScreen() {
           <ThemedText
             type="default"
             color={theme.colors.white}
-            style={{ padding: theme.padding.medium }}
+            style={{ padding: theme.padding.medium, paddingBottom: theme.padding.large }}
           >
             This app is free, use it to build wonderfull decks and have fun. If you like it and you want to support my
-            work, you can do it by sharing this app with your friends and by supporting me on Patreon.{" "}
+            work, you can do it by sharing this app with your friends and by supporting me on Ko-fi.{" "}
           </ThemedText>
           <ThemedButton
-            onPress={() => router.push("https://www.patreon.com/silviamalavasi")}
-            title="Buy me a coffe"
+            onPress={() => router.push("https://ko-fi.com/silviamalavasi")}
+            title="Buy me a coffee"
             style={{ marginHorizontal: theme.padding.small, marginVertical: theme.padding.small }}
           />
         </View>
-        <View style={{ padding: theme.padding.medium }}>
+        <View style={{ paddingHorizontal: theme.padding.medium, paddingVertical: theme.padding.large }}>
           <ThemedText
-            type="default"
+            type="hintText"
             color={theme.colors.grey}
           >
             This app is not produced, endorsed, supported, or affiliated with Nintendo or The Pokémon Company.

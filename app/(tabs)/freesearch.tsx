@@ -102,10 +102,10 @@ export default function FreeSearchScreen() {
         <FreeSearchForm
           key={resetKey}
           onSearchResults={handleSearchResults}
-          setLoading={() => {}}
+          setLoading={setLoading}
           resetKey={resetKey}
-          removeDuplicates={removeDuplicatesState} // Pass renamed state variable
-          onRemoveDuplicatesChange={setRemoveDuplicatesState} // Pass renamed state setter
+          removeDuplicates={removeDuplicatesState}
+          onRemoveDuplicatesChange={setRemoveDuplicatesState}
         />
       </View>
       <ThemedModal
