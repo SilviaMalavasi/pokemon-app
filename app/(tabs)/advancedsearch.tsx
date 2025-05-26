@@ -7,21 +7,21 @@ import AdvancedSearchForm from "@/components/forms/AdvancedSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import ThemedModal from "@/components/base/ThemedModal";
 import { View } from "react-native";
-import { useSearchFormContext } from "@/components/context/SearchFormContext";
+import { SearchFormProvider, useSearchFormContext } from "@/components/context/SearchFormContext";
 import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 
-export default function FullFormScreen() {
+function FullFormScreenInner() {
   const [resetKey, setResetKey] = useState(0);
   const [removeDuplicates, setRemoveDuplicates] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const ITEMS_PER_PAGE = 20;
   const router = useRouter();
   const { setCardIds, setQuery, setCurrentPage, setItemsPerPage, setCards, setLoading } = useSearchResultContext();
-  const { setLastSearchPage, clearAdvancedForm, lastSearchPage } = useSearchFormContext(); // Removed setAdvancedForm
+  const { setLastSearchPage, clearAdvancedForm, lastSearchPage } = useSearchFormContext();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const { db } = useCardDatabase();
 
@@ -129,5 +129,13 @@ export default function FullFormScreen() {
         </ThemedModal>
       </MainScrollView>
     </AutocompleteDropdownContextProvider>
+  );
+}
+
+export default function FullFormScreen(props: any) {
+  return (
+    <SearchFormProvider>
+      <FullFormScreenInner {...props} />
+    </SearchFormProvider>
   );
 }

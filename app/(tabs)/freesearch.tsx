@@ -5,7 +5,7 @@ import MainScrollView from "@/components/ui/MainScrollView";
 import FreeSearchForm from "@/components/forms/FreeSearchForm";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
 import ThemedModal from "@/components/base/ThemedModal";
-import { useSearchFormContext } from "@/components/context/SearchFormContext";
+import { SearchFormProvider, useSearchFormContext } from "@/components/context/SearchFormContext";
 import { removeCardDuplicates } from "@/helpers/removeCardDuplicates";
 import ThemedText from "@/components/base/ThemedText";
 import { theme } from "@/style/ui/Theme";
@@ -19,7 +19,7 @@ function generatePlaceholders(count: number): string {
   return Array(count).fill("?").join(",");
 }
 
-export default function FreeSearchScreen() {
+function FreeSearchScreenInner() {
   const { db } = useCardDatabase();
   const [resetKey, setResetKey] = useState(0);
   const [removeDuplicatesState, setRemoveDuplicatesState] = useState(false);
@@ -79,10 +79,10 @@ export default function FreeSearchScreen() {
       if (lastSearchPage !== "free") {
         setResetKey((k) => k + 1);
         clearFreeForm();
-        setRemoveDuplicatesState(false); // Use renamed state setter
+        setRemoveDuplicatesState(false);
       }
       setLastSearchPage("free");
-    }, [lastSearchPage]) // Added missing dependency
+    }, [lastSearchPage])
   );
 
   React.useEffect(() => {
@@ -108,10 +108,10 @@ export default function FreeSearchScreen() {
         />
       </View>
       <ThemedModal
-        visible={modalVisible} // Add missing visible prop
+        visible={modalVisible}
         buttonType="main"
         buttonSize="small"
-        onClose={() => setModalVisible(false)} // Use correct setter
+        onClose={() => setModalVisible(false)}
         contentStyle={{ width: "85%" }}
       >
         <ThemedText
@@ -122,5 +122,13 @@ export default function FreeSearchScreen() {
         </ThemedText>
       </ThemedModal>
     </MainScrollView>
+  );
+}
+
+export default function FreeSearchScreen(props: any) {
+  return (
+    <SearchFormProvider>
+      <FreeSearchScreenInner {...props} />
+    </SearchFormProvider>
   );
 }
