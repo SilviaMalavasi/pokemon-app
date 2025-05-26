@@ -97,6 +97,9 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-Medium",
     fontSize: theme.fontSizes.font9,
     lineHeight: theme.fontSizes.font9 * 1.15,
+    color: theme.colors.white,
+    textAlign: "center",
+    paddingTop: 6,
   },
 });
 

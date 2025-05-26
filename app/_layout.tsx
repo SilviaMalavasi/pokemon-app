@@ -71,11 +71,12 @@ export default function RootLayout() {
       <DatabaseStateProvider>
         <DatabasesWithSplash>
           <SearchResultProvider>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: theme.colors.darkGrey }}>
               <Stack
                 screenOptions={{
                   contentStyle: { backgroundColor: theme.colors.darkGrey },
                   animation: "fade",
+                  headerShown: false,
                 }}
               >
                 <Stack.Screen

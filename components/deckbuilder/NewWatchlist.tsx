@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import ThemedView from "@/components/ui/ThemedView";
+import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedTextInput from "@/components/base/ThemedTextInput";

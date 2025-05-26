@@ -5,7 +5,7 @@ import ThemedText from "@/components/base/ThemedText";
 import { LinearGradient } from "expo-linear-gradient";
 import { Svg, Path } from "react-native-svg";
 import { theme } from "@/style/ui/Theme";
-import styles from "@/style/ui/TabBarStyles";
+import styles from "@/style/ui/CustomTabBarStyles";
 
 // Inline SVG icon components
 const HomeIcon = ({ color }: { color: string }) => (
@@ -160,8 +160,8 @@ export default function CustomTabBar() {
   return (
     <LinearGradient
       colors={[theme.colors.mediumGrey, theme.colors.darkGrey]}
-      start={{ x: 0.2, y: 0 }}
-      end={{ x: 0.4, y: 1 }}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 0.7 }}
     >
       <View style={styles.tabBar}>
         {tabs.map((tab) => {
@@ -172,10 +172,8 @@ export default function CustomTabBar() {
               style={styles.tab}
               onPress={() => router.push(tab.route)}
             >
-              {tab.icon(isActive ? theme.colors.green : theme.colors.grey)}
-              <ThemedText style={{ color: isActive ? theme.colors.green : theme.colors.grey, fontSize: 12 }}>
-                {tab.name}
-              </ThemedText>
+              {tab.icon(theme.colors.white)}
+              <ThemedText type="tabLabel">{tab.name}</ThemedText>
             </TouchableOpacity>
           );
         })}

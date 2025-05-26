@@ -3,7 +3,7 @@ import { View, ViewStyle } from "react-native";
 import { ReactNode } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/style/ui/Theme";
-import styles from "@/style/ui/ThemedViewStyle";
+import styles from "@/style/base/ThemedViewStyle";
 
 type ThemedViewProps = {
   children: ReactNode;

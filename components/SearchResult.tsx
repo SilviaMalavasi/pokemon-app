@@ -3,7 +3,7 @@ import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import CompactCard from "@/components/CompactCard";
 import { CardType } from "@/types/PokemonCardType";
-import ThemedView from "@/components/ui/ThemedView";
+import ThemedView from "@/components/base/ThemedView";
 import styles from "@/style/SearchResultStyle";
 import { View } from "react-native";
 import { useRouter } from "expo-router";

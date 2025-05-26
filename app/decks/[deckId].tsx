@@ -12,7 +12,7 @@ import DeckCardList from "@/components/deckbuilder/DeckCardList";
 import { theme } from "@/style/ui/Theme";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import DeckThumbnailList from "@/components/deckbuilder/DeckThumbnailList";
-import ThemedView from "@/components/ui/ThemedView";
+import ThemedView from "@/components/base/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedTextInput from "@/components/base/ThemedTextInput";

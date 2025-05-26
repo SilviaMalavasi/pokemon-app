@@ -4,7 +4,7 @@ import CardAutoCompleteInput, {
   CardAutoCompleteProvider,
   CardAutoCompleteSuggestions,
 } from "@/components/base/CardAutoCompleteInput";
-import ThemedView from "@/components/ui/ThemedView";
+import ThemedView from "@/components/base/ThemedView";
 import ThemedText from "../base/ThemedText";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import ThemedModal from "@/components/base/ThemedModal";

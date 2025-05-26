@@ -1,6 +1,5 @@
 import type { PropsWithChildren } from "react";
 import { View } from "react-native";
-import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
 import Animated, { useAnimatedRef, AnimatedRef } from "react-native-reanimated";
 import ThemedText from "@/components/base/ThemedText";
 import { Image } from "expo-image";
@@ -27,7 +26,6 @@ type Props = PropsWithChildren<{
 export default function MainScrollView({ children, headerImage, headerTitle, scrollRef }: Props) {
   const internalScrollRef = useAnimatedRef<Animated.ScrollView>();
   const usedScrollRef = scrollRef || internalScrollRef;
-  const bottom = useBottomTabOverflow();
   // Get the image source from the mapping
   const headerImageSource = headerImages[headerImage];
 
@@ -35,8 +33,6 @@ export default function MainScrollView({ children, headerImage, headerTitle, scr
     <Animated.ScrollView
       ref={usedScrollRef}
       scrollEventThrottle={16}
-      scrollIndicatorInsets={{ bottom }}
-      contentContainerStyle={{ paddingBottom: bottom, backgroundColor: theme.colors.background }}
     >
       <View style={styles.header}>
         <View style={styles.headerBackground}>

@@ -1,7 +1,7 @@
 import React from "react";
 import ThemedText from "@/components/base/ThemedText";
 import CompactDeck from "@/components/deckbuilder/CompactDeck";
-import ThemedView from "@/components/ui/ThemedView";
+import ThemedView from "@/components/base/ThemedView";
 import { ActivityIndicator, View } from "react-native";
 import { theme } from "@/style/ui/Theme";
 

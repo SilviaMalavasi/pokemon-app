@@ -3,7 +3,7 @@ import { View, Image, ActivityIndicator, TouchableOpacity } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedButton from "../base/ThemedButton";
-import ThemedView from "@/components/ui/ThemedView";
+import ThemedView from "@/components/base/ThemedView";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { vw } from "@/helpers/viewport";

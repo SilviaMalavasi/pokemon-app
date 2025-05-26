@@ -8,7 +8,7 @@ import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import AddCardToWatchList from "@/components/deckbuilder/AddCardToWatchlist";
 import WatchlistThumbnailList from "@/components/deckbuilder/WatchlistThumbnailList";
-import ThemedView from "@/components/ui/ThemedView";
+import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedTextInput from "@/components/base/ThemedTextInput";

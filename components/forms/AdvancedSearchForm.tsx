@@ -6,7 +6,7 @@ import ThemedText from "@/components/base/ThemedText";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
 import ThemedButton from "@/components/base/ThemedButton";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
-import ThemedView from "@/components/ui/ThemedView";
+import ThemedView from "@/components/base/ThemedView";
 
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import { queryBuilder } from "@/helpers/queryBuilder";

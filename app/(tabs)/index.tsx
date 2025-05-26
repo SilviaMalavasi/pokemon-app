@@ -9,7 +9,7 @@ import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { ActivityIndicator, View } from "react-native";
 import NewDeck from "@/components/deckbuilder/NewDeck";
 import NewWatchlist from "@/components/deckbuilder/NewWatchlist";
-import ThemedView from "@/components/ui/ThemedView";
+import ThemedView from "@/components/base/ThemedView";
 import { theme } from "@/style/ui/Theme";
 import { useRouter } from "expo-router";
 import ThemedButton from "@/components/base/ThemedButton";

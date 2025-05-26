@@ -6,7 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import cardImages from "@/helpers/cardImageMapping";
 import styles from "@/style/FullCardStyle";
 import { theme } from "@/style/ui/Theme";
-import ThemedView from "@/components/ui/ThemedView";
+import ThemedView from "@/components/base/ThemedView";
 import AddToDeckModal from "@/components/deckbuilder/AddToDeckModal";
 import AddToWatchListModal from "@/components/deckbuilder/AddToWatchListModal";
 

@@ -7,7 +7,7 @@ import ThemedTextInput from "@/components/base/ThemedTextInput";
 import ThemedCollapsible from "@/components/base/ThemedCollapsible";
 import ThemedCheckbox from "@/components/base/ThemedCheckbox";
 import ThemedSwitch from "@/components/base/ThemedSwitch";
-import ThemedView from "@/components/ui/ThemedView";
+import ThemedView from "@/components/base/ThemedView";
 import { freeQueryBuilder } from "@/helpers/freeQueryBuilder";
 import { useSearchFormContext } from "@/components/context/SearchFormContext";
 import styles from "@/style/forms/FreeSearchFormStyle";
