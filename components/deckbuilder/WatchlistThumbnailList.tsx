@@ -145,7 +145,6 @@ export default function WatchlistThumbnailList({
                     name: item.name || dbData.name || item.cardId,
                     imagesLarge: item.imagesLarge || dbData.imagesLarge || "",
                   }}
-                  disableLink={true}
                 />
                 {/* Overlay delete button in top right */}
                 <TouchableOpacity

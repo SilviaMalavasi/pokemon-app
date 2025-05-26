@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
   tabBar: {
     flexDirection: "row",
     justifyContent: "space-around",
-    height: 82,
-    paddingTop: 8,
+    height: 72,
+    paddingTop: 10,
     borderTopWidth: 0,
     boxShadow: [
       {

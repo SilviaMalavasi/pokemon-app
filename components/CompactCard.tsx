@@ -18,10 +18,9 @@ interface CompactCardProps {
   card: Pick<CardType, "cardId" | "name" | "imagesLarge">;
   onImageLoad?: () => void;
   loading?: boolean;
-  disableLink?: boolean; // New prop to control link behavior
 }
 
-export default function CompactCard({ card, onImageLoad, loading, disableLink }: CompactCardProps) {
+export default function CompactCard({ card, onImageLoad, loading }: CompactCardProps) {
   const [imageLoading, setImageLoading] = useState(true);
   const imageSource = getCardImage(card.imagesLarge);
 
@@ -76,10 +75,44 @@ export default function CompactCard({ card, onImageLoad, loading, disableLink }:
     </View>
   );
 
-  if (disableLink) {
-    return cardContent;
-  }
-
   // Modified Link to include onPress to set fromCardId
-  return <Link href={{ pathname: "/cards/[cardId]", params: { cardId: card.cardId } }}>{cardContent}</Link>;
+  return (
+    <View style={styles.container}>
+      <View style={styles.imageContainer}>
+        {imageSource ? (
+          <View>
+            <Image
+              source={imageSource}
+              style={styles.image}
+              resizeMode="contain"
+              onLoadStart={() => setImageLoading(true)}
+              onLoadEnd={() => {
+                setImageLoading(false);
+                if (onImageLoad) onImageLoad();
+              }}
+            />
+            {imageLoading && (
+              <ActivityIndicator
+                style={{ position: "absolute" }}
+                size="small"
+                color={theme.colors.purple}
+              />
+            )}
+          </View>
+        ) : null}
+      </View>
+      <View style={styles.textContainer}>
+        <ThemedText type="h4">
+          {card.name}{" "}
+          <ThemedText
+            type="default"
+            style={{ textTransform: "uppercase" }}
+            color={theme.colors.purple}
+          >
+            {card.cardId}
+          </ThemedText>
+        </ThemedText>
+      </View>
+    </View>
+  );
 }

@@ -73,9 +73,6 @@ function FreeSearchScreenInner() {
   // Reset the search form when the screen is focused
   useFocusEffect(
     React.useCallback(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTo({ y: 0, animated: true });
-      }
       if (lastSearchPage !== "free") {
         setResetKey((k) => k + 1);
         clearFreeForm();

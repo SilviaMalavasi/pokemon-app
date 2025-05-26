@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, BackHandler } from "react-native";
 import MainScrollView from "@/components/ui/MainScrollView";
 import FullCard from "@/components/FullCard";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -11,6 +11,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
 
 import { View } from "react-native";
+import { useSearchResultContext } from "@/components/context/SearchResultContext";
 
 export default function FullCardScreen() {
   const { cardId, watchlistId, deckId, from } = useLocalSearchParams<{
@@ -23,16 +24,8 @@ export default function FullCardScreen() {
   const [loading, setLoading] = useState(true);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const navigation = useNavigation();
-  const router = useRouter(); // Added router
+  const router = useRouter();
   const { db } = useCardDatabase();
-
-  useFocusEffect(
-    React.useCallback(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTo({ y: 0, animated: true });
-      }
-    }, [cardId])
-  );
 
   useEffect(() => {
     if (!cardId || !db) return;
@@ -107,6 +100,28 @@ export default function FullCardScreen() {
       navigation.setOptions({ headerTitle: "Card Details" });
     }
   }, [card, navigation]);
+
+  // Custom back handler to ensure correct navigation stack behavior
+  useEffect(() => {
+    const onBackPress = () => {
+      if (from === "searchResult") {
+        if (navigation.canGoBack && navigation.canGoBack()) {
+          navigation.goBack();
+        } else {
+          router.replace({ pathname: "/cards/searchresult" });
+        }
+        return true;
+      }
+      if (navigation.canGoBack && navigation.canGoBack()) {
+        navigation.goBack();
+        return true;
+      }
+      router.replace("/");
+      return true;
+    };
+    const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+    return () => subscription.remove();
+  }, [from, navigation, router]);
 
   return (
     <>

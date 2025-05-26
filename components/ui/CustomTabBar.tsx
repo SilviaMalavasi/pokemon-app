@@ -6,6 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Svg, Path } from "react-native-svg";
 import { theme } from "@/style/ui/Theme";
 import styles from "@/style/ui/CustomTabBarStyles";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // Inline SVG icon components
 const HomeIcon = ({ color }: { color: string }) => (
@@ -163,21 +164,26 @@ export default function CustomTabBar() {
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 0.7 }}
     >
-      <View style={styles.tabBar}>
-        {tabs.map((tab) => {
-          const isActive = pathname === tab.route || pathname.startsWith(tab.route);
-          return (
-            <TouchableOpacity
-              key={tab.route}
-              style={styles.tab}
-              onPress={() => router.push(tab.route)}
-            >
-              {tab.icon(theme.colors.white)}
-              <ThemedText type="tabLabel">{tab.name}</ThemedText>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+      <SafeAreaView
+        edges={["bottom"]}
+        style={{ paddingBottom: 0 }}
+      >
+        <View style={styles.tabBar}>
+          {tabs.map((tab) => {
+            const isActive = pathname === tab.route || pathname.startsWith(tab.route);
+            return (
+              <TouchableOpacity
+                key={tab.route}
+                style={styles.tab}
+                onPress={() => router.push(tab.route)}
+              >
+                {tab.icon(theme.colors.white)}
+                <ThemedText type="tabLabel">{tab.name}</ThemedText>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </SafeAreaView>
     </LinearGradient>
   );
 }

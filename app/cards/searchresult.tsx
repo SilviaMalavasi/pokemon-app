@@ -7,8 +7,19 @@ import { View } from "react-native";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 export default function SearchResultScreen() {
-  const { cardIds, query, currentPage, itemsPerPage, cards, loading, setCards, setLoading, setCurrentPage } =
-    useSearchResultContext();
+  const {
+    cardIds,
+    query,
+    currentPage,
+    itemsPerPage,
+    cards,
+    loading,
+    setCards,
+    setLoading,
+    setCurrentPage,
+    preventScrollToTop,
+    setPreventScrollToTop,
+  } = useSearchResultContext();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const { db } = useCardDatabase();
 

@@ -33,6 +33,7 @@ export default function MainScrollView({ children, headerImage, headerTitle, scr
     <Animated.ScrollView
       ref={usedScrollRef}
       scrollEventThrottle={16}
+      style={{ backgroundColor: theme.colors.background }}
     >
       <View style={styles.header}>
         <View style={styles.headerBackground}>

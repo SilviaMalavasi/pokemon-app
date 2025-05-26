@@ -77,9 +77,6 @@ function FullFormScreenInner() {
   // Reset the search form when the screen is focused, but only if not coming from searchresult
   useFocusEffect(
     React.useCallback(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTo({ y: 0, animated: true });
-      }
       if (lastSearchPage !== "advanced") {
         setResetKey((k) => k + 1);
         clearAdvancedForm();
@@ -88,12 +85,6 @@ function FullFormScreenInner() {
       setLastSearchPage("advanced");
     }, [lastSearchPage])
   );
-
-  React.useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({ y: 0, animated: true });
-    }
-  }, [resetKey]);
 
   return (
     <AutocompleteDropdownContextProvider>
