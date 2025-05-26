@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { ActivityIndicator, View, BackHandler } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import MainScrollView from "@/components/ui/MainScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -14,8 +14,6 @@ import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import DeckThumbnailList from "@/components/deckbuilder/DeckThumbnailList";
 import ThemedView from "@/components/ui/ThemedView";
 import ThemedButton from "@/components/base/ThemedButton";
-import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
 import ThemedModal from "@/components/base/ThemedModal";
 import ThemedTextInput from "@/components/base/ThemedTextInput";
 import CardAutoCompleteInput, {
@@ -209,27 +207,6 @@ export default function DeckScreen() {
       console.error("Error fetching card image for thumbnail:", e);
     }
   };
-
-  // Handler for Android back button
-  const handleBack = useCallback(() => {
-    if (from === "home") {
-      router.replace("/"); // Navigate to HomeScreen
-    } else {
-      router.replace("/deckbuilder"); // Default to DeckBuilderScreen
-    }
-    return true; // Indicate event was handled
-  }, [from, router]);
-
-  // Effect to attach and detach back button listener
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        return handleBack();
-      };
-      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
-      return () => subscription.remove();
-    }, [handleBack])
-  );
 
   return (
     <>

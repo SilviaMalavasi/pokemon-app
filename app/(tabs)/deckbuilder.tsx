@@ -1,13 +1,12 @@
 import React, { useState, useCallback } from "react";
 import MainScrollView from "@/components/ui/MainScrollView";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
-import { useFocusEffect } from "@react-navigation/native";
 import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { addDeck, deleteDeck } from "@/lib/userDatabase";
 import NewDeck from "@/components/deckbuilder/NewDeck";
 import SavedDecks from "@/components/deckbuilder/SavedDecks";
 import { theme } from "@/style/ui/Theme";
-import { ActivityIndicator, View, BackHandler } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function DeckBuilderScreen() {
@@ -49,31 +48,19 @@ export default function DeckBuilderScreen() {
       try {
         await deleteDeck(db, id);
         if (typeof incrementDecksVersion === "function") incrementDecksVersion();
+        router.replace("/"); // Navigate to home or desired screen after delete
       } catch (e) {
         console.error("Failed to delete deck", e);
       } finally {
         setDeletingId(null);
       }
     },
-    [db, incrementDecksVersion]
+    [db, incrementDecksVersion, router]
   );
 
   const handleThumbnailSelect = (imagesLargeUrl: string) => {
     setDeckThumbnail(imagesLargeUrl);
   };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        router.replace("/");
-        return true;
-      };
-
-      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
-
-      return () => subscription.remove();
-    }, [router])
-  );
 
   if (dbLoading) {
     return (

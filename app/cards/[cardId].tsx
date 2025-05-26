@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
-import { ActivityIndicator, BackHandler } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native";
 import MainScrollView from "@/components/ui/MainScrollView";
 import FullCard from "@/components/FullCard";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -25,41 +25,6 @@ export default function FullCardScreen() {
   const navigation = useNavigation();
   const router = useRouter(); // Added router
   const { db } = useCardDatabase();
-
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        if (from === "watchlistDetail" && watchlistId) {
-          router.replace({
-            pathname: "/watchlists/[watchlistId]",
-            params: { watchlistId: watchlistId },
-          });
-          return true; // Prevent default behavior
-        } else if (from === "deckDetail" && deckId) {
-          router.replace({
-            pathname: "/decks/[deckId]",
-            params: { deckId: deckId },
-          });
-          return true; // Prevent default behavior
-        } else if (from === "searchResult") {
-          router.replace({ pathname: "/cards/searchresult" });
-          return true; // Prevent default behavior
-        }
-        // If not from watchlistDetail or searchResult, let the default back behavior handle it
-        if (navigation.canGoBack()) {
-          navigation.goBack();
-          return true;
-        }
-        // Fallback if navigation.canGoBack() is false (e.g. deep link)
-        router.replace("/"); // Or any other appropriate default route
-        return true;
-      };
-
-      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
-
-      return () => subscription.remove();
-    }, [from, watchlistId, deckId, router, navigation])
-  );
 
   useFocusEffect(
     React.useCallback(() => {

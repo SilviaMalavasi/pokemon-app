@@ -10,6 +10,8 @@ import SplashScreenComponent from "@/components/ui/SplashScreen";
 import { CardDatabaseProvider } from "@/components/context/CardDatabaseContext";
 import { UserDatabaseProvider } from "@/components/context/UserDatabaseContext";
 import { DatabaseStateProvider, useDatabaseState } from "@/components/context/DatabaseStateContext";
+import { usePathname } from "expo-router";
+import CustomTabBar from "@/components/ui/CustomTabBar";
 
 import "react-native-reanimated";
 
@@ -83,6 +85,7 @@ export default function RootLayout() {
                 />
                 <Stack.Screen name="+not-found" />
               </Stack>
+              <CustomTabBar />
               <StatusBar style="auto" />
             </View>
           </SearchResultProvider>

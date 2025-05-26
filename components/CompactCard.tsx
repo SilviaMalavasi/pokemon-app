@@ -7,7 +7,6 @@ import cardImages from "@/helpers/cardImageMapping";
 import { Link } from "expo-router";
 import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
-import { useSearchFormContext } from "./context/SearchFormContext"; // Added
 
 function getCardImage(imagePath: string) {
   if (!imagePath) return undefined;
@@ -25,7 +24,6 @@ interface CompactCardProps {
 export default function CompactCard({ card, onImageLoad, loading, disableLink }: CompactCardProps) {
   const [imageLoading, setImageLoading] = useState(true);
   const imageSource = getCardImage(card.imagesLarge);
-  const { setFromCardId } = useSearchFormContext(); // Added
 
   if (loading) {
     return (
@@ -83,14 +81,5 @@ export default function CompactCard({ card, onImageLoad, loading, disableLink }:
   }
 
   // Modified Link to include onPress to set fromCardId
-  return (
-    <Link
-      href={{ pathname: "/cards/[cardId]", params: { cardId: card.cardId } }}
-      onPress={() => {
-        setFromCardId(true);
-      }}
-    >
-      {cardContent}
-    </Link>
-  );
+  return <Link href={{ pathname: "/cards/[cardId]", params: { cardId: card.cardId } }}>{cardContent}</Link>;
 }

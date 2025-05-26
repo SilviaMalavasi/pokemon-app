@@ -3,40 +3,14 @@ import { useCardDatabase } from "@/components/context/CardDatabaseContext";
 import MainScrollView from "@/components/ui/MainScrollView";
 import SearchResult from "@/components/SearchResult";
 import { useSearchResultContext } from "@/components/context/SearchResultContext";
-import { useRouter } from "expo-router";
-import { useSearchFormContext } from "@/components/context/SearchFormContext";
-import { View, BackHandler } from "react-native"; // Added BackHandler
+import { View } from "react-native";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
-import { useFocusEffect } from "@react-navigation/native";
 
 export default function SearchResultScreen() {
   const { cardIds, query, currentPage, itemsPerPage, cards, loading, setCards, setLoading, setCurrentPage } =
     useSearchResultContext();
-  const router = useRouter();
-  const { lastSearchPage, clearAdvancedForm, fromCardId, setFromCardId } = useSearchFormContext();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const skipNextScroll = useRef(false);
   const { db } = useCardDatabase();
-
-  useFocusEffect(
-    React.useCallback(() => {
-      if (fromCardId) {
-        setFromCardId(false);
-
-        skipNextScroll.current = true;
-        return;
-      }
-
-      if (skipNextScroll.current) {
-        skipNextScroll.current = false;
-        return; // Exit without scrolling.
-      }
-
-      if (scrollRef.current) {
-        scrollRef.current.scrollTo({ y: 0, animated: true });
-      }
-    }, [fromCardId, setFromCardId, scrollRef])
-  );
 
   // Fetch paginated card data when cardIds or currentPage changes
   useEffect(() => {
@@ -94,36 +68,6 @@ export default function SearchResultScreen() {
   );
 
   const handleAllImagesLoaded = useCallback(() => {}, [cardIds]);
-
-  // Back button handler - wrapped with useCallback
-  const handleBack = useCallback(() => {
-    if (loading || !cardIds) {
-      // Optionally, show a message or do nothing while loading or cardIds not loaded
-      return true; // Return true to indicate handled
-    }
-    if (lastSearchPage === "advanced") {
-      router.replace("/advancedsearch");
-    } else if (lastSearchPage === "free") {
-      router.replace("/freesearch");
-    } else {
-      clearAdvancedForm();
-      router.replace("/advancedsearch");
-    }
-    return true; // Return true to indicate handled
-  }, [loading, cardIds, lastSearchPage, router, clearAdvancedForm]);
-
-  // Effect to handle Android back button
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        return handleBack(); // Call handleBack and return its result
-      };
-
-      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
-
-      return () => subscription.remove(); // Call the remove method on the subscription
-    }, [handleBack])
-  );
 
   // Show loading indicator or nothing while loading, or if cardIds is undefined/null
   if (loading || !cardIds) {

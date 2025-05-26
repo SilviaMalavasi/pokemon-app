@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import React from "react";
 import { theme } from "@/style/ui/Theme";
 
-export default function CardsLayout() {
+export default function DecksLayout() {
   return (
     <Stack
       screenOptions={{

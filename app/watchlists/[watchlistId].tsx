@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { BackHandler, ActivityIndicator, View } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { ActivityIndicator, View } from "react-native";
 import ThemedText from "@/components/base/ThemedText";
 import ThemedButton from "@/components/base/ThemedButton";
 import MainScrollView from "@/components/ui/MainScrollView";
@@ -177,27 +176,6 @@ export default function WatchListDetailScreen() {
       setShowModal(false);
     }
   };
-
-  // Handler for Android back button
-  const handleBack = useCallback(() => {
-    if (from === "home") {
-      router.replace("/"); // Navigate to HomeScreen
-    } else {
-      router.replace("/watchlist"); // Default to WatchlistScreen
-    }
-    return true; // Indicate event was handled
-  }, [from, router]);
-
-  // Effect to attach and detach back button listener
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        return handleBack();
-      };
-      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
-      return () => subscription.remove();
-    }, [handleBack])
-  );
 
   // Handler to update context when cards are changed (e.g., card removed)
   const handleCardsChanged = () => {
