@@ -80,10 +80,16 @@ export function orderCardsInDeck(cards: CardData[], cardDataMap: CardDataMap, ca
     else if (supertype === "Energy") groups["Energy"].push(cardWithSubtypes);
     // Ignore others
   });
-  // Sort Trainer by first subtype alphabetically
+  // Sort Trainer by custom subtype order, then alphabetically for others
+  const trainerOrder = ["Supporter", "Item", "Pokémon Tool", "Stadium"];
   groups["Trainer"].sort((a, b) => {
     const aSub = a.subtypes?.[0] || "";
     const bSub = b.subtypes?.[0] || "";
+    const aIdx = trainerOrder.indexOf(aSub);
+    const bIdx = trainerOrder.indexOf(bSub);
+    if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+    if (aIdx !== -1) return -1;
+    if (bIdx !== -1) return 1;
     return aSub.localeCompare(bSub);
   });
   // Sort Energy: non-Basic first (by subtype), then Basic at the end

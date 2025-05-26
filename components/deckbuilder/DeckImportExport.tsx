@@ -44,7 +44,7 @@ const DeckImportExport: React.FC<DeckImportExportProps & { incrementDecksVersion
     const placeholders = ids.map(() => "?").join(", ");
     // Fetch all needed info in one query (join Card and CardSet)
     const cardRows = await cardDb.getAllAsync(
-      `SELECT Card.cardId, Card.name, Card.supertype, Card.number, Card.setId, Card.subtypes, CardSet.ptcgoCode
+      `SELECT Card.cardId, Card.name, Card.supertype, Card.number, Card.setId, Card.subtypes, Card.evolvesFrom, Card.evolvesTo, CardSet.ptcgoCode
        FROM Card
        LEFT JOIN CardSet ON Card.setId = CardSet.id
        WHERE Card.cardId IN (${placeholders})`,
@@ -57,6 +57,8 @@ const DeckImportExport: React.FC<DeckImportExportProps & { incrementDecksVersion
     }
     // Build cardDataMap for orderCardsInDeck
     const cardDataMap: Record<string, { name: string; supertype: string; subtypes: string[] }> = {};
+    // Build cardDbMap for evolution info
+    const cardDbMap: Record<string, { evolvesFrom?: string; evolvesTo?: string | string[] }> = {};
     for (const row of cardRows) {
       let subtypes: string[] = [];
       if (Array.isArray(row.subtypes)) subtypes = row.subtypes;
@@ -74,9 +76,13 @@ const DeckImportExport: React.FC<DeckImportExportProps & { incrementDecksVersion
         supertype: row.supertype,
         subtypes,
       };
+      cardDbMap[row.cardId] = {
+        evolvesFrom: row.evolvesFrom,
+        evolvesTo: row.evolvesTo,
+      };
     }
-    // Use orderCardsInDeck to group/sort
-    const grouped = orderCardsInDeck(cardsArr, cardDataMap);
+    // Use orderCardsInDeck to group/sort with evolution info
+    const grouped = orderCardsInDeck(cardsArr, cardDataMap, cardDbMap);
     // Export in grouped order
     const pokemon: string[] = [];
     const trainer: string[] = [];
