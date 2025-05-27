@@ -56,8 +56,6 @@ async function scrapeLimitlessDeck(url) {
 
   // Store as JSON string (like user DB)
   const cardsString = JSON.stringify(cards);
-
-  // Remove player from returned object
   return { name, variant, cards: cardsString };
 }
 
@@ -406,51 +404,60 @@ async function main() {
   const globalSeen = new Set(); // Track unique name+variantOf globally
   // Collect pending decks for later processing
   const pendingDecks = [];
+  // After all parent pages, process pendingDecks with async/await
   for (const { url, variantOf } of allDecks) {
     try {
       const { data } = await axios.get(url);
       const $ = cheerio.load(data);
+      // --- REVISED: Track current tournament date as we iterate rows ---
+      let currentTournamentDate = null;
+      let currentTournamentText = null;
       $("table.data-table tr").each((i, el) => {
-        // Find the immediately previous row (tr)
-        let prev = el.previousSibling;
-        while (prev && prev.tagName !== "tr") prev = prev.previousSibling;
-        let tournamentDate = null;
-        if (prev) {
-          const prev$ = $(prev);
-          const tourLink = prev$.find("a[href^='/tournaments/']");
-          if (tourLink.length > 0) {
-            const text = tourLink.text();
-            // Extract date (assume it's before the dash)
-            const match = text.match(/^(\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+\s+\d{4})/);
-            if (match) tournamentDate = parseTournamentDate(match[1]);
+        // Look for a <a> with href starting with '/tournaments/' in this row
+        const tourLink = $(el).find("a[href^='/tournaments/']");
+        if (tourLink.length > 0) {
+          // This is a tournament header row
+          const text = tourLink.text();
+          // Extract date (assume it's before the dash)
+          const match = text.match(/^(\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+\s+\d{4})/);
+          if (match) {
+            currentTournamentDate = parseTournamentDate(match[1]);
+            currentTournamentText = text;
+          } else {
+            currentTournamentDate = null;
+            currentTournamentText = null;
           }
-        }
-        // Remove hyphens from each alt name
-        const imgAlts = [];
-        $(el)
-          .find("img.pokemon")
-          .each((j, img) => {
-            const alt = $(img).attr("alt");
-            if (alt) imgAlts.push(alt);
-          });
-        const name = imgAlts.map((n) => (typeof n === "string" ? n.replace(/-/g, " ") : n));
-        const key = `${name}|||${variantOf}`;
-        // Find the /decks/list/ link in this row
-        const listLink = $(el).find("a[href^='/decks/list/']").attr("href");
-        // Only add if tournamentDate is valid and >= MIN_TOURNAMENT_DATE
-        if (
-          name.length &&
-          !globalSeen.has(key) &&
-          listLink &&
-          tournamentDate &&
-          tournamentDate >= MIN_TOURNAMENT_DATE
-        ) {
-          pendingDecks.push({
-            name,
-            variant: variantOf,
-            listUrl: "https://limitlesstcg.com" + listLink,
-            key,
-          });
+        } else {
+          // This is a deck row (not a sub-heading)
+          // Remove hyphens from each alt name
+          const imgAlts = [];
+          $(el)
+            .find("img.pokemon")
+            .each((j, img) => {
+              const alt = $(img).attr("alt");
+              if (alt) imgAlts.push(alt);
+            });
+          const name = imgAlts.map((n) => (typeof n === "string" ? n.replace(/-/g, " ") : n));
+          const key = `${name}|||${variantOf}`;
+          // Find the /decks/list/ link in this row
+          const listLink = $(el).find("a[href^='/decks/list/']").attr("href");
+          // Only add if tournamentDate is valid and >= MIN_TOURNAMENT_DATE
+          if (
+            name.length &&
+            !globalSeen.has(key) &&
+            listLink &&
+            currentTournamentDate &&
+            currentTournamentDate >= MIN_TOURNAMENT_DATE
+          ) {
+            pendingDecks.push({
+              name,
+              variant: variantOf,
+              listUrl: "https://limitlesstcg.com" + listLink,
+              key,
+              tournamentDate: currentTournamentDate,
+              tournamentText: currentTournamentText,
+            });
+          }
         }
       });
       console.log(`Scraped deck variants from: ${url}`);
