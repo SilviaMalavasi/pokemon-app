@@ -149,7 +149,6 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
       onPressDeck(deck.id);
     } else {
       // Default navigation if onPressDeck is not provided
-      console.log("[CompactDeck] Navigating to /decks/[deckId] with deckId:", deck.id);
       router.push({ pathname: "/decks/[deckId]", params: { deckId: deck.id, from: "deckbuilder" } });
     }
   };

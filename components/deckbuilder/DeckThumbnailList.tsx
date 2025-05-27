@@ -194,7 +194,6 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
 
   // Helper: navigation handler for card details
   const handleCardPress = (item: any) => {
-    console.log("[DeckThumbnailList] Navigating to /cards/[cardId] with cardId:", item.cardId, "deckId:", deckId);
     router.push({
       pathname: "/cards/[cardId]",
       params: { cardId: item.cardId, deckId: deckId, from: "deckDetail" },
