@@ -8,6 +8,10 @@ const fs = require("fs");
 const path = require("path");
 const Database = require("better-sqlite3");
 
+// --- CONFIG ---
+// Set the minimum allowed tournament date (inclusive). Format: 'YYYY-MM-DD'
+const MIN_TOURNAMENT_DATE = new Date("2025-04-11"); // <-- Set your cutoff date here
+
 // --- DB SETUP ---
 const DB_PATH = path.join(__dirname, "db", "limitlessDecks.db");
 const SCHEMA_PATH = path.join(__dirname, "db", "limitlessSchema.sql");
@@ -67,8 +71,8 @@ async function scrapeDecksFromListPage(listUrl) {
     const a = $(el).find("a[href^='/decks/']");
     if (a.length > 0) {
       const href = a.attr("href");
-      // Get variantOf from the parent link text (excluding annotation span)
-      let variantOf = a.clone().children("span").remove().end().text().trim();
+      // Get full variant family name, including annotation spans
+      let variantOf = a.text().trim();
       // Find all img alts in the row for deck name
       const imgAlts = [];
       $(el)
@@ -77,8 +81,8 @@ async function scrapeDecksFromListPage(listUrl) {
           const alt = $(img).attr("alt");
           if (alt) imgAlts.push(alt);
         });
-      const name = imgAlts.join(" / ");
-      if (href && name && variantOf) {
+      const name = imgAlts;
+      if (href && name.length && variantOf) {
         decks.push({
           url: "https://limitlesstcg.com" + href,
           name,
@@ -112,19 +116,24 @@ async function scrapeAllDeckLinks(listUrl) {
   let baseUrl = listUrl.split("?")[0];
   // Collect all deck links from all pages
   let allDecks = [];
+  let deckLimit = Infinity; // Remove limit for production
+  let deckCount = 0;
   for (let page = 1; page <= maxPage; page++) {
+    if (deckCount >= deckLimit) break;
     let url = baseUrl + (page > 1 ? `?page=${page}` : "");
     const decks = await scrapeDecksFromListPage(url);
-    allDecks = allDecks.concat(decks);
+    for (const deck of decks) {
+      if (deckCount < deckLimit) {
+        allDecks.push(deck);
+        deckCount++;
+      } else {
+        break;
+      }
+    }
+    if (deckCount >= deckLimit) break;
     console.log(`Found ${decks.length} decks on page ${page}/${maxPage}`);
   }
-  // Remove duplicates by name+variantOf
-  const unique = {};
-  for (const d of allDecks) {
-    const key = `${d.name}|||${d.variantOf}`;
-    if (!unique[key]) unique[key] = d;
-  }
-  return Object.values(unique);
+  return allDecks;
 }
 
 // --- DB INSERT ---
@@ -144,9 +153,10 @@ function saveDeckToJson(deck, outPath = "db/LimitlessDecks.json", reset = false)
   const nextId = arr.length > 0 ? Math.max(...arr.map((d) => d.id || 0)) + 1 : 1;
   const entry = {
     id: nextId,
-    name: deck.name || "",
-    variantOf: deck.variant || null,
+    name: Array.isArray(deck.name) ? deck.name : [],
+    variantOf: deck.variant || deck.variantOf || null,
     cards: deck.cards || "[]",
+    thumbnail: deck.thumbnail || "",
   };
   arr.push(entry);
   fs.writeFileSync(file, JSON.stringify(arr, null, 2), "utf-8");
@@ -176,6 +186,204 @@ function mapCardIdsForCardsArray(cardsArr, ptcgoToSetId, setNumToCardId) {
   return cardsArr;
 }
 
+// --- DECK LIBRARY MAPPING GENERATOR ---
+function updateDeckLibraryMappingFromJson(jsonPath, mappingPath) {
+  const decks = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
+  const variantSet = new Set();
+  for (const deck of decks) {
+    if (deck.variantOf) variantSet.add(deck.variantOf);
+  }
+  // Read existing mapping if present
+  let mapping = {};
+  if (fs.existsSync(mappingPath)) {
+    try {
+      // Remove export lines and parse as JS object
+      const raw = fs.readFileSync(mappingPath, "utf-8");
+      const match = raw.match(/const deckLibraryMapping: DeckLibraryMapping = (\{[\s\S]*?\});/);
+      if (match) {
+        mapping = eval("(" + match[1] + ")");
+      }
+    } catch {}
+  }
+  // Add new variantOf keys if missing, keep existing thumbnails
+  let updated = false;
+  for (const variant of variantSet) {
+    if (!mapping[variant]) {
+      mapping[variant] = { thumbnail: "" };
+      updated = true;
+    }
+  }
+  // Remove old keys not in current variants
+  for (const key of Object.keys(mapping)) {
+    if (!variantSet.has(key)) {
+      delete mapping[key];
+      updated = true;
+    }
+  }
+  // At this point, mapping[variant] will keep its thumbnail if already set
+  if (updated) {
+    // Write as a TypeScript file
+    const out = `// helpers/deckLibraryMapping.ts\n// This file maps each unique variant family (variantOf) from LimitlessDecks to a thumbnail image.\n// Fill in the thumbnail for each variant family manually.\n\nexport interface DeckLibraryMapping {\n  [variantOf: string]: {\n    thumbnail: string; // e.g. 'sv1-1_large.webp' or a custom image path\n  };\n}\n\nconst deckLibraryMapping: DeckLibraryMapping = ${JSON.stringify(
+      mapping,
+      null,
+      2
+    )};\n\nexport default deckLibraryMapping;\n`;
+    fs.writeFileSync(mappingPath, out, "utf-8");
+    console.log(`Updated deck library mapping at ${mappingPath}`);
+  } else {
+    console.log("Deck library mapping is up to date.");
+  }
+}
+
+// --- AUTO-ASSIGN THUMBNAILS TO DECKS ---
+function autoAssignThumbnailsToDecks() {
+  const decksPath = path.join(__dirname, "db", "LimitlessDecks.json");
+  const cardsPath = path.join(__dirname, "..", "assets", "database", "Card.json");
+  if (!fs.existsSync(decksPath) || !fs.existsSync(cardsPath)) {
+    console.error("LimitlessDecks.json or Card.json not found.");
+    return;
+  }
+  const decks = JSON.parse(fs.readFileSync(decksPath, "utf-8"));
+  const cards = JSON.parse(fs.readFileSync(cardsPath, "utf-8"));
+  let updated = false;
+  for (const deck of decks) {
+    if (Array.isArray(deck.name) && typeof deck.variantOf === "string" && (!deck.thumbnail || deck.thumbnail === "")) {
+      if (deck.name.length === 1) {
+        // --- SINGLE NAME LOGIC (as before) ---
+        const deckName = deck.name[0];
+        const variantOfLower = deck.variantOf.toLowerCase();
+        const deckNameLower = deckName.toLowerCase();
+        let searchTerm = deckName;
+        let match = null;
+        if (variantOfLower.includes(deckNameLower)) {
+          searchTerm = deck.variantOf;
+          // Try to find card by variantOf
+          match = cards.find((c) => typeof c.name === "string" && c.name.toLowerCase() === searchTerm.toLowerCase());
+          // Fallback: if not found, try deck name
+          if (!match) {
+            searchTerm = deckName;
+            match = cards.find((c) => typeof c.name === "string" && c.name.toLowerCase() === searchTerm.toLowerCase());
+          }
+        } else {
+          // Use deck name as search term
+          match = cards.find((c) => typeof c.name === "string" && c.name.toLowerCase() === searchTerm.toLowerCase());
+        }
+        if (match && match.cardId) {
+          deck.thumbnail = `${match.cardId}_large.webp`;
+          updated = true;
+        }
+      } else if (deck.name.length >= 2) {
+        // --- MULTI-NAME LOGIC: always use the second string ---
+        const mainName = deck.name[1]; // Use the second string, even if more than 2
+        // Parse deck.cards (stringified array)
+        let deckCards = [];
+        try {
+          deckCards = JSON.parse(deck.cards);
+        } catch {}
+        // Find a card in the deck whose name starts with mainName + ' ' (case-insensitive, to avoid partial matches)
+        let foundCard = null;
+        for (const cardEntry of deckCards) {
+          if (!cardEntry.cardId) continue;
+          const cardData = cards.find((c) => c.cardId === cardEntry.cardId);
+          if (
+            cardData &&
+            typeof cardData.name === "string" &&
+            (cardData.name.toLowerCase().startsWith(mainName.toLowerCase() + " ") ||
+              cardData.name.toLowerCase() === mainName.toLowerCase()) // NEW: exact match
+          ) {
+            foundCard = cardData;
+            break;
+          }
+        }
+        // Fallback: if not found, use previous logic (substring match)
+        if (!foundCard) {
+          for (const cardEntry of deckCards) {
+            if (!cardEntry.cardId) continue;
+            const cardData = cards.find((c) => c.cardId === cardEntry.cardId);
+            if (
+              cardData &&
+              typeof cardData.name === "string" &&
+              cardData.name.toLowerCase().includes(mainName.toLowerCase())
+            ) {
+              foundCard = cardData;
+              break;
+            }
+          }
+        }
+        if (foundCard && foundCard.cardId) {
+          deck.thumbnail = `${foundCard.cardId}_large.webp`;
+          updated = true;
+        }
+      }
+    }
+  }
+  if (updated) {
+    fs.writeFileSync(decksPath, JSON.stringify(decks, null, 2), "utf-8");
+    console.log("Auto-assigned thumbnails for qualifying decks in LimitlessDecks.json");
+  } else {
+    console.log("No qualifying decks found for thumbnail auto-assignment.");
+  }
+}
+
+// --- AUTO-ASSIGN THUMBNAILS TO DECK LIBRARY MAPPING ---
+function autoAssignThumbnailsToDeckLibraryMapping() {
+  const cardsPath = path.join(__dirname, "..", "assets", "database", "Card.json");
+  const mappingPath = path.join(__dirname, "..", "helpers", "deckLibraryMapping.ts");
+  if (!fs.existsSync(cardsPath) || !fs.existsSync(mappingPath)) {
+    console.error("Card.json or deckLibraryMapping.ts not found.");
+    return;
+  }
+  const cards = JSON.parse(fs.readFileSync(cardsPath, "utf-8"));
+  let mapping = {};
+  try {
+    const raw = fs.readFileSync(mappingPath, "utf-8");
+    const match = raw.match(/const deckLibraryMapping: DeckLibraryMapping = (\{[\s\S]*?\});/);
+    if (match) {
+      mapping = eval("(" + match[1] + ")");
+    }
+  } catch {}
+
+  // Define scalable pokemon rules
+  const pokemonRules = ["ex"];
+  let updated = false;
+  for (const variantOf in mapping) {
+    if (!mapping[variantOf].thumbnail || mapping[variantOf].thumbnail === "") {
+      const words = variantOf.split(/\s+/);
+      let searchName = words[0];
+      if (words.length > 1 && pokemonRules.includes(words[1].toLowerCase())) {
+        searchName = words[0] + " " + words[1];
+      }
+      // Find all cards with this name (case-insensitive)
+      const foundCards = cards.filter(
+        (c) => typeof c.name === "string" && c.name.toLowerCase() === searchName.toLowerCase()
+      );
+      if (foundCards.length > 0) {
+        // If more than one, use the second; else use the first
+        const cardToUse = foundCards.length > 1 ? foundCards[1] : foundCards[0];
+        mapping[variantOf].thumbnail = `${cardToUse.cardId}_large.webp`;
+        updated = true;
+      }
+    }
+  }
+  if (updated) {
+    const out = `// helpers/deckLibraryMapping.ts\n// This file maps each unique variant family (variantOf) from LimitlessDecks to a thumbnail image.\n// Fill in the thumbnail for each variant family manually.\n\nexport interface DeckLibraryMapping {\n  [variantOf: string]: {\n    thumbnail: string; // e.g. 'sv1-1_large.webp' or a custom image path\n  };\n}\n\nconst deckLibraryMapping: DeckLibraryMapping = ${JSON.stringify(
+      mapping,
+      null,
+      2
+    )};\n\nexport default deckLibraryMapping;\n`;
+    fs.writeFileSync(mappingPath, out, "utf-8");
+    console.log("Auto-assigned thumbnails for deckLibraryMapping.");
+  }
+}
+
+// Helper to parse tournament date string like '17th May 2025' to Date object
+function parseTournamentDate(dateStr) {
+  // Remove ordinal suffixes (st, nd, rd, th)
+  const clean = dateStr.replace(/(\d+)(st|nd|rd|th)/, "$1");
+  // Parse with Date
+  return new Date(clean);
+}
+
 // --- MAIN ---
 async function main() {
   ensureDbAndSchema();
@@ -203,6 +411,21 @@ async function main() {
       const { data } = await axios.get(url);
       const $ = cheerio.load(data);
       $("table.data-table tr").each((i, el) => {
+        // Find the immediately previous row (tr)
+        let prev = el.previousSibling;
+        while (prev && prev.tagName !== "tr") prev = prev.previousSibling;
+        let tournamentDate = null;
+        if (prev) {
+          const prev$ = $(prev);
+          const tourLink = prev$.find("a[href^='/tournaments/']");
+          if (tourLink.length > 0) {
+            const text = tourLink.text();
+            // Extract date (assume it's before the dash)
+            const match = text.match(/^(\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+\s+\d{4})/);
+            if (match) tournamentDate = parseTournamentDate(match[1]);
+          }
+        }
+        // Remove hyphens from each alt name
         const imgAlts = [];
         $(el)
           .find("img.pokemon")
@@ -210,11 +433,18 @@ async function main() {
             const alt = $(img).attr("alt");
             if (alt) imgAlts.push(alt);
           });
-        const name = imgAlts.join(" / ");
+        const name = imgAlts.map((n) => (typeof n === "string" ? n.replace(/-/g, " ") : n));
         const key = `${name}|||${variantOf}`;
         // Find the /decks/list/ link in this row
         const listLink = $(el).find("a[href^='/decks/list/']").attr("href");
-        if (name && !globalSeen.has(key) && listLink) {
+        // Only add if tournamentDate is valid and >= MIN_TOURNAMENT_DATE
+        if (
+          name.length &&
+          !globalSeen.has(key) &&
+          listLink &&
+          tournamentDate &&
+          tournamentDate >= MIN_TOURNAMENT_DATE
+        ) {
           pendingDecks.push({
             name,
             variant: variantOf,
@@ -249,7 +479,12 @@ async function main() {
         // Map cardIds before saving
         cards = mapCardIdsForCardsArray(cards, ptcgoToSetId, setNumToCardId);
         saveDeckToJson(
-          { name: decklistTitle, variant: deck.variant, cards: JSON.stringify(cards) },
+          {
+            name: deck.name,
+            variant: deck.variant,
+            cards: JSON.stringify(cards),
+            thumbnail: "",
+          },
           "db/LimitlessDecks.json",
           globalSeen.size === 0
         );
@@ -260,6 +495,14 @@ async function main() {
     }
   }
   console.log("Batch scraping complete.");
+  // Update deck library mapping after JSON is created
+  const mappingPath = path.join(__dirname, "..", "helpers", "deckLibraryMapping.ts");
+  const jsonPath = path.join(__dirname, "db", "LimitlessDecks.json");
+  updateDeckLibraryMappingFromJson(jsonPath, mappingPath);
+  // Auto-assign thumbnails after all decks are written
+  autoAssignThumbnailsToDecks();
+  // Auto-assign thumbnails for deck library mapping
+  autoAssignThumbnailsToDeckLibraryMapping();
 }
 
 if (require.main === module) {

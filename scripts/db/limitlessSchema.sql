@@ -4,5 +4,8 @@ CREATE TABLE IF NOT EXISTS limitlessDecks (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   variantOf TEXT,
-  cards TEXT NOT NULL
+  cards TEXT NOT NULL,
+  thumbnail TEXT,
+  player TEXT,
+  tournament TEXT
 );

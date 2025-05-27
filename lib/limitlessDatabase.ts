@@ -3,7 +3,7 @@ import * as SQLite from "expo-sqlite";
 const LIMITLESS_DATABASE_NAME = "limitlessDecks.db";
 
 // ----> INCREMENT THIS WHEN JSON CHANGES <----
-const LIMITLESS_DATABASE_VERSION = 1; // Increment this to force migration
+const LIMITLESS_DATABASE_VERSION = 2; // Increment this to force migration
 
 // Import the JSON data file
 const limitlessDecksData: Array<{

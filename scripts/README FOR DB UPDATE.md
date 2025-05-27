@@ -19,6 +19,27 @@
 
 5.  **Increment Database Version:**
 
-    - Open the migration script: `lib/cardDatabase.ts`.
-    - Find the `DATABASE_VERSION` constant near the top of the `migrateDbIfNeeded` function.
-    - Increment its value by 1 (e.g., if it was `1`, change it to `2`).
+    - Open the script: `lib/cardDatabase.ts`.
+    - Find the `DATABASE_VERSION` constant near the top of the file.
+    - Increment its value by 1.
+
+# Updating Limitless Deck Database
+
+1.  **Update Json Source:**
+
+    - Run `node scripts/limitlessScraper.js` to update LimitlessDecks.json (scripts/db) and deckLibraryMapping.ts (in
+      helpers).
+
+2.  **Update the Json '/assets/databse':**
+
+    - Copy LimitlessDecks.json in 'assets/database'.
+
+3.  **Manually Update the deck/thumbnail map:**
+
+    - Manually assign a thumbnail to each deck variant.
+
+4.  **Increment Database Version:**
+
+    - Open the script: `lib/limitlessDatabase.ts`.
+    - Find the `LIMITLESS_DATABASE_VERSION` constant near the top of the file.
+    - Increment its value by 1.
