@@ -134,23 +134,53 @@ const FreeSearchIcon = ({ color }: { color: string }) => (
   </Svg>
 );
 
+const DeckLibraryIcon = ({ color }: { color: string }) => (
+  <Svg
+    width={24}
+    height={24}
+    viewBox="0 0 341.12 472.49"
+  >
+    <Path
+      d="M194.93,472.49l32.49-24.37,32.49,24.37v-64.98h-64.98v64.98Z"
+      fill={color}
+    />
+    <Path
+      d="M0,399.39v8.12c0,10.76,4.28,21.1,11.9,28.71,7.61,7.61,17.95,11.9,28.71,11.9H182.75v-30.61H56.85c-4.49,0-8.12-8.63-8.12-13.12s3.63-13.12,8.12-13.12h235.53c4.49,0,8.12,8.63,8.12,13.12s-3.63,13.12-8.12,13.12h-20.3v30.61h69.04v-89.34H40.61c-10.76,0-21.1,4.28-28.71,11.9-7.61,7.61-11.9,17.95-11.9,28.71H0Z"
+      fill={color}
+    />
+    <Path
+      d="M0,365.77c9.99-12.14,24.89-19.17,40.61-19.17V1.42C18.19,1.42,0,19.61,0,42.03V365.77Z"
+      fill={color}
+    />
+    <Path
+      d="M332.72,0h0S56.57,0,56.57,0V345.18H340.84V8.12c-.02-4.49-3.63-8.1-8.12-8.12Zm-124.11,282.99c-60.96,5.47-114.8-39.51-120.27-100.47h68.44c4.63,19.42,21.97,33.13,41.93,33.16,19.96-.03,37.3-13.74,41.93-33.16h68.44c-4.79,53.38-47.09,95.68-100.47,100.47Zm-35.71-110.4c.03-14.24,11.57-25.78,25.81-25.81,14.25,0,25.81,11.55,25.81,25.81s-11.55,25.81-25.81,25.81-25.81-11.55-25.81-25.81Zm67.74-9.93c-4.65-19.41-21.98-33.11-41.93-33.16-19.96,.05-37.29,13.75-41.93,33.16H88.33c4.79-53.38,47.09-95.68,100.47-100.47,60.96-5.47,114.8,39.51,120.27,100.47h-68.44Z"
+      fill={color}
+    />
+  </Svg>
+);
+
 const tabs = [
-  { name: "Home", route: "/(tabs)" as const, icon: (color: string) => <HomeIcon color={color} /> },
+  { name: "Home", route: "/(tabs)", icon: (color: string) => <HomeIcon color={color} /> },
   {
     name: "Deck Builder",
-    route: "/(tabs)/deckbuilder" as const,
+    route: "/(tabs)/deckbuilder",
     icon: (color: string) => <DeckBuilderIcon color={color} />,
   },
-  { name: "Watchlist", route: "/(tabs)/watchlist" as const, icon: (color: string) => <WatchlistIcon color={color} /> },
+  { name: "Watchlist", route: "/(tabs)/watchlist", icon: (color: string) => <WatchlistIcon color={color} /> },
   {
     name: "Advanced Search",
-    route: "/(tabs)/advancedsearch" as const,
+    route: "/(tabs)/advancedsearch",
     icon: (color: string) => <AdvSearchIcon color={color} />,
   },
   {
     name: "Free Search",
-    route: "/(tabs)/freesearch" as const,
+    route: "/(tabs)/freesearch",
     icon: (color: string) => <FreeSearchIcon color={color} />,
+  },
+  {
+    name: "Deck Library",
+    route: "/(tabs)/decklibrary",
+    icon: (color: string) => <DeckLibraryIcon color={color} />,
   },
 ];
 
@@ -175,7 +205,7 @@ export default function CustomTabBar() {
               <TouchableOpacity
                 key={tab.route}
                 style={styles.tab}
-                onPress={() => router.push(tab.route)}
+                onPress={() => router.push(tab.route as any)}
               >
                 {tab.icon(theme.colors.white)}
                 <ThemedText type="tabLabel">{tab.name}</ThemedText>

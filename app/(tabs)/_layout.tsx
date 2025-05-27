@@ -16,6 +16,7 @@ export default function TabLayout() {
       <Tabs.Screen name="watchlist" />
       <Tabs.Screen name="advancedsearch" />
       <Tabs.Screen name="freesearch" />
+      <Tabs.Screen name="decklibrary" />
     </Tabs>
   );
 }

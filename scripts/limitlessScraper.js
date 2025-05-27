@@ -128,7 +128,7 @@ async function scrapeAllDeckLinks(listUrl) {
 }
 
 // --- DB INSERT ---
-function saveDeckToJson(deck, outPath = "db/limitlessDecks.json", reset = false) {
+function saveDeckToJson(deck, outPath = "db/LimitlessDecks.json", reset = false) {
   const file = path.join(__dirname, outPath);
   let arr = [];
   // If reset is true, always start with an empty array
@@ -193,7 +193,7 @@ async function main() {
   const allDecks = await scrapeAllDeckLinks(listUrl);
   console.log(`Found ${allDecks.length} unique deck links. Scraping...`);
   // Always start with a fresh file
-  fs.writeFileSync(path.join(__dirname, "db", "limitlessDecks.json"), "[]", "utf-8");
+  fs.writeFileSync(path.join(__dirname, "db", "LimitlessDecks.json"), "[]", "utf-8");
   let idCounter = 1;
   const globalSeen = new Set(); // Track unique name+variantOf globally
   // Collect pending decks for later processing
@@ -250,7 +250,7 @@ async function main() {
         cards = mapCardIdsForCardsArray(cards, ptcgoToSetId, setNumToCardId);
         saveDeckToJson(
           { name: decklistTitle, variant: deck.variant, cards: JSON.stringify(cards) },
-          "db/limitlessDecks.json",
+          "db/LimitlessDecks.json",
           globalSeen.size === 0
         );
         globalSeen.add(deck.key);

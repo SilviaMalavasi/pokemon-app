@@ -15,6 +15,7 @@ const headerImages: Record<string, any> = {
   "free-search-bkg": require("@/assets/images/free-search.webp"),
   "card-bkg": require("@/assets/images/card.webp"),
   "watchlist-bkg": require("@/assets/images/watchlist.webp"),
+  "deck-library-bkg": require("@/assets/images/deck-library.webp"),
 };
 
 type Props = PropsWithChildren<{
