@@ -155,6 +155,9 @@ function saveDeckToJson(deck, outPath = "db/LimitlessDecks.json", reset = false)
     variantOf: deck.variant || deck.variantOf || null,
     cards: deck.cards || "[]",
     thumbnail: deck.thumbnail || "",
+    // Add player and tournament if present
+    ...(deck.player ? { player: deck.player } : {}),
+    ...(deck.tournament ? { tournament: deck.tournament } : {}),
   };
   arr.push(entry);
   fs.writeFileSync(file, JSON.stringify(arr, null, 2), "utf-8");
@@ -441,6 +444,11 @@ async function main() {
           const key = `${name}|||${variantOf}`;
           // Find the /decks/list/ link in this row
           const listLink = $(el).find("a[href^='/decks/list/']").attr("href");
+          // --- NEW: Extract player name ---
+          const playerLink = $(el).find("a[href^='/players/']");
+          const player = playerLink.length > 0 ? playerLink.text().trim() : null;
+          // --- NEW: Tournament info (full text from last header) ---
+          const tournament = currentTournamentText || null;
           // Only add if tournamentDate is valid and >= MIN_TOURNAMENT_DATE
           if (
             name.length &&
@@ -456,6 +464,8 @@ async function main() {
               key,
               tournamentDate: currentTournamentDate,
               tournamentText: currentTournamentText,
+              player,
+              tournament,
             });
           }
         }
@@ -491,6 +501,8 @@ async function main() {
             variant: deck.variant,
             cards: JSON.stringify(cards),
             thumbnail: "",
+            player: deck.player,
+            tournament: deck.tournament,
           },
           "db/LimitlessDecks.json",
           globalSeen.size === 0

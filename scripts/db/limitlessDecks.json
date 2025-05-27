@@ -1,433 +1,407 @@
 [
   {
     "id": 1,
-    "name": [
-      "dragapult"
-    ],
+    "name": ["dragapult"],
     "variantOf": "Dragapult ex",
     "cards": "[{\"cardId\":\"sv6-128\",\"quantity\":4},{\"cardId\":\"sv6-129\",\"quantity\":4},{\"cardId\":\"sv6-130\",\"quantity\":2},{\"cardId\":\"sv8pt5-4\",\"quantity\":2},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv1-118\",\"quantity\":1},{\"cardId\":\"sv6pt5-40\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv2-172\",\"quantity\":3},{\"cardId\":\"sv9-146\",\"quantity\":2},{\"cardId\":\"sv1-175\",\"quantity\":2},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv4-160\",\"quantity\":3},{\"cardId\":\"sv6pt5-61\",\"quantity\":2},{\"cardId\":\"sv6-165\",\"quantity\":1},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv1-194\",\"quantity\":1},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv1-174\",\"quantity\":1},{\"cardId\":\"sv4-166\",\"quantity\":1},{\"cardId\":\"sv2-173\",\"quantity\":1},{\"cardId\":\"sv2-191\",\"quantity\":4},{\"cardId\":\"sve-10\",\"quantity\":2},{\"cardId\":\"sve-13\",\"quantity\":2}]",
-    "thumbnail": "sv6-130_large.webp"
+    "thumbnail": "sv6-130_large.webp",
+    "player": "Joseph Mousaed",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 2,
-    "name": [
-      "dragapult",
-      "dusknoir"
-    ],
+    "name": ["dragapult", "dusknoir"],
     "variantOf": "Dragapult ex",
     "cards": "[{\"cardId\":\"sv6-128\",\"quantity\":4},{\"cardId\":\"sv6-129\",\"quantity\":4},{\"cardId\":\"sv6-130\",\"quantity\":2},{\"cardId\":\"sv8pt5-35\",\"quantity\":2},{\"cardId\":\"sv8pt5-36\",\"quantity\":2},{\"cardId\":\"sv8pt5-37\",\"quantity\":1},{\"cardId\":\"sv8pt5-4\",\"quantity\":2},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv1-118\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv3-186\",\"quantity\":2},{\"cardId\":\"sv9-155\",\"quantity\":2},{\"cardId\":\"sv1-175\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv4-160\",\"quantity\":3},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv6-165\",\"quantity\":1},{\"cardId\":\"sv1-194\",\"quantity\":1},{\"cardId\":\"sv4-166\",\"quantity\":1},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv1-174\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":1},{\"cardId\":\"sv2-191\",\"quantity\":3},{\"cardId\":\"sve-10\",\"quantity\":2},{\"cardId\":\"sve-13\",\"quantity\":2}]",
-    "thumbnail": "sv8pt5-37_large.webp"
+    "thumbnail": "sv8pt5-37_large.webp",
+    "player": "Dominic Viola",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 3,
-    "name": [
-      "dragapult",
-      "pidgeot"
-    ],
+    "name": ["dragapult", "pidgeot"],
     "variantOf": "Dragapult ex",
     "cards": "[{\"cardId\":\"sv6-128\",\"quantity\":4},{\"cardId\":\"sv6-129\",\"quantity\":4},{\"cardId\":\"sv6-130\",\"quantity\":2},{\"cardId\":\"sv8pt5-4\",\"quantity\":2},{\"cardId\":\"sv3-162\",\"quantity\":1},{\"cardId\":\"sv3pt5-17\",\"quantity\":1},{\"cardId\":\"sv3-164\",\"quantity\":2},{\"cardId\":\"sv1-118\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv9-146\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv7-133\",\"quantity\":1},{\"cardId\":\"sv1-183\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv4-160\",\"quantity\":2},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv1-191\",\"quantity\":1},{\"cardId\":\"sv6-165\",\"quantity\":1},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv1-169\",\"quantity\":1},{\"cardId\":\"sv2-173\",\"quantity\":1},{\"cardId\":\"sv4-166\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":1},{\"cardId\":\"sve-13\",\"quantity\":3},{\"cardId\":\"sve-10\",\"quantity\":2},{\"cardId\":\"sve-15\",\"quantity\":1},{\"cardId\":\"sv2-191\",\"quantity\":1}]",
-    "thumbnail": "sv3-164_large.webp"
+    "thumbnail": "sv3-164_large.webp",
+    "player": "Sebastian Lashmet",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 4,
-    "name": [
-      "dragapult",
-      "charizard"
-    ],
+    "name": ["dragapult", "charizard"],
     "variantOf": "Dragapult ex",
     "cards": "[{\"cardId\":\"sv6-128\",\"quantity\":4},{\"cardId\":\"sv6-129\",\"quantity\":4},{\"cardId\":\"sv6-130\",\"quantity\":2},{\"cardId\":\"sv3pt5-4\",\"quantity\":2},{\"cardId\":\"sv3pt5-5\",\"quantity\":1},{\"cardId\":\"sv3-125\",\"quantity\":2},{\"cardId\":\"sv8pt5-4\",\"quantity\":2},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv1-118\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv3-186\",\"quantity\":3},{\"cardId\":\"sv9-155\",\"quantity\":2},{\"cardId\":\"sv9-146\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv1-191\",\"quantity\":2},{\"cardId\":\"sv4-160\",\"quantity\":2},{\"cardId\":\"sv1-181\",\"quantity\":1},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv6-165\",\"quantity\":1},{\"cardId\":\"sv4-178\",\"quantity\":1},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":1},{\"cardId\":\"sve-10\",\"quantity\":5},{\"cardId\":\"sv2-191\",\"quantity\":4}]",
-    "thumbnail": "sv3-125_large.webp"
+    "thumbnail": "sv3-125_large.webp",
+    "player": "Jackson Ford",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 5,
-    "name": [
-      "gardevoir"
-    ],
+    "name": ["gardevoir"],
     "variantOf": "Gardevoir ex",
     "cards": "[{\"cardId\":\"sv1-84\",\"quantity\":3},{\"cardId\":\"sv1-85\",\"quantity\":2},{\"cardId\":\"sv1-86\",\"quantity\":2},{\"cardId\":\"sv6-95\",\"quantity\":2},{\"cardId\":\"sv1-89\",\"quantity\":1},{\"cardId\":\"sv4-86\",\"quantity\":1},{\"cardId\":\"sv9-56\",\"quantity\":1},{\"cardId\":\"sv3pt5-151\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv5-23\",\"quantity\":1},{\"cardId\":\"sv5-24\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv9-155\",\"quantity\":4},{\"cardId\":\"sv3-186\",\"quantity\":2},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv4-163\",\"quantity\":3},{\"cardId\":\"sv1-181\",\"quantity\":2},{\"cardId\":\"sv4-160\",\"quantity\":2},{\"cardId\":\"sv6pt5-61\",\"quantity\":2},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":1},{\"cardId\":\"sv1-191\",\"quantity\":1},{\"cardId\":\"sv6-163\",\"quantity\":1},{\"cardId\":\"sv4-178\",\"quantity\":3},{\"cardId\":\"sv2-173\",\"quantity\":2},{\"cardId\":\"sv2-171\",\"quantity\":2},{\"cardId\":\"sve-13\",\"quantity\":7},{\"cardId\":\"sve-15\",\"quantity\":3}]",
-    "thumbnail": "sv1-86_large.webp"
+    "thumbnail": "sv1-86_large.webp",
+    "player": "Michael Davidson",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 6,
-    "name": [
-      "raging bolt",
-      "ogerpon"
-    ],
+    "name": ["raging bolt", "ogerpon"],
     "variantOf": "Raging Bolt ex",
     "cards": "[{\"cardId\":\"sv7-114\",\"quantity\":2},{\"cardId\":\"sv8pt5-77\",\"quantity\":1},{\"cardId\":\"sv7-115\",\"quantity\":3},{\"cardId\":\"sv6-25\",\"quantity\":3},{\"cardId\":\"sv5-123\",\"quantity\":2},{\"cardId\":\"sv7-118\",\"quantity\":2},{\"cardId\":\"sv7-111\",\"quantity\":1},{\"cardId\":\"sv4-107\",\"quantity\":1},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv3pt5-151\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6pt5-39\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv3pt5-132\",\"quantity\":1},{\"cardId\":\"sv4-170\",\"quantity\":4},{\"cardId\":\"sv7-133\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":1},{\"cardId\":\"sv1-176\",\"quantity\":1},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv4-163\",\"quantity\":3},{\"cardId\":\"sv6pt5-61\",\"quantity\":3},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv5-157\",\"quantity\":1},{\"cardId\":\"sv7-131\",\"quantity\":2},{\"cardId\":\"sv6-153\",\"quantity\":1},{\"cardId\":\"sve-9\",\"quantity\":6},{\"cardId\":\"sve-14\",\"quantity\":3},{\"cardId\":\"sve-12\",\"quantity\":3}]",
-    "thumbnail": "sv6-25_large.webp"
+    "thumbnail": "sv6-25_large.webp",
+    "player": "Christian Fontenot",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 7,
-    "name": [
-      "gholdengo",
-      "dragapult"
-    ],
+    "name": ["gholdengo", "dragapult"],
     "variantOf": "Gholdengo ex",
     "cards": "[{\"cardId\":\"sv8-97\",\"quantity\":4},{\"cardId\":\"sv4-139\",\"quantity\":4},{\"cardId\":\"sv6-128\",\"quantity\":2},{\"cardId\":\"sv6-129\",\"quantity\":2},{\"cardId\":\"sv6-130\",\"quantity\":1},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv5-145\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv2-185\",\"quantity\":1},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv2-189\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv6pt5-61\",\"quantity\":2},{\"cardId\":\"sv1-181\",\"quantity\":1},{\"cardId\":\"sv1-186\",\"quantity\":1},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv1-194\",\"quantity\":1},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv8-176\",\"quantity\":1},{\"cardId\":\"sv4-178\",\"quantity\":2},{\"cardId\":\"sv3-197\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":1},{\"cardId\":\"sv6-153\",\"quantity\":1},{\"cardId\":\"sve-16\",\"quantity\":3},{\"cardId\":\"sve-15\",\"quantity\":2},{\"cardId\":\"sve-11\",\"quantity\":1},{\"cardId\":\"sve-14\",\"quantity\":1},{\"cardId\":\"sve-12\",\"quantity\":1},{\"cardId\":\"sve-10\",\"quantity\":1},{\"cardId\":\"sve-9\",\"quantity\":1},{\"cardId\":\"sve-13\",\"quantity\":1}]",
-    "thumbnail": "sv6-130_large.webp"
+    "thumbnail": "sv6-130_large.webp",
+    "player": "Parker Turchan",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 8,
-    "name": [
-      "gholdengo",
-      "dudunsparce"
-    ],
+    "name": ["gholdengo", "dudunsparce"],
     "variantOf": "Gholdengo ex",
     "cards": "[{\"cardId\":\"sv8-97\",\"quantity\":3},{\"cardId\":\"sv4-88\",\"quantity\":1},{\"cardId\":\"sv4-139\",\"quantity\":4},{\"cardId\":\"sv2-156\",\"quantity\":3},{\"cardId\":\"sv5-129\",\"quantity\":2},{\"cardId\":\"sv9-121\",\"quantity\":1},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv5-145\",\"quantity\":3},{\"cardId\":\"sv2-185\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv2-189\",\"quantity\":4},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv4-160\",\"quantity\":2},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv1-181\",\"quantity\":2},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv1-171\",\"quantity\":1},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv8-176\",\"quantity\":1},{\"cardId\":\"sv4-178\",\"quantity\":2},{\"cardId\":\"sv6-153\",\"quantity\":1},{\"cardId\":\"sve-16\",\"quantity\":3},{\"cardId\":\"sve-15\",\"quantity\":2},{\"cardId\":\"sve-13\",\"quantity\":1},{\"cardId\":\"sve-10\",\"quantity\":1},{\"cardId\":\"sve-11\",\"quantity\":1},{\"cardId\":\"sve-14\",\"quantity\":1},{\"cardId\":\"sve-9\",\"quantity\":1},{\"cardId\":\"sve-12\",\"quantity\":1}]",
-    "thumbnail": "sv5-129_large.webp"
+    "thumbnail": "sv5-129_large.webp",
+    "player": "Paul Abarca",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 9,
-    "name": [
-      "gholdengo"
-    ],
+    "name": ["gholdengo"],
     "variantOf": "Gholdengo ex",
     "cards": "[{\"cardId\":\"sv8-97\",\"quantity\":4},{\"cardId\":\"sv4-139\",\"quantity\":4},{\"cardId\":\"sv8-131\",\"quantity\":1},{\"cardId\":\"sv3pt5-123\",\"quantity\":1},{\"cardId\":\"sv3-141\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv4-56\",\"quantity\":1},{\"cardId\":\"sv1-118\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv5-145\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":1},{\"cardId\":\"sv2-189\",\"quantity\":4},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv1-181\",\"quantity\":2},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv6pt5-61\",\"quantity\":2},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv8-176\",\"quantity\":1},{\"cardId\":\"sv1-171\",\"quantity\":1},{\"cardId\":\"sv1-186\",\"quantity\":1},{\"cardId\":\"sv1-194\",\"quantity\":1},{\"cardId\":\"sv4-178\",\"quantity\":2},{\"cardId\":\"sv6-153\",\"quantity\":1},{\"cardId\":\"sve-16\",\"quantity\":3},{\"cardId\":\"sve-15\",\"quantity\":2},{\"cardId\":\"sve-12\",\"quantity\":1},{\"cardId\":\"sve-9\",\"quantity\":1},{\"cardId\":\"sve-10\",\"quantity\":1},{\"cardId\":\"sve-11\",\"quantity\":1},{\"cardId\":\"sve-13\",\"quantity\":1},{\"cardId\":\"sve-14\",\"quantity\":1}]",
-    "thumbnail": "sv4-139_large.webp"
+    "thumbnail": "sv4-139_large.webp",
+    "player": "Michael Ingalls",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 10,
-    "name": [
-      "joltik",
-      "pikachu"
-    ],
+    "name": ["joltik", "pikachu"],
     "variantOf": "Joltik Box",
     "cards": "[{\"cardId\":\"sv7-50\",\"quantity\":2},{\"cardId\":\"sv6pt5-2\",\"quantity\":1},{\"cardId\":\"sv8-57\",\"quantity\":2},{\"cardId\":\"sv1-81\",\"quantity\":2},{\"cardId\":\"sv4-70\",\"quantity\":2},{\"cardId\":\"sv9-56\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv5-25\",\"quantity\":1},{\"cardId\":\"sv3pt5-151\",\"quantity\":1},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv6pt5-40\",\"quantity\":1},{\"cardId\":\"sv2-172\",\"quantity\":4},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv7-133\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":1},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv1-186\",\"quantity\":2},{\"cardId\":\"sv5-157\",\"quantity\":1},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv2-173\",\"quantity\":2},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv5-149\",\"quantity\":1},{\"cardId\":\"sv8-177\",\"quantity\":1},{\"cardId\":\"sve-9\",\"quantity\":5},{\"cardId\":\"sve-12\",\"quantity\":5},{\"cardId\":\"sve-16\",\"quantity\":2},{\"cardId\":\"sve-13\",\"quantity\":2}]",
-    "thumbnail": "sv8-57_large.webp"
+    "thumbnail": "sv8-57_large.webp",
+    "player": "Ruben Alejandro Canul Mendoza",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 11,
-    "name": [
-      "noctowl",
-      "ogerpon wellspring"
-    ],
+    "name": ["noctowl", "ogerpon wellspring"],
     "variantOf": "Tera Box",
     "cards": "[{\"cardId\":\"sv7-114\",\"quantity\":3},{\"cardId\":\"sv8pt5-77\",\"quantity\":1},{\"cardId\":\"sv7-115\",\"quantity\":4},{\"cardId\":\"sv7-118\",\"quantity\":2},{\"cardId\":\"sv6-64\",\"quantity\":2},{\"cardId\":\"sv3pt5-132\",\"quantity\":1},{\"cardId\":\"sv6-25\",\"quantity\":1},{\"cardId\":\"sv8-57\",\"quantity\":1},{\"cardId\":\"sv7-128\",\"quantity\":1},{\"cardId\":\"sv9-56\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv3pt5-151\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv7-133\",\"quantity\":4},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv9-155\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":1},{\"cardId\":\"sv1-176\",\"quantity\":1},{\"cardId\":\"sv7-132\",\"quantity\":1},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv1-173\",\"quantity\":2},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv7-142\",\"quantity\":1},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv7-131\",\"quantity\":2},{\"cardId\":\"sv6-153\",\"quantity\":1},{\"cardId\":\"sve-9\",\"quantity\":4},{\"cardId\":\"sve-13\",\"quantity\":2},{\"cardId\":\"sve-11\",\"quantity\":1},{\"cardId\":\"sve-12\",\"quantity\":1},{\"cardId\":\"sve-16\",\"quantity\":1}]",
-    "thumbnail": ""
+    "thumbnail": "",
+    "player": "Caleb Rogerson",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 12,
-    "name": [
-      "flareon",
-      "noctowl"
-    ],
+    "name": ["flareon", "noctowl"],
     "variantOf": "Flareon ex",
     "cards": "[{\"cardId\":\"sv7-114\",\"quantity\":4},{\"cardId\":\"sv7-115\",\"quantity\":4},{\"cardId\":\"sv8-143\",\"quantity\":1},{\"cardId\":\"sv3pt5-133\",\"quantity\":1},{\"cardId\":\"sv8pt5-14\",\"quantity\":2},{\"cardId\":\"sv8-86\",\"quantity\":1},{\"cardId\":\"sv8pt5-60\",\"quantity\":1},{\"cardId\":\"sv7-118\",\"quantity\":2},{\"cardId\":\"sv8pt5-75\",\"quantity\":1},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv3pt5-151\",\"quantity\":1},{\"cardId\":\"sv7-128\",\"quantity\":1},{\"cardId\":\"sv9-56\",\"quantity\":1},{\"cardId\":\"sv7-133\",\"quantity\":3},{\"cardId\":\"sv2-185\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv7-132\",\"quantity\":1},{\"cardId\":\"sv6-154\",\"quantity\":1},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv8-170\",\"quantity\":1},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv5-144\",\"quantity\":2},{\"cardId\":\"sv6pt5-61\",\"quantity\":2},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv1-194\",\"quantity\":1},{\"cardId\":\"sv8-189\",\"quantity\":1},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv7-142\",\"quantity\":1},{\"cardId\":\"sv7-131\",\"quantity\":2},{\"cardId\":\"sve-12\",\"quantity\":2},{\"cardId\":\"sve-10\",\"quantity\":2},{\"cardId\":\"sve-13\",\"quantity\":2},{\"cardId\":\"sve-11\",\"quantity\":2},{\"cardId\":\"sve-15\",\"quantity\":1}]",
-    "thumbnail": "sv7-115_large.webp"
+    "thumbnail": "sv7-115_large.webp",
+    "player": "Taylor Whalen",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 13,
-    "name": [
-      "terapagos",
-      "noctowl"
-    ],
+    "name": ["terapagos", "noctowl"],
     "variantOf": "Terapagos ex",
     "cards": "[{\"cardId\":\"sv7-114\",\"quantity\":3},{\"cardId\":\"sv8pt5-77\",\"quantity\":1},{\"cardId\":\"sv7-115\",\"quantity\":4},{\"cardId\":\"sv7-128\",\"quantity\":3},{\"cardId\":\"sv7-119\",\"quantity\":3},{\"cardId\":\"sv7-118\",\"quantity\":2},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv6-112\",\"quantity\":1},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv9-56\",\"quantity\":1},{\"cardId\":\"sv3pt5-132\",\"quantity\":1},{\"cardId\":\"sv6pt5-40\",\"quantity\":1},{\"cardId\":\"sv3pt5-151\",\"quantity\":1},{\"cardId\":\"sv7-133\",\"quantity\":3},{\"cardId\":\"sv2-185\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv9-155\",\"quantity\":1},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv5-144\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv7-135\",\"quantity\":1},{\"cardId\":\"sv1-173\",\"quantity\":1},{\"cardId\":\"sv5-157\",\"quantity\":1},{\"cardId\":\"sv2-173\",\"quantity\":2},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv7-131\",\"quantity\":3},{\"cardId\":\"sve-13\",\"quantity\":3},{\"cardId\":\"sve-15\",\"quantity\":3},{\"cardId\":\"sve-14\",\"quantity\":2}]",
-    "thumbnail": "sv7-115_large.webp"
+    "thumbnail": "sv7-115_large.webp",
+    "player": "Ron E",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 14,
-    "name": [
-      "zoroark",
-      "darmanitan"
-    ],
+    "name": ["zoroark", "darmanitan"],
     "variantOf": "N's Zoroark",
     "cards": "[{\"cardId\":\"sv9-97\",\"quantity\":4},{\"cardId\":\"sv9-98\",\"quantity\":4},{\"cardId\":\"sv9-26\",\"quantity\":2},{\"cardId\":\"sv9-27\",\"quantity\":2},{\"cardId\":\"sv9-116\",\"quantity\":1},{\"cardId\":\"sv3-80\",\"quantity\":1},{\"cardId\":\"sv8pt5-4\",\"quantity\":1},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv4-156\",\"quantity\":1},{\"cardId\":\"sv8-170\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv4-171\",\"quantity\":2},{\"cardId\":\"sv9-145\",\"quantity\":1},{\"cardId\":\"sv5-145\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv4-160\",\"quantity\":2},{\"cardId\":\"sv6pt5-61\",\"quantity\":2},{\"cardId\":\"sv9-153\",\"quantity\":2},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv6-163\",\"quantity\":1},{\"cardId\":\"sv1-182\",\"quantity\":1},{\"cardId\":\"sv1-169\",\"quantity\":1},{\"cardId\":\"sv6pt5-63\",\"quantity\":1},{\"cardId\":\"sv4-177\",\"quantity\":1},{\"cardId\":\"sv9-152\",\"quantity\":2},{\"cardId\":\"sv2-171\",\"quantity\":2},{\"cardId\":\"sve-15\",\"quantity\":6},{\"cardId\":\"sv2-192\",\"quantity\":2}]",
-    "thumbnail": "sv9-27_large.webp"
+    "thumbnail": "sv9-27_large.webp",
+    "player": "Lucas Xing",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 15,
-    "name": [
-      "archaludon",
-      "zoroark"
-    ],
+    "name": ["archaludon", "zoroark"],
     "variantOf": "Archaludon ex",
     "cards": "[{\"cardId\":\"sv7-106\",\"quantity\":4},{\"cardId\":\"sv8-130\",\"quantity\":4},{\"cardId\":\"sv9-97\",\"quantity\":2},{\"cardId\":\"sv9-98\",\"quantity\":2},{\"cardId\":\"sv1-118\",\"quantity\":1},{\"cardId\":\"sv4-56\",\"quantity\":1},{\"cardId\":\"sv2-169\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv5-84\",\"quantity\":1},{\"cardId\":\"sv9-155\",\"quantity\":4},{\"cardId\":\"sv2-172\",\"quantity\":3},{\"cardId\":\"sv6-145\",\"quantity\":2},{\"cardId\":\"sv2-185\",\"quantity\":2},{\"cardId\":\"sv4-171\",\"quantity\":2},{\"cardId\":\"sv9-145\",\"quantity\":1},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv4-163\",\"quantity\":3},{\"cardId\":\"sv6pt5-61\",\"quantity\":3},{\"cardId\":\"sv1-186\",\"quantity\":2},{\"cardId\":\"sv1-182\",\"quantity\":1},{\"cardId\":\"sv6-162\",\"quantity\":1},{\"cardId\":\"sv6-153\",\"quantity\":3},{\"cardId\":\"sve-16\",\"quantity\":8}]",
-    "thumbnail": "sv9-98_large.webp"
+    "thumbnail": "sv9-98_large.webp",
+    "player": "Justin Romero",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 16,
-    "name": [
-      "archaludon"
-    ],
+    "name": ["archaludon"],
     "variantOf": "Archaludon ex",
     "cards": "[{\"cardId\":\"sv7-106\",\"quantity\":4},{\"cardId\":\"sv8-130\",\"quantity\":4},{\"cardId\":\"sv3pt5-123\",\"quantity\":1},{\"cardId\":\"sv3-141\",\"quantity\":1},{\"cardId\":\"sv2-169\",\"quantity\":1},{\"cardId\":\"sv5-84\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6pt5-40\",\"quantity\":1},{\"cardId\":\"sv9-155\",\"quantity\":3},{\"cardId\":\"sv6-145\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":3},{\"cardId\":\"sv9-145\",\"quantity\":2},{\"cardId\":\"sv2-185\",\"quantity\":1},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv6pt5-61\",\"quantity\":4},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv4-163\",\"quantity\":3},{\"cardId\":\"sv1-186\",\"quantity\":3},{\"cardId\":\"sv1-182\",\"quantity\":1},{\"cardId\":\"sv6-162\",\"quantity\":1},{\"cardId\":\"sv3-197\",\"quantity\":3},{\"cardId\":\"sv3-192\",\"quantity\":2},{\"cardId\":\"sve-16\",\"quantity\":8}]",
-    "thumbnail": "sv8-130_large.webp"
+    "thumbnail": "sv8-130_large.webp",
+    "player": "Tristan Menicucci",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 17,
-    "name": [
-      "archaludon",
-      "brute bonnet"
-    ],
+    "name": ["archaludon", "brute bonnet"],
     "variantOf": "Archaludon ex",
     "cards": "[{\"cardId\":\"sv7-106\",\"quantity\":3},{\"cardId\":\"sv8-130\",\"quantity\":2},{\"cardId\":\"sv4-123\",\"quantity\":2},{\"cardId\":\"MISSINGSET-SVP-149\",\"quantity\":2},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv2-169\",\"quantity\":1},{\"cardId\":\"sv9-155\",\"quantity\":3},{\"cardId\":\"sv6-145\",\"quantity\":3},{\"cardId\":\"sv2-185\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv6-154\",\"quantity\":1},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv6pt5-61\",\"quantity\":3},{\"cardId\":\"sv1-186\",\"quantity\":2},{\"cardId\":\"sv4-163\",\"quantity\":2},{\"cardId\":\"sv1-182\",\"quantity\":1},{\"cardId\":\"sv6-163\",\"quantity\":1},{\"cardId\":\"sv8pt5-95\",\"quantity\":3},{\"cardId\":\"sv5-140\",\"quantity\":3},{\"cardId\":\"sv5-156\",\"quantity\":3},{\"cardId\":\"sve-16\",\"quantity\":7},{\"cardId\":\"sve-15\",\"quantity\":1}]",
-    "thumbnail": "sv4-123_large.webp"
+    "thumbnail": "sv4-123_large.webp",
+    "player": "Beckett W.",
+    "tournament": "24th May 2025 - Regional Portland, OR (JR)"
   },
   {
     "id": 18,
-    "name": [
-      "roaring moon",
-      "dudunsparce"
-    ],
+    "name": ["roaring moon", "dudunsparce"],
     "variantOf": "Roaring Moon ex",
     "cards": "[{\"cardId\":\"sv2-156\",\"quantity\":4},{\"cardId\":\"sv5-129\",\"quantity\":4},{\"cardId\":\"sv5-109\",\"quantity\":4},{\"cardId\":\"sv7-118\",\"quantity\":1},{\"cardId\":\"sv4-56\",\"quantity\":1},{\"cardId\":\"sv8-116\",\"quantity\":1},{\"cardId\":\"sv4-124\",\"quantity\":1},{\"cardId\":\"sv4-170\",\"quantity\":4},{\"cardId\":\"sv5-147\",\"quantity\":4},{\"cardId\":\"sv2-172\",\"quantity\":3},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv2-183\",\"quantity\":4},{\"cardId\":\"sv4-163\",\"quantity\":4},{\"cardId\":\"sv5-144\",\"quantity\":3},{\"cardId\":\"sv1-173\",\"quantity\":2},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv5-140\",\"quantity\":4},{\"cardId\":\"sv2-171\",\"quantity\":3},{\"cardId\":\"sv6pt5-60\",\"quantity\":1},{\"cardId\":\"sve-15\",\"quantity\":6}]",
-    "thumbnail": "sv5-129_large.webp"
+    "thumbnail": "sv5-129_large.webp",
+    "player": "Aidan Khus",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 19,
-    "name": [
-      "roaring moon"
-    ],
+    "name": ["roaring moon"],
     "variantOf": "Roaring Moon ex",
     "cards": "[{\"cardId\":\"sv4-124\",\"quantity\":2},{\"cardId\":\"sv4-123\",\"quantity\":2},{\"cardId\":\"MISSINGSET-SVP-149\",\"quantity\":2},{\"cardId\":\"sv2-169\",\"quantity\":2},{\"cardId\":\"sv5-50\",\"quantity\":1},{\"cardId\":\"sv6pt5-39\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv8-116\",\"quantity\":1},{\"cardId\":\"sv5-109\",\"quantity\":1},{\"cardId\":\"sv3pt5-151\",\"quantity\":1},{\"cardId\":\"sv4-170\",\"quantity\":4},{\"cardId\":\"sv6-145\",\"quantity\":4},{\"cardId\":\"sv2-172\",\"quantity\":1},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv4-163\",\"quantity\":4},{\"cardId\":\"sv1-173\",\"quantity\":3},{\"cardId\":\"sv6pt5-61\",\"quantity\":2},{\"cardId\":\"sv1-186\",\"quantity\":2},{\"cardId\":\"sv1-187\",\"quantity\":2},{\"cardId\":\"sv1-182\",\"quantity\":1},{\"cardId\":\"sv6-163\",\"quantity\":1},{\"cardId\":\"sv5-140\",\"quantity\":4},{\"cardId\":\"sv5-156\",\"quantity\":3},{\"cardId\":\"sve-15\",\"quantity\":5},{\"cardId\":\"sve-11\",\"quantity\":2}]",
-    "thumbnail": "sv4-124_large.webp"
+    "thumbnail": "sv4-124_large.webp",
+    "player": "Abraham Madruga",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 20,
-    "name": [
-      "charizard",
-      "dusknoir"
-    ],
+    "name": ["charizard", "dusknoir"],
     "variantOf": "Charizard ex",
     "cards": "[{\"cardId\":\"sv3pt5-4\",\"quantity\":4},{\"cardId\":\"sv3pt5-5\",\"quantity\":3},{\"cardId\":\"sv3-125\",\"quantity\":3},{\"cardId\":\"sv8pt5-35\",\"quantity\":4},{\"cardId\":\"sv8pt5-36\",\"quantity\":4},{\"cardId\":\"sv8pt5-37\",\"quantity\":2},{\"cardId\":\"sv4-56\",\"quantity\":1},{\"cardId\":\"sv4-29\",\"quantity\":1},{\"cardId\":\"sv8pt5-4\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv9-155\",\"quantity\":2},{\"cardId\":\"sv1-175\",\"quantity\":1},{\"cardId\":\"sv7-132\",\"quantity\":1},{\"cardId\":\"sv9-146\",\"quantity\":1},{\"cardId\":\"sv2-172\",\"quantity\":1},{\"cardId\":\"sv1-186\",\"quantity\":3},{\"cardId\":\"sv4-160\",\"quantity\":2},{\"cardId\":\"sv5-144\",\"quantity\":2},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv1-191\",\"quantity\":2},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv1-172\",\"quantity\":1},{\"cardId\":\"sv8-185\",\"quantity\":1},{\"cardId\":\"sv4-178\",\"quantity\":2},{\"cardId\":\"sv1-169\",\"quantity\":1},{\"cardId\":\"sve-10\",\"quantity\":6}]",
-    "thumbnail": "sv8pt5-37_large.webp"
+    "thumbnail": "sv8pt5-37_large.webp",
+    "player": "Aidan Mcfarland",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 21,
-    "name": [
-      "charizard",
-      "pidgeot"
-    ],
+    "name": ["charizard", "pidgeot"],
     "variantOf": "Charizard ex",
     "cards": "[{\"cardId\":\"sv3pt5-4\",\"quantity\":3},{\"cardId\":\"sv4pt5-8\",\"quantity\":2},{\"cardId\":\"sv3-125\",\"quantity\":2},{\"cardId\":\"sv3pt5-16\",\"quantity\":2},{\"cardId\":\"sv3pt5-17\",\"quantity\":1},{\"cardId\":\"sv3-164\",\"quantity\":2},{\"cardId\":\"sv8pt5-35\",\"quantity\":2},{\"cardId\":\"sv8pt5-36\",\"quantity\":1},{\"cardId\":\"sv8pt5-37\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv4-29\",\"quantity\":1},{\"cardId\":\"sv6-131\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":3},{\"cardId\":\"sv1-175\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv7-132\",\"quantity\":1},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv1-191\",\"quantity\":3},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv4-160\",\"quantity\":2},{\"cardId\":\"sv2-188\",\"quantity\":2},{\"cardId\":\"sv1-181\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv5-152\",\"quantity\":1},{\"cardId\":\"sv4-178\",\"quantity\":1},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv2-173\",\"quantity\":1},{\"cardId\":\"sv1-169\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":2},{\"cardId\":\"sve-10\",\"quantity\":5},{\"cardId\":\"sv5-161\",\"quantity\":1}]",
-    "thumbnail": "sv3-164_large.webp"
+    "thumbnail": "sv3-164_large.webp",
+    "player": "Frank Luciano",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 22,
-    "name": [
-      "charizard",
-      "noctowl"
-    ],
+    "name": ["charizard", "noctowl"],
     "variantOf": "Charizard ex",
     "cards": "[{\"cardId\":\"sv7-114\",\"quantity\":3},{\"cardId\":\"sv8pt5-77\",\"quantity\":1},{\"cardId\":\"sv7-115\",\"quantity\":4},{\"cardId\":\"sv3pt5-4\",\"quantity\":2},{\"cardId\":\"sv3pt5-5\",\"quantity\":1},{\"cardId\":\"sv3-125\",\"quantity\":2},{\"cardId\":\"sv7-118\",\"quantity\":2},{\"cardId\":\"sv6-64\",\"quantity\":2},{\"cardId\":\"sv3-162\",\"quantity\":1},{\"cardId\":\"sv3pt5-17\",\"quantity\":1},{\"cardId\":\"sv3-164\",\"quantity\":1},{\"cardId\":\"sv3pt5-132\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv4-29\",\"quantity\":1},{\"cardId\":\"sv7-128\",\"quantity\":1},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv9-56\",\"quantity\":1},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv7-133\",\"quantity\":2},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv1-175\",\"quantity\":1},{\"cardId\":\"sv7-132\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv1-191\",\"quantity\":2},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv7-142\",\"quantity\":1},{\"cardId\":\"sv7-131\",\"quantity\":2},{\"cardId\":\"sve-10\",\"quantity\":5},{\"cardId\":\"sv2-190\",\"quantity\":1},{\"cardId\":\"sve-11\",\"quantity\":1},{\"cardId\":\"sve-13\",\"quantity\":1}]",
-    "thumbnail": "sv7-115_large.webp"
+    "thumbnail": "sv7-115_large.webp",
+    "player": "James Field",
+    "tournament": "17th May 2025 - Regional Melbourne"
   },
   {
     "id": 23,
-    "name": [
-      "froslass",
-      "munkidori"
-    ],
+    "name": ["froslass", "munkidori"],
     "variantOf": "Froslass Munkidori",
     "cards": "[{\"cardId\":\"sv6-95\",\"quantity\":4},{\"cardId\":\"sv4-37\",\"quantity\":3},{\"cardId\":\"sv6-53\",\"quantity\":4},{\"cardId\":\"sv8pt5-4\",\"quantity\":3},{\"cardId\":\"sv9-8\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv9-155\",\"quantity\":4},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv4-160\",\"quantity\":4},{\"cardId\":\"sv5-144\",\"quantity\":3},{\"cardId\":\"sv6pt5-61\",\"quantity\":3},{\"cardId\":\"sv1-181\",\"quantity\":2},{\"cardId\":\"sv1-186\",\"quantity\":2},{\"cardId\":\"sv1-196\",\"quantity\":1},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv1-194\",\"quantity\":1},{\"cardId\":\"sv6-165\",\"quantity\":1},{\"cardId\":\"sv2-173\",\"quantity\":2},{\"cardId\":\"sv4-177\",\"quantity\":2},{\"cardId\":\"sv7-137\",\"quantity\":1},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":2},{\"cardId\":\"sve-15\",\"quantity\":5},{\"cardId\":\"sv2-191\",\"quantity\":1}]",
-    "thumbnail": "sv6-95_large.webp"
+    "thumbnail": "sv6-95_large.webp",
+    "player": "Keaton Ash",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 24,
-    "name": [
-      "ceruledge"
-    ],
+    "name": ["ceruledge"],
     "variantOf": "Ceruledge ex",
     "cards": "[{\"cardId\":\"sv8-32\",\"quantity\":2},{\"cardId\":\"sv4-26\",\"quantity\":1},{\"cardId\":\"sv2-39\",\"quantity\":1},{\"cardId\":\"sv8-36\",\"quantity\":3},{\"cardId\":\"sv6pt5-43\",\"quantity\":2},{\"cardId\":\"sv1-142\",\"quantity\":2},{\"cardId\":\"sv2-169\",\"quantity\":2},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-145\",\"quantity\":4},{\"cardId\":\"sv9-155\",\"quantity\":2},{\"cardId\":\"sv2-185\",\"quantity\":1},{\"cardId\":\"sv2-172\",\"quantity\":1},{\"cardId\":\"sv7-132\",\"quantity\":1},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv1-181\",\"quantity\":3},{\"cardId\":\"sv4-163\",\"quantity\":3},{\"cardId\":\"sv6pt5-61\",\"quantity\":3},{\"cardId\":\"sv4-160\",\"quantity\":2},{\"cardId\":\"sv1-182\",\"quantity\":1},{\"cardId\":\"sv8-164\",\"quantity\":1},{\"cardId\":\"sve-10\",\"quantity\":9},{\"cardId\":\"sv2-190\",\"quantity\":4},{\"cardId\":\"sve-15\",\"quantity\":3},{\"cardId\":\"sve-13\",\"quantity\":1},{\"cardId\":\"sve-16\",\"quantity\":1},{\"cardId\":\"sv5-161\",\"quantity\":1}]",
-    "thumbnail": "sv8-36_large.webp"
+    "thumbnail": "sv8-36_large.webp",
+    "player": "Ross Cawthon",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 25,
-    "name": [
-      "blissey"
-    ],
+    "name": ["blissey"],
     "variantOf": "Blissey ex",
     "cards": "[{\"cardId\":\"sv6-95\",\"quantity\":4},{\"cardId\":\"sv6-133\",\"quantity\":3},{\"cardId\":\"sv6-134\",\"quantity\":3},{\"cardId\":\"sv8-27\",\"quantity\":2},{\"cardId\":\"sv8-28\",\"quantity\":2},{\"cardId\":\"sv4-124\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":3},{\"cardId\":\"sv9-155\",\"quantity\":2},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv1-186\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv1-181\",\"quantity\":2},{\"cardId\":\"sv6pt5-61\",\"quantity\":2},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv1-194\",\"quantity\":1},{\"cardId\":\"sv8-185\",\"quantity\":1},{\"cardId\":\"sv4-179\",\"quantity\":2},{\"cardId\":\"sv1-174\",\"quantity\":1},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv3pt5-165\",\"quantity\":1},{\"cardId\":\"sv3-196\",\"quantity\":2},{\"cardId\":\"sve-15\",\"quantity\":7},{\"cardId\":\"sve-10\",\"quantity\":2},{\"cardId\":\"sve-13\",\"quantity\":1}]",
-    "thumbnail": "sv6-134_large.webp"
+    "thumbnail": "sv6-134_large.webp",
+    "player": "Ethan Chen",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 26,
-    "name": [
-      "milotic",
-      "farigiraf"
-    ],
+    "name": ["milotic", "farigiraf"],
     "variantOf": "Milotic ex",
     "cards": "[{\"cardId\":\"sv2-154\",\"quantity\":3},{\"cardId\":\"sv5-108\",\"quantity\":2},{\"cardId\":\"sv8-41\",\"quantity\":3},{\"cardId\":\"sv8-42\",\"quantity\":2},{\"cardId\":\"sv6-95\",\"quantity\":2},{\"cardId\":\"sv6-112\",\"quantity\":2},{\"cardId\":\"sv7-118\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv9-155\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":3},{\"cardId\":\"sv7-133\",\"quantity\":3},{\"cardId\":\"sv2-185\",\"quantity\":2},{\"cardId\":\"sv1-181\",\"quantity\":2},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv6pt5-62\",\"quantity\":1},{\"cardId\":\"sv1-186\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":1},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv4-179\",\"quantity\":2},{\"cardId\":\"sv4-178\",\"quantity\":2},{\"cardId\":\"sv8-169\",\"quantity\":1},{\"cardId\":\"sv3pt5-165\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":2},{\"cardId\":\"sve-15\",\"quantity\":3},{\"cardId\":\"sve-11\",\"quantity\":3},{\"cardId\":\"sve-13\",\"quantity\":3},{\"cardId\":\"sve-14\",\"quantity\":2}]",
-    "thumbnail": "sv5-108_large.webp"
+    "thumbnail": "sv5-108_large.webp",
+    "player": "Jimmy Farrugia",
+    "tournament": "17th May 2025 - Regional Melbourne"
   },
   {
     "id": 27,
-    "name": [
-      "espathra",
-      "froslass"
-    ],
+    "name": ["espathra", "froslass"],
     "variantOf": "Espathra ex",
     "cards": "[{\"cardId\":\"sv4-37\",\"quantity\":3},{\"cardId\":\"sv6-53\",\"quantity\":3},{\"cardId\":\"sv6-95\",\"quantity\":3},{\"cardId\":\"sv8pt5-4\",\"quantity\":3},{\"cardId\":\"sv7-68\",\"quantity\":1},{\"cardId\":\"sv8-94\",\"quantity\":1},{\"cardId\":\"sv4pt5-6\",\"quantity\":2},{\"cardId\":\"sv9-8\",\"quantity\":1},{\"cardId\":\"sv9-155\",\"quantity\":4},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv2-172\",\"quantity\":1},{\"cardId\":\"sv4-160\",\"quantity\":3},{\"cardId\":\"sv5-144\",\"quantity\":3},{\"cardId\":\"sv6pt5-61\",\"quantity\":3},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv1-181\",\"quantity\":2},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv6-165\",\"quantity\":1},{\"cardId\":\"sv1-186\",\"quantity\":1},{\"cardId\":\"sv4-177\",\"quantity\":2},{\"cardId\":\"sv2-173\",\"quantity\":1},{\"cardId\":\"sv7-137\",\"quantity\":1},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":2},{\"cardId\":\"sve-15\",\"quantity\":4},{\"cardId\":\"sve-13\",\"quantity\":2},{\"cardId\":\"sv2-191\",\"quantity\":1}]",
-    "thumbnail": "sv6-53_large.webp"
+    "thumbnail": "sv6-53_large.webp",
+    "player": "Jose Luis Sanchez",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 28,
-    "name": [
-      "zacian crowned",
-      "snorlax"
-    ],
+    "name": ["zacian crowned", "snorlax"],
     "variantOf": "Hop's Zacian",
     "cards": "[{\"cardId\":\"sv4-89\",\"quantity\":3},{\"cardId\":\"sv9-111\",\"quantity\":2},{\"cardId\":\"sv9-138\",\"quantity\":2},{\"cardId\":\"sv9-117\",\"quantity\":2},{\"cardId\":\"sv2-169\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv3pt5-151\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv4-56\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":3},{\"cardId\":\"sv9-155\",\"quantity\":2},{\"cardId\":\"sv8-187\",\"quantity\":2},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv1-194\",\"quantity\":4},{\"cardId\":\"sv4-180\",\"quantity\":2},{\"cardId\":\"sv9-147\",\"quantity\":2},{\"cardId\":\"sv1-186\",\"quantity\":2},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv5-157\",\"quantity\":1},{\"cardId\":\"sv9-148\",\"quantity\":4},{\"cardId\":\"sv5-149\",\"quantity\":2},{\"cardId\":\"sv9-154\",\"quantity\":4},{\"cardId\":\"sv2-190\",\"quantity\":4},{\"cardId\":\"sv5-161\",\"quantity\":2}]",
-    "thumbnail": "sv9-117_large.webp"
+    "thumbnail": "sv9-117_large.webp",
+    "player": "Brooke Wagner",
+    "tournament": "3rd May 2025 - Regional Milwaukee, WI"
   },
   {
     "id": 29,
-    "name": [
-      "slowking"
-    ],
+    "name": ["slowking"],
     "variantOf": "Slowking Seek Inspiration",
     "cards": "[{\"cardId\":\"sv8pt5-18\",\"quantity\":4},{\"cardId\":\"sv7-58\",\"quantity\":3},{\"cardId\":\"sv4-71\",\"quantity\":2},{\"cardId\":\"sv4-72\",\"quantity\":2},{\"cardId\":\"sv6pt5-47\",\"quantity\":2},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv9-56\",\"quantity\":1},{\"cardId\":\"sv2-169\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv8-100\",\"quantity\":1},{\"cardId\":\"sv6-131\",\"quantity\":1},{\"cardId\":\"sv6-105\",\"quantity\":1},{\"cardId\":\"sv8pt5-86\",\"quantity\":1},{\"cardId\":\"sv8pt5-4\",\"quantity\":1},{\"cardId\":\"sv9-155\",\"quantity\":4},{\"cardId\":\"sv5-145\",\"quantity\":3},{\"cardId\":\"sv2-185\",\"quantity\":1},{\"cardId\":\"sv9-146\",\"quantity\":1},{\"cardId\":\"sv6-155\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv5-144\",\"quantity\":3},{\"cardId\":\"sv8pt5-116\",\"quantity\":1},{\"cardId\":\"sv6pt5-54\",\"quantity\":4},{\"cardId\":\"sve-13\",\"quantity\":6},{\"cardId\":\"sv2-190\",\"quantity\":4},{\"cardId\":\"sv2-192\",\"quantity\":2}]",
-    "thumbnail": "sv7-58_large.webp"
+    "thumbnail": "sv7-58_large.webp",
+    "player": "Jordan Quebral",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 30,
-    "name": [
-      "great tusk"
-    ],
+    "name": ["great tusk"],
     "variantOf": "Great Tusk Mill",
     "cards": "[{\"cardId\":\"sv5-97\",\"quantity\":4},{\"cardId\":\"sv2-156\",\"quantity\":3},{\"cardId\":\"sv5-129\",\"quantity\":3},{\"cardId\":\"sv7-118\",\"quantity\":2},{\"cardId\":\"sv2-97\",\"quantity\":1},{\"cardId\":\"sv4-170\",\"quantity\":4},{\"cardId\":\"sv5-147\",\"quantity\":4},{\"cardId\":\"sv6pt5-64\",\"quantity\":1},{\"cardId\":\"sv4-160\",\"quantity\":3},{\"cardId\":\"sv1-181\",\"quantity\":3},{\"cardId\":\"sv4-163\",\"quantity\":3},{\"cardId\":\"sv1-186\",\"quantity\":3},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv1-168\",\"quantity\":2},{\"cardId\":\"sv1-182\",\"quantity\":2},{\"cardId\":\"sv2-188\",\"quantity\":2},{\"cardId\":\"sv9-156\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv6-150\",\"quantity\":3},{\"cardId\":\"sv2-171\",\"quantity\":3},{\"cardId\":\"sv6pt5-60\",\"quantity\":1},{\"cardId\":\"sve-14\",\"quantity\":7},{\"cardId\":\"sv2-190\",\"quantity\":2}]",
-    "thumbnail": "sv5-96_large.webp"
+    "thumbnail": "sv5-96_large.webp",
+    "player": "Camilo Nilo",
+    "tournament": "17th May 2025 - Regional Santiago"
   },
   {
     "id": 31,
-    "name": [
-      "toedscruel",
-      "ogerpon"
-    ],
+    "name": ["toedscruel", "ogerpon"],
     "variantOf": "Toedscruel Ogerpon",
     "cards": "[{\"cardId\":\"sv4-16\",\"quantity\":4},{\"cardId\":\"sv3-22\",\"quantity\":3},{\"cardId\":\"sv4-17\",\"quantity\":1},{\"cardId\":\"sv6-25\",\"quantity\":4},{\"cardId\":\"sv5-25\",\"quantity\":1},{\"cardId\":\"sv2-169\",\"quantity\":1},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv3pt5-151\",\"quantity\":1},{\"cardId\":\"sv8pt5-4\",\"quantity\":1},{\"cardId\":\"sv9-155\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv6-143\",\"quantity\":4},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv1-173\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv2-188\",\"quantity\":2},{\"cardId\":\"sv5-157\",\"quantity\":1},{\"cardId\":\"sv7-131\",\"quantity\":4},{\"cardId\":\"sve-9\",\"quantity\":12}]",
-    "thumbnail": "sv6-25_large.webp"
+    "thumbnail": "sv6-25_large.webp",
+    "player": "Ray Chen",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 32,
-    "name": [
-      "greninja",
-      "blaziken"
-    ],
+    "name": ["greninja", "blaziken"],
     "variantOf": "Greninja ex",
     "cards": "[{\"cardId\":\"sv9-22\",\"quantity\":3},{\"cardId\":\"sv9-23\",\"quantity\":2},{\"cardId\":\"sv9-24\",\"quantity\":2},{\"cardId\":\"sv3-56\",\"quantity\":2},{\"cardId\":\"sv6-57\",\"quantity\":1},{\"cardId\":\"sv6-106\",\"quantity\":2},{\"cardId\":\"sv9-97\",\"quantity\":2},{\"cardId\":\"sv9-98\",\"quantity\":2},{\"cardId\":\"sv5-39\",\"quantity\":1},{\"cardId\":\"sv5-41\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv9-116\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv9-146\",\"quantity\":2},{\"cardId\":\"sv5-145\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv1-191\",\"quantity\":3},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv8-185\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":1},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv1-194\",\"quantity\":1},{\"cardId\":\"sv4-178\",\"quantity\":2},{\"cardId\":\"sv2-171\",\"quantity\":1},{\"cardId\":\"sv6-153\",\"quantity\":1},{\"cardId\":\"sve-15\",\"quantity\":3},{\"cardId\":\"sve-11\",\"quantity\":3},{\"cardId\":\"sve-10\",\"quantity\":2},{\"cardId\":\"sve-13\",\"quantity\":1}]",
-    "thumbnail": "sv9-24_large.webp"
+    "thumbnail": "sv9-24_large.webp",
+    "player": "Jonas Oertel",
+    "tournament": "17th May 2025 - Special Event Utrecht"
   },
   {
     "id": 33,
-    "name": [
-      "hydreigon"
-    ],
+    "name": ["hydreigon"],
     "variantOf": "Hydreigon ex",
     "cards": "[{\"cardId\":\"sv8-117\",\"quantity\":3},{\"cardId\":\"sv8-118\",\"quantity\":2},{\"cardId\":\"sv8-119\",\"quantity\":2},{\"cardId\":\"sv3-162\",\"quantity\":1},{\"cardId\":\"sv3pt5-16\",\"quantity\":1},{\"cardId\":\"sv3pt5-17\",\"quantity\":1},{\"cardId\":\"sv3-164\",\"quantity\":2},{\"cardId\":\"sv9-97\",\"quantity\":2},{\"cardId\":\"sv9-98\",\"quantity\":2},{\"cardId\":\"sv6pt5-39\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv9-56\",\"quantity\":1},{\"cardId\":\"sv8pt5-4\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv1-175\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":1},{\"cardId\":\"sv7-133\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv4-160\",\"quantity\":2},{\"cardId\":\"sv1-191\",\"quantity\":2},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv8-169\",\"quantity\":2},{\"cardId\":\"sv4-178\",\"quantity\":1},{\"cardId\":\"sv5-159\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":1},{\"cardId\":\"sve-13\",\"quantity\":3},{\"cardId\":\"sve-15\",\"quantity\":3},{\"cardId\":\"sve-16\",\"quantity\":1},{\"cardId\":\"sv5-162\",\"quantity\":1}]",
-    "thumbnail": "sv8-119_large.webp"
+    "thumbnail": "sv8-119_large.webp",
+    "player": "Nate Newton",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 34,
-    "name": [
-      "okidogi"
-    ],
+    "name": ["okidogi"],
     "variantOf": "Okidogi Adrena-Power",
     "cards": "[{\"cardId\":\"sv2-156\",\"quantity\":3},{\"cardId\":\"sv5-128\",\"quantity\":1},{\"cardId\":\"sv5-129\",\"quantity\":3},{\"cardId\":\"sv9-121\",\"quantity\":1},{\"cardId\":\"sv6-111\",\"quantity\":3},{\"cardId\":\"sv3pt5-123\",\"quantity\":2},{\"cardId\":\"sv3-141\",\"quantity\":2},{\"cardId\":\"sv6-95\",\"quantity\":2},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv4-56\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv7-133\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":3},{\"cardId\":\"sv9-155\",\"quantity\":2},{\"cardId\":\"sv6pt5-57\",\"quantity\":1},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv2-188\",\"quantity\":2},{\"cardId\":\"sv5-144\",\"quantity\":1},{\"cardId\":\"sv2-173\",\"quantity\":2},{\"cardId\":\"sv2-171\",\"quantity\":3},{\"cardId\":\"sve-14\",\"quantity\":5},{\"cardId\":\"sv2-191\",\"quantity\":4},{\"cardId\":\"sve-15\",\"quantity\":2},{\"cardId\":\"sve-16\",\"quantity\":1},{\"cardId\":\"sv6-167\",\"quantity\":1}]",
-    "thumbnail": "sv6-111_large.webp"
+    "thumbnail": "sv6-111_large.webp",
+    "player": "Matthew Houtput",
+    "tournament": "17th May 2025 - Special Event Utrecht"
   },
   {
     "id": 35,
-    "name": [
-      "iron hands",
-      "iron crown"
-    ],
+    "name": ["iron hands", "iron crown"],
     "variantOf": "Future",
     "cards": "[{\"cardId\":\"sv5-81\",\"quantity\":4},{\"cardId\":\"sv4-70\",\"quantity\":3},{\"cardId\":\"sv5-121\",\"quantity\":2},{\"cardId\":\"sv6-77\",\"quantity\":1},{\"cardId\":\"sv4-56\",\"quantity\":1},{\"cardId\":\"sv3pt5-151\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":2},{\"cardId\":\"sv9-155\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv9-145\",\"quantity\":1},{\"cardId\":\"sv4-180\",\"quantity\":4},{\"cardId\":\"sv1-170\",\"quantity\":4},{\"cardId\":\"sv1-186\",\"quantity\":4},{\"cardId\":\"sv5-157\",\"quantity\":1},{\"cardId\":\"sv1-194\",\"quantity\":1},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv1-182\",\"quantity\":1},{\"cardId\":\"sv1-181\",\"quantity\":1},{\"cardId\":\"sv5-149\",\"quantity\":3},{\"cardId\":\"sv5-151\",\"quantity\":1},{\"cardId\":\"sv3-196\",\"quantity\":2},{\"cardId\":\"sve-12\",\"quantity\":11},{\"cardId\":\"sve-13\",\"quantity\":1}]",
-    "thumbnail": "sv5-81_large.webp"
+    "thumbnail": "sv5-81_large.webp",
+    "player": "Chad Beeton",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   },
   {
     "id": 36,
-    "name": [
-      "gouging fire"
-    ],
+    "name": ["gouging fire"],
     "variantOf": "Gouging Fire ex",
     "cards": "[{\"cardId\":\"sv5-38\",\"quantity\":2},{\"cardId\":\"MISSINGSET-SVP-149\",\"quantity\":2},{\"cardId\":\"sv4-123\",\"quantity\":2},{\"cardId\":\"sv2-169\",\"quantity\":2},{\"cardId\":\"sv4-124\",\"quantity\":1},{\"cardId\":\"sv4-56\",\"quantity\":1},{\"cardId\":\"sv6-95\",\"quantity\":1},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6pt5-39\",\"quantity\":1},{\"cardId\":\"sv4-170\",\"quantity\":4},{\"cardId\":\"sv6-145\",\"quantity\":4},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv1-181\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv4-163\",\"quantity\":3},{\"cardId\":\"sv1-173\",\"quantity\":3},{\"cardId\":\"sv1-186\",\"quantity\":2},{\"cardId\":\"sv6pt5-61\",\"quantity\":2},{\"cardId\":\"sv6-163\",\"quantity\":1},{\"cardId\":\"sv1-182\",\"quantity\":1},{\"cardId\":\"sv5-140\",\"quantity\":4},{\"cardId\":\"sv8pt5-95\",\"quantity\":1},{\"cardId\":\"sv5-156\",\"quantity\":3},{\"cardId\":\"sve-10\",\"quantity\":5},{\"cardId\":\"sve-15\",\"quantity\":3}]",
-    "thumbnail": "sv5-38_large.webp"
+    "thumbnail": "sv5-38_large.webp",
+    "player": "Ming Weng",
+    "tournament": "3rd May 2025 - Regional Milwaukee, WI"
   },
   {
     "id": 37,
-    "name": [
-      "slaking"
-    ],
+    "name": ["slaking"],
     "variantOf": "Slaking ex",
     "cards": "[{\"cardId\":\"sv2-160\",\"quantity\":3},{\"cardId\":\"sv2-161\",\"quantity\":3},{\"cardId\":\"sv8-147\",\"quantity\":2},{\"cardId\":\"sv3-162\",\"quantity\":2},{\"cardId\":\"sv3pt5-17\",\"quantity\":2},{\"cardId\":\"sv3-164\",\"quantity\":2},{\"cardId\":\"sv7-118\",\"quantity\":2},{\"cardId\":\"sv8pt5-35\",\"quantity\":1},{\"cardId\":\"sv8pt5-36\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-132\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv6pt5-57\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv3-186\",\"quantity\":2},{\"cardId\":\"sv1-175\",\"quantity\":1},{\"cardId\":\"sv9-145\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv1-191\",\"quantity\":1},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv1-182\",\"quantity\":1},{\"cardId\":\"sv8-169\",\"quantity\":2},{\"cardId\":\"sv4-178\",\"quantity\":2},{\"cardId\":\"sv7-136\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":1},{\"cardId\":\"sv3-196\",\"quantity\":1},{\"cardId\":\"sv6-166\",\"quantity\":4},{\"cardId\":\"sv2-190\",\"quantity\":4},{\"cardId\":\"sv5-161\",\"quantity\":1}]",
-    "thumbnail": "sv8-147_large.webp"
+    "thumbnail": "sv8-147_large.webp",
+    "player": "Fábio Gomes",
+    "tournament": "17th May 2025 - Special Event Utrecht"
   },
   {
     "id": 38,
-    "name": [
-      "slaking",
-      "vileplume"
-    ],
+    "name": ["slaking", "vileplume"],
     "variantOf": "Slaking ex",
     "cards": "[{\"cardId\":\"MISSINGSET-CEC-2\",\"quantity\":3},{\"cardId\":\"MISSINGSET-UNB-7\",\"quantity\":2},{\"cardId\":\"MISSINGSET-AOR-3\",\"quantity\":2},{\"cardId\":\"sv2-160\",\"quantity\":3},{\"cardId\":\"MISSINGSET-EVS-130\",\"quantity\":3},{\"cardId\":\"sv8-147\",\"quantity\":2},{\"cardId\":\"MISSINGSET-PRC-121\",\"quantity\":3},{\"cardId\":\"MISSINGSET-FLF-75\",\"quantity\":2},{\"cardId\":\"MISSINGSET-TEU-123\",\"quantity\":2},{\"cardId\":\"sv3-164\",\"quantity\":2},{\"cardId\":\"sv7-118\",\"quantity\":1},{\"cardId\":\"MISSINGSET-CEC-193\",\"quantity\":4},{\"cardId\":\"MISSINGSET-STS-104\",\"quantity\":2},{\"cardId\":\"MISSINGSET-BUS-115\",\"quantity\":2},{\"cardId\":\"MISSINGSET-LOT-173\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":1},{\"cardId\":\"MISSINGSET-XYP-177\",\"quantity\":1},{\"cardId\":\"MISSINGSET-CEC-206\",\"quantity\":4},{\"cardId\":\"sv5-144\",\"quantity\":3},{\"cardId\":\"MISSINGSET-UNB-186\",\"quantity\":2},{\"cardId\":\"sv4-178\",\"quantity\":2},{\"cardId\":\"MISSINGSET-BKT-137\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":2},{\"cardId\":\"sv7-136\",\"quantity\":1},{\"cardId\":\"MISSINGSET-CRE-148\",\"quantity\":1},{\"cardId\":\"MISSINGSET-SUM-136\",\"quantity\":4},{\"cardId\":\"sv2-190\",\"quantity\":2},{\"cardId\":\"MISSINGSET-RCL-171\",\"quantity\":2}]",
-    "thumbnail": ""
+    "thumbnail": "",
+    "player": "Takuya Baba",
+    "tournament": "4th May 2025 - Champions League Aichi Expanded"
   },
   {
     "id": 39,
-    "name": [
-      "tyranitar"
-    ],
+    "name": ["tyranitar"],
     "variantOf": "Tyranitar Daunting Gaze",
     "cards": "[{\"cardId\":\"sv9-80\",\"quantity\":4},{\"cardId\":\"sv8pt5-48\",\"quantity\":2},{\"cardId\":\"sv9-95\",\"quantity\":3},{\"cardId\":\"sv6-128\",\"quantity\":3},{\"cardId\":\"sv6-129\",\"quantity\":3},{\"cardId\":\"sv8pt5-4\",\"quantity\":2},{\"cardId\":\"sv6-95\",\"quantity\":2},{\"cardId\":\"sv3-80\",\"quantity\":1},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv9-155\",\"quantity\":4},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv3-186\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv1-191\",\"quantity\":3},{\"cardId\":\"sv2-188\",\"quantity\":2},{\"cardId\":\"sv1-194\",\"quantity\":1},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv1-181\",\"quantity\":1},{\"cardId\":\"sv4-166\",\"quantity\":2},{\"cardId\":\"sv3-192\",\"quantity\":1},{\"cardId\":\"sv2-175\",\"quantity\":1},{\"cardId\":\"sv6pt5-60\",\"quantity\":1},{\"cardId\":\"sve-15\",\"quantity\":5},{\"cardId\":\"sv2-192\",\"quantity\":4}]",
-    "thumbnail": "sv2-135_large.webp"
+    "thumbnail": "sv2-135_large.webp",
+    "player": "Tibor Baranyay",
+    "tournament": "17th May 2025 - Regional Melbourne"
   },
   {
     "id": 40,
-    "name": [
-      "feraligatr"
-    ],
+    "name": ["feraligatr"],
     "variantOf": "Feraligatr Giant Wave",
     "cards": "[{\"cardId\":\"sv5-39\",\"quantity\":3},{\"cardId\":\"sv5-40\",\"quantity\":3},{\"cardId\":\"sv5-41\",\"quantity\":3},{\"cardId\":\"sv6-95\",\"quantity\":3},{\"cardId\":\"sv2-97\",\"quantity\":1},{\"cardId\":\"sv8pt5-4\",\"quantity\":1},{\"cardId\":\"sv5-84\",\"quantity\":1},{\"cardId\":\"sv6pt5-40\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv9-155\",\"quantity\":2},{\"cardId\":\"sv6-155\",\"quantity\":2},{\"cardId\":\"sv7-133\",\"quantity\":1},{\"cardId\":\"sv1-186\",\"quantity\":4},{\"cardId\":\"sv4-160\",\"quantity\":3},{\"cardId\":\"sv6pt5-61\",\"quantity\":2},{\"cardId\":\"sv8-185\",\"quantity\":1},{\"cardId\":\"sv9-156\",\"quantity\":1},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv5-144\",\"quantity\":1},{\"cardId\":\"sv1-196\",\"quantity\":1},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv5-159\",\"quantity\":2},{\"cardId\":\"sv4-178\",\"quantity\":2},{\"cardId\":\"sv4-166\",\"quantity\":1},{\"cardId\":\"sv4-177\",\"quantity\":1},{\"cardId\":\"sv2-171\",\"quantity\":2},{\"cardId\":\"sve-15\",\"quantity\":4},{\"cardId\":\"sve-11\",\"quantity\":4}]",
-    "thumbnail": "sv5-41_large.webp"
+    "thumbnail": "sv5-41_large.webp",
+    "player": "Kia Yang",
+    "tournament": "3rd May 2025 - Regional Milwaukee, WI"
   },
   {
     "id": 41,
-    "name": [
-      "mamoswine"
-    ],
+    "name": ["mamoswine"],
     "variantOf": "Mamoswine ex",
     "cards": "[{\"cardId\":\"sv9-77\",\"quantity\":4},{\"cardId\":\"sv9-78\",\"quantity\":2},{\"cardId\":\"sv9-79\",\"quantity\":3},{\"cardId\":\"sv3pt5-16\",\"quantity\":3},{\"cardId\":\"sv3pt5-17\",\"quantity\":2},{\"cardId\":\"sv3-164\",\"quantity\":2},{\"cardId\":\"sv9-22\",\"quantity\":2},{\"cardId\":\"sv9-23\",\"quantity\":1},{\"cardId\":\"sv9-24\",\"quantity\":2},{\"cardId\":\"sv2-71\",\"quantity\":2},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-112\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv1-175\",\"quantity\":2},{\"cardId\":\"sv4-171\",\"quantity\":1},{\"cardId\":\"sv1-191\",\"quantity\":3},{\"cardId\":\"sv5-144\",\"quantity\":2},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv4-163\",\"quantity\":2},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv2-188\",\"quantity\":1},{\"cardId\":\"sv8-185\",\"quantity\":1},{\"cardId\":\"sv4-178\",\"quantity\":2},{\"cardId\":\"sv3pt5-155\",\"quantity\":1},{\"cardId\":\"sv1-169\",\"quantity\":1},{\"cardId\":\"sve-14\",\"quantity\":5},{\"cardId\":\"sve-10\",\"quantity\":1},{\"cardId\":\"sv2-192\",\"quantity\":1}]",
-    "thumbnail": "sv9-79_large.webp"
+    "thumbnail": "sv9-79_large.webp",
+    "player": "Michael Byrnes",
+    "tournament": "3rd May 2025 - Regional Milwaukee, WI"
   },
   {
     "id": 42,
-    "name": [
-      "clefairy"
-    ],
+    "name": ["clefairy"],
     "variantOf": "Lillie's Clefairy ex",
     "cards": "[{\"cardId\":\"sv9-56\",\"quantity\":4},{\"cardId\":\"sv6-25\",\"quantity\":3},{\"cardId\":\"sv7-114\",\"quantity\":2},{\"cardId\":\"sv7-115\",\"quantity\":2},{\"cardId\":\"sv3-81\",\"quantity\":1},{\"cardId\":\"sv6-79\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv3pt5-151\",\"quantity\":1},{\"cardId\":\"sv2-169\",\"quantity\":1},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":3},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv1-173\",\"quantity\":4},{\"cardId\":\"sv1-181\",\"quantity\":3},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv4-163\",\"quantity\":2},{\"cardId\":\"sv6pt5-61\",\"quantity\":2},{\"cardId\":\"sv8-185\",\"quantity\":1},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv9-151\",\"quantity\":4},{\"cardId\":\"sv7-131\",\"quantity\":3},{\"cardId\":\"sve-9\",\"quantity\":6},{\"cardId\":\"sve-13\",\"quantity\":5}]",
-    "thumbnail": "sv9-56_large.webp"
+    "thumbnail": "sv9-56_large.webp",
+    "player": "Sergio Martin Sanchez Betancourt",
+    "tournament": "19th April 2025 - Regional Monterrey"
   },
   {
     "id": 43,
-    "name": [
-      "pidgeot"
-    ],
+    "name": ["pidgeot"],
     "variantOf": "Pidgeot Control",
     "cards": "[{\"cardId\":\"sv3-162\",\"quantity\":2},{\"cardId\":\"sv3pt5-17\",\"quantity\":1},{\"cardId\":\"sv3-164\",\"quantity\":2},{\"cardId\":\"sv4-102\",\"quantity\":2},{\"cardId\":\"sv8-148\",\"quantity\":1},{\"cardId\":\"sv4-140\",\"quantity\":1},{\"cardId\":\"sv8-41\",\"quantity\":1},{\"cardId\":\"sv6-50\",\"quantity\":1},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6pt5-40\",\"quantity\":1},{\"cardId\":\"sv8pt5-4\",\"quantity\":1},{\"cardId\":\"sv8-76\",\"quantity\":1},{\"cardId\":\"sv3-80\",\"quantity\":1},{\"cardId\":\"sv8-137\",\"quantity\":1},{\"cardId\":\"sv2-97\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv9-146\",\"quantity\":3},{\"cardId\":\"sv1-183\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv2-185\",\"quantity\":1},{\"cardId\":\"sv6pt5-64\",\"quantity\":1},{\"cardId\":\"sv5-146\",\"quantity\":1},{\"cardId\":\"sv3pt5-160\",\"quantity\":1},{\"cardId\":\"sv3pt5-161\",\"quantity\":1},{\"cardId\":\"sv6-155\",\"quantity\":1},{\"cardId\":\"sv1-196\",\"quantity\":2},{\"cardId\":\"sv6-142\",\"quantity\":2},{\"cardId\":\"sv1-191\",\"quantity\":2},{\"cardId\":\"sv4-160\",\"quantity\":2},{\"cardId\":\"sv1-182\",\"quantity\":2},{\"cardId\":\"sv8-185\",\"quantity\":1},{\"cardId\":\"sv9-156\",\"quantity\":1},{\"cardId\":\"sv6pt5-61\",\"quantity\":1},{\"cardId\":\"sv1-181\",\"quantity\":1},{\"cardId\":\"sv4-162\",\"quantity\":3},{\"cardId\":\"sv4-166\",\"quantity\":1},{\"cardId\":\"sv2-175\",\"quantity\":1},{\"cardId\":\"sve-14\",\"quantity\":2},{\"cardId\":\"sv5-161\",\"quantity\":2},{\"cardId\":\"sve-10\",\"quantity\":1},{\"cardId\":\"sv2-191\",\"quantity\":1}]",
-    "thumbnail": "sv3pt5-18_large.webp"
+    "thumbnail": "sv3pt5-18_large.webp",
+    "player": "Max Theeuwen",
+    "tournament": "17th May 2025 - Special Event Utrecht"
   },
   {
     "id": 44,
-    "name": [
-      "copperajah"
-    ],
+    "name": ["copperajah"],
     "variantOf": "Copperajah ex",
     "cards": "[{\"cardId\":\"sv6pt5-41\",\"quantity\":4},{\"cardId\":\"sv2-150\",\"quantity\":3},{\"cardId\":\"sv6-95\",\"quantity\":4},{\"cardId\":\"sv7-106\",\"quantity\":1},{\"cardId\":\"sv8-130\",\"quantity\":1},{\"cardId\":\"sv2-169\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv9-155\",\"quantity\":3},{\"cardId\":\"sv2-185\",\"quantity\":2},{\"cardId\":\"sv2-172\",\"quantity\":2},{\"cardId\":\"sv7-133\",\"quantity\":1},{\"cardId\":\"sv1-196\",\"quantity\":4},{\"cardId\":\"sv1-173\",\"quantity\":4},{\"cardId\":\"sv1-186\",\"quantity\":4},{\"cardId\":\"sv6pt5-61\",\"quantity\":3},{\"cardId\":\"sv4-163\",\"quantity\":1},{\"cardId\":\"sv8-185\",\"quantity\":1},{\"cardId\":\"sv4-179\",\"quantity\":2},{\"cardId\":\"sv5-151\",\"quantity\":2},{\"cardId\":\"sve-16\",\"quantity\":7},{\"cardId\":\"sve-15\",\"quantity\":4},{\"cardId\":\"sve-13\",\"quantity\":1}]",
-    "thumbnail": "sv2-150_large.webp"
+    "thumbnail": "sv2-150_large.webp",
+    "player": "Niccolo De Giorgi",
+    "tournament": "26th April 2025 - Special Event Sevilla"
   },
   {
     "id": 45,
-    "name": [
-      "magmortar",
-      "budew"
-    ],
+    "name": ["magmortar", "budew"],
     "variantOf": "Magmortar Magma Surge",
     "cards": "[{\"cardId\":\"sv3pt5-126\",\"quantity\":4},{\"cardId\":\"sv9-21\",\"quantity\":4},{\"cardId\":\"sv8pt5-4\",\"quantity\":3},{\"cardId\":\"sv8-76\",\"quantity\":2},{\"cardId\":\"sv9-31\",\"quantity\":2},{\"cardId\":\"sv6pt5-38\",\"quantity\":1},{\"cardId\":\"sv6-141\",\"quantity\":1},{\"cardId\":\"sv3-186\",\"quantity\":4},{\"cardId\":\"sv2-185\",\"quantity\":4},{\"cardId\":\"sv2-172\",\"quantity\":3},{\"cardId\":\"sv8-187\",\"quantity\":2},{\"cardId\":\"sv9-155\",\"quantity\":2},{\"cardId\":\"sv1-183\",\"quantity\":1},{\"cardId\":\"sv1-194\",\"quantity\":4},{\"cardId\":\"sv1-196\",\"quantity\":3},{\"cardId\":\"sv6pt5-61\",\"quantity\":3},{\"cardId\":\"sv1-181\",\"quantity\":2},{\"cardId\":\"sv4-160\",\"quantity\":1},{\"cardId\":\"sv8-185\",\"quantity\":1},{\"cardId\":\"sv2-173\",\"quantity\":3},{\"cardId\":\"sv1-169\",\"quantity\":2},{\"cardId\":\"sv4-178\",\"quantity\":1},{\"cardId\":\"sv2-190\",\"quantity\":4},{\"cardId\":\"sv2-192\",\"quantity\":3}]",
-    "thumbnail": "sv8pt5-4_large.webp"
+    "thumbnail": "sv8pt5-4_large.webp",
+    "player": "Daniel Dempster",
+    "tournament": "24th May 2025 - Regional Portland, OR"
   }
 ]
