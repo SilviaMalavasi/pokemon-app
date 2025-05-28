@@ -3,7 +3,7 @@ import * as SQLite from "expo-sqlite";
 const LIMITLESS_DATABASE_NAME = "limitlessDecks.db";
 
 // ----> INCREMENT THIS WHEN JSON CHANGES <----
-const LIMITLESS_DATABASE_VERSION = 2; // Increment this to force migration
+const LIMITLESS_DATABASE_VERSION = 4; // Incremented due to schema change
 
 // Import the JSON data file
 const limitlessDecksData: Array<{
@@ -11,7 +11,10 @@ const limitlessDecksData: Array<{
   name: string;
   variantOf: string | null;
   cards: string;
-}> = require("@/assets/database/LimitlessDecks.json");
+  thumbnail?: string;
+  player?: string;
+  tournament?: string;
+}> = require("@/assets/database/limitlessDecks.json");
 
 const BATCH_SIZE = 1000;
 
@@ -37,7 +40,7 @@ async function populateLimitlessDecksFromJSON(db: SQLite.SQLiteDatabase) {
   await db.execAsync("DELETE FROM sqlite_sequence WHERE name = 'limitlessDecks';");
   // Insert new data
   const insertStmt = await db.prepareAsync(
-    "INSERT INTO limitlessDecks (id, name, variantOf, cards) VALUES (?, ?, ?, ?)"
+    "INSERT INTO limitlessDecks (id, name, variantOf, cards, thumbnail, player, tournament) VALUES (?, ?, ?, ?, ?, ?, ?)"
   );
   try {
     await processBatch(
@@ -45,7 +48,15 @@ async function populateLimitlessDecksFromJSON(db: SQLite.SQLiteDatabase) {
       limitlessDecksData,
       async (batch) => {
         for (const item of batch) {
-          await insertStmt.executeAsync([item.id, item.name, item.variantOf ?? null, item.cards]);
+          await insertStmt.executeAsync([
+            item.id,
+            item.name,
+            item.variantOf ?? null,
+            item.cards,
+            item.thumbnail ?? null,
+            item.player ?? null,
+            item.tournament ?? null,
+          ]);
         }
       },
       BATCH_SIZE,
@@ -71,13 +82,25 @@ export async function migrateLimitlessDbIfNeeded(db: SQLite.SQLiteDatabase) {
   if (currentDbVersion >= LIMITLESS_DATABASE_VERSION) {
     return;
   }
-  // Ensure schema
+  // Ensure schema (create table if not exists)
   await db.execAsync(`CREATE TABLE IF NOT EXISTS limitlessDecks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     variantOf TEXT,
     cards TEXT NOT NULL
   );`);
+  // --- Add missing columns if needed ---
+  const columns = await db.getAllAsync<{ name: string }>("PRAGMA table_info(limitlessDecks)");
+  const colNames = columns.map((c) => c.name);
+  if (!colNames.includes("thumbnail")) {
+    await db.execAsync("ALTER TABLE limitlessDecks ADD COLUMN thumbnail TEXT;");
+  }
+  if (!colNames.includes("player")) {
+    await db.execAsync("ALTER TABLE limitlessDecks ADD COLUMN player TEXT;");
+  }
+  if (!colNames.includes("tournament")) {
+    await db.execAsync("ALTER TABLE limitlessDecks ADD COLUMN tournament TEXT;");
+  }
   // Populate from JSON if version is outdated
   await populateLimitlessDecksFromJSON(db);
   // Update version
@@ -91,9 +114,14 @@ export async function getLimitlessDecks(db: SQLite.SQLiteDatabase): Promise<
     name: string;
     variantOf: string | null;
     cards: string;
+    thumbnail?: string;
+    player?: string;
+    tournament?: string;
   }[]
 > {
-  return db.getAllAsync("SELECT id, name, variantOf, cards FROM limitlessDecks ORDER BY id ASC");
+  return db.getAllAsync(
+    "SELECT id, name, variantOf, cards, thumbnail, player, tournament FROM limitlessDecks ORDER BY id ASC"
+  );
 }
 
 // Read a single deck by id
@@ -106,12 +134,16 @@ export async function getLimitlessDeckById(
       name: string;
       variantOf: string | null;
       cards: string;
+      thumbnail?: string;
+      player?: string;
+      tournament?: string;
     }
   | undefined
 > {
-  const result = await db.getFirstAsync<any>("SELECT id, name, variantOf, cards FROM limitlessDecks WHERE id = ?", [
-    id,
-  ]);
+  const result = await db.getFirstAsync<any>(
+    "SELECT id, name, variantOf, cards, thumbnail, player, tournament FROM limitlessDecks WHERE id = ?",
+    [id]
+  );
   if (!result || typeof result.id !== "number" || typeof result.name !== "string" || typeof result.cards !== "string") {
     return undefined;
   }
@@ -120,5 +152,8 @@ export async function getLimitlessDeckById(
     name: result.name,
     variantOf: result.variantOf ?? null,
     cards: result.cards,
+    thumbnail: result.thumbnail ?? undefined,
+    player: result.player ?? undefined,
+    tournament: result.tournament ?? undefined,
   };
 }

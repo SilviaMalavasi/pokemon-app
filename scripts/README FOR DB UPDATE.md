@@ -27,12 +27,12 @@
 
 1.  **Update Json Source:**
 
-    - Run `node scripts/limitlessScraper.js` to update LimitlessDecks.json (scripts/db) and deckLibraryMapping.ts (in
+    - Run `node scripts/limitlessScraper.js` to update limitlessDecks.json (scripts/db) and deckLibraryMapping.ts (in
       helpers).
 
 2.  **Update the Json '/assets/databse':**
 
-    - Copy LimitlessDecks.json in 'assets/database'.
+    - Copy limitlessDecks.json in 'assets/database'.
 
 3.  **Manually Update the deck/thumbnail map:**
 

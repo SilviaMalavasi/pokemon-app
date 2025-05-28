@@ -135,7 +135,7 @@ async function scrapeAllDeckLinks(listUrl) {
 }
 
 // --- DB INSERT ---
-function saveDeckToJson(deck, outPath = "db/LimitlessDecks.json", reset = false) {
+function saveDeckToJson(deck, outPath = "db/limitlessDecks.json", reset = false) {
   const file = path.join(__dirname, outPath);
   let arr = [];
   // If reset is true, always start with an empty array
@@ -238,10 +238,10 @@ function updateDeckLibraryMappingFromJson(jsonPath, mappingPath) {
 
 // --- AUTO-ASSIGN THUMBNAILS TO DECKS ---
 function autoAssignThumbnailsToDecks() {
-  const decksPath = path.join(__dirname, "db", "LimitlessDecks.json");
+  const decksPath = path.join(__dirname, "db", "limitlessDecks.json");
   const cardsPath = path.join(__dirname, "..", "assets", "database", "Card.json");
   if (!fs.existsSync(decksPath) || !fs.existsSync(cardsPath)) {
-    console.error("LimitlessDecks.json or Card.json not found.");
+    console.error("limitlessDecks.json or Card.json not found.");
     return;
   }
   const decks = JSON.parse(fs.readFileSync(decksPath, "utf-8"));
@@ -311,6 +311,21 @@ function autoAssignThumbnailsToDecks() {
             }
           }
         }
+        // --- NEW: Fallback, match all words in any order ---
+        if (!foundCard) {
+          const mainWords = mainName.toLowerCase().split(/\s+/).filter(Boolean);
+          for (const cardEntry of deckCards) {
+            if (!cardEntry.cardId) continue;
+            const cardData = cards.find((c) => c.cardId === cardEntry.cardId);
+            if (cardData && typeof cardData.name === "string") {
+              const cardNameNorm = cardData.name.toLowerCase().replace(/[^a-z0-9 ]/g, "");
+              if (mainWords.every((w) => cardNameNorm.includes(w))) {
+                foundCard = cardData;
+                break;
+              }
+            }
+          }
+        }
         if (foundCard && foundCard.cardId) {
           deck.thumbnail = `${foundCard.cardId}_large.webp`;
           updated = true;
@@ -320,7 +335,7 @@ function autoAssignThumbnailsToDecks() {
   }
   if (updated) {
     fs.writeFileSync(decksPath, JSON.stringify(decks, null, 2), "utf-8");
-    console.log("Auto-assigned thumbnails for qualifying decks in LimitlessDecks.json");
+    console.log("Auto-assigned thumbnails for qualifying decks in limitlessDecks.json");
   } else {
     console.log("No qualifying decks found for thumbnail auto-assignment.");
   }
@@ -402,9 +417,8 @@ async function main() {
   const allDecks = await scrapeAllDeckLinks(listUrl);
   console.log(`Found ${allDecks.length} unique deck links. Scraping...`);
   // Always start with a fresh file
-  fs.writeFileSync(path.join(__dirname, "db", "LimitlessDecks.json"), "[]", "utf-8");
+  fs.writeFileSync(path.join(__dirname, "db", "limitlessDecks.json"), "[]", "utf-8");
   let idCounter = 1;
-  const globalSeen = new Set(); // Track unique name+variantOf globally
   // Collect pending decks for later processing
   const pendingDecks = [];
   // After all parent pages, process pendingDecks with async/await
@@ -450,13 +464,7 @@ async function main() {
           // --- NEW: Tournament info (full text from last header) ---
           const tournament = currentTournamentText || null;
           // Only add if tournamentDate is valid and >= MIN_TOURNAMENT_DATE
-          if (
-            name.length &&
-            !globalSeen.has(key) &&
-            listLink &&
-            currentTournamentDate &&
-            currentTournamentDate >= MIN_TOURNAMENT_DATE
-          ) {
+          if (name.length && listLink && currentTournamentDate && currentTournamentDate >= MIN_TOURNAMENT_DATE) {
             pendingDecks.push({
               name,
               variant: variantOf,
@@ -477,46 +485,43 @@ async function main() {
   }
   // After all parent pages, process pendingDecks with async/await
   for (const deck of pendingDecks) {
-    if (!globalSeen.has(deck.key)) {
-      try {
-        const { data: listData } = await axios.get(deck.listUrl);
-        const $$ = cheerio.load(listData);
-        let cards = [];
-        // Get deck name from .decklist-title (text only, strip children)
-        let decklistTitle = $$(".decklist-title").clone().children().remove().end().text().trim();
-        if (!decklistTitle) decklistTitle = deck.name; // fallback
-        $$(".decklist-cards .decklist-card").each((k, cardEl) => {
-          const dataSet = $$(cardEl).attr("data-set");
-          const dataNumber = $$(cardEl).attr("data-number");
-          const qty = parseInt($$(cardEl).find(".card-count").text().trim(), 10) || 1;
-          if (dataSet && dataNumber) {
-            cards.push({ cardId: `${dataSet}-${dataNumber}`, quantity: qty });
-          }
-        });
-        // Map cardIds before saving
-        cards = mapCardIdsForCardsArray(cards, ptcgoToSetId, setNumToCardId);
-        saveDeckToJson(
-          {
-            name: deck.name,
-            variant: deck.variant,
-            cards: JSON.stringify(cards),
-            thumbnail: "",
-            player: deck.player,
-            tournament: deck.tournament,
-          },
-          "db/LimitlessDecks.json",
-          globalSeen.size === 0
-        );
-        globalSeen.add(deck.key);
-      } catch (err) {
-        console.error("Failed to fetch decklist for", deck.listUrl, err.message);
-      }
+    try {
+      const { data: listData } = await axios.get(deck.listUrl);
+      const $$ = cheerio.load(listData);
+      let cards = [];
+      // Get deck name from .decklist-title (text only, strip children)
+      let decklistTitle = $$(".decklist-title").clone().children().remove().end().text().trim();
+      if (!decklistTitle) decklistTitle = deck.name; // fallback
+      $$(".decklist-cards .decklist-card").each((k, cardEl) => {
+        const dataSet = $$(cardEl).attr("data-set");
+        const dataNumber = $$(cardEl).attr("data-number");
+        const qty = parseInt($$(cardEl).find(".card-count").text().trim(), 10) || 1;
+        if (dataSet && dataNumber) {
+          cards.push({ cardId: `${dataSet}-${dataNumber}`, quantity: qty });
+        }
+      });
+      // Map cardIds before saving
+      cards = mapCardIdsForCardsArray(cards, ptcgoToSetId, setNumToCardId);
+      saveDeckToJson(
+        {
+          name: deck.name,
+          variant: deck.variant,
+          cards: JSON.stringify(cards),
+          thumbnail: "",
+          player: deck.player,
+          tournament: deck.tournament,
+        },
+        "db/limitlessDecks.json",
+        false // Always append, never reset
+      );
+    } catch (err) {
+      console.error("Failed to fetch decklist for", deck.listUrl, err.message);
     }
   }
   console.log("Batch scraping complete.");
   // Update deck library mapping after JSON is created
   const mappingPath = path.join(__dirname, "..", "helpers", "deckLibraryMapping.ts");
-  const jsonPath = path.join(__dirname, "db", "LimitlessDecks.json");
+  const jsonPath = path.join(__dirname, "db", "limitlessDecks.json");
   updateDeckLibraryMappingFromJson(jsonPath, mappingPath);
   // Auto-assign thumbnails after all decks are written
   autoAssignThumbnailsToDecks();

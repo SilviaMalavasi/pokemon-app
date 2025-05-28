@@ -31,8 +31,8 @@ function DeckLibraryContent() {
   if (error) {
     return (
       <MainScrollView
-        headerImage="home-bkg"
-        headerTitle="PokéDeck Builder"
+        headerImage="deck-library-bkg"
+        headerTitle="Deck Library"
       >
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
           <ThemedText>Error loading database: {error.message}</ThemedText>
@@ -58,7 +58,7 @@ function DeckLibraryContent() {
 
   return (
     <MainScrollView
-      headerImage="home-bkg"
+      headerImage="deck-library-bkg"
       headerTitle="Deck Library"
     >
       <View style={{ paddingHorizontal: theme.padding.large, paddingVertical: theme.padding.medium }}>
@@ -87,6 +87,9 @@ function DeckLibraryContent() {
             >
               <ThemedText fontWeight="bold">{deck.name}</ThemedText>
               <ThemedText color={theme.colors.grey}>Variant: {deck.variantOf || "-"}</ThemedText>
+              {deck.player && <ThemedText color={theme.colors.grey}>Player: {deck.player}</ThemedText>}
+              {deck.tournament && <ThemedText color={theme.colors.grey}>Tournament: {deck.tournament}</ThemedText>}
+              {deck.thumbnail && <ThemedText color={theme.colors.grey}>Thumbnail: {deck.thumbnail}</ThemedText>}
               <ThemedText
                 numberOfLines={2}
                 ellipsizeMode="tail"
@@ -96,6 +99,13 @@ function DeckLibraryContent() {
               </ThemedText>
             </View>
           ))}
+        </View>
+      ) : isLoading || isUpdating ? (
+        <View style={{ alignItems: "center", marginTop: 32 }}>
+          <ActivityIndicator
+            size="large"
+            color={theme.colors.purple}
+          />
         </View>
       ) : (
         <View style={{ alignItems: "center", marginTop: 32 }}>
