@@ -45,7 +45,7 @@
 
 3.  **Manually Update the deck/thumbnail map:**
 
-    - Manually assign a thumbnail to each deck variant.
+    - Manually assign a thumbnail to each deck variant in 'helpers/deckLibraryMapping.ts'
 
 4.  **Increment Database Version:**
 
