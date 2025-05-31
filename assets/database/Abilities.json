@@ -1333,5 +1333,155 @@
     "id": 583,
     "name": "Defiant Horn",
     "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may switch in 1 of your opponent's Benched Pokémon to the Active Spot."
+  },
+  {
+    "id": 599,
+    "name": "Buzzing Boost",
+    "text": "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may search your deck for up to 3 Basic Grass Energy cards and attach them to this Pokémon. Then, shuffle your deck."
+  },
+  {
+    "id": 600,
+    "name": "Cheer On to Glory",
+    "text": "Attacks used by your Cynthia's Pokémon do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 601,
+    "name": "Flower Curtain",
+    "text": "Prevent all damage done to your Benched Pokémon that don't have a Rule Box by attacks from your opponent's Pokémon. (Pokémon ex, Pokémon V, etc. have Rule Boxes.)"
+  },
+  {
+    "id": 602,
+    "name": "Mysterious Rock Inn",
+    "text": "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon ex."
+  },
+  {
+    "id": 603,
+    "name": "Charging Up",
+    "text": "Once during your turn, you may attach a Basic Energy card from your discard pile to this Pokémon."
+  },
+  {
+    "id": 604,
+    "name": "Hurried Gait",
+    "text": "Once during your turn, you may draw a card."
+  },
+  {
+    "id": 605,
+    "name": "Bonded by the Journey",
+    "text": "Once during your turn, you may search your deck for an Ethan's Adventure card, reveal it, and put it into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 606,
+    "name": "Melt Away",
+    "text": "If this Pokémon has no Energy attached, it has no Retreat Cost."
+  },
+  {
+    "id": 607,
+    "name": "Golden Flame",
+    "text": "Once during your turn, you may attach up to 2 Basic Fire Energy cards from your hand to 1 of your Benched Ethan's Pokémon."
+  },
+  {
+    "id": 608,
+    "name": "Flustered Leap",
+    "text": "Once during your turn, if this Pokémon is on your Bench, you may discard the bottom card of your deck. If you do, discard all cards from this Pokémon and put this Pokémon on top of your deck."
+  },
+  {
+    "id": 609,
+    "name": "So Submerged",
+    "text": "As long as this Pokémon is on your Bench, prevent all damage from and effects of attacks from your opponent's Pokémon done to this Pokémon."
+  },
+  {
+    "id": 610,
+    "name": "Repelling Veil",
+    "text": "Prevent all effects of attacks used by your opponent's Pokémon done to your Basic Team Rocket's Pokémon. (Existing effects are not removed. Damage is not an effect.)"
+  },
+  {
+    "id": 611,
+    "name": "Diver's Catch",
+    "text": "When 1 of your Water Pokémon is Knocked Out by damage from an attack from your opponent's Pokémon, you may put all Basic Water Energy attached to that Pokémon into your hand instead of the discard pile."
+  },
+  {
+    "id": 612,
+    "name": "Snow Camouflage",
+    "text": "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
+  },
+  {
+    "id": 613,
+    "name": "Darkest Impulse",
+    "text": "Whenever your opponent plays a Pokémon from their hand to evolve 1 of their Pokémon, put 4 damage counters on that Pokémon. The effect of Darkest Impulse doesn't stack."
+  },
+  {
+    "id": 614,
+    "name": "Power Saver",
+    "text": "This Pokémon can't attack unless you have 4 or more Team Rocket's Pokémon in play."
+  },
+  {
+    "id": 615,
+    "name": "Stone Palace",
+    "text": "As long as this Pokémon is on your Bench, all of your Steven's Pokémon take 30 less damage from attacks from your opponent's Pokémon (after applying Weakness and Resistance). The effect of Stone Palace doesn't stack."
+  },
+  {
+    "id": 616,
+    "name": "Rocket Brain",
+    "text": "As often as you like during your turn, you may move 1 damage counter from 1 of your Team Rocket's Pokémon to another of your Pokémon."
+  },
+  {
+    "id": 617,
+    "name": "Lose Cool",
+    "text": "If this Pokémon has 2 or more damage counters on it, attacks used by this Pokémon do 120 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+  },
+  {
+    "id": 618,
+    "name": "Sand Stream",
+    "text": "During Pokémon Checkup, if this Pokémon is in the Active Spot, put 2 damage counters on each of your opponent's Basic Pokémon."
+  },
+  {
+    "id": 619,
+    "name": "Champion's Call",
+    "text": "Once during your turn, you may search your deck for a Cynthia's Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 620,
+    "name": "Mud Coat",
+    "text": "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 621,
+    "name": "Potent Glare",
+    "text": "As long as this Pokémon is in the Active Spot, your opponent can't play any Pokémon that has an Ability from their hand, except for Team Rocket's Pokémon."
+  },
+  {
+    "id": 622,
+    "name": "Sneaky Bite",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put 2 damage counters on 1 of your opponent's Pokémon."
+  },
+  {
+    "id": 623,
+    "name": "Biting Spree",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may choose 2 of your opponent's Pokémon and put 2 damage counters on each of them."
+  },
+  {
+    "id": 624,
+    "name": "Smog Signals",
+    "text": "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), search your deck for up to 2 Pokémon that have \"Koffing\" in their name and put them onto your Bench. Then, shuffle your deck."
+  },
+  {
+    "id": 625,
+    "name": "Punk Up",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may search your deck for up to 5 Basic Darkness Energy cards and attach them to your Marnie's Pokémon in any way you like. Then, shuffle your deck."
+  },
+  {
+    "id": 626,
+    "name": "X-Boot",
+    "text": "Once during your turn, you may search your deck for a Basic Psychic Energy card, a Basic Metal Energy card, or 1 of each and attach them to your Psychic Pokémon and Metal Pokémon in any way you like. Then, shuffle your deck."
+  },
+  {
+    "id": 627,
+    "name": "Reconstitute",
+    "text": "You must discard 2 cards from your hand in order to use this Ability. Once during your turn, you may draw a card."
+  },
+  {
+    "id": 628,
+    "name": "Greedy Order",
+    "text": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put up to 2 Arven's Sandwich cards from your discard pile into your hand."
   }
 ]

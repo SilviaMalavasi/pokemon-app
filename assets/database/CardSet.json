@@ -155,6 +155,17 @@
   },
   {
     "id": 15,
+    "setId": "sv10",
+    "name": "Destined Rivals",
+    "series": "Scarlet & Violet",
+    "printedTotal": 182,
+    "total": 244,
+    "releaseDate": "2025/05/30",
+    "updatedAt": "2025/05/29 22:00:00",
+    "ptcgoCode": "DRI"
+  },
+  {
+    "id": 16,
     "setId": "sve",
     "name": "Scarlet & Violet Energies",
     "series": "Scarlet & Violet",

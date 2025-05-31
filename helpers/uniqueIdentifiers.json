@@ -22,7 +22,8 @@
     "Pokémon Tool",
     "Ancient",
     "Future",
-    "ACE SPEC"
+    "ACE SPEC",
+    "MEGA"
   ],
   "cardSubtypeEnergy": [
     "Special",
@@ -61,6 +62,7 @@
     "Surging Sparks",
     "Prismatic Evolutions",
     "Journey Together",
+    "Destined Rivals",
     "Scarlet & Violet Energies"
   ],
   "cardSetSeries": [

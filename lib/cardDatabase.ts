@@ -1,7 +1,7 @@
 import { SQLiteDatabase, SQLiteStatement } from "expo-sqlite";
 
 // ----> INCREMENT THIS WHEN JSON CHANGES <----
-const DATABASE_VERSION = 39;
+const DATABASE_VERSION = 40;
 
 // Data types for JSON imports
 interface CardSet {
