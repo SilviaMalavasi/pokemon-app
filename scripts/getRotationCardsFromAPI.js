@@ -76,7 +76,7 @@ async function getrotationCardsFromAPI() {
     console.log(`Found ${specificCards.length} basic energy cards.`);
 
     // Directories for PNG downloads and WebP outputs
-    const downloadCardImageDir = path.resolve(rootDir, "db/downloads/card-images");
+    const downloadCardImageDir = path.resolve(rootDir, "scripts/db/downloads/card-images");
     const webpCardImageDir = path.resolve(rootDir, "assets/card-images");
 
     // Ensure all directories exist
@@ -154,7 +154,7 @@ async function getrotationCardsFromAPI() {
     }
 
     // Write all the filtered cards to a file (with local image paths)
-    fs.writeFileSync(path.resolve(rootDir, "db/rotationCards.json"), JSON.stringify(allCards, null, 2));
+    fs.writeFileSync(path.resolve(rootDir, "scripts/db/rotationCards.json"), JSON.stringify(allCards, null, 2));
     console.log("Filtered cards and images saved to rotationCards.json and assets/card-images/");
   } catch (error) {
     console.error("Error fetching or saving cards:", error);

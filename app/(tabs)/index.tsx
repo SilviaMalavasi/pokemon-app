@@ -130,7 +130,7 @@ export default function HomeScreen() {
           >
             Last Cards Update:{" "}
           </ThemedText>
-          Journey Together
+          Destiny Rivals
         </ThemedText>
       </View>
       {decks.length > 0 && (

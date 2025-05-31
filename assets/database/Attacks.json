@@ -7793,5 +7793,545 @@
     "id": 3830,
     "name": "Aromatic Stomps",
     "text": "Flip a coin. If heads, during your opponent's next turn, the Defending Pokémon can't attack."
+  },
+  {
+    "id": 3871,
+    "name": "Rallying Horn",
+    "text": "If any of your Ethan's Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 100 more damage."
+  },
+  {
+    "id": 3874,
+    "name": "Jet Cyclone",
+    "text": "Move 3 Energy from this Pokémon to 1 of your Benched Pokémon."
+  },
+  {
+    "id": 3881,
+    "name": "Trimming Mower",
+    "text": "Discard a Stadium in play."
+  },
+  {
+    "id": 3882,
+    "name": "Gadget Show",
+    "text": "This attack does 30 damage for each Pokémon Tool attached to all of your Pokémon."
+  },
+  {
+    "id": 3885,
+    "name": "Superb Scissors",
+    "text": "This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
+  },
+  {
+    "id": 3888,
+    "name": "Petal Blade Dance",
+    "text": "Discard 2 Basic Grass Energy cards from your hand. If you can't discard 2 cards in this way, this attack does nothing."
+  },
+  {
+    "id": 3889,
+    "name": "Searching Eyes",
+    "text": "Look at 1 of your opponent's face-down Prize cards."
+  },
+  {
+    "id": 3892,
+    "name": "Hydra Breath",
+    "text": "Discard 6 Basic Grass Energy cards from your hand, and Knock Out your opponent's Active Pokémon. If you can't discard 6 cards in this way, this attack does nothing."
+  },
+  {
+    "id": 3895,
+    "name": "Rocket Rush",
+    "text": "This attack does 30 damage for each of your Team Rocket's Pokémon in play."
+  },
+  {
+    "id": 3899,
+    "name": "Oil Salvo",
+    "text": "Choose 1 of your opponent's Pokémon 6 times. (You can choose the same Pokémon more than once.) For each time you chose a Pokémon, do 20 damage to it. This damage isn't affected by Weakness or Resistance."
+  },
+  {
+    "id": 3900,
+    "name": "Aroma Shot",
+    "text": "This Pokémon recovers from all Special Conditions."
+  },
+  {
+    "id": 3903,
+    "name": "Upside-Down Draw",
+    "text": "Draw 3 cards from the bottom of your deck."
+  },
+  {
+    "id": 3905,
+    "name": "Grass Kagura",
+    "text": "Search your deck for a Basic Grass Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
+  },
+  {
+    "id": 3906,
+    "name": "Ogre's Hammer",
+    "text": "During your next turn, this Pokémon can't use Ogre's Hammer."
+  },
+  {
+    "id": 3910,
+    "name": "Punishing Fang",
+    "text": "If your opponent's Active Pokémon is a Darkness Pokémon, this attack does 100 more damage."
+  },
+  {
+    "id": 3913,
+    "name": "Flame Screen",
+    "text": "During your opponent's next turn, this Pokémon takes 50 less damage from attacks (after applying Weakness and Resistance)."
+  },
+  {
+    "id": 3914,
+    "name": "Evil Incineration",
+    "text": "Discard a Team Rocket's Energy from this Pokémon. If you do, discard your opponent's Active Pokémon and all attached cards."
+  },
+  {
+    "id": 3917,
+    "name": "Buddy Blast",
+    "text": "This attack does 60 more damage for each Ethan's Adventure card in your discard pile."
+  },
+  {
+    "id": 3920,
+    "name": "Lava Burst",
+    "text": "Discard up to 5 Fire Energy from this Pokémon. This attack does 70 damage for each card you discarded in this way."
+  },
+  {
+    "id": 3922,
+    "name": "Cruel Coal",
+    "text": "Your opponent's Active Pokémon is now Burned and Confused."
+  },
+  {
+    "id": 3924,
+    "name": "Shining Feathers",
+    "text": "Heal 50 damage from each of your Pokémon."
+  },
+  {
+    "id": 3928,
+    "name": "Double Kick",
+    "text": "Flip 2 coins. This attack does 40 damage for each heads."
+  },
+  {
+    "id": 3930,
+    "name": "Inferno Kick Flurry",
+    "text": "Discard 2 Energy from this Pokémon. This attack also does 120 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+  },
+  {
+    "id": 3933,
+    "name": "Fire Kagura",
+    "text": "Search your deck for a Basic Fire Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
+  },
+  {
+    "id": 3937,
+    "name": "Abrupt Flash",
+    "text": "If this Pokémon evolved from Misty's Staryu during this turn, this attack does 80 more damage."
+  },
+  {
+    "id": 3939,
+    "name": "Splashing Panic",
+    "text": "Discard the top 7 cards of your deck, and this attack does 70 damage for each Misty's Pokémon that you discarded in this way."
+  },
+  {
+    "id": 3941,
+    "name": "Swim Together",
+    "text": "Search your deck for up to 3 Misty's Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 3943,
+    "name": "Dark Frost",
+    "text": "If this Pokémon has any Team Rocket's Energy attached, this attack does 60 more damage."
+  },
+  {
+    "id": 3944,
+    "name": "Undulate",
+    "text": "Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+  },
+  {
+    "id": 3948,
+    "name": "Crescendo Wave",
+    "text": "This attack does 30 damage for each Water Energy attached to this Pokémon. Before doing damage, you may attach any number of Basic Water Energy cards from your hand to this Pokémon."
+  },
+  {
+    "id": 3956,
+    "name": "Frozen Wood",
+    "text": "If this Pokémon has 2 or more Grass Energy attached, this attack does 120 more damage."
+  },
+  {
+    "id": 3957,
+    "name": "Manual Wash",
+    "text": "Heal 10 damage from each of your Pokémon."
+  },
+  {
+    "id": 3961,
+    "name": "Dive",
+    "text": "Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+  },
+  {
+    "id": 3964,
+    "name": "Crushing Press",
+    "text": "You may discard a Stadium in play. If you do, this attack does 140 more damage."
+  },
+  {
+    "id": 3965,
+    "name": "Avenging Billow",
+    "text": "This attack does 10 more damage for each damage counter on this Pokémon."
+  },
+  {
+    "id": 3966,
+    "name": "Dynamic Dive",
+    "text": "You may do 120 more damage. If you do, this Pokémon also does 50 damage to itself."
+  },
+  {
+    "id": 3967,
+    "name": "Water Kagura",
+    "text": "Search your deck for a Basic Water Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
+  },
+  {
+    "id": 3970,
+    "name": "Dual Bolt",
+    "text": "This attack does 50 damage to 2 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+  },
+  {
+    "id": 3971,
+    "name": "High-Voltage Press",
+    "text": "If this Pokémon has at least 2 extra Energy attached (in addition to this attack's cost), this attack does 100 more damage."
+  },
+  {
+    "id": 3972,
+    "name": "Jamming Wing",
+    "text": "You may move an Energy from your opponent's Active Pokémon to 1 of their Benched Pokémon."
+  },
+  {
+    "id": 3973,
+    "name": "Wicked Thunder",
+    "text": "If this Pokémon has any Team Rocket's Energy attached, this attack does 60 more damage."
+  },
+  {
+    "id": 3974,
+    "name": "Zapping Draw",
+    "text": "Draw a card."
+  },
+  {
+    "id": 3975,
+    "name": "Procurement",
+    "text": "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 3982,
+    "name": "Flash Impact",
+    "text": "This attack also does 40 damage to 1 of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+  },
+  {
+    "id": 3986,
+    "name": "Thunder Raid",
+    "text": "Discard all Energy from this Pokémon, and this attack does 210 damage to 1 of your opponent's Benched Pokémon ex. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+  },
+  {
+    "id": 3989,
+    "name": "Bench Manipulation",
+    "text": "Your opponent flips a coin for each of their Benched Pokémon. This attack does 80 damage to your opponent's Active Pokémon for each tails. This attack's damage isn't affected by Weakness or Resistance."
+  },
+  {
+    "id": 3990,
+    "name": "Erasure Ball",
+    "text": "You may discard up to 2 Energy from your Benched Pokémon. This attack does 60 more damage for each card you discarded in this way."
+  },
+  {
+    "id": 3991,
+    "name": "Rocket Mirror",
+    "text": "Move all damage counters from 1 of your Benched Team Rocket's Pokémon to your opponent's Active Pokémon."
+  },
+  {
+    "id": 3993,
+    "name": "Summoning Sign",
+    "text": "Search your deck for up to 2 Basic Steven's Pokémon and put them onto your Bench. Then, shuffle your deck."
+  },
+  {
+    "id": 3995,
+    "name": "Eerie Light",
+    "text": "Your opponent's Active Pokémon is now Confused."
+  },
+  {
+    "id": 3996,
+    "name": "Clay Blast",
+    "text": "Discard all Energy from this Pokémon."
+  },
+  {
+    "id": 3997,
+    "name": "Chiming Commotion",
+    "text": "Discard a random card from your opponent's hand."
+  },
+  {
+    "id": 3999,
+    "name": "Gemstone Mimicry",
+    "text": "Choose 1 of your opponent's Active Tera Pokémon's attacks and use it as this attack."
+  },
+  {
+    "id": 4000,
+    "name": "Disruptive Radar",
+    "text": "Look at the top 5 cards of your opponent's deck and put them back in any order."
+  },
+  {
+    "id": 4005,
+    "name": "Impact Blow",
+    "text": "During your next turn, this Pokémon can't use Impact Blow."
+  },
+  {
+    "id": 4006,
+    "name": "Impound",
+    "text": "During your opponent's next turn, the Defending Pokémon can't retreat."
+  },
+  {
+    "id": 4007,
+    "name": "Try to Imitate",
+    "text": "Flip a coin. If heads, choose 1 of your opponent's Active Pokémon's attacks and use it as this attack."
+  },
+  {
+    "id": 4008,
+    "name": "Mountain Munch",
+    "text": "Discard the top card of your opponent's deck."
+  },
+  {
+    "id": 4009,
+    "name": "Explosive Ascension",
+    "text": "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
+  },
+  {
+    "id": 4010,
+    "name": "Demolition Tackle",
+    "text": "Discard an Energy from your opponent's Active Pokémon."
+  },
+  {
+    "id": 4014,
+    "name": "Mountain Drop",
+    "text": "If a Stadium is in play, this attack does 70 more damage."
+  },
+  {
+    "id": 4015,
+    "name": "Steady Punch",
+    "text": "Flip a coin. If heads, this attack does 20 more damage."
+  },
+  {
+    "id": 4016,
+    "name": "Harmonious Spirit Palm",
+    "text": "If this Pokémon and your opponent's Active Pokémon have the same amount of Energy attached, this attack does 120 more damage."
+  },
+  {
+    "id": 4017,
+    "name": "Regi Charge",
+    "text": "Attach up to 2 Basic Fighting Energy cards from your discard pile to this Pokémon."
+  },
+  {
+    "id": 4018,
+    "name": "Giant Rock",
+    "text": "If your opponent's Active Pokémon is a Stage 2 Pokémon, this attack does 140 more damage."
+  },
+  {
+    "id": 4020,
+    "name": "Dragonslice",
+    "text": ""
+  },
+  {
+    "id": 4021,
+    "name": "Corkscrew Dive",
+    "text": "You may draw cards until you have 6 cards in your hand."
+  },
+  {
+    "id": 4022,
+    "name": "Draconic Buster",
+    "text": "Discard all Energy from this Pokémon."
+  },
+  {
+    "id": 4025,
+    "name": "Super Sandstorm",
+    "text": "This attack also does 40 damage to each Benched Pokémon that has any damage counters on it (both yours and your opponent's). (Don't apply Weakness and Resistance for Benched Pokémon.)"
+  },
+  {
+    "id": 4031,
+    "name": "Rock Kagura",
+    "text": "Search your deck for a Basic Fighting Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
+  },
+  {
+    "id": 4033,
+    "name": "Drag Down",
+    "text": "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+  },
+  {
+    "id": 4035,
+    "name": "Spinning Tail",
+    "text": "This attack does 30 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+  },
+  {
+    "id": 4037,
+    "name": "Dark Awakening",
+    "text": "Choose up to 2 of your Darkness Pokémon. For each of those Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
+  },
+  {
+    "id": 4039,
+    "name": "Love Impact",
+    "text": "If a Pokémon that has \"Nidoking\" in its name is on your Bench, this attack does 120 more damage."
+  },
+  {
+    "id": 4044,
+    "name": "Horn Rend",
+    "text": "If your opponent's Active Pokémon already has any damage counters on it, this attack does 60 more damage."
+  },
+  {
+    "id": 4045,
+    "name": "Tainted Horn",
+    "text": "Your opponent's Active Pokémon is now Poisoned. During Pokémon Checkup, put 8 damage counters on that Pokémon instead of 1."
+  },
+  {
+    "id": 4046,
+    "name": "Kingly Impact",
+    "text": ""
+  },
+  {
+    "id": 4049,
+    "name": "Assassin's Return",
+    "text": "You may put this Pokémon into your hand. (Discard all cards attached to this Pokémon.)"
+  },
+  {
+    "id": 4050,
+    "name": "Corrosive Sludge",
+    "text": "At the end of your opponent's next turn, discard the Defending Pokémon and all attached cards."
+  },
+  {
+    "id": 4051,
+    "name": "Gooped Up",
+    "text": "Your opponent's Active Pokémon is now Confused. During your opponent's next turn, that Pokémon can't retreat."
+  },
+  {
+    "id": 4052,
+    "name": "Hazardous Venom",
+    "text": "This attack does 100 damage for each Special Condition affecting your opponent's Active Pokémon."
+  },
+  {
+    "id": 4053,
+    "name": "Leaking Gas",
+    "text": ""
+  },
+  {
+    "id": 4054,
+    "name": "Explode Together Now",
+    "text": "This attack does 40 damage for each Pokémon in play that has \"Koffing\" or \"Weezing\" in its name (both yours and your opponent's)."
+  },
+  {
+    "id": 4055,
+    "name": "Deceit",
+    "text": "Search your deck for a Supporter card, reveal it, and put it into your hand. Then, shuffle your deck."
+  },
+  {
+    "id": 4058,
+    "name": "Strike the Sleeper",
+    "text": "This attack does 20 damage to 1 of your opponent's Benched Pokémon for each damage counter on that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+  },
+  {
+    "id": 4059,
+    "name": "Raging Curse",
+    "text": "This attack does 10 damage for each damage counter on all of your Benched Cynthia's Pokémon. This attack's damage isn't affected by Weakness."
+  },
+  {
+    "id": 4060,
+    "name": "Pointy Nails",
+    "text": "If your opponent's Active Pokémon is a Pokémon ex, this attack does 40 more damage."
+  },
+  {
+    "id": 4061,
+    "name": "Pointy Claws",
+    "text": "If your opponent's Active Pokémon is a Pokémon ex, this attack does 70 more damage."
+  },
+  {
+    "id": 4068,
+    "name": "Shadow Bullet",
+    "text": "This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+  },
+  {
+    "id": 4069,
+    "name": "Spiky Wheel",
+    "text": "This attack does 40 more damage for each Darkness Energy attached to this Pokémon."
+  },
+  {
+    "id": 4072,
+    "name": "Vigorous Tackle",
+    "text": "If this Pokémon has no damage counters on it, this attack does 120 more damage."
+  },
+  {
+    "id": 4073,
+    "name": "Boss Headbutt",
+    "text": "During your next turn, this Pokémon can't use Boss Headbutt."
+  },
+  {
+    "id": 4074,
+    "name": "Iron Shake-Up",
+    "text": "You may move any amount of Metal Energy from your Pokémon to your other Pokémon in any way you like."
+  },
+  {
+    "id": 4075,
+    "name": "Hurricane of Needles",
+    "text": "Flip 4 coins. This attack does 80 damage for each heads."
+  },
+  {
+    "id": 4076,
+    "name": "Roost",
+    "text": "Heal 50 damage from this Pokémon. During your next turn, this Pokémon can't retreat."
+  },
+  {
+    "id": 4079,
+    "name": "Sonic Double",
+    "text": "This attack does 50 damage to 2 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+  },
+  {
+    "id": 4081,
+    "name": "Metal Slash",
+    "text": "During your next turn, this Pokémon can't attack."
+  },
+  {
+    "id": 4082,
+    "name": "Metal Stomp",
+    "text": ""
+  },
+  {
+    "id": 4083,
+    "name": "Strong Bash",
+    "text": "During your opponent's next turn, if this Pokémon is damaged by an attack (even if this Pokémon is Knocked Out), put damage counters on the Attacking Pokémon equal to the damage done to this Pokémon."
+  },
+  {
+    "id": 4084,
+    "name": "Dangerous Incisors",
+    "text": "Your opponent's Active Pokémon is now Poisoned."
+  },
+  {
+    "id": 4085,
+    "name": "Reckless Abandon",
+    "text": "Flip 2 coins. If both of them are tails, this Pokémon also does 90 damage to itself."
+  },
+  {
+    "id": 4086,
+    "name": "Paw-cket Pilfer",
+    "text": "Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
+  },
+  {
+    "id": 4088,
+    "name": "Haughty Order",
+    "text": "Reveal the top 10 cards of your opponent's deck. You may choose an attack from a Pokémon you find there and use it as this attack. Shuffle the revealed cards into your opponent's deck."
+  },
+  {
+    "id": 4089,
+    "name": "Cruel Slash",
+    "text": "Your opponent's Active Pokémon is now Confused."
+  },
+  {
+    "id": 4091,
+    "name": "Dizzy Punch",
+    "text": "Flip 2 coins. This attack does 90 damage for each heads."
+  },
+  {
+    "id": 4094,
+    "name": "Hacking",
+    "text": "Discard a card from your hand. If you do, your opponent discards a card from their hand."
+  },
+  {
+    "id": 4095,
+    "name": "R Command",
+    "text": "This attack does 20 damage for each Supporter card that has \"Team Rocket\" in its name in your discard pile."
+  },
+  {
+    "id": 4100,
+    "name": "Gnaw Through",
+    "text": "Before doing damage, discard all Pokémon Tools from your opponent's Active Pokémon."
   }
 ]
