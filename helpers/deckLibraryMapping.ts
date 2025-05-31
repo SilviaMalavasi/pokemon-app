@@ -9,15 +9,6 @@ export interface DeckLibraryMapping {
 }
 
 const deckLibraryMapping: DeckLibraryMapping = {
-  "Joltik Box": {
-    thumbnail: "sv7-150_large.webp",
-  },
-  "Tera Box": {
-    thumbnail: "svp-141_large.webp",
-  },
-  "N's Zoroark": {
-    thumbnail: "sv9-185_large.webp",
-  },
   "Dragapult ex": {
     thumbnail: "sv6-200_large.webp",
   },
@@ -30,11 +21,20 @@ const deckLibraryMapping: DeckLibraryMapping = {
   "Gholdengo ex": {
     thumbnail: "sv4-231_large.webp",
   },
+  "Joltik Box": {
+    thumbnail: "sv4-196_large.webp",
+  },
+  "Tera Box": {
+    thumbnail: "svp-141_large.webp",
+  },
   "Flareon ex": {
     thumbnail: "sv8pt5-146_large.webp",
   },
   "Terapagos ex": {
     thumbnail: "sv7-170_large.webp",
+  },
+  "N's Zoroark": {
+    thumbnail: "sv9-185_large.webp",
   },
   "Archaludon ex": {
     thumbnail: "sv8-224_large.webp",

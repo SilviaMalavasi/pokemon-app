@@ -36,18 +36,14 @@
 
 1.  **Update Json Source:**
 
-    - Run `node scripts/limitlessScraper.js` to update limitlessDecks.json (scripts/db) and deckLibraryMapping.ts (in
-      helpers).
+    - Run `node scripts/limitlessScraper.js` to update LimitlessDecks.json (assets/database) and deckLibraryMapping.ts
+      (in helpers).
 
-2.  **Update the Json '/assets/databse':**
+2.  **Manually Update the deck/thumbnail map:**
 
-    - Copy limitlessDecks.json in 'assets/database'.
+    - Manually assign a thumbnail to each missing deck variant thumbnail in 'helpers/deckLibraryMapping.ts'
 
-3.  **Manually Update the deck/thumbnail map:**
-
-    - Manually assign a thumbnail to each deck variant in 'helpers/deckLibraryMapping.ts'
-
-4.  **Increment Database Version:**
+3.  **Increment Database Version:**
 
     - Open the script: `lib/limitlessDatabase.ts`.
     - Find the `LIMITLESS_DATABASE_VERSION` constant near the top of the file.

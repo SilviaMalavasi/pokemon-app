@@ -135,7 +135,7 @@ async function scrapeAllDeckLinks(listUrl) {
 }
 
 // --- DB INSERT ---
-function saveDeckToJson(deck, outPath = "db/limitlessDecks.json", reset = false) {
+function saveDeckToJson(deck, outPath = path.join("..", "assets", "database", "LimitlessDecks.json"), reset = false) {
   const file = path.join(__dirname, outPath);
   let arr = [];
   // If reset is true, always start with an empty array
@@ -238,10 +238,10 @@ function updateDeckLibraryMappingFromJson(jsonPath, mappingPath) {
 
 // --- AUTO-ASSIGN THUMBNAILS TO DECKS ---
 function autoAssignThumbnailsToDecks() {
-  const decksPath = path.join(__dirname, "db", "limitlessDecks.json");
+  const decksPath = path.join(__dirname, "..", "assets", "database", "LimitlessDecks.json");
   const cardsPath = path.join(__dirname, "..", "assets", "database", "Card.json");
   if (!fs.existsSync(decksPath) || !fs.existsSync(cardsPath)) {
-    console.error("limitlessDecks.json or Card.json not found.");
+    console.error("LimitlessDecks.json or Card.json not found.");
     return;
   }
   const decks = JSON.parse(fs.readFileSync(decksPath, "utf-8"));
@@ -335,7 +335,7 @@ function autoAssignThumbnailsToDecks() {
   }
   if (updated) {
     fs.writeFileSync(decksPath, JSON.stringify(decks, null, 2), "utf-8");
-    console.log("Auto-assigned thumbnails for qualifying decks in limitlessDecks.json");
+    console.log("Auto-assigned thumbnails for qualifying decks in LimitlessDecks.json");
   } else {
     console.log("No qualifying decks found for thumbnail auto-assignment.");
   }
@@ -417,7 +417,7 @@ async function main() {
   const allDecks = await scrapeAllDeckLinks(listUrl);
   console.log(`Found ${allDecks.length} unique deck links. Scraping...`);
   // Always start with a fresh file
-  fs.writeFileSync(path.join(__dirname, "db", "limitlessDecks.json"), "[]", "utf-8");
+  fs.writeFileSync(path.join(__dirname, "..", "assets", "database", "LimitlessDecks.json"), "[]", "utf-8");
   let idCounter = 1;
   // Collect pending decks for later processing
   const pendingDecks = [];
@@ -511,7 +511,7 @@ async function main() {
           player: deck.player,
           tournament: deck.tournament,
         },
-        "db/limitlessDecks.json",
+        path.join("..", "assets", "database", "LimitlessDecks.json"),
         false // Always append, never reset
       );
     } catch (err) {
@@ -521,7 +521,7 @@ async function main() {
   console.log("Batch scraping complete.");
   // Update deck library mapping after JSON is created
   const mappingPath = path.join(__dirname, "..", "helpers", "deckLibraryMapping.ts");
-  const jsonPath = path.join(__dirname, "db", "limitlessDecks.json");
+  const jsonPath = path.join(__dirname, "..", "assets", "database", "LimitlessDecks.json");
   updateDeckLibraryMappingFromJson(jsonPath, mappingPath);
   // Auto-assign thumbnails after all decks are written
   autoAssignThumbnailsToDecks();

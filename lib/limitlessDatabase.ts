@@ -14,7 +14,7 @@ const limitlessDecksData: Array<{
   thumbnail?: string;
   player?: string;
   tournament?: string;
-}> = require("@/assets/database/limitlessDecks.json");
+}> = require("@/assets/database/LimitlessDecks.json");
 
 const BATCH_SIZE = 1000;
 
