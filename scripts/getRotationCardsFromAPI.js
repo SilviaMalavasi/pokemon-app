@@ -43,7 +43,7 @@ async function getrotationCardsFromAPI() {
       page++;
     }
 
-    // --- Second query: fetch specific cards by ID (sve-9 to sve-16) ---
+    // --- Second query: fetch specific cards by ID (sve-9 to sve-16) BASIC ENERGY ---
     const specificCardIds = ["sve-9", "sve-10", "sve-11", "sve-12", "sve-13", "sve-14", "sve-15", "sve-16"];
     let specificCards = [];
     for (const cardId of specificCardIds) {
