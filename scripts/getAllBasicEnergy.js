@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 
 const API_URL = "https://api.pokemontcg.io/v2/";
-const API_KEY = "cbd6ce55-f9f6-40c4-8002-63bcb558ecae"; // Add your API key if needed
+const API_KEY = ""; // Add your API key if needed
 
 const outputPath = path.resolve(__dirname, "db/basicEnergyMap.json");
 
