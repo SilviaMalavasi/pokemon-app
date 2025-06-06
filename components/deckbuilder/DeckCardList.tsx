@@ -33,28 +33,67 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, edit = true,
     );
   }
 
-  const [cardNames, setCardNames] = useState<{ [id: string]: string }>({});
   const [cardDataMap, setCardDataMap] = useState<{
     [id: string]: { name: string; supertype: string; subtypes: string[] };
   }>({});
 
+  const [cardDbMap, setCardDbMap] = useState<any>({});
+
+  // Preload all evolvesFrom/evolvesTo for all cards in the deck (like DeckThumbnailList)
   useEffect(() => {
     if (!db || !cards || cards.length === 0) {
-      setCardNames({});
+      setCardDbMap({});
+      return;
+    }
+    (async () => {
+      const map: any = {};
+      for (const card of cards) {
+        try {
+          const dbCard = await db.getFirstAsync?.("SELECT evolvesFrom, evolvesTo FROM Card WHERE cardId = ?", [
+            card.cardId,
+          ]);
+          map[card.cardId] = dbCard || {};
+        } catch {}
+      }
+      setCardDbMap(map);
+    })();
+  }, [db, cards]);
+
+  useEffect(() => {
+    if (!cards || cards.length === 0) {
       setCardDataMap({});
       return;
     }
-    const fetchData = async () => {
-      const ids = cards.map((c) => c.cardId || c.id).filter(Boolean);
-      if (!ids.length) return;
-      const placeholders = ids.map(() => "?").join(", ");
+    // Check if all required fields are present in the cards prop
+    const missingIds: string[] = [];
+    const dataMap: { [id: string]: { name: string; supertype: string; subtypes: string[] } } = {};
+    for (const card of cards) {
+      if (card.name && card.supertype && Array.isArray(card.subtypes)) {
+        dataMap[card.cardId] = {
+          name: card.name,
+          supertype: card.supertype,
+          subtypes: card.subtypes,
+        };
+      } else {
+        missingIds.push(card.cardId);
+      }
+    }
+    if (missingIds.length === 0) {
+      setCardDataMap(dataMap);
+      return;
+    }
+    // If any cards are missing required fields, fetch them from the DB
+    if (!db) {
+      setCardDataMap(dataMap);
+      return;
+    }
+    const fetchMissing = async () => {
+      const placeholders = missingIds.map(() => "?").join(", ");
       const results = await db.getAllAsync<{ cardId: string; name: string; supertype: string; subtypes: string }>(
         `SELECT cardId, name, supertype, subtypes FROM Card WHERE cardId IN (${placeholders})`,
-        ids
+        missingIds
       );
-      const nameMap: { [id: string]: string } = {};
-      const dataMap: { [id: string]: { name: string; supertype: string; subtypes: string[] } } = {};
-      results.forEach((row) => {
+      for (const row of results) {
         let subtypesArr: string[] = [];
         if (Array.isArray(row.subtypes)) {
           subtypesArr = row.subtypes;
@@ -67,17 +106,15 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, edit = true,
             if (row.subtypes) subtypesArr = [row.subtypes];
           }
         }
-        nameMap[row.cardId] = row.name;
         dataMap[row.cardId] = { name: row.name, supertype: row.supertype, subtypes: subtypesArr };
-      });
-      setCardNames(nameMap);
+      }
       setCardDataMap(dataMap);
     };
-    fetchData();
+    fetchMissing();
   }, [db, cards, decksVersion]);
 
   // Group and sort cards by supertype and evolution using orderCardsInDeck
-  const grouped = React.useMemo(() => orderCardsInDeck(cards, cardDataMap, db), [cards, cardDataMap, db]);
+  const grouped = React.useMemo(() => orderCardsInDeck(cards, cardDataMap, cardDbMap), [cards, cardDataMap, cardDbMap]);
 
   // Helper to trigger quantity change and refresh UI
   const increaseCardQuantity = async (
@@ -281,9 +318,88 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, edit = true,
     );
   };
 
+  const renderPokemonGroup = (groupCards: any[], index: number) => {
+    if (!groupCards || groupCards.length === 0) return null;
+    // Group by evolution lines: find boundaries where evolvesFrom is not in previous cards
+    const lines: any[][] = [];
+    let currentLine: any[] = [];
+    let prevNames = new Set<string>();
+    for (const card of groupCards) {
+      // If this is a Basic or its evolvesFrom is not in prevNames, start a new line
+      const isBasic = card.subtypes?.includes("Basic");
+      if (isBasic || (card.evolvesFrom && !prevNames.has(card.evolvesFrom.trim().toLowerCase()))) {
+        if (currentLine.length > 0) lines.push(currentLine);
+        currentLine = [card];
+      } else {
+        currentLine.push(card);
+      }
+      prevNames.add((card.name || "").trim().toLowerCase());
+    }
+    if (currentLine.length > 0) lines.push(currentLine);
+    return (
+      <View key="Pokémon">
+        <ThemedText
+          type="h4"
+          style={{
+            marginTop: index > 0 ? theme.padding.large : theme.padding.small,
+            marginBottom: theme.padding.medium,
+          }}
+        >
+          Pokémon ({groupCards.reduce((sum, item) => sum + (item.quantity || 1), 0)})
+        </ThemedText>
+        {lines.map((line, lineIdx) => (
+          <View
+            key={lineIdx}
+            style={{ marginBottom: theme.padding.small }}
+          >
+            {line.map((item, idx) => (
+              <View
+                style={styles.summaryItemContainer}
+                key={item.cardId || item.id || idx}
+              >
+                <View style={styles.summaryTextCol}>
+                  <View style={styles.summaryTextCardName}>
+                    <View style={styles.summaryTextCardNameCols}>
+                      <ThemedText style={styles.summaryTextCardQtyCol}>{item.quantity || 1}</ThemedText>
+                      <ThemedText onPress={() => handleCardPress(item)}>
+                        {cardDataMap[item.cardId]?.name} <ThemedText style={styles.cardId}>{item.cardId}</ThemedText>
+                      </ThemedText>
+                    </View>
+                  </View>
+                  {edit ? (
+                    <View style={styles.qtyCol}>
+                      <ThemedButton
+                        title="-"
+                        type="outline"
+                        size="small"
+                        onPress={() => handleChangeQuantity(item.cardId, "dec")}
+                        style={styles.qtyOperator}
+                      />
+                      <ThemedButton
+                        title="+"
+                        type="outline"
+                        size="small"
+                        onPress={() => handleChangeQuantity(item.cardId, "inc")}
+                        style={styles.qtyOperator}
+                      />
+                    </View>
+                  ) : (
+                    <View style={styles.qtyCol}>
+                      <ThemedText style={styles.summaryTextCardQtyCol}>{item.quantity || 1}</ThemedText>
+                    </View>
+                  )}
+                </View>
+              </View>
+            ))}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   return (
     <>
-      {renderGroup("Pokémon", grouped["Pokémon"], 0)}
+      {renderPokemonGroup(grouped["Pokémon"], 0)}
       {renderGroup("Trainer", grouped["Trainer"], 1)}
       {renderGroup("Energy", grouped["Energy"], 2)}
     </>

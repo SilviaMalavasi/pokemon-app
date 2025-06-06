@@ -220,7 +220,7 @@ function DeckLibraryDetailContent() {
         </View>
         {viewMode === "list" ? (
           <DeckCardList
-            cards={getCardsArray()}
+            cards={cardDetails}
             deckId={Number(deckLibraryId)}
             edit={false}
           />

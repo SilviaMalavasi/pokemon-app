@@ -263,7 +263,7 @@ export default function DeckScreen() {
                 </View>
                 {viewMode === "list" ? (
                   <DeckCardList
-                    cards={getCardsArray()}
+                    cards={cardDetails}
                     deckId={Number(deckId)}
                     onCardsChanged={async () => {
                       if (db) {
