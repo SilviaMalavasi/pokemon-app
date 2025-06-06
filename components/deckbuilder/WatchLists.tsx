@@ -69,14 +69,14 @@ export default function WatchLists({
         </ThemedText>
       ) : (
         <View style={layout === "edit" ? { paddingTop: theme.padding.medium } : {}}>
-          {watchLists.map((watchlist) => (
+          {[...watchLists].reverse().map((watchlist) => (
             <View key={watchlist.id + "-watchlist"}>
               <CompactWatchlist
                 watchlist={watchlist}
                 layout={layout}
                 loading={deletingId === watchlist.id}
                 onDelete={onDelete}
-                onPressWatchlist={onPressWatchlist} // Add this line
+                onPressWatchlist={onPressWatchlist}
               />
             </View>
           ))}

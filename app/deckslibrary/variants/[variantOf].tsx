@@ -7,6 +7,8 @@ import { useLimitlessDatabase } from "@/components/context/LimitlessDatabaseCont
 import { theme } from "@/style/ui/Theme";
 import deckLibraryMapping from "@/helpers/deckLibraryMapping";
 import cardImageMapping from "@/helpers/cardImageMapping";
+import CompactDeckLibrary from "@/components/decklibrary/CompactDeckLibrary";
+import ThemedView from "@/components/base/ThemedView";
 
 export default function DeckLibraryVariantScreen() {
   const { db, isLoading, isUpdating, error } = useLimitlessDatabase();
@@ -72,44 +74,29 @@ export default function DeckLibraryVariantScreen() {
       headerImage="deck-library-bkg"
       headerTitle={variantOf}
     >
-      <View style={{ alignItems: "center", marginVertical: theme.padding.large }}>
-        {mapping && cardImageMapping[mapping.thumbnail] && (
-          <Image
-            source={cardImageMapping[mapping.thumbnail]}
-            style={{ width: 100, height: 140, borderRadius: 10, marginBottom: theme.padding.medium }}
-            resizeMode="cover"
-          />
-        )}
-        <ThemedText
-          fontWeight="bold"
-          style={{ fontSize: 20, marginBottom: theme.padding.medium }}
-        >
-          {variantOf}
-        </ThemedText>
-      </View>
-      {decks.length > 0 ? (
-        decks.map((deck) => (
-          <TouchableOpacity
-            key={deck.id}
-            style={{
-              backgroundColor: theme.colors.darkGrey,
-              borderRadius: 10,
-              marginHorizontal: theme.padding.large,
-              marginBottom: theme.padding.medium,
-              padding: theme.padding.medium,
-            }}
-            onPress={() => router.push(`/deckslibrary/${deck.id}`)}
-          >
-            <ThemedText fontWeight="bold">{deck.name}</ThemedText>
-            {deck.player && <ThemedText color={theme.colors.grey}>Player: {deck.player}</ThemedText>}
-            {deck.tournament && <ThemedText color={theme.colors.grey}>Tournament: {deck.tournament}</ThemedText>}
-          </TouchableOpacity>
-        ))
-      ) : (
-        <View style={{ alignItems: "center", marginTop: theme.padding.large }}>
-          <ThemedText>No decks found for this variant.</ThemedText>
+      <ThemedView style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
+        <View style={{ paddingVertical: theme.padding.medium }}>
+          {decks.length > 0 ? (
+            decks.map((deck) => (
+              <CompactDeckLibrary
+                key={deck.id}
+                variantOf={deck.variantOf}
+                thumbnail={deck.thumbnail}
+                router={router}
+                layout="edit"
+                player={deck.player}
+                tournament={deck.tournament}
+                name={deck.name}
+                id={deck.id}
+              />
+            ))
+          ) : (
+            <View style={{ alignItems: "center", marginTop: theme.padding.large }}>
+              <ThemedText>No decks found for this variant.</ThemedText>
+            </View>
+          )}
         </View>
-      )}
+      </ThemedView>
     </MainScrollView>
   );
 }

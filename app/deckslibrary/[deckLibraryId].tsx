@@ -76,7 +76,7 @@ function DeckLibraryDetailContent() {
       </MainScrollView>
     );
   }
-  if (!limitlessDb || isLoading || isUpdating || !deck) {
+  if (!limitlessDb || isLoading || isUpdating || !deck || !userDb) {
     return (
       <MainScrollView
         headerImage="deck-library-bkg"

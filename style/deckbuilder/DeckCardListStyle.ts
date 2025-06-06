@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginBottom: 4,
   },
-
   cardId: {
     textTransform: "uppercase",
     color: theme.colors.purple,

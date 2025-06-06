@@ -73,7 +73,7 @@ export default function SavedDecks({
         </ThemedText>
       ) : (
         <View style={layout === "edit" ? { paddingTop: theme.padding.medium } : {}}>
-          {savedDecks.map((deck) => (
+          {[...savedDecks].reverse().map((deck) => (
             <View key={deck.id + "-deck"}>
               <CompactDeck
                 deck={deck}

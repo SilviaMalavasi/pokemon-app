@@ -238,7 +238,7 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
         </>
       </View>
       <LinearGradient
-        colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0)"]}
+        colors={["rgba(0, 0, 0, 0.7)", "rgba(0, 0, 0, 0)"]}
         start={{ x: 0.2, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.imageOverlay}

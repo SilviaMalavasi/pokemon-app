@@ -4,7 +4,7 @@
 
 export interface DeckLibraryMapping {
   [variantOf: string]: {
-    thumbnail: string; // e.g. 'sv1-1_large.webp' or a custom image path
+    thumbnail: string;
   };
 }
 
@@ -85,7 +85,7 @@ const deckLibraryMapping: DeckLibraryMapping = {
     thumbnail: "sv5-81_large.webp",
   },
   "Gouging Fire ex": {
-    thumbnail: "sv5-382_large.webp",
+    thumbnail: "sv5-188_large.webp",
   },
   "Slaking ex": {
     thumbnail: "sv8-227_large.webp",
@@ -103,7 +103,7 @@ const deckLibraryMapping: DeckLibraryMapping = {
     thumbnail: "sv9-56_large.webp",
   },
   "Pidgeot Control": {
-    thumbnail: "sv3pt5-18_large.webp",
+    thumbnail: "sv3-225_large.webp",
   },
   "Copperajah ex": {
     thumbnail: "sv2-245_large.webp",

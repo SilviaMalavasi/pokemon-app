@@ -4,8 +4,6 @@ import { vw } from "@/helpers/viewport";
 
 const styles = StyleSheet.create({
   cardList: {
-    flexDirection: "row",
-    flexWrap: "wrap",
     justifyContent: "space-between",
     padding: 0,
     gap: 0,
