@@ -114,28 +114,29 @@ export function orderCardsInDeck(cards: CardData[], cardDataMap: CardDataMap, ca
     return 99;
   }
 
-  // 1. Group Basics (by quantity desc)
-  let basics = pokemon.filter((c) => getStage(c) === 0);
-  basics.sort((a, b) => (b.quantity || 0) - (a.quantity || 0));
+  // 1. Group Basics by name (case-insensitive), sort by quantity desc within each name group
+  let basics: CardData[] = pokemon.filter((c: CardData) => getStage(c) === 0);
+  const basicsByName: { [name: string]: CardData[] } = {};
+  basics.forEach((basic: CardData) => {
+    const name = (basic.name || "").trim().toLowerCase();
+    if (!basicsByName[name]) basicsByName[name] = [];
+    basicsByName[name].push(basic);
+  });
+  Object.values(basicsByName).forEach((arr) => arr.sort((a, b) => (b.quantity || 0) - (a.quantity || 0)));
 
-  // Each basic starts a group
-  for (const basic of basics) {
-    lines.push([basic]);
-    used.add(basic.cardId);
+  // Each name group starts a group
+  for (const name in basicsByName) {
+    lines.push([...basicsByName[name]]);
+    basicsByName[name].forEach((basic) => used.add(basic.cardId));
   }
 
-  // 2. Assign Stage 1 to group by evolvesFrom
-  let stage1s = pokemon.filter((c) => getStage(c) === 1);
-
+  // 2. Assign Stage 1 to group by evolvesFrom (match to any basic in the group by name)
+  let stage1s: CardData[] = pokemon.filter((c: CardData) => getStage(c) === 1);
   for (const stage1 of stage1s) {
     let assigned = false;
     for (const group of lines) {
-      const basic = group[0];
-      if (
-        stage1.evolvesFrom &&
-        basic &&
-        (basic.name || "").trim().toLowerCase() === stage1.evolvesFrom.trim().toLowerCase()
-      ) {
+      const basicNames = group.filter((c) => getStage(c) === 0).map((c) => (c.name || "").trim().toLowerCase());
+      if (stage1.evolvesFrom && basicNames.some((n) => n === stage1.evolvesFrom!.trim().toLowerCase())) {
         group.push(stage1);
         used.add(stage1.cardId);
         assigned = true;
@@ -149,17 +150,12 @@ export function orderCardsInDeck(cards: CardData[], cardDataMap: CardDataMap, ca
   }
 
   // 3. Assign Stage 2 to group by evolvesFrom (should match a Stage 1 in a group)
-  let stage2s = pokemon.filter((c) => getStage(c) === 2);
-
+  let stage2s: CardData[] = pokemon.filter((c: CardData) => getStage(c) === 2);
   for (const stage2 of stage2s) {
     let assigned = false;
     for (const group of lines) {
-      const stage1 = group.find((c) => getStage(c) === 1);
-      if (
-        stage2.evolvesFrom &&
-        stage1 &&
-        (stage1.name || "").trim().toLowerCase() === stage2.evolvesFrom.trim().toLowerCase()
-      ) {
+      const stage1Names = group.filter((c) => getStage(c) === 1).map((c) => (c.name || "").trim().toLowerCase());
+      if (stage2.evolvesFrom && stage1Names.some((n) => n === stage2.evolvesFrom!.trim().toLowerCase())) {
         group.push(stage2);
         used.add(stage2.cardId);
         assigned = true;
