@@ -133,7 +133,7 @@ export default function WatchlistThumbnailList({
             return (
               <TouchableOpacity
                 key={item.cardId || idx}
-                style={{ position: "relative" }}
+                style={styles.cardItem}
                 activeOpacity={0.85}
                 onPress={() => handleCardPress(item)}
                 accessibilityLabel={`View details for ${item.name || item.cardId}`}

@@ -19,6 +19,7 @@ interface CompactDeckLibraryProps {
   tournament?: string;
   name?: string;
   id?: number;
+  cards?: string;
 }
 
 export default function CompactDeckLibrary({
@@ -30,10 +31,17 @@ export default function CompactDeckLibrary({
   tournament,
   name,
   id,
+  cards,
 }: CompactDeckLibraryProps) {
   const [imageLoading, setImageLoading] = useState(false);
   const { isLoading, isUpdating, error } = useLimitlessDatabase();
-  const { isLoading: isUserDbLoading, isUpdating: isUserDbUpdating, error: userDbError } = useUserDatabase();
+  const {
+    db: userDb,
+    incrementDecksVersion,
+    isLoading: isUserDbLoading,
+    isUpdating: isUserDbUpdating,
+    error: userDbError,
+  } = useUserDatabase();
 
   if (isLoading || isUpdating || isUserDbLoading || isUserDbUpdating) {
     return (
@@ -45,6 +53,7 @@ export default function CompactDeckLibrary({
       </View>
     );
   }
+
   if (error || userDbError) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 120 }}>
@@ -55,6 +64,53 @@ export default function CompactDeckLibrary({
     );
   }
 
+  const handleCloneDeck = async () => {
+    if (!userDb || !name) return;
+    let formattedName = name
+      .replace(/\[|\]/g, "")
+      .split(",")
+      .map((n) => n.trim())
+      .map((n) =>
+        n
+          .split(" ")
+          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(" ")
+      )
+      .join(" ");
+    let baseName = formattedName.replace(/#\d+$/, "").trim();
+    let newName = `${baseName} - Cloned`;
+    try {
+      const { getSavedDecks, addDeck } = await import("@/lib/userDatabase");
+      const allDecks = await getSavedDecks(userDb);
+      let uniqueName = newName;
+      let cloneIndex = 1;
+      // Check for existing deck with the same name, and add #1, #2, etc. if needed
+      while (allDecks.some((d) => d.name === uniqueName)) {
+        uniqueName = `${newName} #${cloneIndex}`;
+        cloneIndex++;
+      }
+      const result = await addDeck(userDb, uniqueName, thumbnail || undefined, cards || "[]");
+      console.log("addDeck result:", result);
+      let newDeckId: string | number | undefined = undefined;
+      if (result && typeof result === "object") {
+        if ("insertId" in result && result.insertId != null) {
+          newDeckId = result.insertId as string | number;
+        } else if ("lastInsertRowId" in result && result.lastInsertRowId != null) {
+          newDeckId = result.lastInsertRowId as string | number;
+        }
+      } else if (typeof result === "string" || typeof result === "number") {
+        newDeckId = result;
+      }
+      if (typeof incrementDecksVersion === "function") incrementDecksVersion();
+      if (newDeckId) {
+        console.log("Navigating to deck:", newDeckId, typeof newDeckId);
+        router.replace(`/decks/${String(newDeckId)}`);
+      }
+    } catch (e) {
+      console.error("Failed to clone deck", e);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ThemedText
@@ -62,7 +118,19 @@ export default function CompactDeckLibrary({
         color={theme.colors.white}
         style={styles.title}
       >
-        {name || `${variantOf} Decks`}
+        {name
+          ? name
+              .replace(/\[|\]/g, "")
+              .split(",")
+              .map((n) => n.trim())
+              .map((n) =>
+                n
+                  .split(" ")
+                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                  .join(" ")
+              )
+              .join(" ")
+          : `${variantOf} Decks`}
       </ThemedText>
       <View style={styles.mainContainer}>
         <View style={layout === "edit" ? styles.deckNameEdit : undefined}>
@@ -74,7 +142,14 @@ export default function CompactDeckLibrary({
               {player}
             </ThemedText>
           )}
-          {tournament && <ThemedText color={theme.colors.white}>{tournament}</ThemedText>}
+          {tournament && (
+            <ThemedText
+              type="buttonAlternativeSmall"
+              color={theme.colors.white}
+            >
+              {tournament}
+            </ThemedText>
+          )}
         </View>
         <View style={styles.buttonContainer}>
           <ThemedButton
@@ -94,9 +169,7 @@ export default function CompactDeckLibrary({
               type="main"
               size="small"
               style={{ marginTop: theme.padding.xsmall, width: "100%" }}
-              onPress={() => {
-                // TODO: Implement clone logic for userdb
-              }}
+              onPress={handleCloneDeck}
             />
           )}
         </View>

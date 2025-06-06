@@ -73,14 +73,14 @@ export default function SavedDecks({
         </ThemedText>
       ) : (
         <View style={layout === "edit" ? { paddingTop: theme.padding.medium } : {}}>
-          {[...savedDecks].reverse().map((deck) => (
+          {savedDecks.map((deck) => (
             <View key={deck.id + "-deck"}>
               <CompactDeck
                 deck={deck}
                 layout={layout}
                 loading={deletingId === deck.id}
                 onDelete={onDelete}
-                onPressDeck={onPressDeck} // Add this line
+                onPressDeck={onPressDeck}
               />
             </View>
           ))}

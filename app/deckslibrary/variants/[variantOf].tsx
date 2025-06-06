@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, View, TouchableOpacity, Image } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import MainScrollView from "@/components/ui/MainScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import { useLimitlessDatabase } from "@/components/context/LimitlessDatabaseContext";
 import { theme } from "@/style/ui/Theme";
 import deckLibraryMapping from "@/helpers/deckLibraryMapping";
-import cardImageMapping from "@/helpers/cardImageMapping";
 import CompactDeckLibrary from "@/components/decklibrary/CompactDeckLibrary";
 import ThemedView from "@/components/base/ThemedView";
 
@@ -53,6 +52,21 @@ export default function DeckLibraryVariantScreen() {
       </MainScrollView>
     );
   }
+  if (isLoading || isUpdating) {
+    return (
+      <MainScrollView
+        headerImage="deck-library-bkg"
+        headerTitle={variantOf}
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
+          <ActivityIndicator
+            size="large"
+            color={theme.colors.purple}
+          />
+        </View>
+      </MainScrollView>
+    );
+  }
   if (loading) {
     return (
       <MainScrollView
@@ -88,6 +102,7 @@ export default function DeckLibraryVariantScreen() {
                 tournament={deck.tournament}
                 name={deck.name}
                 id={deck.id}
+                cards={deck.cards}
               />
             ))
           ) : (

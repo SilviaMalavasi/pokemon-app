@@ -4,6 +4,8 @@ import { vw } from "@/helpers/viewport";
 
 const styles = StyleSheet.create({
   cardList: {
+    flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "space-between",
     padding: 0,
     gap: 0,
@@ -65,6 +67,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     paddingVertical: 0,
     marginHorizontal: 4,
+  },
+  cardItem: {
+    width: (vw(100) - theme.padding.medium * 2 - theme.padding.medium) / 2,
+    marginBottom: theme.padding.medium,
+    position: "relative",
   },
 });
 

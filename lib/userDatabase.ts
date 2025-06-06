@@ -169,7 +169,7 @@ export async function getSavedDecks(
 ): Promise<{ id: number; name: string; thumbnail: string | null; cards: string }[]> {
   console.log("Fetching all saved decks.");
   return db.getAllAsync<{ id: number; name: string; thumbnail: string | null; cards: string }>(
-    "SELECT id, name, thumbnail, cards FROM Decks ORDER BY name ASC"
+    "SELECT id, name, thumbnail, cards FROM Decks ORDER BY id DESC"
   );
 }
 
@@ -200,7 +200,7 @@ export async function getWatchLists(
 ): Promise<{ id: number; name: string; thumbnail: string | null; cards: string }[]> {
   console.log("Fetching all watch lists.");
   return db.getAllAsync<{ id: number; name: string; thumbnail: string | null; cards: string }>(
-    "SELECT id, name, thumbnail, cards FROM WatchedCards ORDER BY name ASC"
+    "SELECT id, name, thumbnail, cards FROM WatchedCards ORDER BY id DESC"
   );
 }
 

@@ -69,6 +69,11 @@ const styles = StyleSheet.create({
     paddingVertical: theme.padding.xsmall * 1.2,
     marginHorizontal: 4,
   },
+  cardItem: {
+    width: (vw(100) - theme.padding.medium * 2 - theme.padding.medium) / 2,
+    marginBottom: theme.padding.medium,
+    position: "relative",
+  },
 });
 
 export default styles;

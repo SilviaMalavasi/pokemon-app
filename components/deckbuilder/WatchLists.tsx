@@ -69,7 +69,7 @@ export default function WatchLists({
         </ThemedText>
       ) : (
         <View style={layout === "edit" ? { paddingTop: theme.padding.medium } : {}}>
-          {[...watchLists].reverse().map((watchlist) => (
+          {watchLists.map((watchlist) => (
             <View key={watchlist.id + "-watchlist"}>
               <CompactWatchlist
                 watchlist={watchlist}

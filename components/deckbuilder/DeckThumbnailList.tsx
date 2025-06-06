@@ -218,7 +218,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
           {groupCards.map((item, idx) => (
             <TouchableOpacity
               key={item.cardId || idx}
-              style={{ position: "relative" }}
+              style={styles.cardItem}
               activeOpacity={0.85}
               onPress={() => handleCardPress(item)}
               accessibilityLabel={`View details for ${item.name || item.cardId}`}
@@ -267,7 +267,7 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
           {groupCards.map((item, idx) => (
             <TouchableOpacity
               key={item.cardId || idx}
-              style={{ position: "relative" }}
+              style={styles.cardItem}
               activeOpacity={0.85}
               onPress={() => handleCardPress(item)}
               accessibilityLabel={`View details for ${item.name || item.cardId}`}
