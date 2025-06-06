@@ -24,6 +24,9 @@ interface UserDatabaseContextType {
 const UserDatabaseContext = createContext<UserDatabaseContextType | undefined>(undefined);
 UserDatabaseContext.displayName = "UserDatabaseContext";
 
+// Module-level lock to prevent concurrent DB opens/migrations
+let dbInitPromise: Promise<SQLite.SQLiteDatabase> | null = null;
+
 export const UserDatabaseProvider = ({
   children,
   setIsUpdatingDb,
@@ -87,23 +90,30 @@ export const UserDatabaseProvider = ({
     async function setupDatabaseWithRetry() {
       while (retryCount < MAX_RETRIES && !cancelled) {
         try {
-          console.log(`[UserDB] Attempting to open user database... (try ${retryCount + 1})`);
-          const openedDb = await openUserDatabase();
-          console.log("[UserDB] Database opened successfully");
+          if (!dbInitPromise) {
+            dbInitPromise = (async () => {
+              console.log(`[UserDB] Attempting to open user database... (try ${retryCount + 1})`);
+              const openedDb = await openUserDatabase();
+              console.log("[UserDB] Database opened successfully");
+              if (isMounted.current) {
+                console.log("[UserDB] Migrating user database if needed...");
+                await migrateUserDbIfNeeded(openedDb, (updating) => {
+                  setTimeout(() => safeSetIsUpdating(updating), 0);
+                });
+                console.log("[UserDB] Migration complete");
+              }
+              return openedDb;
+            })();
+          }
+          const openedDb = await dbInitPromise;
           if (isMounted.current) {
-            console.log("[UserDB] Migrating user database if needed...");
-            await migrateUserDbIfNeeded(openedDb, (updating) => {
-              setTimeout(() => safeSetIsUpdating(updating), 0);
-            });
-            console.log("[UserDB] Migration complete");
-            if (isMounted.current) {
-              setDb(openedDb);
-              console.log("[UserDB] setDb called");
-            }
+            setDb(openedDb);
+            console.log("[UserDB] setDb called");
           }
           break; // Success, exit retry loop
         } catch (e) {
           retryCount++;
+          dbInitPromise = null; // Reset lock on failure so next attempt can retry
           console.error(`[UserDB] Failed to initialize user database (attempt ${retryCount}):`, e);
           if (retryCount >= MAX_RETRIES) {
             // Dev only: fire alert on repeated failure

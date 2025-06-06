@@ -14,10 +14,11 @@ import { useRouter } from "expo-router";
 interface DeckThumbnailListProps {
   cards: Array<{ cardId: string; quantity: number; name?: string; imagesLarge?: string; supertype?: string }>;
   deckId: number;
+  edit?: boolean;
   onCardsChanged?: () => void;
 }
 
-export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: DeckThumbnailListProps) {
+export default function DeckThumbnailList({ cards, deckId, edit = true, onCardsChanged }: DeckThumbnailListProps) {
   const {
     db: userDb,
     isLoading,
@@ -227,21 +228,31 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
               <CompactCard
                 card={{ cardId: item.cardId, name: item.name || item.cardId, imagesLarge: item.imagesLarge || "" }}
               />
-              <TouchableOpacity
-                onPress={(e) => {
-                  if (e && typeof e.stopPropagation === "function") e.stopPropagation();
-                  handleQtyPress(item);
-                }}
-                accessibilityLabel="Change number"
-                accessibilityRole="button"
-                style={styles.numberButton}
-              >
-                <View style={styles.button}>
-                  <View style={styles.iconContainerStyle}>
-                    <ThemedText style={styles.numberStyle}>{item.quantity}</ThemedText>
+              {edit ? (
+                <TouchableOpacity
+                  onPress={(e) => {
+                    if (e && typeof e.stopPropagation === "function") e.stopPropagation();
+                    handleQtyPress(item);
+                  }}
+                  accessibilityLabel="Change number"
+                  accessibilityRole="button"
+                  style={styles.numberButton}
+                >
+                  <View style={styles.button}>
+                    <View style={styles.iconContainerStyle}>
+                      <ThemedText style={styles.numberStyle}>{item.quantity}</ThemedText>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <View style={styles.numberButton}>
+                  <View style={styles.button}>
+                    <View style={styles.iconContainerStyle}>
+                      <ThemedText style={styles.numberStyle}>{item.quantity}</ThemedText>
+                    </View>
                   </View>
                 </View>
-              </TouchableOpacity>
+              )}
             </TouchableOpacity>
           ))}
         </View>
@@ -276,21 +287,31 @@ export default function DeckThumbnailList({ cards, deckId, onCardsChanged }: Dec
               <CompactCard
                 card={{ cardId: item.cardId, name: item.name || item.cardId, imagesLarge: item.imagesLarge || "" }}
               />
-              <TouchableOpacity
-                onPress={(e) => {
-                  e.stopPropagation();
-                  handleQtyPress(item);
-                }}
-                accessibilityLabel="Change number"
-                accessibilityRole="button"
-                style={styles.numberButton}
-              >
-                <View style={styles.button}>
-                  <View style={styles.iconContainerStyle}>
-                    <ThemedText style={styles.numberStyle}>{item.quantity}</ThemedText>
+              {edit ? (
+                <TouchableOpacity
+                  onPress={(e) => {
+                    e.stopPropagation();
+                    handleQtyPress(item);
+                  }}
+                  accessibilityLabel="Change number"
+                  accessibilityRole="button"
+                  style={styles.numberButton}
+                >
+                  <View style={styles.button}>
+                    <View style={styles.iconContainerStyle}>
+                      <ThemedText style={styles.numberStyle}>{item.quantity}</ThemedText>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <View style={styles.numberButton}>
+                  <View style={styles.button}>
+                    <View style={styles.iconContainerStyle}>
+                      <ThemedText style={styles.numberStyle}>{item.quantity}</ThemedText>
+                    </View>
                   </View>
                 </View>
-              </TouchableOpacity>
+              )}
             </TouchableOpacity>
           ))}
         </View>

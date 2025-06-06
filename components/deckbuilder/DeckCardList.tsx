@@ -12,10 +12,11 @@ import { useRouter } from "expo-router";
 interface DeckCardListProps {
   cards: any[];
   deckId: number;
+  edit?: boolean;
   onCardsChanged?: () => void;
 }
 
-const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChanged }) => {
+const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, edit = true, onCardsChanged }) => {
   const { db } = useCardDatabase();
   const { db: userDb, isLoading, error, decksVersion, incrementDecksVersion } = useUserDatabase();
   const router = useRouter();
@@ -251,22 +252,28 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, deckId, onCardsChang
                   </ThemedText>
                 </View>
               </View>
-              <View style={styles.qtyCol}>
-                <ThemedButton
-                  title="-"
-                  type="outline"
-                  size="small"
-                  onPress={() => handleChangeQuantity(item.cardId, "dec")}
-                  style={styles.qtyOperator}
-                />
-                <ThemedButton
-                  title="+"
-                  type="outline"
-                  size="small"
-                  onPress={() => handleChangeQuantity(item.cardId, "inc")}
-                  style={styles.qtyOperator}
-                />
-              </View>
+              {edit ? (
+                <View style={styles.qtyCol}>
+                  <ThemedButton
+                    title="-"
+                    type="outline"
+                    size="small"
+                    onPress={() => handleChangeQuantity(item.cardId, "dec")}
+                    style={styles.qtyOperator}
+                  />
+                  <ThemedButton
+                    title="+"
+                    type="outline"
+                    size="small"
+                    onPress={() => handleChangeQuantity(item.cardId, "inc")}
+                    style={styles.qtyOperator}
+                  />
+                </View>
+              ) : (
+                <View style={styles.qtyCol}>
+                  <ThemedText style={styles.summaryTextCardQtyCol}>{item.quantity || 1}</ThemedText>
+                </View>
+              )}
             </View>
           </View>
         ))}

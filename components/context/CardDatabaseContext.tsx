@@ -12,6 +12,9 @@ interface CardDatabaseContextType {
 const CardDatabaseContext = createContext<CardDatabaseContextType | undefined>(undefined);
 CardDatabaseContext.displayName = "CardDatabaseContext";
 
+// Module-level lock to prevent concurrent DB opens/migrations
+let dbInitPromise: Promise<SQLite.SQLiteDatabase> | null = null;
+
 export const CardDatabaseProvider = ({
   children,
   setIsUpdatingDb,
@@ -64,29 +67,32 @@ export const CardDatabaseProvider = ({
     async function setupDatabaseWithRetry() {
       while (retryCount < MAX_RETRIES && !cancelled) {
         try {
-          // Open or create the card database (fixed name)
-          console.log(`[CardDB] Attempting to open card database... (try ${retryCount + 1})`);
-          const openedDb = await SQLite.openDatabaseAsync("cardDatabase.db");
-
+          if (!dbInitPromise) {
+            dbInitPromise = (async () => {
+              // Open or create the card database (fixed name)
+              console.log(`[CardDB] Attempting to open card database... (try ${retryCount + 1})`);
+              const openedDb = await SQLite.openDatabaseAsync("cardDatabase.db");
+              if (isMounted.current) {
+                // Run migration and JSON population
+                await migrateDbIfNeeded(
+                  openedDb,
+                  (updating) => {
+                    setTimeout(() => safeSetIsUpdating(updating), 0);
+                  },
+                  setCardDbProgress
+                );
+              }
+              return openedDb;
+            })();
+          }
+          const openedDb = await dbInitPromise;
           if (isMounted.current) {
-            // Run migration and JSON population - use a custom wrapper function
-            // that doesn't immediately update state during rendering
-            await migrateDbIfNeeded(
-              openedDb,
-              (updating) => {
-                // Use setTimeout to defer state updates out of the render cycle
-                setTimeout(() => safeSetIsUpdating(updating), 0);
-              },
-              setCardDbProgress
-            );
-
-            if (isMounted.current) {
-              setDb(openedDb);
-            }
+            setDb(openedDb);
           }
           break; // Success, exit retry loop
         } catch (e) {
           retryCount++;
+          dbInitPromise = null; // Reset lock on failure so next attempt can retry
           console.error(`[CardDB] Failed to initialize card database (attempt ${retryCount}):`, e);
           if (retryCount >= MAX_RETRIES) {
             // Dev only: fire alert on repeated failure

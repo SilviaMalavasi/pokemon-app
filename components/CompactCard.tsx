@@ -4,7 +4,6 @@ import ThemedText from "@/components/base/ThemedText";
 import { CardType } from "@/types/PokemonCardType";
 import styles from "@/style/CompactCardStyle";
 import cardImages from "@/helpers/cardImageMapping";
-import { Link } from "expo-router";
 import { vw } from "@/helpers/viewport";
 import { theme } from "@/style/ui/Theme";
 

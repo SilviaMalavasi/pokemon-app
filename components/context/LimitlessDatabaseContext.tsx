@@ -12,6 +12,9 @@ interface LimitlessDatabaseContextType {
 const LimitlessDatabaseContext = createContext<LimitlessDatabaseContextType | undefined>(undefined);
 LimitlessDatabaseContext.displayName = "LimitlessDatabaseContext";
 
+// Add a module-level lock to prevent concurrent DB opens/migrations
+let dbInitPromise: Promise<SQLite.SQLiteDatabase> | null = null;
+
 export const LimitlessDatabaseProvider = ({
   children,
   setIsUpdatingDb,
@@ -56,13 +59,19 @@ export const LimitlessDatabaseProvider = ({
     async function setupDatabaseWithRetry() {
       while (retryCount < MAX_RETRIES && !cancelled) {
         try {
-          const openedDb = await openLimitlessDatabase();
-          if (isMounted.current) {
-            await migrateLimitlessDbIfNeeded(openedDb);
+          if (!dbInitPromise) {
+            dbInitPromise = openLimitlessDatabase().then(async (openedDb) => {
+              await migrateLimitlessDbIfNeeded(openedDb);
+              return openedDb;
+            });
+          }
+          const openedDb = await dbInitPromise;
+          if (isMounted.current && !cancelled) {
             setDb(openedDb);
           }
           break;
         } catch (e) {
+          dbInitPromise = null; // Reset on failure
           retryCount++;
           if (retryCount >= MAX_RETRIES) {
             alert("[DEV] Limitless DB failed to initialize after multiple attempts. See console for details.");
@@ -73,7 +82,7 @@ export const LimitlessDatabaseProvider = ({
             await new Promise((res) => setTimeout(res, RETRY_DELAY_MS));
           }
         } finally {
-          if (isMounted.current) {
+          if (isMounted.current && !cancelled) {
             setIsLoading(false);
           }
         }

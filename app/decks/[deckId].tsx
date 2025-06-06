@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import MainScrollView from "@/components/ui/MainScrollView";
 import ThemedText from "@/components/base/ThemedText";

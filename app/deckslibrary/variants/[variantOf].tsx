@@ -4,6 +4,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import MainScrollView from "@/components/ui/MainScrollView";
 import ThemedText from "@/components/base/ThemedText";
 import { useLimitlessDatabase } from "@/components/context/LimitlessDatabaseContext";
+import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { theme } from "@/style/ui/Theme";
 import deckLibraryMapping from "@/helpers/deckLibraryMapping";
 import CompactDeckLibrary from "@/components/decklibrary/CompactDeckLibrary";
@@ -11,6 +12,12 @@ import ThemedView from "@/components/base/ThemedView";
 
 export default function DeckLibraryVariantScreen() {
   const { db, isLoading, isUpdating, error } = useLimitlessDatabase();
+  const {
+    db: userDb,
+    isLoading: isUserDbLoading,
+    isUpdating: isUserDbUpdating,
+    error: userDbError,
+  } = useUserDatabase();
   const { variantOf } = useLocalSearchParams<{ variantOf: string }>();
   const [decks, setDecks] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -40,38 +47,23 @@ export default function DeckLibraryVariantScreen() {
 
   const mapping = deckLibraryMapping[variantOf as string];
 
-  if (error) {
+  if (error || userDbError) {
     return (
       <MainScrollView
         headerImage="deck-library-bkg"
-        headerTitle={variantOf}
+        headerTitle={variantOf ? `${variantOf} Decks` : "Decks"}
       >
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
-          <ThemedText>Error loading database: {error.message}</ThemedText>
+          <ThemedText>Error loading database: {error?.message || userDbError?.message}</ThemedText>
         </View>
       </MainScrollView>
     );
   }
-  if (isLoading || isUpdating) {
+  if (!db || isLoading || isUpdating || !userDb || isUserDbLoading || isUserDbUpdating || !variantOf || loading) {
     return (
       <MainScrollView
         headerImage="deck-library-bkg"
-        headerTitle={variantOf}
-      >
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
-          <ActivityIndicator
-            size="large"
-            color={theme.colors.purple}
-          />
-        </View>
-      </MainScrollView>
-    );
-  }
-  if (loading) {
-    return (
-      <MainScrollView
-        headerImage="deck-library-bkg"
-        headerTitle={variantOf}
+        headerTitle={variantOf ? `${variantOf} Decks` : "Decks"}
       >
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
           <ActivityIndicator
@@ -86,7 +78,7 @@ export default function DeckLibraryVariantScreen() {
   return (
     <MainScrollView
       headerImage="deck-library-bkg"
-      headerTitle={variantOf}
+      headerTitle={`${variantOf} Decks`}
     >
       <ThemedView style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
         <View style={{ paddingVertical: theme.padding.medium }}>
