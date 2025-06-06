@@ -10,8 +10,7 @@
     "web": "set NODE_ENV=development && expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "build-local-no-chache": "eas build --platform android --local --clear-cache",
-    "build-local": "eas build --platform android --local"
+    "build-local": "eas build --platform android --profile preview --local --clear-cache"
   },
   "jest": {
     "preset": "jest-expo"

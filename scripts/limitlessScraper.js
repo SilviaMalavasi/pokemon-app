@@ -12,22 +12,6 @@ const Database = require("better-sqlite3");
 // Set the minimum allowed tournament date (inclusive). Format: 'YYYY-MM-DD'
 const MIN_TOURNAMENT_DATE = new Date("2025-04-11"); // <-- Set your cutoff date here
 
-// --- DB SETUP ---
-const DB_PATH = path.join(__dirname, "db", "limitlessDecks.db");
-const SCHEMA_PATH = path.join(__dirname, "db", "limitlessSchema.sql");
-
-function ensureDbAndSchema() {
-  if (!fs.existsSync(path.dirname(DB_PATH))) {
-    fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
-  }
-  if (!fs.existsSync(DB_PATH)) {
-    const db = new Database(DB_PATH);
-    const schema = fs.readFileSync(SCHEMA_PATH, "utf-8");
-    db.exec(schema);
-    db.close();
-  }
-}
-
 // --- SCRAPER LOGIC ---
 async function scrapeLimitlessDeck(url) {
   const { data } = await axios.get(url);
@@ -392,6 +376,60 @@ function autoAssignThumbnailsToDeckLibraryMapping() {
   }
 }
 
+// --- ENERGY CARD NORMALIZATION ---
+// Only keep SVE-9 to SVE-16 for basic energy, convert all others by name
+function normalizeBasicEnergyCards(cardsArr) {
+  // Load the basic energy map
+  const energyMap = JSON.parse(fs.readFileSync(path.join(__dirname, "db/basicEnergyMap.json"), "utf-8"));
+  // Map from name (lowercase, no 'basic ' prefix) to SVE-# code
+  const allowed = ["SVE-9", "SVE-10", "SVE-11", "SVE-12", "SVE-13", "SVE-14", "SVE-15", "SVE-16"];
+  // Build a map: key = normalized name, value = SVE-#
+  const nameToSVE = {};
+  for (const entry of energyMap) {
+    if (entry.ptcgoCode && allowed.includes(entry.ptcgoCode.toUpperCase())) {
+      // Normalize name: remove 'basic ' prefix, lowercase
+      let norm = entry.name
+        .toLowerCase()
+        .replace(/^basic\s+/, "")
+        .trim();
+      nameToSVE[norm] = entry.ptcgoCode.toUpperCase();
+    }
+  }
+  // NORMALIZE ENERGY: For each card, if its ptcgoCode is a basic energy but not SVE-9..16, convert
+  for (const card of cardsArr) {
+    if (typeof card.cardId === "string") {
+      const ptcgoCode = card.cardId.toUpperCase();
+      // If already allowed, keep
+      if (allowed.includes(ptcgoCode)) continue;
+      // Try to match by ptcgoCode in energyMap
+      const entry = energyMap.find((e) => e.ptcgoCode && e.ptcgoCode.toUpperCase() === ptcgoCode);
+      if (entry) {
+        // Normalize name: remove 'basic ' prefix, lowercase
+        let norm = entry.name
+          .toLowerCase()
+          .replace(/^basic\s+/, "")
+          .trim();
+        if (nameToSVE[norm]) {
+          const fromVal = card.cardId;
+          const toVal = nameToSVE[norm];
+          if (fromVal.toUpperCase() !== toVal) {
+            console.log(`[ENERGY REPLACE] ${fromVal} => ${toVal}`);
+            card.cardId = toVal;
+          }
+        }
+      }
+    }
+  }
+  // Remove duplicates and sum quantities for the same SVE-#
+  const deduped = {};
+  for (const card of cardsArr) {
+    const id = card.cardId.toUpperCase();
+    if (!deduped[id]) deduped[id] = { ...card };
+    else deduped[id].quantity += card.quantity;
+  }
+  return Object.values(deduped);
+}
+
 // Helper to parse tournament date string like '17th May 2025' to Date object
 function parseTournamentDate(dateStr) {
   // Remove ordinal suffixes (st, nd, rd, th)
@@ -402,7 +440,6 @@ function parseTournamentDate(dateStr) {
 
 // --- MAIN ---
 async function main() {
-  ensureDbAndSchema();
   // Prepare mapping tables once
   const cardSetPath = path.join(__dirname, "..", "assets", "database", "CardSet.json");
   const cardJsonPath = path.join(__dirname, "..", "assets", "database", "Card.json");
@@ -502,6 +539,8 @@ async function main() {
       });
       // Map cardIds before saving
       cards = mapCardIdsForCardsArray(cards, ptcgoToSetId, setNumToCardId);
+      // Normalize basic energy cards
+      cards = normalizeBasicEnergyCards(cards);
       saveDeckToJson(
         {
           name: deck.name,
@@ -534,4 +573,4 @@ if (require.main === module) {
 }
 
 // Exports for testing
-module.exports = { scrapeLimitlessDeck, /*insertDeck,*/ ensureDbAndSchema, saveDeckToJson };
+module.exports = { scrapeLimitlessDeck, saveDeckToJson };

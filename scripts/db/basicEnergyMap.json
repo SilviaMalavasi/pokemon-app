@@ -1,0 +1,734 @@
+[
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "CL-88"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "CL-89"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "GEN-76"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "CL-90"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "GEN-75"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "CL-92"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "CL-91"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "GEN-79"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "GEN-77"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "GEN-78"
+  },
+  {
+    "name": "Darkness Energy",
+    "ptcgoCode": "GEN-81"
+  },
+  {
+    "name": "Metal Energy",
+    "ptcgoCode": "GEN-82"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "EVO-95"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "EVO-91"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "BS-98"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "BS-99"
+  },
+  {
+    "name": "Darkness Energy",
+    "ptcgoCode": "CL-94"
+  },
+  {
+    "name": "Fairy Energy",
+    "ptcgoCode": "GEN-83"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "GEN-80"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "CL-93"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "BS-97"
+  },
+  {
+    "name": "Metal Energy",
+    "ptcgoCode": "CL-95"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "EVO-92"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "EVO-93"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "BS-100"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "EVO-94"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "EVO-96"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "BS-101"
+  },
+  {
+    "name": "Darkness Energy",
+    "ptcgoCode": "EVO-97"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "HP-105"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "BS-102"
+  },
+  {
+    "name": "Metal Energy",
+    "ptcgoCode": "EVO-98"
+  },
+  {
+    "name": "Fairy Energy",
+    "ptcgoCode": "EVO-99"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "EM-102"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "EM-101"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "EM-103"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "EM-104"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "HP-106"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "BLW-105"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "EM-106"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "HS-115"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "EM-105"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "HP-107"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "BLW-106"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "HS-117"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "HS-116"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "BLW-107"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "PK-103"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "HS-118"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "HS-119"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "BLW-108"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "HP-108"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "HP-109"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "PK-104"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "BLW-109"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "PK-105"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "PK-106"
+  },
+  {
+    "name": "Darkness Energy",
+    "ptcgoCode": "BLW-111"
+  },
+  {
+    "name": "Metal Energy",
+    "ptcgoCode": "BLW-112"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "HS-120"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "BLW-110"
+  },
+  {
+    "name": "Darkness Energy",
+    "ptcgoCode": "HS-121"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "HP-110"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "RS-104"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "PK-107"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "N1-106"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "RS-105"
+  },
+  {
+    "name": "Metal Energy",
+    "ptcgoCode": "HS-122"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "PK-108"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "N1-107"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "RS-107"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "G1-130"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "G1-127"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "N1-111"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "G1-131"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "G1-132"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "N1-108"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "N1-109"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "G1-128"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "RS-108"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "RS-106"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "N1-110"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "G1-129"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "RS-109"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "DP-123"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "DP-124"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "G2-129"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "G2-127"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "B2-125"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "G2-128"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "G2-130"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "DP-126"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "B2-129"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "DP-127"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "DP-128"
+  },
+  {
+    "name": "Darkness Energy",
+    "ptcgoCode": "DP-129"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "B2-130"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "B2-126"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "DP-125"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "B2-127"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "B2-128"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "G2-132"
+  },
+  {
+    "name": "Metal Energy",
+    "ptcgoCode": "DP-130"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "G2-131"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "XY-132"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "CIN-124"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "XY-136"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "XY-133"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "XY-134"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "XY-137"
+  },
+  {
+    "name": "Metal Energy",
+    "ptcgoCode": "XY-139"
+  },
+  {
+    "name": "Fairy Energy",
+    "ptcgoCode": "XY-140"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "XY-135"
+  },
+  {
+    "name": "Darkness Energy",
+    "ptcgoCode": "XY-138"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "SUM-164"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "SUM-166"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "SUM-169"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "SUM-167"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "GRI-168"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "SUM-168"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "GRI-169"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "EX-164"
+  },
+  {
+    "name": "Fairy Energy",
+    "ptcgoCode": "SUM-172"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "BUS-167"
+  },
+  {
+    "name": "Darkness Energy",
+    "ptcgoCode": "BUS-168"
+  },
+  {
+    "name": "Fairy Energy",
+    "ptcgoCode": "BUS-169"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "SUM-162"
+  },
+  {
+    "name": "Metal Energy",
+    "ptcgoCode": "SUM-163"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "EX-161"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "GRI-167"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "EX-162"
+  },
+  {
+    "name": "Darkness Energy",
+    "ptcgoCode": "SUM-170"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "SUM-165"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "EX-160"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "EX-163"
+  },
+  {
+    "name": "Metal Energy",
+    "ptcgoCode": "SUM-171"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "EX-165"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "CRE-233"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "CRE-232"
+  },
+  {
+    "name": "Metal Energy",
+    "ptcgoCode": "EVS-237"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "CRE-231"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "EVS-235"
+  },
+  {
+    "name": "Darkness Energy",
+    "ptcgoCode": "EVS-236"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "FST-284"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "FST-283"
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Lightning Energy",
+    "ptcgoCode": "CRZ-155"
+  },
+  {
+    "name": "Psychic Energy",
+    "ptcgoCode": "CRZ-156"
+  },
+  {
+    "name": "Fighting Energy",
+    "ptcgoCode": "CRZ-157"
+  },
+  {
+    "name": "Darkness Energy",
+    "ptcgoCode": "CRZ-158"
+  },
+  {
+    "name": "Metal Energy",
+    "ptcgoCode": "CRZ-159"
+  },
+  {
+    "name": "Grass Energy",
+    "ptcgoCode": "CRZ-152"
+  },
+  {
+    "name": "Fire Energy",
+    "ptcgoCode": "CRZ-153"
+  },
+  {
+    "name": "Water Energy",
+    "ptcgoCode": "CRZ-154"
+  },
+  {
+    "name": "Basic Fighting Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Lightning Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Grass Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Water Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Grass Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Fire Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Water Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Lightning Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Psychic Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Fighting Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Darkness Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Metal Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Fire Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Psychic Energy",
+    "ptcgoCode": null
+  },
+  {
+    "name": "Basic Darkness Energy",
+    "ptcgoCode": "SFA-98"
+  },
+  {
+    "name": "Basic Metal Energy",
+    "ptcgoCode": "SFA-99"
+  },
+  {
+    "name": "Basic Grass Energy",
+    "ptcgoCode": "SVE-9"
+  },
+  {
+    "name": "Basic Fire Energy",
+    "ptcgoCode": "SVE-10"
+  },
+  {
+    "name": "Basic Water Energy",
+    "ptcgoCode": "SVE-11"
+  },
+  {
+    "name": "Basic Lightning Energy",
+    "ptcgoCode": "SVE-12"
+  },
+  {
+    "name": "Basic Psychic Energy",
+    "ptcgoCode": "SVE-13"
+  },
+  {
+    "name": "Basic Fighting Energy",
+    "ptcgoCode": "SVE-14"
+  },
+  {
+    "name": "Basic Darkness Energy",
+    "ptcgoCode": "SVE-15"
+  },
+  {
+    "name": "Basic Metal Energy",
+    "ptcgoCode": "SVE-16"
+  }
+]
