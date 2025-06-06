@@ -4,25 +4,32 @@ import ThemedText from "@/components/base/ThemedText";
 import { ActivityIndicator, View } from "react-native";
 import ExternalLink from "@/components/base/ExternalLink";
 import { LimitlessDatabaseProvider, useLimitlessDatabase } from "@/components/context/LimitlessDatabaseContext";
+import { useUserDatabase } from "@/components/context/UserDatabaseContext";
 import { theme } from "@/style/ui/Theme";
 import DeckLibraryCategoryList from "@/components/decklibrary/DeckLibraryCategoryList";
 
 function DeckLibraryContent() {
   const { db, isLoading, isUpdating, error } = useLimitlessDatabase();
+  const {
+    db: userDb,
+    isLoading: isUserDbLoading,
+    isUpdating: isUserDbUpdating,
+    error: userDbError,
+  } = useUserDatabase();
 
-  if (error) {
+  if (error || userDbError) {
     return (
       <MainScrollView
         headerImage="deck-library-bkg"
         headerTitle="Deck Library"
       >
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: 200 }}>
-          <ThemedText>Error loading database: {error.message}</ThemedText>
+          <ThemedText>Error loading database: {error?.message || userDbError?.message}</ThemedText>
         </View>
       </MainScrollView>
     );
   }
-  if (!db || isLoading || isUpdating) {
+  if (!db || isLoading || isUpdating || !userDb || isUserDbLoading || isUserDbUpdating) {
     return (
       <MainScrollView
         headerImage="deck-library-bkg"

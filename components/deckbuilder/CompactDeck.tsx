@@ -179,15 +179,12 @@ export default function CompactDeck({ deck, onImageLoad, layout, loading, onDele
     <View style={styles.container}>
       <View style={styles.mainContainer}>
         <View style={styles.deckName}>
-          <TouchableOpacity onPress={handlePress}>
-            <ThemedText
-              type="h3"
-              color={theme.colors.white}
-              style={{ paddingTop: theme.padding.medium }}
-            >
-              {deck.name}
-            </ThemedText>
-          </TouchableOpacity>
+          <ThemedText
+            type="h3"
+            color={theme.colors.white}
+          >
+            {deck.name}
+          </ThemedText>
           {layout === "edit" && (
             <ThemedButton
               title="View"

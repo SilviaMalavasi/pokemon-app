@@ -182,15 +182,12 @@ export default function CompactWatchlist({
     <View style={styles.container}>
       <View style={styles.mainContainer}>
         <View style={styles.watchlistName}>
-          <TouchableOpacity onPress={handlePress}>
-            <ThemedText
-              type="h3"
-              color={theme.colors.white}
-              style={{ paddingTop: theme.padding.medium }}
-            >
-              {watchlist.name}
-            </ThemedText>
-          </TouchableOpacity>
+          <ThemedText
+            type="h3"
+            color={theme.colors.white}
+          >
+            {watchlist.name}
+          </ThemedText>
           {layout === "edit" && (
             <ThemedButton
               title="View"

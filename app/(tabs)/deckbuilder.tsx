@@ -48,14 +48,13 @@ export default function DeckBuilderScreen() {
       try {
         await deleteDeck(db, id);
         if (typeof incrementDecksVersion === "function") incrementDecksVersion();
-        router.replace("/"); // Navigate to home or desired screen after delete
       } catch (e) {
         console.error("Failed to delete deck", e);
       } finally {
         setDeletingId(null);
       }
     },
-    [db, incrementDecksVersion, router]
+    [db, incrementDecksVersion]
   );
 
   const handleThumbnailSelect = (imagesLargeUrl: string) => {
